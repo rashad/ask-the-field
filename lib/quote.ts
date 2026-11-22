@@ -32,12 +32,19 @@ function normalize(raw: string) {
   return { text, map };
 }
 
+const wordChar = (c: string | undefined) => !!c && /[\p{L}\p{N}]/u.test(c);
+
 export function findQuote(chunk: string, quote: string | null | undefined): [number, number] | null {
   if (!quote) return null;
   const q = normalize(quote).text.trim();
-  if (q.length < MIN_QUOTE || q.length > MAX_QUOTE) return null;
+  if (!q || q.length > MAX_QUOTE) return null;
+  if (q.length < MIN_QUOTE && !chunk.split("\n").some((line) => line.includes("|") && normalize(line).text.trim() === q)) return null;
   const n = normalize(chunk);
-  const at = n.text.indexOf(q);
-  if (at < 0) return null;
-  return [n.map[at], n.map[at + q.length - 1] + 1];
+  for (let at = n.text.indexOf(q); at >= 0; at = n.text.indexOf(q, at + 1)) {
+    const end = at + q.length;
+    if (wordChar(n.text[at - 1]) && wordChar(q[0])) continue;
+    if (wordChar(n.text[end]) && wordChar(q.at(-1))) continue;
+    return [n.map[at], n.map[end - 1] + 1];
+  }
+  return null;
 }

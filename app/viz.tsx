@@ -1,15 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { MONTH, shortDate } from "./fmt";
+import { monthYear, shortDate } from "@/lib/domain";
 
-export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; highlighted: boolean }
-export interface EventRow { event_id: string; well_id: string; field: string; type: string; start_date: string; status: string; severity: string | null; category: string }
-
-type Viz =
-  | { type: "map"; title: string; wells: MapWell[]; highlighted: string[] }
-  | { type: "line"; title: string; unit: string; series: { name: string; points: { x: string; y: number }[] }[] }
-  | { type: "bar"; title: string; unit: string; bars: { label: string; value: number }[] }
-  | { type: "none" };
+import type { FinalViz as Viz, MapWell } from "@/lib/chart";
+import type { EventRow } from "@/lib/tools";
 
 const STATUS: Record<string, [string, string]> = {
   producing: ["#0B1B3A", "Producing"],
@@ -21,7 +15,7 @@ const SERIES = ["#0B1B3A", "#5A8BD0", "#6A7590", "#A9B0C0"];
 const ORANGE = "#F04E0E";
 const fmt = (n: number) => (Math.abs(n) < 1 && n !== 0 ? n.toFixed(3) : Math.round(n).toLocaleString("en-US"));
 const pointLabel = (d: string, monthly: boolean) =>
-  /^\d{4}-\d{2}$/.test(d) || (monthly && /^\d{4}-\d{2}-01$/.test(d)) ? `${MONTH[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}` : /^\d{4}-\d{2}-\d{2}$/.test(d) ? shortDate(d) : d;
+  /^\d{4}-\d{2}$/.test(d) || (monthly && /^\d{4}-\d{2}-01$/.test(d)) ? monthYear(d, true) : /^\d{4}-\d{2}-\d{2}$/.test(d) ? shortDate(d) : d;
 
 function useWidth(fallback: number) {
   const ref = useRef<HTMLDivElement>(null);
@@ -172,7 +166,9 @@ function MapViz({ viz, events }: { viz: Extract<Viz, { type: "map" }>; events: E
   );
 }
 
-function BarViz({ viz }: { viz: Extract<Viz, { type: "bar" }> }) {
+function BarViz({ viz: raw }: { viz: Extract<Viz, { type: "bar" }> }) {
+  const fraction = /fraction/.test(raw.unit);
+  const viz = fraction ? { ...raw, unit: raw.unit.replace("fraction change", "points change").replace("fraction", "%"), bars: raw.bars.map((b) => ({ ...b, value: Number((b.value * 100).toFixed(1)) })) } : raw;
   const max = Math.max(...viz.bars.map((b) => Math.abs(b.value)), 1e-9);
   return (
     <>
@@ -185,7 +181,7 @@ function BarViz({ viz }: { viz: Extract<Viz, { type: "bar" }> }) {
               <rect width="400" height="24" fill="#E4E6EB" />
               <rect width={(400 * Math.abs(b.value)) / max} height="24" fill="#0B1B3A" fillOpacity={i === 0 ? 1 : 0.55} />
             </svg>
-            <div className="val"><span className="mono body-5">{b.value > 0 && /%|change/i.test(viz.unit) ? "+" : ""}{fmt(b.value)}</span><span className="mono caption-4 mute">{viz.unit}</span></div>
+            <div className="val"><span className="mono body-5">{b.value > 0 && /change/i.test(viz.unit) ? "+" : ""}{fraction ? b.value.toFixed(1) : fmt(b.value)}</span><span className="mono caption-4 mute">{viz.unit}</span></div>
           </li>
         ))}
       </ol>

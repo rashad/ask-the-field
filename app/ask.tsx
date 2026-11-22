@@ -6,17 +6,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { usd } from "@/lib/money";
 import { DEMO, SUGGESTED } from "@/lib/questions";
-import type { Morning } from "@/lib/stakes";
+import type { Morning } from "@/lib/morning";
 import { Drawer } from "./drawer";
 import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
 import { Briefing, Scene } from "./scene";
-import { VizCard, type EventRow } from "./viz";
+import type { EventRow } from "@/lib/tools";
+import { VizCard } from "./viz";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 
 
 const REASON: Record<string, string> = {
   daily_cap: "The daily limit on live answers is reached.",
+  ip_cap: "You reached today's limit of live answers.",
   no_key: "Live answers are off on this server.",
   api_error: "The live answer failed.",
   slow: "The live answer took more than 20 seconds.",
@@ -114,6 +116,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
   const [focus, setFocus] = useState<number | null>(null);
   const [tips, setTips] = useState(true);
   const abort = useRef<AbortController | null>(null);
+  const typed = useRef<string | null>(null);
 
   const demo = params.get("demo");
   const [countdown, setCountdown] = useState<number | null>(null);
@@ -209,14 +212,14 @@ export function Ask({ morning }: { morning: Morning | null }) {
 
   const q = params.get("q");
   useEffect(() => {
-    if (!q) {
-      abort.current?.abort();
-      setStatus("idle");
-      setInput("");
+    setInput(q ?? "");
+    if (q && (SUGGESTED.includes(q) || typed.current === q)) {
+      typed.current = null;
+      run(q);
       return;
     }
-    setInput(q);
-    run(q);
+    abort.current?.abort();
+    setStatus("idle");
   }, [q, run]);
   useEffect(() => {
     if (status === "done" && params.get("how") === "1") setDrawer(true);
@@ -228,7 +231,10 @@ export function Ask({ morning }: { morning: Morning | null }) {
     if (text.length > 300) return setInvalid("Keep the question under 300 characters.");
     setInvalid("");
     if (text === q) run(text);
-    else router.push(`/?q=${encodeURIComponent(text)}`, { scroll: false });
+    else {
+      typed.current = text;
+      router.push(`/?q=${encodeURIComponent(text)}`, { scroll: false });
+    }
   };
 
   const openSource = (n: number | null) => {

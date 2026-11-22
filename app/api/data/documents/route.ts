@@ -1,5 +1,5 @@
 import { sql } from "@/lib/db";
-import { DOC_TYPES } from "@/lib/tools";
+import { DOC_TYPES } from "@/lib/domain";
 
 export async function GET(req: Request) {
   const params = new URL(req.url).searchParams;

@@ -4,27 +4,32 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { findQuote } from "@/lib/quote";
-import type { SearchChunk } from "@/lib/tools";
-import { shortDate } from "./fmt";
+import type { EventRow, SearchChunk } from "@/lib/tools";
+import { docTypeLabel, RRF_K, shortDate, TODAY } from "@/lib/domain";
 import { found, say, type Step } from "./human";
 import { Md } from "./md";
-import type { EventRow } from "./viz";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 type Source = Final["answer"]["sources"][number];
 
-const MAX_RRF = 2 / 61;
-const TYPE: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
-export function sourceHref(s: Source) {
+const MAX_RRF = 2 / (RRF_K + 1);
+function monthsBack(period = "") {
+  const from = period.slice(0, 7);
+  if (!/^\d{4}-\d{2}$/.test(from)) return 6;
+  const n = (Number(TODAY.slice(0, 4)) - Number(from.slice(0, 4))) * 12 + Number(TODAY.slice(5, 7)) - Number(from.slice(5, 7)) + 1;
+  return [6, 12, 18].find((m) => m >= n) ?? 18;
+}
+
+function sourceHref(s: Source) {
   const { kind, id } = s;
   if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}${s.quote_verified && s.quote ? `&quote=${encodeURIComponent(s.quote)}` : ""}`;
   const [table, scope] = id.split(":");
   const name = table === "production_daily" ? "production" : table;
   const q = name === "production" ? (scope === "all" ? "" : scope) : scope;
-  return `/data?tab=tables&table=${name}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
+  return `/data?tab=tables&table=${name}${q ? `&q=${encodeURIComponent(q)}` : ""}${name === "production" ? `&months=${monthsBack(id.split(":")[2])}` : ""}`;
 }
 
-function TableSource({ s, events }: { s: Source; events: (EventRow & { description?: string })[] }) {
+function TableSource({ s, events }: { s: Source; events: EventRow[] }) {
   const [table, key] = s.id.split(":");
   const ev = table === "events" ? events.find((e) => e.event_id === key) : undefined;
   const what = table === "events" ? "the event log" : table === "wells" ? "the list of wells" : "the daily production table";
@@ -110,7 +115,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <h4 className="body-4">{c ? c.title : s.label}</h4>
                       <p className="caption-4 mute">
-                        {c ? <>{c.doc_type === "incident_note" ? <span className="inc-tag">{TYPE[c.doc_type]}</span> : TYPE[c.doc_type] ?? "Report"}, <span className="mono">{c.document_id}</span>{c.well_id ? `, ${c.well_id}` : ""}, {shortDate(c.date)}</> : <><Database aria-hidden /> Data table, <span className="mono">{s.id}</span></>}
+                        {c ? <>{c.doc_type === "incident_note" ? <span className="inc-tag">{docTypeLabel(c.doc_type)}</span> : docTypeLabel(c.doc_type)}, <span className="mono">{c.document_id}</span>{c.well_id ? `, ${c.well_id}` : ""}, {shortDate(c.date)}</> : <><Database aria-hidden /> Data table, <span className="mono">{s.id}</span></>}
                       </p>
                     </div>
                   </div>
@@ -171,7 +176,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
                 </>
               )}
               <h4 className="caption-3 mute dsec">Run</h4>
-              <p className="mono caption-4">{final.model}, {u.steps} model steps, {(final.latency_ms / 1000).toFixed(1)} s, tokens in {u.input_tokens} + cache read {u.cache_read_tokens} + cache write {u.cache_write_tokens}, out {u.output_tokens}, ${u.cost_usd.toFixed(4)}</p>
+              <p className="mono caption-4">{final.model}, {u.steps} model steps, {(final.latency_ms / 1000).toFixed(1)} s, tokens in {u.input_tokens} + cache read {u.cache_read_tokens} + cache write {u.cache_write_tokens}, out {u.output_tokens}, {u.cost_usd === null ? "cost unknown" : `$${u.cost_usd.toFixed(4)}`}</p>
             </div>
           </details>
         </div>

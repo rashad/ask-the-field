@@ -1,19 +1,38 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { sql } from "./db";
+import { DOC_TYPES, FIELDS } from "./domain";
 import { PRICE_PER_BBL } from "./money";
 import { hybridSearch } from "./search";
-import type { ToolRun } from "./chart";
-import { lostOil } from "./stakes";
 
-export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
-export const DOC_TYPES = ["shift_report", "incident_note", "work_order", "well_test", "procedure"] as const;
-export const DATA_START = "2025-05-23";
-export const TODAY = "2026-11-22";
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD").refine((d) => !Number.isNaN(Date.parse(d)), "invalid date");
 const wellIds = z.array(z.string().regex(/^W-\d{2}$/, "well ids look like W-17")).min(1).max(41);
 const field = z.enum(FIELDS);
+
+// Normal rate = average oil on full days in the 30 days before the event; a suspension is a decision, not a loss.
+export const lostOil = () => sql`CASE WHEN e.type = 'Well suspension' THEN NULL ELSE round((
+  (SELECT avg(b.oil_bbl) FROM production_daily b WHERE b.well_id = e.well_id AND b.uptime_hours = 24 AND b.date BETWEEN e.start_date - 30 AND e.start_date - 1)
+  * e.downtime_hours / 24)::numeric)::int END`;
+
+export interface EventRow {
+  event_id: string;
+  well_id: string;
+  field: string;
+  category: string;
+  type: string;
+  start_date: string;
+  end_date: string | null;
+  downtime_hours: number | null;
+  lost_oil_bbl: number | null;
+  lost_revenue_usd: number | null;
+  status: string;
+  severity: string | null;
+  description: string;
+  documents: string[] | null;
+}
+
+export interface ToolRun { ref: string; name: string; output: unknown }
 
 export interface SearchTrace {
   call_id: string;
@@ -88,7 +107,8 @@ async function queryProduction(a: z.infer<typeof productionInput>) {
         change_pct: r.baseline ? round(((r.value - r.baseline) / r.baseline) * 100, 1) : null,
       }),
     }));
-    out.sort((x, y) => (a.compare_from ? (x.change_pct ?? 0) - (y.change_pct ?? 0) : y.value - x.value));
+    const pct = (x: { change_pct?: number | null }) => x.change_pct ?? Infinity;
+    out.sort((x, y) => (a.compare_from ? pct(x) - pct(y) || x.well_id.localeCompare(y.well_id) : y.value - x.value));
     return { metric: a.metric, aggregation: "average daily value per well", unit: unit[a.metric], period: [a.from, a.to], baseline_period: a.compare_from ? [a.compare_from, a.compare_to] : null, rows: out };
   }
   const perWell = (a.well_ids?.length ?? 0) > 0 && (a.well_ids?.length ?? 0) <= 6;
@@ -134,7 +154,7 @@ const eventsInput = z
 
 async function listEvents(a: z.infer<typeof eventsInput>) {
   const category = a.type === "incident" || a.type === "maintenance" ? a.type : null;
-  const rows = await sql`
+  const rows = await sql<Omit<EventRow, "lost_revenue_usd">[]>`
     SELECT e.event_id, e.well_id, w.field, e.category, e.type, e.start_date::text, e.end_date::text, e.downtime_hours, ${lostOil()} AS lost_oil_bbl, e.status, e.severity, e.description,
       (SELECT array_agg(d.doc_id ORDER BY d.date) FROM documents d
        WHERE d.well_id = e.well_id AND d.doc_type IN ('incident_note', 'work_order') AND strpos(d.body, e.event_id) > 0) AS documents
@@ -147,7 +167,7 @@ async function listEvents(a: z.infer<typeof eventsInput>) {
       ${a.from ? sql`AND (e.end_date IS NULL OR e.end_date >= ${a.from})` : sql``}
       ${a.to ? sql`AND e.start_date <= ${a.to}` : sql``}
     ORDER BY e.start_date DESC LIMIT 51`;
-  const events = rows.slice(0, 50).map((r) => ({ ...r, lost_revenue_usd: r.lost_oil_bbl == null ? null : r.lost_oil_bbl * PRICE_PER_BBL }));
+  const events: EventRow[] = rows.slice(0, 50).map((r) => ({ ...r, lost_revenue_usd: r.lost_oil_bbl == null ? null : r.lost_oil_bbl * PRICE_PER_BBL }));
   return { count: events.length, truncated: rows.length > 50, events };
 }
 
@@ -221,50 +241,54 @@ function earlier(seen: Seen[], name: string, args: Record<string, unknown>) {
     if (s.name !== name) return false;
     const extra = Object.keys(args).filter((k) => args[k] !== undefined && s.args[k] === undefined);
     const matches = Object.keys(s.args).every((k) => s.args[k] === undefined || same(s.args[k], args[k]));
-    return matches && (extra.length === 0 || (s.complete && name !== "search_documents" && extra.every((k) => NARROWING.includes(k))));
+    const subset = name === "query_production" ? s.args.group_by === "well" : name !== "search_documents";
+    return matches && (extra.length === 0 || (s.complete && subset && extra.every((k) => NARROWING.includes(k))));
   });
 }
 
 const PREFIX: Record<string, string> = { query_production: "P", list_events: "E", search_documents: "S", get_wells: "W" };
 
-function once<A extends Record<string, unknown>, R extends object>(name: string, seen: Seen[], runs: ToolRun[], counter: Record<string, number>, run: (a: A, o: { toolCallId: string }) => Promise<R>) {
-  return async (a: A, o: { toolCallId: string }) => {
-    const first = earlier(seen, name, a);
-    if (first) return { repeated: true, ref: first.ref, note: `Call ${first.ref} already returned this data. Reuse that result (ref ${first.ref}); do not call again.` };
-    const ref = `${PREFIX[name]}${++counter[name]}`;
-    const result = { ref, ...(await run(a, o)) };
-    runs.push({ ref, name, output: result });
-    seen.push({ name, args: a, ref, complete: !(result as { truncated?: boolean }).truncated });
-    return result;
-  };
-}
+export interface RepeatedResult { repeated: true; ref: string; note: string }
 
-export function makeTools(traces: SearchTrace[], runs: ToolRun[]) {
+export function makeTools() {
   const seen: Seen[] = [];
-  const counter: Record<string, number> = { query_production: 0, list_events: 0, search_documents: 0, get_wells: 0 };
-  return {
+  const runs: ToolRun[] = [];
+  const traces: SearchTrace[] = [];
+  const counts: Record<string, number> = {};
+  const once = <A extends Record<string, unknown>, R extends object>(name: string, run: (a: A, o: { toolCallId: string }) => Promise<R>) =>
+    async (a: A, o: { toolCallId: string }): Promise<RepeatedResult | ({ ref: string } & R)> => {
+      const first = earlier(seen, name, a);
+      if (first) return { repeated: true, ref: first.ref, note: `Call ${first.ref} already returned this data. Reuse that result (ref ${first.ref}); do not call again.` };
+      const ref = `${PREFIX[name]}${(counts[name] = (counts[name] ?? 0) + 1)}`;
+      const result = { ref, ...(await run(a, o)) };
+      runs.push({ ref, name, output: result });
+      seen.push({ name, args: a, ref, complete: !(result as { truncated?: boolean }).truncated });
+      return result;
+    };
+  const tools = {
     query_production: tool({
       description:
         "Daily production from the production_daily table. metric: oil (bbl/d), gas (mscf/d) or water_cut (fraction 0-1). group_by day|week|month|quarter returns a time series (one series per well when 1-6 well_ids are given, else one aggregate series). group_by well returns one average value per well over from..to; add compare_from/compare_to to get the change against a baseline period, sorted by largest drop first. That one call covers every well in scope.",
       inputSchema: productionInput,
-      execute: once("query_production", seen, runs, counter, queryProduction),
+      execute: once("query_production", queryProduction),
     }),
     list_events: tool({
       description:
         "Maintenance and incident events from the events table (date, type, status open/closed, severity, downtime, lost_oil_bbl = normal rate before the event times hours offline, lost_revenue_usd at an assumed $70 a barrel, description with equipment details, and the ids of the incident notes and work orders that cite the event). type accepts 'incident', 'maintenance', or a substring of an event type. from/to keep events active in that window; an event with no end date is still active. Newest first, max 50.",
       inputSchema: eventsInput,
-      execute: once("list_events", seen, runs, counter, listEvents),
+      execute: once("list_events", listEvents),
     }),
     search_documents: tool({
       description:
         "Hybrid search (vector + full text, fused with RRF) over field documents: shift reports, incident notes, work orders, well tests, procedures. Use for causes, findings, actions and context that the tables do not hold. Filters are applied before ranking. For a specific event, call list_events first, then filter this search on that event's well_ids and dates; a field-wide search returns older notes from other wells.",
       inputSchema: searchInput,
-      execute: once("search_documents", seen, runs, counter, (a: z.infer<typeof searchInput>, { toolCallId }) => searchDocuments(a, toolCallId, traces)),
+      execute: once("search_documents", (a: z.infer<typeof searchInput>, { toolCallId }) => searchDocuments(a, toolCallId, traces)),
     }),
     get_wells: tool({
       description: "Wells with field, coordinates (lat/lon), current status (producing, shut_in, workover, suspended), type, lift and the count of open incidents.",
       inputSchema: wellsInput,
-      execute: once("get_wells", seen, runs, counter, getWells),
+      execute: once("get_wells", getWells),
     }),
   };
+  return { tools, runs, traces };
 }

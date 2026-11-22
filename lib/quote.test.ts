@@ -16,3 +16,13 @@ test("rejects paraphrase and too-short quotes", () => {
   assert.equal(findQuote(doc, "motor"), null);
   assert.equal(findQuote(doc, null), null);
 });
+
+test("accepts a short quote that is one whole table row", () => {
+  assert.equal(doc.slice(...findQuote(doc, "| WO number | WO-048 |")!), "WO number | WO-048");
+  assert.equal(findQuote(doc, "WO number WO-0"), null);
+});
+
+test("a quote must start and end on a word boundary", () => {
+  assert.equal(findQuote(doc, "ause: teardown found motor winding insulation"), null);
+  assert.equal(findQuote(doc, "Cause: teardown found motor winding insulation breakdow"), null);
+});

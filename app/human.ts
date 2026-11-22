@@ -1,4 +1,4 @@
-import { MONTH } from "./fmt";
+import { docTypeLabel, monthYear } from "@/lib/domain";
 
 export interface Step {
   id: string;
@@ -10,16 +10,13 @@ export interface Step {
 
 export const DOC_COUNT = 400;
 
-const DOC_WORD: Record<string, string> = { shift_report: "shift reports", incident_note: "incident notes", work_order: "work orders", well_test: "well tests", procedure: "procedures" };
-const FULL_MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const list = (xs: string[]) => (xs.length <= 2 ? xs.join(" and ") : xs.length <= 4 ? `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}` : `${xs.length} wells`);
-const month = (d: string) => `${FULL_MONTH[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}`;
 
 function when(a: Record<string, any>) {
-  if (a.from && a.to) return month(a.from) === month(a.to) ? ` in ${month(a.from)}` : ` from ${month(a.from)} to ${month(a.to)}`;
-  if (a.from) return ` since ${month(a.from)}`;
-  if (a.to) return ` up to ${month(a.to)}`;
+  if (a.from && a.to) return monthYear(a.from) === monthYear(a.to) ? ` in ${monthYear(a.from)}` : ` from ${monthYear(a.from)} to ${monthYear(a.to)}`;
+  if (a.from) return ` since ${monthYear(a.from)}`;
+  if (a.to) return ` up to ${monthYear(a.to)}`;
   return "";
 }
 
@@ -31,7 +28,7 @@ function about(a: Record<string, any>) {
 export function say(name: string, a: Record<string, any>) {
   switch (name) {
     case "search_documents": {
-      const what = a.doc_type ? `the ${DOC_WORD[a.doc_type] ?? "reports"}` : `${DOC_COUNT} field reports`;
+      const what = a.doc_type ? `the ${docTypeLabel(a.doc_type).toLowerCase()}s` : `${DOC_COUNT} field reports`;
       const topic = about(a);
       return `Looking through ${what} for anything about ${topic ?? "this question"}${when(a)}...`;
     }
@@ -87,4 +84,3 @@ export function docSlot(docId: string, taken: Set<number>) {
   return i;
 }
 
-export { MONTH };

@@ -1,26 +1,35 @@
 import { z } from "zod";
-import { ask, type AskEvent } from "@/lib/answer";
+import { ask, isClaude, MODEL, type AskEvent } from "@/lib/answer";
 import { hasRecording, replay } from "@/lib/cache";
-import { rateLimited, takeDailyCall } from "@/lib/guard";
+import { clientIp, crossSite, rateLimited, readBody, takeDailyCall } from "@/lib/guard";
 
 export const maxDuration = 120;
 
 const LIVE_LIMIT_MS = 20_000;
+const MAX_BODY_BYTES = 2048;
 const body = z.object({ question: z.string().trim().min(3).max(300) });
+const BAD_BODY = { error: "Send { question: string } (3 to 300 characters)." };
 
 export async function POST(req: Request) {
-  const parsed = body.safeParse(await req.json().catch(() => null));
-  if (!parsed.success) return Response.json({ error: "Send { question: string } (3 to 300 characters)." }, { status: 400 });
+  if (crossSite(req.headers)) return Response.json({ error: "Cross-site requests are not allowed." }, { status: 403 });
+  const text = await readBody(req, MAX_BODY_BYTES).catch(() => "");
+  if (text === null) return Response.json(BAD_BODY, { status: 413 });
+  let json: unknown = null;
+  try {
+    json = JSON.parse(text);
+  } catch {}
+  const parsed = body.safeParse(json);
+  if (!parsed.success) return Response.json(BAD_BODY, { status: 400 });
   const { question } = parsed.data;
   const cached = hasRecording(question);
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || req.headers.get("x-real-ip") || "local";
+  const ip = clientIp(req.headers);
   const limited = rateLimited(ip);
   if (limited && !cached) return Response.json({ error: "Too many questions. Try again in a minute." }, { status: 429 });
 
-  const blocked = limited ? "rate_limit" : !process.env.ANTHROPIC_API_KEY || !process.env.VOYAGE_API_KEY ? "no_key" : !takeDailyCall() ? "daily_cap" : null;
+  const blocked = limited ? "rate_limit" : !process.env[isClaude(MODEL) ? "ANTHROPIC_API_KEY" : "OPENROUTER_API_KEY"] || !process.env.VOYAGE_API_KEY ? "no_key" : takeDailyCall(ip);
   if (blocked && !cached) {
-    const error = blocked === "no_key" ? "Live answers are off. Try one of the suggested questions." : "The daily limit is reached. Try one of the suggested questions.";
+    const error = blocked === "no_key" ? "Live answers are off. Try one of the suggested questions." : blocked === "ip_cap" ? "You reached today's limit of live questions. Try one of the suggested questions." : "The daily limit is reached. Try one of the suggested questions.";
     return Response.json({ error, reason: blocked }, { status: 503 });
   }
 

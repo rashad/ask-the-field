@@ -1,15 +1,14 @@
 "use client";
 import { ArrowRight, BookOpenText, ChartLine, FileText, MapTrifold, Play, Repeat } from "@phosphor-icons/react/ssr";
-import { about, PRICE_NOTE, usd } from "@/lib/money";
+import { PRICE_NOTE, round100, usd } from "@/lib/money";
+import { longDate } from "@/lib/domain";
 import { SUGGESTED } from "@/lib/questions";
-import type { MapWell, Morning } from "@/lib/stakes";
+import type { Morning, SnapshotWell } from "@/lib/morning";
 import { Term, GLOSSARY, type TermKey } from "./term";
 
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-export const longDate = (d: string) => `${Number(d.slice(8, 10))} ${MONTHS[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}`;
 const n = (x: number) => x.toLocaleString("en-US");
 
-function FieldMap({ wells }: { wells: MapWell[] }) {
+function FieldMap({ wells }: { wells: SnapshotWell[] }) {
   const W = 300, H = 168, P = 20;
   const centre = new Map([...new Set(wells.map((w) => w.field))].map((f) => {
     const fw = wells.filter((w) => w.field === f);
@@ -22,7 +21,7 @@ function FieldMap({ wells }: { wells: MapWell[] }) {
   const kx = Math.cos(((minLat + maxLat) / 2) * (Math.PI / 180));
   const scale = Math.min((W - 2 * P - 150) / ((maxLon - minLon) * kx), (H - 2 * P - 10) / (maxLat - minLat));
   const ox = (W - (maxLon - minLon) * kx * scale) / 2, oy = (H - (maxLat - minLat) * scale) / 2 - 4;
-  const xy = (w: MapWell) => { const [la, lo] = pos.get(w.well_id)!; return [ox + (lo - minLon) * kx * scale, H - oy - (la - minLat) * scale] as const; };
+  const xy = (w: SnapshotWell) => { const [la, lo] = pos.get(w.well_id)!; return [ox + (lo - minLon) * kx * scale, H - oy - (la - minLat) * scale] as const; };
   const fields = [...new Set(wells.map((w) => w.field))].map((f) => {
     const pts = wells.filter((w) => w.field === f).map(xy);
     const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
@@ -69,7 +68,7 @@ export function Scene({ m }: { m: Morning }) {
             <div><dt className="caption-4 mute">Oil produced yesterday</dt><dd><b className="title-1">{n(m.oil_yesterday)}</b> <span className="body-6"><Term k="bbl">barrels</Term></span></dd></div>
             <div><dt className="caption-4 mute">Wells producing</dt><dd><b className="title-1">{m.wells_producing} of {m.wells_total}</b> <span className="body-6">{m.wells_down} down</span></dd></div>
             <div><dt className="caption-4 mute">Open incidents</dt><dd><b className="title-1 neg">{m.open_incidents}</b> <span className="body-6">{m.shut_in_by_incident} wells <Term k="shutin" /></span></dd></div>
-            <div><dt className="caption-4 mute">Lost this month to downtime</dt><dd><b className="title-1">{about(m.lost_month_bbl)}</b> <span className="body-6">barrels, about {usd(m.lost_month_bbl)}*</span></dd></div>
+            <div><dt className="caption-4 mute">Lost this month to downtime</dt><dd><b className="title-1">{round100(m.lost_month_bbl)}</b> <span className="body-6">barrels, about {usd(m.lost_month_bbl)}*</span></dd></div>
           </dl>
           <p className="caption-4 mute morning-note">* {PRICE_NOTE}</p>
         </div>
@@ -83,8 +82,8 @@ export function Briefing({ m, onPick, onDemo }: { m: Morning; onPick: (q: string
   const s = m.stakes;
   const items = [
     [MapTrifold, `${m.open_incidents} incidents open this morning, ${m.shut_in_by_incident} wells shut in`, "On a map, with the note behind each one"],
-    [FileText, `W-17 down ${s.w17_days} days in March: about ${about(s.w17_lost_bbl)} barrels, ${usd(s.w17_lost_bbl)}* lost`, "The cause, read from the incident notes"],
-    [Repeat, `${s.esp_workovers} pump replacements since May 2025: about ${about(s.esp_lost_bbl)} barrels, ${usd(s.esp_lost_bbl)}* lost`, "Connects notes written months apart"],
+    [FileText, `W-17 down ${s.w17_days} days in March: about ${round100(s.w17_lost_bbl)} barrels, ${usd(s.w17_lost_bbl)}* lost`, "The cause, read from the incident notes"],
+    [Repeat, `${s.esp_workovers} pump replacements since May 2025: about ${round100(s.esp_lost_bbl)} barrels, ${usd(s.esp_lost_bbl)}* lost`, "Connects notes written months apart"],
     [ChartLine, `Wadi Field water cut: ${s.wadi_wc_january}% in January, ${s.wadi_wc_now}% now`, "The trend, month by month"],
     [BookOpenText, `Sand alarm on ${s.sand_well} since ${longDate(s.sand_since)}, ${s.sand_days} days ago`, "The alarm and the procedure to follow"],
   ] as const;

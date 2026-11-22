@@ -6,4 +6,4 @@ export function usd(bbl: number) {
   return v >= 1e6 ? `$${(v / 1e6).toFixed(1)} million` : `$${Math.round(v / 1000).toLocaleString("en-US")},000`;
 }
 
-export const about = (n: number) => (Math.round(n / 100) * 100).toLocaleString("en-US");
+export const round100 = (n: number) => (Math.round(n / 100) * 100).toLocaleString("en-US");

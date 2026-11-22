@@ -8,7 +8,7 @@ const QUERY_TIMEOUT_MS = 8000;
 
 async function request(inputs: string[], inputType: "document" | "query", signal?: AbortSignal) {
   const key = process.env.VOYAGE_API_KEY;
-  if (!key) throw new Error("VOYAGE_API_KEY is not set (run through `sec opsrag ...`)");
+  if (!key) throw new Error("VOYAGE_API_KEY is not set (see .env.example)");
   return fetch("https://api.voyageai.com/v1/embeddings", {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${key}` },

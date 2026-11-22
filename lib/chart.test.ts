@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildChart, type ToolRun } from "./chart";
+import { buildChart } from "./chart";
+import type { ToolRun } from "./tools";
 
 const runs: ToolRun[] = [
   { ref: "E1", name: "list_events", output: { events: [
@@ -14,6 +15,11 @@ test("event bars sum the grouped rows on the server", () => {
   const { chart, error } = buildChart({ type: "bar", title: "t", ref: "E1", metric: "lost_oil_bbl", wells: [], event_groups: [["EV-1", "EV-2"]] }, runs);
   assert.equal(error, null);
   assert.deepEqual(chart?.type === "bar" && chart.bars, [{ label: "W-09, Oct 2025", value: 150, ids: ["EV-1", "EV-2"] }]);
+});
+
+test("two events on one well in one month get distinct labels", () => {
+  const { chart } = buildChart({ type: "bar", title: "t", ref: "E1", metric: "lost_oil_bbl", wells: [], event_groups: [] }, runs);
+  assert.deepEqual(chart?.type === "bar" && chart.bars.map((b) => b.label), ["W-09, Oct 2025 (EV-1)", "W-09, Oct 2025 (EV-2)"]);
 });
 
 test("line copies the referenced series", () => {
@@ -33,4 +39,34 @@ test("an invalid reference gives no chart and an error", () => {
     assert.equal(r.chart, null);
     assert.ok(r.error);
   }
+});
+
+const wells: ToolRun[] = [{ ref: "P1", name: "query_production", output: { unit: "fraction", rows: [
+  { well_id: "W-17", value: 0.5, change: 0.2, change_pct: 40 },
+  { well_id: "W-18", value: 0.3, change: -0.1, change_pct: -25 },
+  { well_id: "W-19", value: 0.1, change: 0.1, change_pct: null },
+  { well_id: "W-20", value: 0.2 },
+] } }];
+
+test("change bars keep the requested direction and skip rows with no value", () => {
+  const bars = (direction: "drops" | "rises" | null) => {
+    const { chart } = buildChart({ type: "bar", title: "t", ref: "P1", metric: "change_pct", wells: [], event_groups: [], direction }, wells);
+    return chart?.type === "bar" ? chart.bars.map((b) => b.label) : null;
+  };
+  assert.deepEqual(bars("rises"), ["W-17", "W-18"]);
+  assert.deepEqual(bars(null), ["W-18", "W-17"]);
+});
+
+test("a named well with no value still fails", () => {
+  const r = buildChart({ type: "bar", title: "t", ref: "P1", metric: "change_pct", wells: ["W-19"], event_groups: [] }, wells);
+  assert.equal(r.chart, null);
+});
+
+test("event bars skip events with no lost oil when no group is named", () => {
+  const withNull: ToolRun[] = [{ ref: "E1", name: "list_events", output: { events: [
+    { event_id: "EV-1", well_id: "W-40", start_date: "2026-01-02", lost_oil_bbl: null, lost_revenue_usd: null, downtime_hours: null },
+    { event_id: "EV-2", well_id: "W-09", start_date: "2025-10-27", lost_oil_bbl: 50, lost_revenue_usd: 3500, downtime_hours: 5 },
+  ] } }];
+  const { chart } = buildChart({ type: "bar", title: "t", ref: "E1", metric: "lost_oil_bbl", wells: [], event_groups: [] }, withNull);
+  assert.deepEqual(chart?.type === "bar" && chart.bars.map((b) => b.ids[0]), ["EV-2"]);
 });

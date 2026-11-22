@@ -5,7 +5,7 @@ export interface Chunk {
   tokens: number;
 }
 
-export const SHORT_DOC_TOKENS = 600;
+const SHORT_DOC_TOKENS = 600;
 
 export const approxTokens = (s: string) => Math.ceil(s.length / 4);
 
