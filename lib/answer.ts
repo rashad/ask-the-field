@@ -23,7 +23,7 @@ export const answerSchema = z.object({
     z.object({
       type: z.literal("map"),
       title: z.string(),
-      well_ids: z.array(wellId).describe("Wells to draw; empty means every well"),
+      well_ids: z.array(wellId).describe("Wells the map is about; the map draws every well of their fields. Empty means every well"),
       highlighted: z.array(wellId).describe("Wells the answer is about"),
     }),
     z.object({
@@ -136,7 +136,8 @@ function toUsage(u: LanguageModelUsage, steps: number): Usage {
 async function withWells(viz: Answer["viz"]) {
   if (viz.type !== "map") return viz;
   const wells = await sql<{ well_id: string; field: string; lat: number; lon: number; status: string }[]>`
-    SELECT well_id, field, lat, lon, status FROM wells ${viz.well_ids.length ? sql`WHERE well_id = ANY(${viz.well_ids})` : sql``} ORDER BY well_id`;
+    SELECT well_id, field, lat, lon, status FROM wells
+    ${viz.well_ids.length ? sql`WHERE field IN (SELECT field FROM wells WHERE well_id = ANY(${[...viz.well_ids, ...viz.highlighted]}))` : sql``} ORDER BY well_id`;
   const highlighted = new Set(viz.highlighted);
   return { ...viz, wells: wells.map((w) => ({ ...w, highlighted: highlighted.has(w.well_id) })) };
 }
