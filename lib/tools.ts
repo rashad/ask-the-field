@@ -221,7 +221,8 @@ function earlier(seen: Seen[], name: string, args: Record<string, unknown>) {
     if (s.name !== name) return false;
     const extra = Object.keys(args).filter((k) => args[k] !== undefined && s.args[k] === undefined);
     const matches = Object.keys(s.args).every((k) => s.args[k] === undefined || same(s.args[k], args[k]));
-    return matches && (extra.length === 0 || (s.complete && name !== "search_documents" && extra.every((k) => NARROWING.includes(k))));
+    const subset = name === "query_production" ? s.args.group_by === "well" : name !== "search_documents";
+    return matches && (extra.length === 0 || (s.complete && subset && extra.every((k) => NARROWING.includes(k))));
   });
 }
 
