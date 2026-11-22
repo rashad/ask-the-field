@@ -107,7 +107,7 @@ export default function Evals() {
           {missed.map((r) => (
             <p key={r.model}><b className="mono">{r.model}</b> missed {Object.entries(r.summary.failures ?? {}).map(([name, k]) => `"${name}" in ${k} of ${r.runs} runs`).join(" and ")}.</p>
           ))}
-          {silent.length > 0 && <p><b>{silent.map((r) => r.model).join(" and ")}</b> returned the structured answer in the first step without a tool call, in all {SUGGESTED.length * silent[0].runs} runs each. Their answers hold no data from the database. The checks they passed are ones an answer can meet without data.</p>}
+          {silent.length > 0 && <p><b>{silent.map((r) => r.model).join(" and ")}</b> returned the structured answer in the first step without a tool call, in {new Set(silent.map((r) => r.runs)).size === 1 ? `all ${SUGGESTED.length * silent[0].runs} runs each` : "every run"}. Their answers hold no data from the database. The checks they passed are ones an answer can meet without data.</p>}
         </div>
       </section>
 

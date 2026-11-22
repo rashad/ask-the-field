@@ -14,7 +14,7 @@ import { useConnector } from "./connector";
 import { callLabel, Evidence, type Final } from "./evidence";
 import { DOC_COUNT, docSlot, found, REASON, say, type Step } from "./human";
 import { Briefing, HowItWorks, Intro, Snapshot } from "./scene";
-import { ASK_EVENT } from "./shell";
+import { ASK_EVENT, markTyped, takeTyped } from "./shell";
 import { VizCard } from "./viz";
 
 const WHY: Record<string, string> = {
@@ -219,8 +219,9 @@ export function Ask({ morning }: { morning: Morning | null }) {
   const q = params.get("q");
   useEffect(() => {
     setInput(q ?? "");
+    if (takeTyped(q)) typed.current = q;
+    else if (typed.current !== q) typed.current = null;
     if (q && (SUGGESTED.includes(q) || typed.current === q)) {
-      typed.current = null;
       run(q);
       return;
     }
@@ -236,7 +237,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
     setInvalid("");
     if (text === q) run(text);
     else {
-      typed.current = text;
+      markTyped(text);
       router.push(`/?q=${encodeURIComponent(text)}`, { scroll: false });
     }
   }, [q, run, router]);
@@ -351,7 +352,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
                 </div>
                 <div>
                   <h3>Could not verify</h3>
-                  <p>{answer.could_not_verify ?? "Nothing: the answer reports no gap in the data."}</p>
+                  <p>{answer.could_not_verify || "Nothing: the answer reports no gap in the data."}</p>
                 </div>
               </section>
               <Tip show={tips}>The confidence says how sure the AI is, and why. Could not verify says what it could not check, instead of guessing.</Tip>

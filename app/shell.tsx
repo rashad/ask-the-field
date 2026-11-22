@@ -1,5 +1,5 @@
 "use client";
-import { ChatCircleText, CheckCircle, Database, Info, List, MagnifyingGlass, MapTrifold } from "@phosphor-icons/react/ssr";
+import { ChatCircleText, CheckCircle, Database, Info, List, MagnifyingGlass, MapTrifold, X } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -8,6 +8,14 @@ import { Credit, SourceLink } from "./credit";
 import { ThemeControl } from "./theme";
 
 export const ASK_EVENT = "ask-the-field:ask";
+
+let typedQuestion: string | null = null;
+export const markTyped = (q: string) => { typedQuestion = q; };
+export function takeTyped(q: string | null) {
+  const hit = q !== null && typedQuestion === q;
+  typedQuestion = null;
+  return hit;
+}
 
 const LINKS = [
   ["/", "Ask", ChatCircleText],
@@ -109,7 +117,10 @@ export function Shell({ model, children }: { model: string; children: React.Reac
     const q = text.trim();
     if (q.length < 3) return;
     const handled = path === "/" && !window.dispatchEvent(new CustomEvent(ASK_EVENT, { detail: q, cancelable: true }));
-    if (!handled) router.push(`/?q=${encodeURIComponent(q)}`);
+    if (!handled) {
+      markTyped(q);
+      router.push(`/?q=${encodeURIComponent(q)}`);
+    }
     setText("");
     field.current?.blur();
   };
@@ -119,6 +130,7 @@ export function Shell({ model, children }: { model: string; children: React.Reac
   return (
     <div className={`app${open ? " nav-open" : ""}`}>
       <aside className="side" id="side" aria-label="Primary" ref={side} onClick={(e) => { if ((e.target as Element).closest("a")) close(false); }}>
+        <button type="button" className="menu side-x" aria-label="Close navigation" onClick={() => close(true)}><X aria-hidden /></button>
         <Link className="brand" href="/"><Mark />Ask the Field</Link>
         <div className="ws"><span className="av"><MapTrifold aria-hidden /></span><div><b>Demo workspace</b><small>3 fields, 41 wells</small></div></div>
         <nav className="snav" aria-label="Sections">

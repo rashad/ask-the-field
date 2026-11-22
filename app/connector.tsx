@@ -16,7 +16,8 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     const col = stage.querySelector<HTMLElement>("[data-col]");
     if (!svg || !col) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const narrow = window.matchMedia("(max-width: 899px)");
+    const isStacked = () => getComputedStyle(svg).display === "none";
+    let stacked = isStacked();
     const srcOf = (ref: string) => stage.querySelector<HTMLElement>(`#src-${ref}`);
     const cites = [...stage.querySelectorAll<HTMLElement>(".cite")].filter((c) => srcOf(c.dataset.ref ?? ""));
     const sents = [...stage.querySelectorAll<HTMLElement>(".sent")];
@@ -61,7 +62,6 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       const b = c.getBoundingClientRect();
       const cx = b.left + b.width / 2 - o.left;
       let d: string, gy: number;
-      // A marker close to the gutter goes straight out; any other drops into the gap below its line first.
       if (xa - (b.right - o.left) < 28) {
         gy = b.top + b.height / 2 - o.top;
         d = `M${b.right - o.left},${gy}`;
@@ -75,7 +75,7 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     }
 
     function draw(state: State | null, animate: boolean) {
-      if (narrow.matches || !state) { svg!.replaceChildren(); lastKey = ""; return; }
+      if (stacked || !state) { svg!.replaceChildren(); lastKey = ""; return; }
       const o = stage!.getBoundingClientRect();
       const pairs = state.links.map((c) => [c, c.dataset.ref!] as const);
       const geo = pairs.map(([c, ref]) => pathFor(c, ref, o));
@@ -139,7 +139,7 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       settle(true);
       if (!pinned || !(target as Element).closest(".cite")) return;
       const card = srcOf(pinned.refs[0]);
-      card?.scrollIntoView({ behavior: smooth(), block: narrow.matches ? "center" : "nearest" });
+      card?.scrollIntoView({ behavior: smooth(), block: stacked ? "center" : "nearest" });
       if (fromKey) card?.focus({ preventScroll: true });
     };
     const onClick = (e: MouseEvent) => {
@@ -164,10 +164,15 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && (pinned || hover)) { pinned = null; hover = null; settle(true); }
     };
-    const onNarrow = () => { fit(); settle(false); };
     const stickTop = parseFloat(getComputedStyle(col).getPropertyValue("--stick-top"));
-    const fit = () => col.toggleAttribute("data-stick", !narrow.matches && col.offsetHeight <= window.innerHeight - stickTop - 16);
-    const onResize = () => { fit(); schedule(); };
+    const fit = () => col.toggleAttribute("data-stick", !stacked && col.offsetHeight <= window.innerHeight - stickTop - 16);
+    const onResize = () => {
+      const was = stacked;
+      stacked = isStacked();
+      fit();
+      if (was !== stacked) settle(false);
+      else schedule();
+    };
     const onPageScroll = () => { if (col.hasAttribute("data-stick")) schedule(); };
     const passages = stage.querySelectorAll<HTMLElement>(".passage");
     const ro = new ResizeObserver(onResize);
@@ -185,7 +190,6 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     window.addEventListener("resize", onResize);
     window.addEventListener("scroll", onPageScroll, { passive: true });
     for (const p of passages) p.addEventListener("scroll", schedule, { passive: true });
-    narrow.addEventListener("change", onNarrow);
     fit();
     let alive = true;
     document.fonts.ready.then(() => alive && settle(false));
@@ -207,7 +211,6 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       window.removeEventListener("scroll", onPageScroll);
       for (const p of passages) p.removeEventListener("scroll", schedule);
       col.removeAttribute("data-stick");
-      narrow.removeEventListener("change", onNarrow);
       svg.replaceChildren();
       for (const el of [stage, ...cites, ...sents, ...srcs]) for (const a of ["data-active", "data-on", "data-echo"]) el.removeAttribute(a);
     };
