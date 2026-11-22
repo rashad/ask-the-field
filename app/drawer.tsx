@@ -1,95 +1,187 @@
 "use client";
+import { ArrowUpRight, CaretDown, CheckCircle, Database, FileText, X, XCircle } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
-import { useEffect } from "react";
-import type { SearchChunk, SearchTrace } from "@/lib/tools";
-import { shortDate } from "./viz";
+import { useEffect, useRef } from "react";
+import type { AskEvent } from "@/lib/answer";
+import type { SearchChunk } from "@/lib/tools";
+import { shortDate } from "./fmt";
+import { found, say, type Step } from "./human";
+import { Md } from "./md";
+import type { EventRow } from "./viz";
 
-export interface Step { id: string; name: string; args: Record<string, unknown>; label: string; state: "running" | "done" | "repeated" | "error"; count?: number }
+type Final = Extract<AskEvent, { type: "final" }>;
+type Source = Final["answer"]["sources"][number];
 
 const MAX_RRF = 2 / 61;
-const NAMES: Record<string, string> = { well_ids: "wells", doc_type: "document type", group_by: "grouped by", compare_from: "baseline from", compare_to: "baseline to", k: "passages" };
+const TYPE: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
+const STOP = new Set("about after again also been before being both from have into more most only over same some such than that their them then there these they this those through under were what when where which while with would well wells field".split(" "));
 
-function plain(args: Record<string, unknown>) {
-  return Object.entries(args)
-    .filter(([, v]) => v !== undefined && v !== null)
-    .map(([k, v]) => `${NAMES[k] ?? k}: ${Array.isArray(v) ? v.join(", ") : String(v).replace(/_/g, " ")}`)
-    .join("; ");
+function tokens(text: string) {
+  return new Set((text.toLowerCase().match(/[a-z0-9][a-z0-9/.-]*[a-z0-9]/g) ?? []).filter((t) => (/\d/.test(t) && t.length >= 2) || (t.length >= 5 && !STOP.has(t))));
 }
 
-export function Drawer({ open, onClose, steps, traces, cited }: { open: boolean; onClose: () => void; steps: Step[]; traces: SearchTrace[]; cited: Set<string> }) {
+function marker(answer: string, n: number) {
+  const sentences = answer.split(/(?<=[.!?])\s+/).filter((s) => s.includes(`[${n}]`));
+  const keys = tokens(sentences.join(" ").replace(/\[\d+\]/g, ""));
+  return (line: string) => {
+    if (/^\*\*[^*]+:\*\*/.test(line)) return false;
+    let hits = 0;
+    for (const t of tokens(line)) if (keys.has(t)) hits++;
+    return hits >= 2;
+  };
+}
+
+function sourceHref(kind: string, id: string) {
+  if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}`;
+  const [table, scope] = id.split(":");
+  const name = table === "production_daily" ? "production" : table;
+  const q = name === "production" ? (scope === "all" ? "" : scope) : scope;
+  return `/data?tab=tables&table=${name}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
+}
+
+function TableSource({ s, events }: { s: Source; events: (EventRow & { description?: string })[] }) {
+  const [table, key] = s.id.split(":");
+  const ev = table === "events" ? events.find((e) => e.event_id === key) : undefined;
+  const what = table === "events" ? "the event log" : table === "wells" ? "the list of wells" : "the daily production table";
+  return (
+    <>
+      <p className="body-6 mute">A row from {what}, not a report.</p>
+      {ev && (
+        <dl className="kv body-6">
+          <dt>Event</dt><dd><span className="mono">{ev.event_id}</span>, {ev.type}</dd>
+          <dt>Well</dt><dd><span className="mono">{ev.well_id}</span>, {ev.field}</dd>
+          <dt>Started</dt><dd>{shortDate(ev.start_date)}, {ev.status}{ev.severity ? `, ${ev.severity} severity` : ""}</dd>
+          {ev.description && <><dt>Description</dt><dd>{ev.description}</dd></>}
+        </dl>
+      )}
+    </>
+  );
+}
+
+export function Drawer({ open, onClose, steps, final, events, focus }: { open: boolean; onClose: () => void; steps: Step[]; final: Final; events: EventRow[]; focus: number | null }) {
+  const body = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
   }, [open, onClose]);
+  useEffect(() => {
+    if (!open || !body.current) return;
+    const el = focus === null ? null : body.current.querySelector(`#src-${focus}`);
+    if (el) el.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    else body.current.scrollTop = 0;
+  }, [open, focus]);
 
-  const seen = new Map<string, SearchChunk>();
-  for (const t of traces) for (const c of t.chunks_sent) if (!seen.has(c.chunk_id)) seen.set(c.chunk_id, c);
-  const passages = [...seen.values()].sort((a, b) => Number(cited.has(b.chunk_id)) - Number(cited.has(a.chunk_id)) || b.scores.rrf - a.scores.rrf);
-  const fullTextOnly = traces.some((t) => t.full_text_only);
-  const docs = new Set(passages.map((p) => p.document_id)).size;
+  const { answer, trace } = final;
+  const chunks = new Map<string, SearchChunk>();
+  for (const t of trace) for (const c of t.chunks_sent) if (!chunks.has(c.chunk_id)) chunks.set(c.chunk_id, c);
+  const cited = new Set(answer.sources.filter((s) => s.kind === "chunk").map((s) => s.id));
+  const others = [...chunks.values()].filter((c) => !cited.has(c.chunk_id));
+  const docs = new Set([...chunks.values()].map((c) => c.document_id)).size;
+  const fullTextOnly = trace.some((t) => t.full_text_only);
+  const u = final.usage;
 
   return (
     <div className={open ? "drawer-open" : undefined}>
       <div className="scrim" onClick={onClose} />
-      <aside className="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" aria-hidden={!open}>
+      <aside id="drawer" className="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" aria-hidden={!open}>
         <div className="drawer-head">
           <div>
             <h2 id="dtitle" className="heading-6">How this answer was built</h2>
-            <p className="body-6 mute">{steps.length} tool {steps.length === 1 ? "call" : "calls"}, {passages.length} passages from {docs} documents.</p>
+            <p className="body-6 mute">{steps.length} {steps.length === 1 ? "step" : "steps"}. It read {chunks.size} passages from {docs} {docs === 1 ? "report" : "reports"} and cited {answer.sources.length} sources.</p>
           </div>
-          <button className="icon-btn" type="button" onClick={onClose} aria-label="Close"><i className="ph ph-x" aria-hidden="true" /></button>
+          <button className="icon-btn" type="button" onClick={onClose} aria-label="Close"><X aria-hidden /></button>
         </div>
-        <div className="drawer-body">
-          <h3 className="caption-3 mute dsec">Steps</h3>
+        <div className="drawer-body" ref={body}>
+          <h3 className="caption-3 mute dsec">What the AI did</h3>
           <ol className="steps-list">
             {steps.map((s, i) => (
               <li key={s.id}>
                 <span className="n mono caption-3">{i + 1}</span>
                 <div style={{ minWidth: 0 }}>
-                  <p className="body-5">{s.label.replace(/\.\.\.$/, "")}</p>
-                  <p className="caption-4 mute mono wrapany">{s.name}: {plain(s.args) || "no filters"}</p>
-                  {s.state === "repeated" && <p className="caption-4 mute">Same call as before: the earlier result was reused, the database was not queried.</p>}
-                  {s.state === "error" && <p className="caption-4 neg">The tool rejected these arguments.</p>}
+                  <p className="body-5">{say(s.name, s.args).replace(/\.\.\.$/, ".")}</p>
+                  <p className="body-6 mute">{found(s)}</p>
                 </div>
               </li>
             ))}
+            <li>
+              <span className="n mono caption-3">{steps.length + 1}</span>
+              <div><p className="body-5">Wrote the answer and linked each fact to its source.</p><p className="body-6 mute">It may only cite what the steps above returned. Nothing else counts as a source.</p></div>
+            </li>
           </ol>
-          {fullTextOnly && (
-            <p className="note body-6"><i className="ph-fill ph-warning-circle" aria-hidden="true" />The embedding service did not answer, so document search ran on full text only, without vector similarity.</p>
-          )}
-          <h3 className="caption-3 mute dsec">Passages used{passages.length ? ", cited first" : ""}</h3>
-          {passages.length === 0 && <p className="body-6 mute">No document search: this answer comes from the tables only.</p>}
+          {fullTextOnly && <p className="note body-6"><XCircle aria-hidden />The meaning search service did not answer, so this search matched exact words only.</p>}
+
+          <h3 className="caption-3 mute dsec">The sources behind the answer</h3>
           <ol className="passes">
-            {passages.map((p) => (
-              <li key={p.chunk_id} className="pass">
-                <div className="pass-top">
-                  <div style={{ minWidth: 0 }}>
-                    <h4 className="body-5">{p.title}</h4>
-                    <p className="caption-4 mute"><span className="mono">{p.document_id}</span>{p.well_id ? `, ${p.well_id}` : ""}, {shortDate(p.date)}{p.section ? `, ${p.section}` : ""}</p>
+            {answer.sources.map((s) => {
+              const c = s.kind === "chunk" ? chunks.get(s.id) : undefined;
+              return (
+                <li key={s.n + s.id} id={`src-${s.n}`} className={`pass${focus === s.n ? " focus" : ""}`}>
+                  <div className="pass-top">
+                    <span className="n mono caption-3">{s.n}</span>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <h4 className="body-4">{c ? c.title : s.label}</h4>
+                      <p className="caption-4 mute">
+                        {c ? <>{c.doc_type === "incident_note" ? <span className="inc-tag">{TYPE[c.doc_type]}</span> : TYPE[c.doc_type] ?? "Report"}, <span className="mono">{c.document_id}</span>{c.well_id ? `, ${c.well_id}` : ""}, {shortDate(c.date)}</> : <><Database aria-hidden /> Data table, <span className="mono">{s.id}</span></>}
+                      </p>
+                    </div>
                   </div>
-                  <div className="score" title="Fused relevance: RRF score as a share of the best possible score">
-                    <span className="track"><span className="fill" style={{ width: `${Math.round((p.scores.rrf / MAX_RRF) * 100)}%` }} /></span>
-                    <span className="mono body-5">{(p.scores.rrf / MAX_RRF).toFixed(2)}</span>
-                  </div>
-                </div>
-                {cited.has(p.chunk_id) && <span className="badge badge-mint caption-3" style={{ alignSelf: "flex-start" }}><i className="ph-bold ph-check" aria-hidden="true" />Cited in the answer</span>}
-                <blockquote className="body-6 clamp">{p.text.replace(/\*\*/g, "").replace(/^#+\s*/gm, "")}</blockquote>
-                <details className="scores">
-                  <summary className="caption-4">Scores<i className="ph ph-caret-down" aria-hidden="true" /></summary>
-                  <dl className="kv caption-4">
-                    <dt>Vector rank</dt><dd className="mono">{p.scores.vector_rank ?? "not in top 20"}</dd>
-                    <dt>Cosine similarity</dt><dd className="mono">{p.scores.vector_similarity ?? "n/a"}</dd>
-                    <dt>Full text rank</dt><dd className="mono">{p.scores.full_text_rank ?? "not in top 20"}</dd>
-                    <dt>Full text score</dt><dd className="mono">{p.scores.full_text_score ?? "n/a"}</dd>
-                    <dt>RRF (k=60)</dt><dd className="mono">{p.scores.rrf}</dd>
-                  </dl>
-                </details>
-                <Link className="textlink button-sm" href={`/data?chunk=${encodeURIComponent(p.chunk_id)}`}>Open in Data<i className="ph ph-arrow-up-right" aria-hidden="true" /></Link>
-              </li>
-            ))}
+                  {focus === s.n && <p className="caption-3 you">You opened this source.{c ? " The lines that support the answer are highlighted." : ""}</p>}
+                  {c ? <div className="pass-text"><Md text={c.text} mark={marker(answer.answer, s.n)} skipTitle /></div> : <TableSource s={s} events={events} />}
+                  <Link className="textlink button-sm" href={sourceHref(s.kind, s.id)}>{c ? "Open the full report" : "Open the table"}<ArrowUpRight aria-hidden /></Link>
+                </li>
+              );
+            })}
           </ol>
+
+          {others.length > 0 && (
+            <details className="more">
+              <summary className="body-5"><FileText aria-hidden />{others.length} more {others.length === 1 ? "passage" : "passages"} it read but did not need<CaretDown aria-hidden /></summary>
+              <ul className="others">
+                {others.map((c) => (
+                  <li key={c.chunk_id}>
+                    <Link href={`/data?chunk=${encodeURIComponent(c.chunk_id)}`} className="body-6"><span className="mono">{c.document_id}</span> {c.title}<ArrowUpRight aria-hidden /></Link>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+
+          <details className="eng">
+            <summary className="body-5"><CheckCircle aria-hidden />For engineers<CaretDown aria-hidden /></summary>
+            <div className="eng-body">
+              <h4 className="caption-3 mute dsec">Tool calls</h4>
+              <ol className="eng-calls">
+                {steps.map((s) => <li key={s.id} className="mono caption-4 wrapany">{s.name}({JSON.stringify(s.args)}){s.state === "repeated" ? " -> reused earlier result" : ""}</li>)}
+              </ol>
+              {trace.length > 0 && (
+                <>
+                  <h4 className="caption-3 mute dsec">Hybrid retrieval</h4>
+                  <p className="body-6 mute">Each search takes the top 20 by vector similarity (Voyage embeddings, pgvector) and the top 20 by Postgres full text, fuses them with reciprocal rank fusion (k=60) and keeps the top k. Metadata filters run in SQL before ranking.</p>
+                  <div className="md-table">
+                    <table>
+                      <thead><tr><th>Passage</th><th>Vector rank</th><th>Cosine</th><th>Text rank</th><th>RRF</th></tr></thead>
+                      <tbody>
+                        {[...chunks.values()].map((c) => (
+                          <tr key={c.chunk_id} className={cited.has(c.chunk_id) ? "hl" : undefined}>
+                            <td className="mono">{c.chunk_id}</td>
+                            <td className="mono">{c.scores.vector_rank ?? "-"}</td>
+                            <td className="mono">{c.scores.vector_similarity ?? "-"}</td>
+                            <td className="mono">{c.scores.full_text_rank ?? "-"}</td>
+                            <td className="mono">{(c.scores.rrf / MAX_RRF).toFixed(2)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="caption-4 mute">RRF is shown as a share of the best possible score. Highlighted rows are cited.</p>
+                </>
+              )}
+              <h4 className="caption-3 mute dsec">Run</h4>
+              <p className="mono caption-4">{final.model}, {u.steps} model steps, {(final.latency_ms / 1000).toFixed(1)} s, tokens in {u.input_tokens} + cache read {u.cache_read_tokens} + cache write {u.cache_write_tokens}, out {u.output_tokens}, ${u.cost_usd.toFixed(4)}</p>
+            </div>
+          </details>
         </div>
       </aside>
     </div>
