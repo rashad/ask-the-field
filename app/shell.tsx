@@ -56,21 +56,33 @@ export function Shell({ model, children }: { model: string; children: React.Reac
   const menu = useRef<HTMLButtonElement>(null);
   const field = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
+  const refocus = useRef(false);
 
-  const close = (refocus: boolean) => {
+  const close = (restore: boolean) => {
+    refocus.current = restore;
     setOpen(false);
-    if (refocus) menu.current?.focus();
   };
 
   useEffect(() => setOpen(false), [path]);
 
   useEffect(() => {
-    if (!open) return;
+    const wide = window.matchMedia("(min-width: 900px)");
+    const onWide = () => wide.matches && setOpen(false);
+    wide.addEventListener("change", onWide);
+    return () => wide.removeEventListener("change", onWide);
+  }, []);
+
+  useEffect(() => {
+    if (!open) {
+      if (refocus.current) menu.current?.focus();
+      refocus.current = false;
+      return;
+    }
     side.current?.querySelector<HTMLElement>("a, button")?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close(true);
       if (e.key !== "Tab" || !side.current) return;
-      const els = [...side.current.querySelectorAll<HTMLElement>("a, button")];
+      const els = [...side.current.querySelectorAll<HTMLElement>("a, button:not([tabindex='-1'])")];
       const [first, last] = [els[0], els.at(-1)];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
@@ -94,7 +106,7 @@ export function Shell({ model, children }: { model: string; children: React.Reac
   const ask = (e: React.FormEvent) => {
     e.preventDefault();
     const q = text.trim();
-    if (!q) return;
+    if (q.length < 3) return;
     const handled = path === "/" && !window.dispatchEvent(new CustomEvent(ASK_EVENT, { detail: q, cancelable: true }));
     if (!handled) router.push(`/?q=${encodeURIComponent(q)}`);
     setText("");
@@ -105,7 +117,7 @@ export function Shell({ model, children }: { model: string; children: React.Reac
 
   return (
     <div className={`app${open ? " nav-open" : ""}`}>
-      <aside className="side" id="side" aria-label="Primary" ref={side}>
+      <aside className="side" id="side" aria-label="Primary" ref={side} onClick={(e) => { if ((e.target as Element).closest("a")) close(false); }}>
         <Link className="brand" href="/"><Mark />Ask the Field</Link>
         <div className="ws"><span className="av"><MapTrifold aria-hidden /></span><div><b>Demo workspace</b><small>3 fields, 41 wells</small></div></div>
         <nav className="snav" aria-label="Sections">
@@ -113,7 +125,7 @@ export function Shell({ model, children }: { model: string; children: React.Reac
             <Link key={href} href={href} aria-current={path === href ? "page" : undefined}><Icon aria-hidden />{label}</Link>
           ))}
         </nav>
-        <div className="nav-label" id="recent-l">Recent questions</div>
+        <div className="nav-label" id="recent-l">Briefing questions</div>
         <Suspense fallback={recentFallback}><Recent /></Suspense>
         <div className="side-foot">
           <div className="snav"><SourceLink label="GitHub" /></div>
@@ -122,15 +134,15 @@ export function Shell({ model, children }: { model: string; children: React.Reac
         </div>
       </aside>
       <div className="scrim" onClick={() => close(true)} aria-hidden />
-      <div className="main">
+      <div className="main" inert={open}>
         <header className="topbar">
           <button ref={menu} type="button" className="menu" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="side" onClick={() => setOpen(!open)}><List aria-hidden /></button>
           <Suspense fallback={<div className="crumb"><span>Ask the Field</span></div>}><Crumb /></Suspense>
           <div className="top-r">
             <form className="cmd" role="search" onSubmit={ask}>
               <MagnifyingGlass aria-hidden />
-              <label className="sr" htmlFor="cmd">Search or ask</label>
-              <input id="cmd" ref={field} type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Search or ask" autoComplete="off" maxLength={300} />
+              <label className="sr" htmlFor="cmd">Ask a question</label>
+              <input id="cmd" ref={field} type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Ask a question" autoComplete="off" minLength={3} maxLength={300} />
               <kbd aria-hidden>/</kbd>
             </form>
             <span className="chip" title={`Model: ${model}`}><span className="dot" aria-hidden /><span className="t mono" aria-hidden>{model}</span><span className="sr">Model: {model}</span></span>
