@@ -56,6 +56,11 @@ function citedWells(f: Final, results: AskEvent[]) {
   const eventWell = new Map(results.flatMap((r) => ((r as { output?: { events?: { event_id: string; well_id: string }[] } }).output?.events ?? []).map((e) => [e.event_id, e.well_id] as const)));
   return new Set(f.answer.sources.map((s) => (s.kind === "chunk" ? chunkWell.get(s.id) : eventWell.get(s.id.replace(/^events:/, "")) ?? s.id.match(/W-\d{2}/)?.[0])).filter(Boolean));
 }
+function plottedCall(f: Final, calls: Call[], results: AskEvent[]) {
+  const ref = (f.answer.viz as { ref?: string }).ref;
+  const id = (results as { id: string; output?: { ref?: string } }[]).find((r) => r.output?.ref === ref)?.id;
+  return calls.find((c) => c.id === id);
+}
 const points = (f: Final) => (f.answer.viz as { series?: { points: { y: number }[] }[] }).series?.[0]?.points ?? [];
 
 const CASES: { question: string; checks: Check[] }[] = [
@@ -88,7 +93,7 @@ const CASES: { question: string; checks: Check[] }[] = [
     question: SUGGESTED[3],
     checks: [
       ["viz is a line", (f) => f.answer.viz.type === "line"],
-      ["line is for Wadi Field", (f, calls) => series(f).some((s) => s.name.includes("Wadi")) || calls.some((c) => c.name === "query_production" && args(c).field === "Wadi Field" && args(c).metric === "water_cut")],
+      ["line plots the Wadi Field water cut call", (f, calls, results) => { const c = plottedCall(f, calls, results); return !!c && args(c).field === "Wadi Field" && args(c).metric === "water_cut" && series(f).every((s) => s.name === "Wadi Field"); }],
       ["water cut line rises", (f) => { const p = points(f); return p.length >= 6 && p.at(-1)!.y > p[0].y * 1.2; }],
     ],
   },
