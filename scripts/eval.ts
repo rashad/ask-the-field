@@ -1,6 +1,7 @@
 import { ask, SUGGESTED, type AskEvent } from "../lib/answer";
 import { record } from "../lib/cache";
 import { sql } from "../lib/db";
+import { saveQueryCache } from "../lib/voyage";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 type Call = Extract<AskEvent, { type: "tool-call" }>;
@@ -10,6 +11,8 @@ const bars = (f: Final) => (f.answer.viz as { type: string; bars?: { label: stri
 const series = (f: Final) => (f.answer.viz as { type: string; series?: { name: string }[] }).series ?? [];
 const highlighted = (f: Final) => ((f.answer.viz as { highlighted?: string[] }).highlighted ?? []).slice().sort();
 const args = (c: Call) => c.args as Record<string, unknown>;
+const sentences = (text: string) => text.replace(/\s*\[\d+\]/g, "").trim().split(/(?<=[.!?])\s+(?=["(A-Z0-9])/).filter(Boolean).length;
+const SHORT: Check = ["answer has 2 to 4 sentences", (f) => { const n = sentences(f.answer.answer); return n >= 2 && n <= 4; }];
 
 const CASES: { question: string; checks: Check[] }[] = [
   {
@@ -45,6 +48,7 @@ const CASES: { question: string; checks: Check[] }[] = [
     checks: [
       ["uses the Bayda field filter", (_, calls) => calls.some((c) => args(c).field === "Bayda")],
       ["finds the open W-34 alarm", (f, _, results) => /W-34/.test(f.answer.answer) && /open/i.test(f.answer.answer) && JSON.stringify(results).includes("EV-0180")],
+      ["cites the sand alarm incident note (IN-067)", (f) => f.answer.sources.some((s) => s.id.startsWith("IN-067"))],
     ],
   },
 ];
@@ -65,8 +69,8 @@ for (const [i, c] of CASES.entries()) {
   } catch (err) {
     console.log(`  ERROR ${(err as Error).message}`);
     for (const { event } of events) if (event.type === "tool-call" || event.type === "tool-error") console.log(`    ${event.type} ${JSON.stringify(event).slice(0, 400)}`);
-    c.checks.forEach(([name]) => console.log(`  FAIL ${name}`));
-    total += c.checks.length;
+    [...c.checks, SHORT].forEach(([name]) => console.log(`  FAIL ${name}`));
+    total += c.checks.length + 1;
     continue;
   }
   const evs = events.map((e) => e.event);
@@ -74,7 +78,7 @@ for (const [i, c] of CASES.entries()) {
   const calls = evs.filter((e): e is Call => e.type === "tool-call");
   const results = evs.filter((e) => e.type === "tool-result");
   let ok = true;
-  for (const [name, fn] of c.checks) {
+  for (const [name, fn] of [...c.checks, SHORT]) {
     const pass = fn(final, calls, results);
     ok &&= pass;
     passed += Number(pass);
@@ -84,7 +88,9 @@ for (const [i, c] of CASES.entries()) {
   const u = final.usage;
   runs.push({ latency: final.latency_ms, cost: u.cost_usd });
   console.log(`  latency ${(final.latency_ms / 1000).toFixed(1)}s, steps ${u.steps}, tokens in ${u.input_tokens} + cache read ${u.cache_read_tokens} + cache write ${u.cache_write_tokens}, out ${u.output_tokens}, cost $${u.cost_usd}`);
-  console.log(`  tools: ${calls.map((c) => c.label).join(" | ")}`);
+  const repeats = calls.length - new Set(calls.map((c) => c.name + JSON.stringify(c.args))).size;
+  console.log(`  tools (${calls.length}, ${repeats} repeated): ${calls.map((c) => c.label).join(" | ")}`);
+  console.log(`  sentences: ${sentences(final.answer.answer)}${final.trace.some((t) => t.full_text_only) ? ", search ran full text only" : ""}`);
   console.log(`  viz: ${final.answer.viz.type}, confidence: ${final.answer.confidence}, sources: ${final.answer.sources.map((s) => s.id).join(", ")}`);
   console.log(`  answer: ${final.answer.answer}`);
   if (final.answer.could_not_verify) console.log(`  not verified: ${final.answer.could_not_verify}`);
@@ -97,5 +103,6 @@ for (const [i, c] of CASES.entries()) {
 
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / (xs.length || 1);
 console.log(`\n${passed}/${total} checks passed. Average latency ${(avg(runs.map((r) => r.latency)) / 1000).toFixed(1)}s, average cost $${avg(runs.map((r) => r.cost)).toFixed(4)} per question.`);
+if (recordCache) saveQueryCache();
 await sql.end();
 process.exit(passed === total ? 0 : 1);
