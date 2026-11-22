@@ -6,6 +6,7 @@ export interface Step {
   args: Record<string, unknown>;
   state: "running" | "done" | "repeated" | "error";
   output?: Record<string, any>;
+  error?: string;
 }
 
 export const DOC_COUNT = 400;
