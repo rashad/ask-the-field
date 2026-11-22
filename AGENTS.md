@@ -25,22 +25,22 @@ Ask the Field. Concept prototype: ask questions of synthetic upstream oil and ga
 
 ## Scripts
 
-Postgres runs in Docker (OrbStack), compose project `opsrag`, container `opsrag-postgres`, host port 5442. `DATABASE_URL` defaults to `postgres://opsrag:opsrag@localhost:5442/opsrag`.
+Postgres runs in Docker, compose project `opsrag`, container `opsrag-postgres`, host port 5442. `DATABASE_URL` defaults to `postgres://opsrag:opsrag@localhost:5442/opsrag`.
 
 - `pnpm db:up`: start Postgres.
 - `pnpm restore`: start Postgres and load `data/dump.sql.gz` (fastest way to a working database; no keys needed).
 - `pnpm db:seed`: apply the schema and regenerate wells, production and events (deterministic).
-- `sec opsrag pnpm gen:docs`: generate the documents with Claude. Resumable: skips files that exist. `--dry --list` prints the plan, `--ids=A,B` generates selected ids.
-- `sec opsrag pnpm ingest`: chunk, embed (voyage-4, 1024 dims) and upsert. Idempotent: only new or changed documents are embedded.
-- `sec opsrag pnpm smoke ["question" ...]`: hybrid search smoke check (defaults to two sample queries).
+- `pnpm gen:docs`: generate the documents with Claude. Resumable: skips files that exist. `--dry --list` prints the plan, `--ids=A,B` generates selected ids.
+- `pnpm ingest`: chunk, embed (voyage-4, 1024 dims) and upsert. Idempotent: only new or changed documents are embedded.
+- `pnpm smoke ["question" ...]`: hybrid search smoke check (defaults to two sample queries).
 - `pnpm db:dump`: write `data/dump.sql.gz` after an ingest.
-- `sec opsrag pnpm eval`: ask the 5 briefing questions, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass.
+- `pnpm eval`: ask the 5 briefing questions, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass.
 - `pnpm test`: chunker test.
 - `pnpm dev`: Next.js app.
 
 ## Rules
 
-- Keys: `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` come from 1Password through `sec opsrag <command>`. Never print or log a key, never commit one, never use `op read`. `.env.example` holds names only.
+- Keys: `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` come from the environment (`.env.local`, which is gitignored, or your secret manager). Scripts marked as needing keys: `gen:docs`, `ingest`, `smoke`, `eval`, and live answers in `dev`. Never print, log or commit a key. `.env.example` holds names only.
 - Data is synthetic. Never use real company, client, field or well names anywhere in the repo.
 - No em dashes in generated text.
 - Keep it minimal: plain SQL with the `postgres` driver, no ORM. No code comments except a rare one-line WHY.
