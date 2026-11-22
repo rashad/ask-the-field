@@ -3,6 +3,7 @@ import { useEffect, type RefObject } from "react";
 
 const NS = "http://www.w3.org/2000/svg";
 const LANE = 6;
+const STICK_TOP = 72;
 
 interface State { el: Element; links: HTMLElement[]; sents: HTMLElement[]; refs: string[] }
 
@@ -78,11 +79,11 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       if (narrow.matches || !state) { svg!.replaceChildren(); lastKey = ""; return; }
       const o = stage!.getBoundingClientRect();
       const pairs = state.links.map((c) => [c, c.dataset.ref!] as const);
+      const geo = pairs.map(([c, ref]) => pathFor(c, ref, o));
       const key = pairs.map(([c, r]) => r + cites.indexOf(c)).join("|");
       if (key !== lastKey || svg!.childNodes.length !== pairs.length * 2) svg!.replaceChildren();
       lastKey = key;
-      pairs.forEach(([c, ref], i) => {
-        const g = pathFor(c, ref, o);
+      geo.forEach((g, i) => {
         let path = svg!.childNodes[i * 2] as SVGPathElement | undefined;
         let dot = svg!.childNodes[i * 2 + 1] as SVGCircleElement | undefined;
         if (!path || !dot) {
@@ -137,14 +138,17 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       if (!s) return;
       pinned = pinned?.el === s.el ? null : s;
       settle(true);
-      if (narrow.matches && pinned && (target as Element).closest(".cite")) srcOf(pinned.refs[0])?.scrollIntoView({ behavior: smooth(), block: "center" });
-      if (fromKey && narrow.matches && pinned) srcOf(pinned.refs[0])?.focus({ preventScroll: true });
+      if (!pinned || !(target as Element).closest(".cite")) return;
+      const card = srcOf(pinned.refs[0]);
+      card?.scrollIntoView({ behavior: smooth(), block: narrow.matches ? "center" : "nearest" });
+      if (fromKey) card?.focus({ preventScroll: true });
     };
     const onClick = (e: MouseEvent) => {
       const t = e.target as Element;
       if (t.closest("[data-back]")) {
         e.preventDefault();
-        const back = pinned?.links[0] ?? rest;
+        const ref = t.closest<HTMLElement>(".src")?.dataset.ref;
+        const back = pinned?.links.find((c) => c.dataset.ref === ref) ?? cites.find((c) => c.dataset.ref === ref) ?? rest;
         back?.scrollIntoView({ behavior: smooth(), block: "center" });
         back?.focus({ preventScroll: true });
         return;
@@ -161,8 +165,12 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && (pinned || hover)) { pinned = null; hover = null; settle(true); }
     };
-    const onNarrow = () => settle(false);
-    const ro = new ResizeObserver(schedule);
+    const onNarrow = () => { fit(); settle(false); };
+    const fit = () => col.toggleAttribute("data-stick", !narrow.matches && col.offsetHeight <= window.innerHeight - STICK_TOP - 16);
+    const onResize = () => { fit(); schedule(); };
+    const onPageScroll = () => { if (col.hasAttribute("data-stick")) schedule(); };
+    const passages = stage.querySelectorAll<HTMLElement>(".passage");
+    const ro = new ResizeObserver(onResize);
     ro.observe(stage);
     for (const el of [col, ...srcs]) ro.observe(el);
 
@@ -174,9 +182,11 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     stage.addEventListener("keydown", onCardKey);
     document.addEventListener("click", onDocClick);
     document.addEventListener("keydown", onKey);
-    window.addEventListener("resize", schedule);
-    document.addEventListener("scroll", schedule, { capture: true, passive: true });
+    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onPageScroll, { passive: true });
+    for (const p of passages) p.addEventListener("scroll", schedule, { passive: true });
     narrow.addEventListener("change", onNarrow);
+    fit();
     let alive = true;
     document.fonts.ready.then(() => alive && settle(false));
     settle(true);
@@ -193,8 +203,10 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       stage.removeEventListener("keydown", onCardKey);
       document.removeEventListener("click", onDocClick);
       document.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", schedule);
-      document.removeEventListener("scroll", schedule, { capture: true });
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onPageScroll);
+      for (const p of passages) p.removeEventListener("scroll", schedule);
+      col.removeAttribute("data-stick");
       narrow.removeEventListener("change", onNarrow);
       svg.replaceChildren();
       for (const el of [stage, ...cites, ...sents, ...srcs]) for (const a of ["data-active", "data-on", "data-echo"]) el.removeAttribute(a);

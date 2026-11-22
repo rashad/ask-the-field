@@ -3,16 +3,15 @@ import { ArrowUpRight, CheckCircle, WarningCircle } from "@phosphor-icons/react/
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
-import { docTypeLabel, shortDate, TODAY } from "@/lib/domain";
+import { docTypeLabel, num as n, shortDate, TODAY } from "@/lib/domain";
 import { findQuote } from "@/lib/quote";
+import { coveredEvents, producer } from "@/lib/sources";
 import type { EventRow, SearchChunk, SearchTrace } from "@/lib/tools";
 import type { Step } from "./human";
 import { Md } from "./md";
 
 export type Final = Extract<AskEvent, { type: "final" }>;
 type Source = Final["answer"]["sources"][number];
-
-const n = (x: number) => x.toLocaleString("en-US");
 
 function monthsBack(period = "") {
   const from = period.slice(0, 7);
@@ -38,30 +37,31 @@ export function chunkIndex(trace: SearchTrace[]) {
 
 export const callLabel = (s: Step | undefined) => (s ? `${s.name}${s.output?.ref ? ` (${s.output.ref})` : ""}` : null);
 
-function producer(id: string, steps: Step[]) {
-  const [table, key, range] = id.split(":");
-  if (table === "events") return steps.find((s) => s.output?.events?.some((e: EventRow) => e.event_id === key));
-  if (table === "wells") return steps.find((s) => s.output?.wells?.some((w: { well_id: string }) => w.well_id === key));
-  if (table === "production_daily") {
-    const [from, to] = (range ?? "").split("..");
-    const fits = (s: Step) => s.name === "query_production" && !s.output?.repeated && (key === "all" || s.args.field === key || (s.args.well_ids as string[] | undefined)?.includes(key));
-    return steps.find((s) => fits(s) && s.args.from === from && s.args.to === to) ?? steps.find(fits);
-  }
-}
-
 function TableBody({ s, steps, events }: { s: Source; steps: Step[]; events: EventRow[] }) {
   const [table, key] = s.id.split(":");
   const from = callLabel(producer(s.id, steps));
   const note = <p className="evt-d">{from ? <>Rows returned by tool call <span className="mono">{from}</span>.</> : "No tool call in this run returned these rows."}</p>;
   if (table === "events") {
-    const e = events.find((x) => x.event_id === key);
-    if (!e) return note;
+    const rows = coveredEvents(key, s.label, (producer(s.id, steps)?.output?.events ?? []) as EventRow[]);
+    const shown = rows.length ? rows : events.filter((x) => x.event_id === key).slice(0, 1);
+    if (!shown.length) return note;
+    const total = rows.length > 1 && rows.every((e) => e.lost_oil_bbl != null) ? rows.reduce((t, e) => t + e.lost_oil_bbl!, 0) : null;
+    const e = shown[0];
     return (
       <>
-        <div className="evt" role="table" aria-label="Event row">
-          <span className="id" role="cell">{e.event_id}</span><span className="id" role="cell">{e.well_id}</span><span role="cell">{e.type}</span><span className="r" role="cell">{e.lost_oil_bbl == null ? "" : `${n(e.lost_oil_bbl)} bbl`}</span>
+        <div className="evt" role="table" aria-label={shown.length > 1 ? `${shown.length} event rows` : "Event row"}>
+          {shown.map((x) => (
+            <div key={x.event_id} role="row" style={{ display: "contents" }}>
+              <span className="id" role="cell">{x.event_id}</span><span className="id" role="cell">{x.well_id}</span><span role="cell">{x.type}</span><span className="r" role="cell">{x.lost_oil_bbl == null ? "" : `${n(x.lost_oil_bbl)} bbl`}</span>
+            </div>
+          ))}
+          {total !== null && (
+            <div role="row" style={{ display: "contents" }}>
+              <span className="tot" role="cell" style={{ gridColumn: "1 / 4" }}>Total of these {shown.length} rows</span><span className="r tot" role="cell">{n(total)} bbl</span>
+            </div>
+          )}
         </div>
-        <p className="evt-d">{e.field}, {shortDate(e.start_date)}{e.end_date ? ` to ${shortDate(e.end_date)}` : ""}, {e.status}{e.severity ? `, ${e.severity} severity` : ""}. {e.description}</p>
+        {shown.length === 1 && <p className="evt-d">{e.field}, {shortDate(e.start_date)}{e.end_date ? ` to ${shortDate(e.end_date)}` : ""}, {e.status}{e.severity ? `, ${e.severity} severity` : ""}. {e.description}</p>}
         {note}
       </>
     );
@@ -106,6 +106,7 @@ export function Evidence({ final, steps, events }: { final: Final; steps: Step[]
       for (const box of panel.current?.querySelectorAll<HTMLElement>(".passage") ?? []) {
         const m = box.querySelector("mark");
         if (m) box.scrollTop = Math.max(0, m.getBoundingClientRect().top - box.getBoundingClientRect().top - 32);
+        box.toggleAttribute("data-scrolled", box.scrollTop > 0);
       }
     });
     return () => cancelAnimationFrame(id);
@@ -133,7 +134,7 @@ export function Evidence({ final, steps, events }: { final: Final; steps: Step[]
             </header>
             {c ? (
               <>
-                <div className="passage"><Md text={c.text} span={span} skipTitle /></div>
+                <div className="passage" onScroll={(e) => e.currentTarget.toggleAttribute("data-scrolled", e.currentTarget.scrollTop > 0)}><Md text={c.text} span={span} skipTitle /></div>
                 {span ? <p className="qnote"><CheckCircle aria-hidden />Quote checked against the report, word for word.</p>
                   : s.quote_verified === false ? <p className="qnote bad"><WarningCircle aria-hidden />Quote not found in the report, so nothing is highlighted.</p> : null}
                 <div className="ranks">
