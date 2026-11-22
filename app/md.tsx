@@ -16,11 +16,15 @@ function withSpan(text: string, span?: [number, number] | null) {
   return text.slice(0, a) + OPEN + text.slice(a, b).split("\n").join(`${CLOSE}\n${OPEN}`) + CLOSE + text.slice(b);
 }
 
+const MARKS = /[\uE000\uE001]/g;
+// A span edge outside a row's outer pipes would break the table: move it inside them.
+const insidePipes = (line: string) => line.replace(/^(\s*)\uE000(\s*\|)/, "$1$2\uE000").replace(/(\|\s*)\uE001(\s*)$/, "\uE001$1$2");
+
 const cells = (line: string) => line.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
 
 function parse(text: string): Block[] {
   const blocks: Block[] = [];
-  const lines = text.replace(/\r/g, "").split("\n");
+  const lines = text.replace(/\r/g, "").split("\n").map(insidePipes);
   for (let i = 0; i < lines.length; i++) {
     const lead = lines[i].trimStart().startsWith(OPEN) ? OPEN : "";
     const line = lead ? lines[i].replace(OPEN, "") : lines[i];
@@ -35,7 +39,7 @@ function parse(text: string): Block[] {
       blocks.push({ kind: "h", level: h[1].length, text: lead + h[2] });
       continue;
     }
-    if (t.startsWith("|") && lines[i + 1]?.trim().match(/^\|?\s*:?-{2,}/)) {
+    if (t.startsWith("|") && lines[i + 1]?.replace(MARKS, "").trim().match(/^\|?\s*:?-{2,}/)) {
       const table: Block = { kind: "table", head: cells(t), rows: [] };
       if (lead) table.head[0] = lead + table.head[0];
       i += 2;
