@@ -1,9 +1,9 @@
 {
  "question": "Where are this morning's open incidents, and how bad are they?",
- "recorded_at": "2026-11-22T16:57:07.183Z",
+ "recorded_at": "2026-11-22T18:21:52.072Z",
  "events": [
   {
-   "t": 4,
+   "t": 6,
    "event": {
     "type": "start",
     "question": "Where are this morning's open incidents, and how bad are they?",
@@ -11,23 +11,22 @@
    }
   },
   {
-   "t": 2194,
+   "t": 2041,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01Kau5kDDgXxo8W9XDXxzfhm",
+    "id": "toolu_0186xvpC7sYh5aGFzwuDS9kn",
     "name": "list_events",
     "args": {
      "type": "incident",
      "status": "open"
-    },
-    "label": "Listing open incident..."
+    }
    }
   },
   {
-   "t": 2203,
+   "t": 2053,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01Kau5kDDgXxo8W9XDXxzfhm",
+    "id": "toolu_0186xvpC7sYh5aGFzwuDS9kn",
     "name": "list_events",
     "output": {
      "ref": "E1",
@@ -129,13 +128,13 @@
    }
   },
   {
-   "t": 3917,
+   "t": 3635,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01UGvpH7xuWAfkgYvc4zoMEz",
+    "id": "toolu_01Q9Dyb1tshriZH6i8onqpmL",
     "name": "search_documents",
     "args": {
-     "query": "open incident notes",
+     "query": "open incident status",
      "k": 8,
      "well_ids": [
       "W-25",
@@ -146,15 +145,14 @@
      ],
      "doc_type": "incident_note",
      "from": "2026-10-21"
-    },
-    "label": "Searching documents (W-25, W-36, W-05, W-34, W-12, incident note, October 2026)..."
+    }
    }
   },
   {
-   "t": 3939,
+   "t": 4873,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01UGvpH7xuWAfkgYvc4zoMEz",
+    "id": "toolu_01Q9Dyb1tshriZH6i8onqpmL",
     "name": "search_documents",
     "output": {
      "ref": "S1",
@@ -170,15 +168,6 @@
        "text": "# Incident note: Sustained casing annulus pressure on W-12\n\n**Document ID:** IN-066\n**Note date:** 2026-10-28\n**Event ID:** EV-0179\n**Well:** W-12 (Dune Field, deviated, ESP)\n**Severity:** High\n**Status at note date:** Open\n**Author:** Production Engineer\n\n## What happened\nOn 2026-10-28 the B-annulus pressure on W-12 built up above the allowed limit and did not bleed off. The well was shut in pending integrity diagnostics.\n\n## Immediate actions\n- Well shut in and the ESP stopped.\n- Annulus pressure bleed-off attempted and repeated, with no sustained drop.\n- Production Supervisor and HSE Advisor informed.\n- Area around the wellhead checked and access limited to essential personnel.\n\n## Findings so far\n- No root cause has been identified. Diagnostics are not yet complete.\n- A preventive scale inhibitor squeeze (EV-0172) was carried out on W-12 on 2026-10-07 to 2026-10-08, with 41 hours of downtime. It is closed and is listed here only as recent well history. No link to the current event has been established.\n\n## Impact\n- Downtime as of this note: 24 hours.\n- Production on 2026-10-28: 0 bbl oil, 0 Mscf gas, uptime 0 hours.\n- Rates before the event (7 days to 2026-10-27): oil 928.3 bbl/d, gas 779.9 Mscf/d, water cut 32 percent, GOR 840 scf/bbl. This is the rate being deferred while the well is down.\n\n## Status at note date\nOpen. W-12 remains shut in. No restart is planned until integrity is confirmed.\n\n## Next actions\n1. Run annulus pressure build-up and bleed-off diagnostics and record the readings.\n2. Review wellhead and annulus valve condition with the Integrity Engineer.\n3. Decide on further intervention once diagnostics are reviewed.\n4. Update this note when the cause is understood and the well is cleared to restart.\n\n## Reference\nApply SOP-INT-010 Well Integrity: Annulus Pressure Management for thresholds, monitoring frequency and escalation."
       },
       {
-       "chunk_id": "IN-069#0",
-       "document_id": "IN-069",
-       "doc_type": "incident_note",
-       "well_id": "W-36",
-       "date": "2026-11-18",
-       "section": null,
-       "text": "# Incident note: Flowline leak on W-36\n\n**Document ID:** IN-069\n**Event ID:** EV-0183\n**Note date:** 2026-11-18\n**Author:** Production Engineer\n**Well:** W-36 (Salt Flat Field, deviated, ESP)\n**Severity:** High\n**Status at note date:** Open\n\n## What happened\nDuring the routine patrol on 2026-11-18, the operator found a pinhole leak on the W-36 flowline near the manifold. The leak was reported to the control room immediately.\n\n## Immediate actions\n- W-36 was shut in and the ESP stopped.\n- The area around the leak was isolated and barricaded, and access was restricted.\n- The Lead Operator and HSE Advisor were informed.\n- The leaking section was depressurised and checked for residual hydrocarbons before any further inspection.\n\n## Findings so far\n- The leak is a single pinhole on the flowline section close to the manifold.\n- No spread of fluid beyond the isolated area has been reported.\n- The cause of the pinhole has not yet been determined. Wall thickness readings around the leak point are to be taken by the Integrity Engineer.\n\n## Impact\n- Downtime as of this note: 24 hours.\n- Production on 2026-11-18 was 0 bbl oil and 0 Mscf gas, with 0 hours of uptime.\n- Before the event, W-36 averaged 1,165.4 bbl/d oil and 1,333.1 Mscf/d gas over the 7 days to 2026-11-17, with 27% water cut and a GOR of 1,144 scf/bbl. This is the rate being deferred while the well is shut in.\n- No related events on this well in the last 30 days.\n\n## Status\nOpen. The well remains shut in and the area stays isolated. A clamp repair is pending.\n\n## Next actions\n1. Maintenance Planner to raise the work order and schedule the clamp repair.\n2. Integrity Engineer to measure wall thickness on the adjacent flowline section and assess the need for further repair.\n3. HSE Advisor to confirm permits and gas testing before repair work starts.\n4. After the repair, carry out a pressure test and a controlled restart of W-36, with the ESP started under Production Engineer supervision.\n5. Update this note when the repair is complete and the well is back online.\n\n## Procedure\nThe response follows SOP-HSE-006 Flowline Leak Response."
-      },
-      {
        "chunk_id": "IN-067#0",
        "document_id": "IN-067",
        "doc_type": "incident_note",
@@ -188,15 +177,6 @@
        "text": "# Incident note: Sand production alarm on W-34\n\n**Note ID:** IN-067\n**Event ID:** EV-0180\n**Note date:** 2026-11-09\n**Author:** Production Engineer\n**Well:** W-34, Salt Flat Field (vertical, gas lift)\n**Severity:** High\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-09 the acoustic sand monitor on W-34 alarmed above threshold. The erosion probe on the flowline shows metal loss. The well was already on a reduced choke from earlier sand restrictions.\n\n## Immediate actions\n- Choke reduced again to 24/64.\n- Sand sampling set to every shift.\n- Lead Operator and Production Supervisor informed.\n- Flowline and choke area visually checked for leaks, none observed.\n\n## Impact\n- Downtime as of this note: 2 hours (uptime on the day 22 hours).\n- Production on 2026-11-09: oil 630.6 bbl, gas 1040.9 Mscf, water cut 16.2%.\n- Previous 7 days to 2026-11-08 averaged oil 899.1 bbl/d, gas 1482 Mscf/d, water cut 16.8%, GOR 1648 scf/bbl.\n- Oil on the day was about 268 bbl below the 7-day average, which includes the downtime and the choke reduction.\n\n## Findings so far\n- Water cut is steady against the baseline, so no change in water production is indicated.\n- Probe metal loss confirms that sand is eroding the flowline. The source and the rate of loss are not yet established.\n- Investigation is open.\n\n## Status\nThe well is producing on the 24/64 choke. The incident remains **open**.\n\n## Next actions\n1. Review the sand sample results each shift and log the sand content in ppm.\n2. Integrity Engineer to assess the flowline wall thickness at the probe location and downstream bends.\n3. Keep the choke at 24/64 until sand levels are stable below the alarm threshold.\n4. Production Engineer to decide on any further choke change or well intervention after the sample trend is reviewed.\n5. Report the outcome in the next update to this note.\n\n## Reference\nSOP-OPS-002 Sand Management and Sand Production Alarms."
       },
       {
-       "chunk_id": "IN-068#0",
-       "document_id": "IN-068",
-       "doc_type": "incident_note",
-       "well_id": "W-05",
-       "date": "2026-11-15",
-       "section": null,
-       "text": "# Incident note: Wellhead pressure anomaly on W-05\n\n**Document ID:** IN-068\n**Event ID:** EV-0181\n**Note date:** 2026-11-15\n**Author:** Production Engineer\n**Well:** W-05 (Dune Field, vertical, ESP)\n**Severity:** Medium\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-15 the flowing wellhead pressure on W-05 began swinging by plus or minus 60 psi with no choke change made by operations. The well stayed on production, with 3 hours of downtime logged as of this note.\n\n## Immediate actions\n- Lead Operator checked the wellhead pressure gauge against a reference gauge. The gauge reads correctly.\n- Choke setting confirmed unchanged at the wellhead.\n- Production Supervisor informed.\n- Well kept online under closer monitoring.\n\n## Findings so far\nThe swings are not a gauge fault. The working suspicion is partial choke plugging. No other cause has been confirmed yet.\n\n## Impact\n- Uptime on 2026-11-15: 21 hours.\n- Oil on the day: 620.6 bbl, against a 7-day average of 749.8 bbl/d to 2026-11-14, a shortfall of about 129 bbl.\n- Gas on the day: 556.4 Mscf, against 680.1 Mscf/d before.\n- Water cut unchanged at 30.5 percent, so the loss comes from downtime and restriction, not from a change in fluid.\n- Gas-oil ratio before the event was 907 scf/bbl.\n\n## Status at note date\nOpen. The well is producing and under monitoring. No related events on this well in the last 30 days.\n\n## Next actions\n1. Operators to log wellhead pressure at short intervals each shift and record any further swings.\n2. Production Engineer to review ESP motor current and intake data for any matching fluctuation.\n3. If swings continue or grow, plan a choke inspection and clean-out, with a short shut-in agreed with the Production Supervisor.\n4. Update this note when the cause is confirmed.\n\n**Applicable procedure:** none identified for this event type."
-      },
-      {
        "chunk_id": "IN-070#0",
        "document_id": "IN-070",
        "doc_type": "incident_note",
@@ -204,17 +184,35 @@
        "date": "2026-11-20",
        "section": null,
        "text": "# Incident note: ESP high vibration on W-25\n\n**Document ID:** IN-070\n**Note date:** 2026-11-20\n**Event ID:** EV-0184\n**Well:** W-25 (Wadi Field, deviated, ESP)\n**Severity:** Medium\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-20 the downhole sensor on W-25 showed ESP vibration rising above the alarm level. The installed pump is a Varenta VL-538, serial 3K-1102-058 (batch 3K-1102), with a run life of 22 months.\n\n## Immediate actions\n- Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.\n- The well was kept on production at the reduced frequency, and the Lead Operator was asked to log vibration, motor current and intake pressure at regular intervals.\n- Production Supervisor informed.\n\n## Findings so far\n- The vibration trend is under review by the Production Engineer. No root cause has been identified yet.\n- No related events on this well in the previous 30 days.\n\n## Impact\n- Downtime as of this note: 2 hours.\n- Uptime on 2026-11-20 was 22 hours. Production for the day was 359.1 bbl of oil and 203.6 Mscf of gas, with water cut at 35.4%.\n- The 7-day average to 2026-11-19 was 409.3 bbl/d oil, 253.2 Mscf/d gas, water cut 33.9% and GOR 619 scf/bbl. Oil for the day is therefore below the recent average, reflecting the lost hours and the lower frequency.\n\n## Status\nThe incident remains open. W-25 is producing at 50 Hz under close monitoring.\n\n## Next actions\n1. Continue trending vibration and electrical parameters, and review at the next daily production meeting.\n2. Production Engineer to decide whether the frequency should be held, reduced further or restored.\n3. If vibration keeps rising or the unit trips, follow SOP-OPS-001 ESP Trip Response and Restart, and do not attempt repeated restarts outside its limits.\n4. Raise a workover request if the trend indicates pump deterioration.\n\n**Applicable procedure:** SOP-OPS-001 ESP Trip Response and Restart"
+      },
+      {
+       "chunk_id": "IN-069#0",
+       "document_id": "IN-069",
+       "doc_type": "incident_note",
+       "well_id": "W-36",
+       "date": "2026-11-18",
+       "section": null,
+       "text": "# Incident note: Flowline leak on W-36\n\n**Document ID:** IN-069\n**Event ID:** EV-0183\n**Note date:** 2026-11-18\n**Author:** Production Engineer\n**Well:** W-36 (Salt Flat Field, deviated, ESP)\n**Severity:** High\n**Status at note date:** Open\n\n## What happened\nDuring the routine patrol on 2026-11-18, the operator found a pinhole leak on the W-36 flowline near the manifold. The leak was reported to the control room immediately.\n\n## Immediate actions\n- W-36 was shut in and the ESP stopped.\n- The area around the leak was isolated and barricaded, and access was restricted.\n- The Lead Operator and HSE Advisor were informed.\n- The leaking section was depressurised and checked for residual hydrocarbons before any further inspection.\n\n## Findings so far\n- The leak is a single pinhole on the flowline section close to the manifold.\n- No spread of fluid beyond the isolated area has been reported.\n- The cause of the pinhole has not yet been determined. Wall thickness readings around the leak point are to be taken by the Integrity Engineer.\n\n## Impact\n- Downtime as of this note: 24 hours.\n- Production on 2026-11-18 was 0 bbl oil and 0 Mscf gas, with 0 hours of uptime.\n- Before the event, W-36 averaged 1,165.4 bbl/d oil and 1,333.1 Mscf/d gas over the 7 days to 2026-11-17, with 27% water cut and a GOR of 1,144 scf/bbl. This is the rate being deferred while the well is shut in.\n- No related events on this well in the last 30 days.\n\n## Status\nOpen. The well remains shut in and the area stays isolated. A clamp repair is pending.\n\n## Next actions\n1. Maintenance Planner to raise the work order and schedule the clamp repair.\n2. Integrity Engineer to measure wall thickness on the adjacent flowline section and assess the need for further repair.\n3. HSE Advisor to confirm permits and gas testing before repair work starts.\n4. After the repair, carry out a pressure test and a controlled restart of W-36, with the ESP started under Production Engineer supervision.\n5. Update this note when the repair is complete and the well is back online.\n\n## Procedure\nThe response follows SOP-HSE-006 Flowline Leak Response."
+      },
+      {
+       "chunk_id": "IN-068#0",
+       "document_id": "IN-068",
+       "doc_type": "incident_note",
+       "well_id": "W-05",
+       "date": "2026-11-15",
+       "section": null,
+       "text": "# Incident note: Wellhead pressure anomaly on W-05\n\n**Document ID:** IN-068\n**Event ID:** EV-0181\n**Note date:** 2026-11-15\n**Author:** Production Engineer\n**Well:** W-05 (Dune Field, vertical, ESP)\n**Severity:** Medium\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-15 the flowing wellhead pressure on W-05 began swinging by plus or minus 60 psi with no choke change made by operations. The well stayed on production, with 3 hours of downtime logged as of this note.\n\n## Immediate actions\n- Lead Operator checked the wellhead pressure gauge against a reference gauge. The gauge reads correctly.\n- Choke setting confirmed unchanged at the wellhead.\n- Production Supervisor informed.\n- Well kept online under closer monitoring.\n\n## Findings so far\nThe swings are not a gauge fault. The working suspicion is partial choke plugging. No other cause has been confirmed yet.\n\n## Impact\n- Uptime on 2026-11-15: 21 hours.\n- Oil on the day: 620.6 bbl, against a 7-day average of 749.8 bbl/d to 2026-11-14, a shortfall of about 129 bbl.\n- Gas on the day: 556.4 Mscf, against 680.1 Mscf/d before.\n- Water cut unchanged at 30.5 percent, so the loss comes from downtime and restriction, not from a change in fluid.\n- Gas-oil ratio before the event was 907 scf/bbl.\n\n## Status at note date\nOpen. The well is producing and under monitoring. No related events on this well in the last 30 days.\n\n## Next actions\n1. Operators to log wellhead pressure at short intervals each shift and record any further swings.\n2. Production Engineer to review ESP motor current and intake data for any matching fluctuation.\n3. If swings continue or grow, plan a choke inspection and clean-out, with a short shut-in agreed with the Production Supervisor.\n4. Update this note when the cause is confirmed.\n\n**Applicable procedure:** none identified for this event type."
       }
      ]
     }
    }
   },
   {
-   "t": 9212,
+   "t": 10134,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "Five incidents are open, two in Dune Field, one in Wadi Field and two in Salt Flat Field, and they have cost about 31,830 barrels of oil, about $2,228,000 in lost revenue at an assumed $70 a barrel [1]. The high-severity ones are W-12 in Dune Field, shut in with casing pressure that won't bleed off [2], W-36 in Salt Flat Field, shut in with a flowline leak [3], and W-34 in Salt Flat Field, a sand alarm with the choke cut back [4]. The others are medium: W-05 in Dune Field has pressure swings [5], and W-25 in Wadi Field has a pump vibrating, so it was slowed [6].",
+     "answer": "Five incidents are open, in Dune Field (2), Wadi Field (1) and Salt Flat Field (2), and they have cost about 31,834 barrels, about $2,228,000 in lost revenue at an assumed $70 a barrel [1]. Three are high severity: W-12 (Dune, shut in, casing pressure that will not bleed off) [2], W-36 (Salt Flat, shut in, flowline leak awaiting a clamp repair) [3], and W-34 (Salt Flat, producing on a reduced choke, sand eroding the flowline) [4]. The other two are medium: W-25 (Wadi, pump vibration, running slower) [5] and W-05 (Dune, wellhead pressure swings) [6].",
      "viz": {
       "type": "map",
       "title": "Open incidents",
@@ -223,8 +221,8 @@
        "W-12",
        "W-36",
        "W-34",
-       "W-05",
-       "W-25"
+       "W-25",
+       "W-05"
       ],
       "wells": [
        {
@@ -562,7 +560,7 @@
        "n": 1,
        "kind": "table",
        "id": "events:EV-0179",
-       "label": "Open incident events (EV-0179, 0180, 0181, 0183, 0184)",
+       "label": "Open incident events EV-0179 to EV-0184",
        "quote": null,
        "quote_verified": null
       },
@@ -570,7 +568,7 @@
        "n": 2,
        "kind": "chunk",
        "id": "IN-066#0",
-       "label": "IN-066 W-12 annulus pressure",
+       "label": "Incident note W-12",
        "quote": "The well was shut in pending integrity diagnostics.",
        "quote_verified": true
       },
@@ -578,7 +576,7 @@
        "n": 3,
        "kind": "chunk",
        "id": "IN-069#0",
-       "label": "IN-069 W-36 flowline leak",
+       "label": "Incident note W-36",
        "quote": "W-36 was shut in and the ESP stopped.",
        "quote_verified": true
       },
@@ -586,35 +584,35 @@
        "n": 4,
        "kind": "chunk",
        "id": "IN-067#0",
-       "label": "IN-067 W-34 sand alarm",
-       "quote": "Choke reduced again to 24/64.",
+       "label": "Incident note W-34",
+       "quote": "Probe metal loss confirms that sand is eroding the flowline.",
        "quote_verified": true
       },
       {
        "n": 5,
        "kind": "chunk",
-       "id": "IN-068#0",
-       "label": "IN-068 W-05 pressure anomaly",
-       "quote": "The working suspicion is partial choke plugging.",
+       "id": "IN-070#0",
+       "label": "Incident note W-25",
+       "quote": "W-25 is producing at 50 Hz under close monitoring.",
        "quote_verified": true
       },
       {
        "n": 6,
        "kind": "chunk",
-       "id": "IN-070#0",
-       "label": "IN-070 W-25 ESP vibration",
-       "quote": "Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.",
+       "id": "IN-068#0",
+       "label": "Incident note W-05",
+       "quote": "The working suspicion is partial choke plugging.",
        "quote_verified": true
       }
      ],
      "confidence": "high",
-     "could_not_verify": "No root cause has been found yet for W-12, W-36 or W-34."
+     "could_not_verify": "No root cause is confirmed yet for any of the five incidents."
     },
     "trace": [
      {
-      "call_id": "toolu_01UGvpH7xuWAfkgYvc4zoMEz",
+      "call_id": "toolu_01Q9Dyb1tshriZH6i8onqpmL",
       "args": {
-       "query": "open incident notes",
+       "query": "open incident status",
        "k": 8,
        "well_ids": [
         "W-25",
@@ -628,93 +626,93 @@
       },
       "vector": [
        {
-        "chunk_id": "IN-069#0",
+        "chunk_id": "IN-066#0",
         "rank": 1,
-        "similarity": 0.3578
+        "similarity": 0.3482
        },
        {
-        "chunk_id": "IN-066#0",
+        "chunk_id": "IN-069#0",
         "rank": 2,
-        "similarity": 0.35
+        "similarity": 0.3412
        },
        {
         "chunk_id": "IN-068#0",
         "rank": 3,
-        "similarity": 0.3154
-       },
-       {
-        "chunk_id": "IN-067#0",
-        "rank": 4,
-        "similarity": 0.3007
+        "similarity": 0.314
        },
        {
         "chunk_id": "IN-070#0",
+        "rank": 4,
+        "similarity": 0.3076
+       },
+       {
+        "chunk_id": "IN-067#0",
         "rank": 5,
-        "similarity": 0.2727
+        "similarity": 0.3011
        }
       ],
       "full_text": [
        {
         "chunk_id": "IN-067#0",
         "rank": 1,
-        "ts_rank": 1.1
-       },
-       {
-        "chunk_id": "IN-066#0",
-        "rank": 2,
-        "ts_rank": 0.9
-       },
-       {
-        "chunk_id": "IN-068#0",
-        "rank": 3,
-        "ts_rank": 0.9
-       },
-       {
-        "chunk_id": "IN-069#0",
-        "rank": 4,
-        "ts_rank": 0.8
+        "ts_rank": 0.7
        },
        {
         "chunk_id": "IN-070#0",
+        "rank": 2,
+        "ts_rank": 0.6
+       },
+       {
+        "chunk_id": "IN-066#0",
+        "rank": 3,
+        "ts_rank": 0.5
+       },
+       {
+        "chunk_id": "IN-068#0",
+        "rank": 4,
+        "ts_rank": 0.5
+       },
+       {
+        "chunk_id": "IN-069#0",
         "rank": 5,
-        "ts_rank": 0.8
+        "ts_rank": 0.5
        }
       ],
       "fused": [
        {
         "chunk_id": "IN-066#0",
         "rank": 1,
-        "rrf": 0.03226,
-        "vector_rank": 2,
+        "rrf": 0.03227,
+        "vector_rank": 1,
+        "full_text_rank": 3
+       },
+       {
+        "chunk_id": "IN-067#0",
+        "rank": 2,
+        "rrf": 0.03178,
+        "vector_rank": 5,
+        "full_text_rank": 1
+       },
+       {
+        "chunk_id": "IN-070#0",
+        "rank": 3,
+        "rrf": 0.03175,
+        "vector_rank": 4,
         "full_text_rank": 2
        },
        {
         "chunk_id": "IN-069#0",
-        "rank": 2,
-        "rrf": 0.03202,
-        "vector_rank": 1,
-        "full_text_rank": 4
-       },
-       {
-        "chunk_id": "IN-067#0",
-        "rank": 3,
-        "rrf": 0.03202,
-        "vector_rank": 4,
-        "full_text_rank": 1
+        "rank": 4,
+        "rrf": 0.03151,
+        "vector_rank": 2,
+        "full_text_rank": 5
        },
        {
         "chunk_id": "IN-068#0",
-        "rank": 4,
-        "rrf": 0.03175,
-        "vector_rank": 3,
-        "full_text_rank": 3
-       },
-       {
-        "chunk_id": "IN-070#0",
         "rank": 5,
-        "rrf": 0.03077,
-        "vector_rank": 5,
-        "full_text_rank": 5
+        "rrf": 0.0315,
+        "vector_rank": 3,
+        "full_text_rank": 4
        }
       ],
       "chunks_sent": [
@@ -729,29 +727,11 @@
         "section": null,
         "text": "# Incident note: Sustained casing annulus pressure on W-12\n\n**Document ID:** IN-066\n**Note date:** 2026-10-28\n**Event ID:** EV-0179\n**Well:** W-12 (Dune Field, deviated, ESP)\n**Severity:** High\n**Status at note date:** Open\n**Author:** Production Engineer\n\n## What happened\nOn 2026-10-28 the B-annulus pressure on W-12 built up above the allowed limit and did not bleed off. The well was shut in pending integrity diagnostics.\n\n## Immediate actions\n- Well shut in and the ESP stopped.\n- Annulus pressure bleed-off attempted and repeated, with no sustained drop.\n- Production Supervisor and HSE Advisor informed.\n- Area around the wellhead checked and access limited to essential personnel.\n\n## Findings so far\n- No root cause has been identified. Diagnostics are not yet complete.\n- A preventive scale inhibitor squeeze (EV-0172) was carried out on W-12 on 2026-10-07 to 2026-10-08, with 41 hours of downtime. It is closed and is listed here only as recent well history. No link to the current event has been established.\n\n## Impact\n- Downtime as of this note: 24 hours.\n- Production on 2026-10-28: 0 bbl oil, 0 Mscf gas, uptime 0 hours.\n- Rates before the event (7 days to 2026-10-27): oil 928.3 bbl/d, gas 779.9 Mscf/d, water cut 32 percent, GOR 840 scf/bbl. This is the rate being deferred while the well is down.\n\n## Status at note date\nOpen. W-12 remains shut in. No restart is planned until integrity is confirmed.\n\n## Next actions\n1. Run annulus pressure build-up and bleed-off diagnostics and record the readings.\n2. Review wellhead and annulus valve condition with the Integrity Engineer.\n3. Decide on further intervention once diagnostics are reviewed.\n4. Update this note when the cause is understood and the well is cleared to restart.\n\n## Reference\nApply SOP-INT-010 Well Integrity: Annulus Pressure Management for thresholds, monitoring frequency and escalation.",
         "scores": {
-         "vector_similarity": 0.35,
-         "vector_rank": 2,
-         "full_text_rank": 2,
-         "full_text_score": 0.9,
-         "rrf": 0.03226
-        }
-       },
-       {
-        "chunk_id": "IN-069#0",
-        "document_id": "IN-069",
-        "title": "Incident note: Flowline leak on W-36",
-        "doc_type": "incident_note",
-        "well_id": "W-36",
-        "field": "Salt Flat Field",
-        "date": "2026-11-18",
-        "section": null,
-        "text": "# Incident note: Flowline leak on W-36\n\n**Document ID:** IN-069\n**Event ID:** EV-0183\n**Note date:** 2026-11-18\n**Author:** Production Engineer\n**Well:** W-36 (Salt Flat Field, deviated, ESP)\n**Severity:** High\n**Status at note date:** Open\n\n## What happened\nDuring the routine patrol on 2026-11-18, the operator found a pinhole leak on the W-36 flowline near the manifold. The leak was reported to the control room immediately.\n\n## Immediate actions\n- W-36 was shut in and the ESP stopped.\n- The area around the leak was isolated and barricaded, and access was restricted.\n- The Lead Operator and HSE Advisor were informed.\n- The leaking section was depressurised and checked for residual hydrocarbons before any further inspection.\n\n## Findings so far\n- The leak is a single pinhole on the flowline section close to the manifold.\n- No spread of fluid beyond the isolated area has been reported.\n- The cause of the pinhole has not yet been determined. Wall thickness readings around the leak point are to be taken by the Integrity Engineer.\n\n## Impact\n- Downtime as of this note: 24 hours.\n- Production on 2026-11-18 was 0 bbl oil and 0 Mscf gas, with 0 hours of uptime.\n- Before the event, W-36 averaged 1,165.4 bbl/d oil and 1,333.1 Mscf/d gas over the 7 days to 2026-11-17, with 27% water cut and a GOR of 1,144 scf/bbl. This is the rate being deferred while the well is shut in.\n- No related events on this well in the last 30 days.\n\n## Status\nOpen. The well remains shut in and the area stays isolated. A clamp repair is pending.\n\n## Next actions\n1. Maintenance Planner to raise the work order and schedule the clamp repair.\n2. Integrity Engineer to measure wall thickness on the adjacent flowline section and assess the need for further repair.\n3. HSE Advisor to confirm permits and gas testing before repair work starts.\n4. After the repair, carry out a pressure test and a controlled restart of W-36, with the ESP started under Production Engineer supervision.\n5. Update this note when the repair is complete and the well is back online.\n\n## Procedure\nThe response follows SOP-HSE-006 Flowline Leak Response.",
-        "scores": {
-         "vector_similarity": 0.3578,
+         "vector_similarity": 0.3482,
          "vector_rank": 1,
-         "full_text_rank": 4,
-         "full_text_score": 0.8,
-         "rrf": 0.03202
+         "full_text_rank": 3,
+         "full_text_score": 0.5,
+         "rrf": 0.03227
         }
        },
        {
@@ -765,29 +745,11 @@
         "section": null,
         "text": "# Incident note: Sand production alarm on W-34\n\n**Note ID:** IN-067\n**Event ID:** EV-0180\n**Note date:** 2026-11-09\n**Author:** Production Engineer\n**Well:** W-34, Salt Flat Field (vertical, gas lift)\n**Severity:** High\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-09 the acoustic sand monitor on W-34 alarmed above threshold. The erosion probe on the flowline shows metal loss. The well was already on a reduced choke from earlier sand restrictions.\n\n## Immediate actions\n- Choke reduced again to 24/64.\n- Sand sampling set to every shift.\n- Lead Operator and Production Supervisor informed.\n- Flowline and choke area visually checked for leaks, none observed.\n\n## Impact\n- Downtime as of this note: 2 hours (uptime on the day 22 hours).\n- Production on 2026-11-09: oil 630.6 bbl, gas 1040.9 Mscf, water cut 16.2%.\n- Previous 7 days to 2026-11-08 averaged oil 899.1 bbl/d, gas 1482 Mscf/d, water cut 16.8%, GOR 1648 scf/bbl.\n- Oil on the day was about 268 bbl below the 7-day average, which includes the downtime and the choke reduction.\n\n## Findings so far\n- Water cut is steady against the baseline, so no change in water production is indicated.\n- Probe metal loss confirms that sand is eroding the flowline. The source and the rate of loss are not yet established.\n- Investigation is open.\n\n## Status\nThe well is producing on the 24/64 choke. The incident remains **open**.\n\n## Next actions\n1. Review the sand sample results each shift and log the sand content in ppm.\n2. Integrity Engineer to assess the flowline wall thickness at the probe location and downstream bends.\n3. Keep the choke at 24/64 until sand levels are stable below the alarm threshold.\n4. Production Engineer to decide on any further choke change or well intervention after the sample trend is reviewed.\n5. Report the outcome in the next update to this note.\n\n## Reference\nSOP-OPS-002 Sand Management and Sand Production Alarms.",
         "scores": {
-         "vector_similarity": 0.3007,
-         "vector_rank": 4,
+         "vector_similarity": 0.3011,
+         "vector_rank": 5,
          "full_text_rank": 1,
-         "full_text_score": 1.1,
-         "rrf": 0.03202
-        }
-       },
-       {
-        "chunk_id": "IN-068#0",
-        "document_id": "IN-068",
-        "title": "Incident note: Wellhead pressure anomaly on W-05",
-        "doc_type": "incident_note",
-        "well_id": "W-05",
-        "field": "Dune Field",
-        "date": "2026-11-15",
-        "section": null,
-        "text": "# Incident note: Wellhead pressure anomaly on W-05\n\n**Document ID:** IN-068\n**Event ID:** EV-0181\n**Note date:** 2026-11-15\n**Author:** Production Engineer\n**Well:** W-05 (Dune Field, vertical, ESP)\n**Severity:** Medium\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-15 the flowing wellhead pressure on W-05 began swinging by plus or minus 60 psi with no choke change made by operations. The well stayed on production, with 3 hours of downtime logged as of this note.\n\n## Immediate actions\n- Lead Operator checked the wellhead pressure gauge against a reference gauge. The gauge reads correctly.\n- Choke setting confirmed unchanged at the wellhead.\n- Production Supervisor informed.\n- Well kept online under closer monitoring.\n\n## Findings so far\nThe swings are not a gauge fault. The working suspicion is partial choke plugging. No other cause has been confirmed yet.\n\n## Impact\n- Uptime on 2026-11-15: 21 hours.\n- Oil on the day: 620.6 bbl, against a 7-day average of 749.8 bbl/d to 2026-11-14, a shortfall of about 129 bbl.\n- Gas on the day: 556.4 Mscf, against 680.1 Mscf/d before.\n- Water cut unchanged at 30.5 percent, so the loss comes from downtime and restriction, not from a change in fluid.\n- Gas-oil ratio before the event was 907 scf/bbl.\n\n## Status at note date\nOpen. The well is producing and under monitoring. No related events on this well in the last 30 days.\n\n## Next actions\n1. Operators to log wellhead pressure at short intervals each shift and record any further swings.\n2. Production Engineer to review ESP motor current and intake data for any matching fluctuation.\n3. If swings continue or grow, plan a choke inspection and clean-out, with a short shut-in agreed with the Production Supervisor.\n4. Update this note when the cause is confirmed.\n\n**Applicable procedure:** none identified for this event type.",
-        "scores": {
-         "vector_similarity": 0.3154,
-         "vector_rank": 3,
-         "full_text_rank": 3,
-         "full_text_score": 0.9,
-         "rrf": 0.03175
+         "full_text_score": 0.7,
+         "rrf": 0.03178
         }
        },
        {
@@ -801,11 +763,47 @@
         "section": null,
         "text": "# Incident note: ESP high vibration on W-25\n\n**Document ID:** IN-070\n**Note date:** 2026-11-20\n**Event ID:** EV-0184\n**Well:** W-25 (Wadi Field, deviated, ESP)\n**Severity:** Medium\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-20 the downhole sensor on W-25 showed ESP vibration rising above the alarm level. The installed pump is a Varenta VL-538, serial 3K-1102-058 (batch 3K-1102), with a run life of 22 months.\n\n## Immediate actions\n- Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.\n- The well was kept on production at the reduced frequency, and the Lead Operator was asked to log vibration, motor current and intake pressure at regular intervals.\n- Production Supervisor informed.\n\n## Findings so far\n- The vibration trend is under review by the Production Engineer. No root cause has been identified yet.\n- No related events on this well in the previous 30 days.\n\n## Impact\n- Downtime as of this note: 2 hours.\n- Uptime on 2026-11-20 was 22 hours. Production for the day was 359.1 bbl of oil and 203.6 Mscf of gas, with water cut at 35.4%.\n- The 7-day average to 2026-11-19 was 409.3 bbl/d oil, 253.2 Mscf/d gas, water cut 33.9% and GOR 619 scf/bbl. Oil for the day is therefore below the recent average, reflecting the lost hours and the lower frequency.\n\n## Status\nThe incident remains open. W-25 is producing at 50 Hz under close monitoring.\n\n## Next actions\n1. Continue trending vibration and electrical parameters, and review at the next daily production meeting.\n2. Production Engineer to decide whether the frequency should be held, reduced further or restored.\n3. If vibration keeps rising or the unit trips, follow SOP-OPS-001 ESP Trip Response and Restart, and do not attempt repeated restarts outside its limits.\n4. Raise a workover request if the trend indicates pump deterioration.\n\n**Applicable procedure:** SOP-OPS-001 ESP Trip Response and Restart",
         "scores": {
-         "vector_similarity": 0.2727,
-         "vector_rank": 5,
+         "vector_similarity": 0.3076,
+         "vector_rank": 4,
+         "full_text_rank": 2,
+         "full_text_score": 0.6,
+         "rrf": 0.03175
+        }
+       },
+       {
+        "chunk_id": "IN-069#0",
+        "document_id": "IN-069",
+        "title": "Incident note: Flowline leak on W-36",
+        "doc_type": "incident_note",
+        "well_id": "W-36",
+        "field": "Salt Flat Field",
+        "date": "2026-11-18",
+        "section": null,
+        "text": "# Incident note: Flowline leak on W-36\n\n**Document ID:** IN-069\n**Event ID:** EV-0183\n**Note date:** 2026-11-18\n**Author:** Production Engineer\n**Well:** W-36 (Salt Flat Field, deviated, ESP)\n**Severity:** High\n**Status at note date:** Open\n\n## What happened\nDuring the routine patrol on 2026-11-18, the operator found a pinhole leak on the W-36 flowline near the manifold. The leak was reported to the control room immediately.\n\n## Immediate actions\n- W-36 was shut in and the ESP stopped.\n- The area around the leak was isolated and barricaded, and access was restricted.\n- The Lead Operator and HSE Advisor were informed.\n- The leaking section was depressurised and checked for residual hydrocarbons before any further inspection.\n\n## Findings so far\n- The leak is a single pinhole on the flowline section close to the manifold.\n- No spread of fluid beyond the isolated area has been reported.\n- The cause of the pinhole has not yet been determined. Wall thickness readings around the leak point are to be taken by the Integrity Engineer.\n\n## Impact\n- Downtime as of this note: 24 hours.\n- Production on 2026-11-18 was 0 bbl oil and 0 Mscf gas, with 0 hours of uptime.\n- Before the event, W-36 averaged 1,165.4 bbl/d oil and 1,333.1 Mscf/d gas over the 7 days to 2026-11-17, with 27% water cut and a GOR of 1,144 scf/bbl. This is the rate being deferred while the well is shut in.\n- No related events on this well in the last 30 days.\n\n## Status\nOpen. The well remains shut in and the area stays isolated. A clamp repair is pending.\n\n## Next actions\n1. Maintenance Planner to raise the work order and schedule the clamp repair.\n2. Integrity Engineer to measure wall thickness on the adjacent flowline section and assess the need for further repair.\n3. HSE Advisor to confirm permits and gas testing before repair work starts.\n4. After the repair, carry out a pressure test and a controlled restart of W-36, with the ESP started under Production Engineer supervision.\n5. Update this note when the repair is complete and the well is back online.\n\n## Procedure\nThe response follows SOP-HSE-006 Flowline Leak Response.",
+        "scores": {
+         "vector_similarity": 0.3412,
+         "vector_rank": 2,
          "full_text_rank": 5,
-         "full_text_score": 0.8,
-         "rrf": 0.03077
+         "full_text_score": 0.5,
+         "rrf": 0.03151
+        }
+       },
+       {
+        "chunk_id": "IN-068#0",
+        "document_id": "IN-068",
+        "title": "Incident note: Wellhead pressure anomaly on W-05",
+        "doc_type": "incident_note",
+        "well_id": "W-05",
+        "field": "Dune Field",
+        "date": "2026-11-15",
+        "section": null,
+        "text": "# Incident note: Wellhead pressure anomaly on W-05\n\n**Document ID:** IN-068\n**Event ID:** EV-0181\n**Note date:** 2026-11-15\n**Author:** Production Engineer\n**Well:** W-05 (Dune Field, vertical, ESP)\n**Severity:** Medium\n**Status at note date:** Open\n\n## What happened\nOn 2026-11-15 the flowing wellhead pressure on W-05 began swinging by plus or minus 60 psi with no choke change made by operations. The well stayed on production, with 3 hours of downtime logged as of this note.\n\n## Immediate actions\n- Lead Operator checked the wellhead pressure gauge against a reference gauge. The gauge reads correctly.\n- Choke setting confirmed unchanged at the wellhead.\n- Production Supervisor informed.\n- Well kept online under closer monitoring.\n\n## Findings so far\nThe swings are not a gauge fault. The working suspicion is partial choke plugging. No other cause has been confirmed yet.\n\n## Impact\n- Uptime on 2026-11-15: 21 hours.\n- Oil on the day: 620.6 bbl, against a 7-day average of 749.8 bbl/d to 2026-11-14, a shortfall of about 129 bbl.\n- Gas on the day: 556.4 Mscf, against 680.1 Mscf/d before.\n- Water cut unchanged at 30.5 percent, so the loss comes from downtime and restriction, not from a change in fluid.\n- Gas-oil ratio before the event was 907 scf/bbl.\n\n## Status at note date\nOpen. The well is producing and under monitoring. No related events on this well in the last 30 days.\n\n## Next actions\n1. Operators to log wellhead pressure at short intervals each shift and record any further swings.\n2. Production Engineer to review ESP motor current and intake data for any matching fluctuation.\n3. If swings continue or grow, plan a choke inspection and clean-out, with a short shut-in agreed with the Production Supervisor.\n4. Update this note when the cause is confirmed.\n\n**Applicable procedure:** none identified for this event type.",
+        "scores": {
+         "vector_similarity": 0.314,
+         "vector_rank": 3,
+         "full_text_rank": 4,
+         "full_text_score": 0.5,
+         "rrf": 0.0315
         }
        }
       ],
@@ -820,14 +818,15 @@
     },
     "usage": {
      "input_tokens": 8,
-     "cache_read_tokens": 26789,
-     "cache_write_tokens": 0,
-     "output_tokens": 1077,
+     "cache_read_tokens": 24246,
+     "cache_write_tokens": 4543,
+     "output_tokens": 1042,
      "steps": 3,
-     "cost_usd": 0.0135
+     "cost_usd": 0.0242
     },
-    "latency_ms": 9212,
-    "model": "claude-sonnet-5-5"
+    "latency_ms": 10134,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic"
    }
   }
  ]
