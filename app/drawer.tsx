@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { findQuote } from "@/lib/quote";
+import { TODAY } from "@/lib/synth";
 import type { SearchChunk } from "@/lib/tools";
 import { shortDate } from "./fmt";
 import { found, say, type Step } from "./human";
@@ -15,13 +16,20 @@ type Source = Final["answer"]["sources"][number];
 
 const MAX_RRF = 2 / 61;
 const TYPE: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
+function monthsBack(period = "") {
+  const from = period.slice(0, 7);
+  if (!/^\d{4}-\d{2}$/.test(from)) return 6;
+  const n = (Number(TODAY.slice(0, 4)) - Number(from.slice(0, 4))) * 12 + Number(TODAY.slice(5, 7)) - Number(from.slice(5, 7)) + 1;
+  return [6, 12, 18].find((m) => m >= n) ?? 18;
+}
+
 export function sourceHref(s: Source) {
   const { kind, id } = s;
   if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}${s.quote_verified && s.quote ? `&quote=${encodeURIComponent(s.quote)}` : ""}`;
   const [table, scope] = id.split(":");
   const name = table === "production_daily" ? "production" : table;
   const q = name === "production" ? (scope === "all" ? "" : scope) : scope;
-  return `/data?tab=tables&table=${name}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
+  return `/data?tab=tables&table=${name}${q ? `&q=${encodeURIComponent(q)}` : ""}${name === "production" ? `&months=${monthsBack(id.split(":")[2])}` : ""}`;
 }
 
 function TableSource({ s, events }: { s: Source; events: (EventRow & { description?: string })[] }) {

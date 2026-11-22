@@ -53,12 +53,18 @@ function Documents() {
 
   useEffect(() => {
     const qs = new URLSearchParams({ ...(type && { type }), ...(well && { well }) });
-    getJson<{ documents: Doc[] }>(`/api/data/documents?${qs}`).then((r) => setDocs(r.documents), (e) => setError(e.message));
+    let live = true;
+    setError("");
+    getJson<{ documents: Doc[] }>(`/api/data/documents?${qs}`).then((r) => live && setDocs(r.documents), (e) => live && setError(e.message));
+    return () => { live = false; };
   }, [type, well]);
 
   useEffect(() => {
     if (!selected) return setDetail(null);
-    getJson<{ document: Doc; chunks: Chunk[] }>(`/api/data/documents/${encodeURIComponent(selected)}`).then(setDetail, (e) => setError(e.message));
+    let live = true;
+    setError("");
+    getJson<{ document: Doc; chunks: Chunk[] }>(`/api/data/documents/${encodeURIComponent(selected)}`).then((r) => live && setDetail(r), (e) => live && setError(e.message));
+    return () => { live = false; };
   }, [selected]);
 
   useEffect(() => {
@@ -167,7 +173,7 @@ function Tables() {
   const table = params.get("table") && COLS[params.get("table")!] ? params.get("table")! : "production";
   const [q, setQ] = useState(params.get("q") ?? "");
   const [field, setField] = useState("");
-  const [months, setMonths] = useState(6);
+  const [months, setMonths] = useState(() => [6, 12, 18].find((m) => m === Number(params.get("months"))) ?? 6);
   const [rows, setRows] = useState<Row[] | null>(null);
   const [sort, setSort] = useState<[string, 1 | -1] | null>(null);
   const [error, setError] = useState("");
@@ -175,7 +181,10 @@ function Tables() {
   useEffect(() => {
     setRows(null);
     setSort(null);
-    getJson<{ rows: Row[] }>(`/api/data/tables/${table}${table === "production" ? `?months=${months}` : ""}`).then((r) => setRows(r.rows), (e) => setError(e.message));
+    setError("");
+    let live = true;
+    getJson<{ rows: Row[] }>(`/api/data/tables/${table}${table === "production" ? `?months=${months}` : ""}`).then((r) => live && setRows(r.rows), (e) => live && setError(e.message));
+    return () => { live = false; };
   }, [table, months]);
 
   const shown = useMemo(() => {

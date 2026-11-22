@@ -14,6 +14,7 @@ const series = (f: Final) => (f.answer.viz as { type: string; series?: { name: s
 const highlighted = (f: Final) => ((f.answer.viz as { highlighted?: string[] }).highlighted ?? []).slice().sort();
 const args = (c: Call) => c.args as Record<string, unknown>;
 const sentences = (text: string) => text.replace(/\s*\[\d+\]/g, "").trim().split(/(?<=[.!?])\s+(?=["(A-Z0-9])/).filter(Boolean).length;
+const THREE: Check = ["answer has exactly 3 sentences", (f) => sentences(f.answer.answer) === 3];
 const SHORT: Check = ["answer has 2 to 4 sentences", (f) => { const n = sentences(f.answer.answer); return n >= 2 && n <= 4; }];
 
 type Out = { ref?: string; series?: { name: string; points: { x: string; y: number }[] }[]; rows?: Record<string, unknown>[]; events?: Record<string, unknown>[] };
@@ -80,10 +81,14 @@ function plottedCall(f: Final, calls: Call[], results: AskEvent[]) {
 }
 const points = (f: Final) => (f.answer.viz as { series?: { points: { y: number }[] }[] }).series?.[0]?.points ?? [];
 
+const sandEventOpen = (results: AskEvent[]) =>
+  results.some((r) => ((r as { output?: { events?: { well_id: string; type: string; status: string }[] } }).output?.events ?? []).some((e) => e.well_id === "W-34" && /sand/i.test(e.type) && e.status === "open"));
+
 const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[0],
     checks: [
+      THREE,
       CITES_A_DOCUMENT,
       ["viz is a map", (f) => f.answer.viz.type === "map"],
       ["highlights exactly W-05, W-12, W-25, W-34, W-36", (f) => highlighted(f).join(",") === "W-05,W-12,W-25,W-34,W-36"],
@@ -93,6 +98,7 @@ const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[1],
     checks: [
+      THREE,
       CITES_A_DOCUMENT,
       [`cites the W-17 incident note (${W17_NOTE})`, (f) => cites(f, W17_NOTE)],
       ["answer dates the outage in March 2026", (f) => /March/.test(f.answer.answer) && /2026/.test(f.answer.answer)],
@@ -120,8 +126,9 @@ const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[4],
     checks: [
+      THREE,
       CITES_A_DOCUMENT,
-      ["finds the open W-34 alarm", (f, _, results) => /W-34/.test(f.answer.answer) && /open/i.test(f.answer.answer) && JSON.stringify(results).includes('"status":"open"')],
+      ["finds the open W-34 alarm", (f, _, results) => /W-34/.test(f.answer.answer) && /\b(still|is) open\b/i.test(f.answer.answer) && sandEventOpen(results)],
       [`cites the sand alarm incident note (${SAND_NOTE})`, (f) => cites(f, SAND_NOTE)],
       ["cites the sand procedure (SOP-OPS-002)", (f) => cites(f, "SOP-OPS-002")],
     ],

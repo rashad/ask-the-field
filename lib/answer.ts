@@ -137,9 +137,12 @@ function routerMeta(steps: { providerMetadata?: unknown }[]) {
 }
 
 async function withWells(viz: Extract<Answer["viz"], { type: "map" }>) {
-  const wells = await sql<{ well_id: string; field: string; lat: number; lon: number; status: string }[]>`
+  const query = (ids: string[]) => sql<{ well_id: string; field: string; lat: number; lon: number; status: string }[]>`
     SELECT well_id, field, lat, lon, status FROM wells
-    ${viz.well_ids.length ? sql`WHERE field IN (SELECT field FROM wells WHERE well_id = ANY(${[...viz.well_ids, ...viz.highlighted]}))` : sql``} ORDER BY well_id`;
+    ${ids.length ? sql`WHERE field IN (SELECT field FROM wells WHERE well_id = ANY(${ids}))` : sql``} ORDER BY well_id`;
+  const ids = viz.well_ids.length ? [...viz.well_ids, ...viz.highlighted] : [];
+  let wells = await query(ids);
+  if (!wells.length) wells = await query([]);
   const highlighted = new Set(viz.highlighted);
   return { ...viz, wells: wells.map((w) => ({ ...w, highlighted: highlighted.has(w.well_id) })) };
 }

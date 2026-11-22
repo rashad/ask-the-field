@@ -172,7 +172,9 @@ function MapViz({ viz, events }: { viz: Extract<Viz, { type: "map" }>; events: E
   );
 }
 
-function BarViz({ viz }: { viz: Extract<Viz, { type: "bar" }> }) {
+function BarViz({ viz: raw }: { viz: Extract<Viz, { type: "bar" }> }) {
+  const fraction = /fraction/.test(raw.unit);
+  const viz = fraction ? { ...raw, unit: raw.unit.replace("fraction change", "points change").replace("fraction", "%"), bars: raw.bars.map((b) => ({ ...b, value: Number((b.value * 100).toFixed(1)) })) } : raw;
   const max = Math.max(...viz.bars.map((b) => Math.abs(b.value)), 1e-9);
   return (
     <>
@@ -185,7 +187,7 @@ function BarViz({ viz }: { viz: Extract<Viz, { type: "bar" }> }) {
               <rect width="400" height="24" fill="#E4E6EB" />
               <rect width={(400 * Math.abs(b.value)) / max} height="24" fill="#0B1B3A" fillOpacity={i === 0 ? 1 : 0.55} />
             </svg>
-            <div className="val"><span className="mono body-5">{b.value > 0 && /%|change/i.test(viz.unit) ? "+" : ""}{fmt(b.value)}</span><span className="mono caption-4 mute">{viz.unit}</span></div>
+            <div className="val"><span className="mono body-5">{b.value > 0 && /change/i.test(viz.unit) ? "+" : ""}{fraction ? b.value.toFixed(1) : fmt(b.value)}</span><span className="mono caption-4 mute">{viz.unit}</span></div>
           </li>
         ))}
       </ol>

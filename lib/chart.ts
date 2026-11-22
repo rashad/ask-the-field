@@ -65,6 +65,7 @@ function eventBars(req: Extract<ChartRequest, { type: "bar" }>, out: { events: E
     return { label: `${wells}, ${when}`, value: values.reduce((a, b) => a + b, 0), ids: [...ids] };
   });
   bars.sort((a, b) => b.value - a.value);
+  for (const b of bars) if (b.ids.length === 1 && bars.filter((x) => x.label === b.label).length > 1) b.label += ` (${b.ids[0]})`;
   return { type: "bar", title: req.title, unit: EVENT_UNIT[metric], ref: req.ref, metric, bars: bars.slice(0, MAX_BARS) };
 }
 
