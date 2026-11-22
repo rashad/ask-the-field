@@ -22,7 +22,9 @@ flowchart TD
     W --> DB
     S --> H[Hybrid search: vector + full text, RRF k=60]
     H --> DB
-    C --> A[Structured answer: text, chart or map, sources, confidence, could-not-verify]
+    C --> A[Structured answer: text, chart or map request, sources, confidence, could-not-verify]
+    A --> V[Server: lib/chart.ts builds the chart from the referenced tool rows; lib/quote.ts checks each quote word for word]
+    V --> U[UI: answer, chart, sources, how it was built]
 ```
 
 - The API (`POST /api/ask`) runs `streamText` from the Vercel AI SDK with `claude-sonnet-5-5` and returns a final answer as a typed object. Events stream as NDJSON: tool calls, tool results, then the answer.
@@ -35,7 +37,7 @@ flowchart TD
 
 ## Data
 
-- 3 fields, 41 wells, 18 months of daily production (2025-05-23 to 2026-11-22), and maintenance and incident events. A seeded script generates them (`lib/synth.ts`), so the output is deterministic.
+- 3 fields, 41 wells, 18 months of daily production (2025-05-23 to 2026-11-22), and maintenance and incident events. A seeded script generates them (`lib/synth.ts`), so the output is deterministic. The briefing stories are planted on purpose in `lib/synth.ts`: a bad ESP pump batch (7Q-0419) behind failures on W-09, W-17 and W-27, a water cut rise in Wadi Field, an open sand alarm on W-34 and this morning's other open incidents. The five briefing questions have real answers because of them; everything else is seeded noise.
 - About 400 documents in `data/docs/*.md` (incident notes, reports and similar), written by Claude from the structured data, with YAML front matter.
 - Chunking (`lib/chunker.ts`): structure-aware. It splits on headings, then paragraphs, then sentences, to about 500 tokens with no overlap. Documents under 600 tokens stay whole. Token counts are approximate (characters divided by 4).
 - `data/dump.sql.gz` is the indexed database (chunks and embeddings included), so you do not need any key to run the app.
@@ -119,7 +121,7 @@ Multi-model run on 2026-11-22, 5 questions, 3 runs each, 108 checks per model. C
 
 ```
 app/          Next.js App Router: Ask page, Data browser, About page, API routes
-lib/          synth, chunker, voyage, search, tools, answer, cache, guard
+lib/          domain, synth, chunker, voyage, search, tools, prompt, answer, chart, quote, morning, money, questions, cache, guard, db
 scripts/      seed, gen-docs, ingest, search (smoke), eval, dump, restore
 db/           schema.sql (wells, production_daily, events, documents, chunks)
 data/docs/    generated documents

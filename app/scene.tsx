@@ -3,12 +3,12 @@ import { ArrowRight, BookOpenText, ChartLine, FileText, MapTrifold, Play, Repeat
 import { about, PRICE_NOTE, usd } from "@/lib/money";
 import { longDate } from "@/lib/domain";
 import { SUGGESTED } from "@/lib/questions";
-import type { MapWell, Morning } from "@/lib/stakes";
+import type { Morning, SnapshotWell } from "@/lib/morning";
 import { Term, GLOSSARY, type TermKey } from "./term";
 
 const n = (x: number) => x.toLocaleString("en-US");
 
-function FieldMap({ wells }: { wells: MapWell[] }) {
+function FieldMap({ wells }: { wells: SnapshotWell[] }) {
   const W = 300, H = 168, P = 20;
   const centre = new Map([...new Set(wells.map((w) => w.field))].map((f) => {
     const fw = wells.filter((w) => w.field === f);
@@ -21,7 +21,7 @@ function FieldMap({ wells }: { wells: MapWell[] }) {
   const kx = Math.cos(((minLat + maxLat) / 2) * (Math.PI / 180));
   const scale = Math.min((W - 2 * P - 150) / ((maxLon - minLon) * kx), (H - 2 * P - 10) / (maxLat - minLat));
   const ox = (W - (maxLon - minLon) * kx * scale) / 2, oy = (H - (maxLat - minLat) * scale) / 2 - 4;
-  const xy = (w: MapWell) => { const [la, lo] = pos.get(w.well_id)!; return [ox + (lo - minLon) * kx * scale, H - oy - (la - minLat) * scale] as const; };
+  const xy = (w: SnapshotWell) => { const [la, lo] = pos.get(w.well_id)!; return [ox + (lo - minLon) * kx * scale, H - oy - (la - minLat) * scale] as const; };
   const fields = [...new Set(wells.map((w) => w.field))].map((f) => {
     const pts = wells.filter((w) => w.field === f).map(xy);
     const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);

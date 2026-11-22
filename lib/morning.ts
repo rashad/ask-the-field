@@ -2,7 +2,7 @@ import { sql } from "./db";
 import { TODAY } from "./domain";
 import { lostOil } from "./tools";
 
-export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; open_incident: boolean }
+export interface SnapshotWell { well_id: string; field: string; lat: number; lon: number; status: string; open_incident: boolean }
 
 export interface Morning {
   today: string;
@@ -14,7 +14,7 @@ export interface Morning {
   open_incidents: number;
   shut_in_by_incident: number;
   lost_month_bbl: number;
-  wells: MapWell[];
+  wells: SnapshotWell[];
   stakes: {
     w17_lost_bbl: number;
     w17_days: number;
@@ -40,12 +40,12 @@ export async function morning(): Promise<Morning> {
       (SELECT count(*)::int FROM events e JOIN wells w USING (well_id) WHERE e.category = 'incident' AND e.status = 'open' AND w.status = 'shut_in') AS shut_in_by_incident,
       (WITH base AS (SELECT well_id, avg(oil_bbl) AS b FROM production_daily WHERE uptime_hours = 24 AND date BETWEEN ${month}::date - 30 AND ${month}::date - 1 GROUP BY 1)
        SELECT sum(b * (24 - uptime_hours) / 24) FROM production_daily JOIN base USING (well_id) WHERE date BETWEEN ${month} AND ${yesterday}) AS lost_month`,
-    sql<MapWell[]>`SELECT w.well_id, w.field, w.lat, w.lon, w.status,
+    sql<SnapshotWell[]>`SELECT w.well_id, w.field, w.lat, w.lon, w.status,
       EXISTS (SELECT 1 FROM events e WHERE e.well_id = w.well_id AND e.category = 'incident' AND e.status = 'open') AS open_incident
       FROM wells w ORDER BY w.well_id`,
     sql`SELECT sum(${lostOil()})::int AS lost, (max(e.end_date) - min(e.start_date) + 1)::int AS days FROM events e
       WHERE e.well_id = 'W-17' AND e.start_date BETWEEN '2026-03-01' AND '2026-03-31' AND e.type ILIKE '%ESP%'`,
-    sql`SELECT sum(lost)::int AS lost FROM (
+    sql`SELECT sum(lost)::int AS lost, (SELECT count(*)::int FROM events WHERE type ILIKE '%ESP replacement%') AS workovers FROM (
       SELECT e.event_id, ${lostOil()} AS lost FROM events e WHERE e.type ILIKE '%ESP replacement%'
       UNION ALL
       SELECT e.event_id, ${lostOil()} FROM events e WHERE e.category = 'incident' AND EXISTS (
@@ -57,7 +57,6 @@ export async function morning(): Promise<Morning> {
     sql`SELECT e.well_id, e.start_date::text AS since, (${TODAY}::date - e.start_date)::int AS days FROM events e
       WHERE e.type ILIKE '%sand%' AND e.status = 'open' ORDER BY e.start_date LIMIT 1`,
   ]);
-  const esp_workovers = (await sql`SELECT count(*)::int AS n FROM events WHERE type ILIKE '%ESP replacement%'`)[0].n;
   return {
     today: TODAY,
     yesterday,
@@ -72,7 +71,7 @@ export async function morning(): Promise<Morning> {
     stakes: {
       w17_lost_bbl: w17.lost,
       w17_days: w17.days,
-      esp_workovers,
+      esp_workovers: esp.workovers,
       esp_lost_bbl: esp.lost,
       wadi_wc_january: Math.round(wc.january * 100),
       wadi_wc_now: Math.round(wc.now * 100),

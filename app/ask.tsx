@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { usd } from "@/lib/money";
 import { DEMO, SUGGESTED } from "@/lib/questions";
-import type { Morning } from "@/lib/stakes";
+import type { Morning } from "@/lib/morning";
 import { Drawer } from "./drawer";
 import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
 import { Briefing, Scene } from "./scene";

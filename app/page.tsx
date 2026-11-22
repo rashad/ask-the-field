@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 import { Suspense } from "react";
-import { morning } from "@/lib/stakes";
+import { morning } from "@/lib/morning";
 import { Ask } from "./ask";
 
 async function WithMorning() {
