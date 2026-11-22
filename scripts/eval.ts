@@ -1,4 +1,5 @@
-import { ask, SUGGESTED, type AskEvent } from "../lib/answer";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { ask, MODEL, SUGGESTED, type AskEvent } from "../lib/answer";
 import { record } from "../lib/cache";
 import { sql } from "../lib/db";
 import { findQuote } from "../lib/quote";
@@ -101,57 +102,125 @@ const CASES: { question: string; checks: Check[] }[] = [
   },
 ];
 
+const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
 const recordCache = process.argv.includes("--record");
-const only = process.argv.find((a) => a.startsWith("--only="))?.slice(7);
-let passed = 0;
-let total = 0;
-const runs: { latency: number; cost: number }[] = [];
+const save = process.argv.includes("--save");
+const only = arg("only");
+const model = arg("model") ?? MODEL;
+const runCount = Number(arg("runs") ?? 1);
+if (recordCache && model !== MODEL) {
+  console.error(`--record keeps data/cache on the production model (${MODEL}); drop --model or --record.`);
+  process.exit(2);
+}
 
-for (const [i, c] of CASES.entries()) {
-  if (only && !only.split(",").includes(String(i + 1))) continue;
-  console.log(`\n[${i + 1}] ${c.question}`);
-  const t0 = Date.now();
-  const events: { t: number; event: AskEvent }[] = [];
-  try {
-    for await (const event of ask(c.question)) events.push({ t: Date.now() - t0, event });
-  } catch (err) {
-    console.log(`  ERROR ${(err as Error).message}`);
-    for (const { event } of events) if (event.type === "tool-call" || event.type === "tool-error") console.log(`    ${event.type} ${JSON.stringify(event).slice(0, 400)}`);
-    [...c.checks, ...COMMON].forEach(([name]) => console.log(`  FAIL ${name}`));
-    total += c.checks.length + COMMON.length;
-    continue;
-  }
-  const evs = events.map((e) => e.event);
-  const final = evs.find((e): e is Final => e.type === "final")!;
-  const calls = evs.filter((e): e is Call => e.type === "tool-call");
-  const results = evs.filter((e) => e.type === "tool-result");
-  let ok = true;
-  for (const [name, fn] of [...c.checks, ...COMMON]) {
-    const pass = fn(final, calls, results);
-    ok &&= pass;
-    passed += Number(pass);
-    total++;
-    console.log(`  ${pass ? "PASS" : "FAIL"} ${name}`);
-  }
-  const u = final.usage;
-  runs.push({ latency: final.latency_ms, cost: u.cost_usd });
-  console.log(`  latency ${(final.latency_ms / 1000).toFixed(1)}s, steps ${u.steps}, tokens in ${u.input_tokens} + cache read ${u.cache_read_tokens} + cache write ${u.cache_write_tokens}, out ${u.output_tokens}, cost $${u.cost_usd}`);
-  const repeats = calls.length - new Set(calls.map((c) => c.name + JSON.stringify(c.args))).size;
-  console.log(`  tools (${calls.length}, ${repeats} repeated): ${calls.map((c) => c.label).join(" | ")}`);
-  console.log(`  sentences: ${sentences(final.answer.answer)}${final.trace.some((t) => t.full_text_only) ? ", search ran full text only" : ""}`);
-  console.log(`  viz: ${final.answer.viz.type}, confidence: ${final.answer.confidence}, sources: ${final.answer.sources.map((s) => s.id).join(", ")}`);
-  console.log(`  answer: ${final.answer.answer}`);
-  if (final.answer.could_not_verify) console.log(`  not verified: ${final.answer.could_not_verify}`);
-  if (final.checks.unknown_chunk_ids.length || final.checks.refs_without_source.length || final.checks.viz_error || final.checks.unverified_quotes.length) console.log(`  grounding: ${JSON.stringify(final.checks)}`);
-  for (const s of final.answer.sources.filter((x) => x.quote_verified === false)) console.log(`  quote not found [${s.n}] ${s.id}: ${s.quote}`);
-  if (recordCache && ok && SUGGESTED.includes(c.question)) {
-    record(c.question, events);
-    console.log("  recorded to data/cache");
+type Price = { prompt: string; completion: string; input_cache_read?: string; input_cache_write?: string };
+const routerPrice = model.startsWith("claude-")
+  ? null
+  : ((await (await fetch("https://openrouter.ai/api/v1/models")).json()) as { data: { id: string; pricing: Price }[] }).data.find((m) => m.id === model)?.pricing ?? null;
+function costOf(u: Final["usage"]) {
+  if (u.cost_usd !== null || !routerPrice) return { cost: u.cost_usd, source: model.startsWith("claude-") ? "claude price table" : "openrouter usage" };
+  const p = (k: keyof Price) => Number(routerPrice[k] ?? routerPrice.prompt);
+  const cost = u.input_tokens * p("prompt") + u.cache_read_tokens * p("input_cache_read") + u.cache_write_tokens * p("input_cache_write") + u.output_tokens * p("completion");
+  return { cost: Number(cost.toFixed(4)), source: "openrouter price list" };
+}
+
+interface Run {
+  question: number;
+  run: number;
+  error?: string;
+  checks: { name: string; pass: boolean }[];
+  latency_ms?: number;
+  tool_calls?: number;
+  provider?: string;
+  usage?: Final["usage"];
+  cost_usd?: number | null;
+  cost_source?: string;
+  answer?: Final["answer"];
+}
+const results: Run[] = [];
+
+for (let run = 1; run <= runCount; run++) {
+  for (const [i, c] of CASES.entries()) {
+    if (only && !only.split(",").includes(String(i + 1))) continue;
+    console.log(`\n[${i + 1}${runCount > 1 ? `, run ${run}` : ""}] ${c.question}`);
+    const t0 = Date.now();
+    const events: { t: number; event: AskEvent }[] = [];
+    try {
+      for await (const event of ask(c.question, undefined, model)) events.push({ t: Date.now() - t0, event });
+    } catch (err) {
+      const message = (err as Error).message;
+      console.log(`  ERROR ${message}`);
+      for (const { event } of events) if (event.type === "tool-call" || event.type === "tool-error") console.log(`    ${event.type} ${JSON.stringify(event).slice(0, 400)}`);
+      [...c.checks, ...COMMON].forEach(([name]) => console.log(`  FAIL ${name}`));
+      results.push({ question: i + 1, run, error: message, checks: [...c.checks, ...COMMON].map(([name]) => ({ name, pass: false })) });
+      continue;
+    }
+    const evs = events.map((e) => e.event);
+    const final = evs.find((e): e is Final => e.type === "final")!;
+    const calls = evs.filter((e): e is Call => e.type === "tool-call");
+    const toolResults = evs.filter((e) => e.type === "tool-result");
+    const checks = [...c.checks, ...COMMON].map(([name, fn]) => ({ name, pass: fn(final, calls, toolResults) }));
+    for (const ch of checks) console.log(`  ${ch.pass ? "PASS" : "FAIL"} ${ch.name}`);
+    const u = final.usage;
+    const { cost, source } = costOf(u);
+    results.push({ question: i + 1, run, checks, latency_ms: final.latency_ms, tool_calls: calls.length, provider: final.provider, usage: u, cost_usd: cost, cost_source: source, answer: final.answer });
+    console.log(`  latency ${(final.latency_ms / 1000).toFixed(1)}s, steps ${u.steps}, tokens in ${u.input_tokens} + cache read ${u.cache_read_tokens} + cache write ${u.cache_write_tokens}, out ${u.output_tokens}, cost ${cost === null ? "unknown" : `$${cost}`}`);
+    const repeats = calls.length - new Set(calls.map((c) => c.name + JSON.stringify(c.args))).size;
+    console.log(`  tools (${calls.length}, ${repeats} repeated): ${calls.map((c) => c.label).join(" | ")}`);
+    console.log(`  sentences: ${sentences(final.answer.answer)}${final.trace.some((t) => t.full_text_only) ? ", search ran full text only" : ""}`);
+    console.log(`  viz: ${final.answer.viz.type}, confidence: ${final.answer.confidence}, sources: ${final.answer.sources.map((s) => s.id).join(", ")}`);
+    console.log(`  answer: ${final.answer.answer}`);
+    if (final.answer.could_not_verify) console.log(`  not verified: ${final.answer.could_not_verify}`);
+    if (final.checks.unknown_chunk_ids.length || final.checks.refs_without_source.length || final.checks.viz_error || final.checks.unverified_quotes.length) console.log(`  grounding: ${JSON.stringify(final.checks)}`);
+    for (const s of final.answer.sources.filter((x) => x.quote_verified === false)) console.log(`  quote not found [${s.n}] ${s.id}: ${s.quote}`);
+    if (recordCache && checks.every((ch) => ch.pass) && SUGGESTED.includes(c.question)) {
+      record(c.question, events);
+      console.log("  recorded to data/cache");
+    }
   }
 }
 
-const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / (xs.length || 1);
-console.log(`\n${passed}/${total} checks passed. Average latency ${(avg(runs.map((r) => r.latency)) / 1000).toFixed(1)}s, average cost $${avg(runs.map((r) => r.cost)).toFixed(4)} per question.`);
+const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+const round = (x: number | null, d = 0) => (x === null ? null : Number(x.toFixed(d)));
+const done = results.filter((r) => !r.error);
+const all = results.flatMap((r) => r.checks);
+const passed = all.filter((ch) => ch.pass).length;
+const failures: Record<string, number> = {};
+for (const ch of all) if (!ch.pass) failures[ch.name] = (failures[ch.name] ?? 0) + 1;
+const costs = done.map((r) => r.cost_usd).filter((x): x is number => typeof x === "number");
+const summary = {
+  status: results.length && !done.length ? "unsupported" : "ok",
+  error: results.length && !done.length ? results[0].error : undefined,
+  checks_passed: passed,
+  checks_total: all.length,
+  per_question: [...new Set(results.map((r) => r.question))].map((q) => {
+    const qs = results.filter((r) => r.question === q).flatMap((r) => r.checks);
+    return { question: q, passed: qs.filter((ch) => ch.pass).length, total: qs.length };
+  }),
+  failures,
+  errors: results.length - done.length,
+  latency_ms_mean: round(mean(done.map((r) => r.latency_ms!))),
+  latency_ms_max: done.length ? Math.max(...done.map((r) => r.latency_ms!)) : null,
+  steps_mean: round(mean(done.map((r) => r.usage!.steps)), 2),
+  tool_calls_mean: round(mean(done.map((r) => r.tool_calls!)), 2),
+  input_tokens_mean: round(mean(done.map((r) => r.usage!.input_tokens))),
+  cache_read_tokens_mean: round(mean(done.map((r) => r.usage!.cache_read_tokens))),
+  cache_write_tokens_mean: round(mean(done.map((r) => r.usage!.cache_write_tokens))),
+  output_tokens_mean: round(mean(done.map((r) => r.usage!.output_tokens))),
+  cost_usd_mean: round(mean(costs), 4),
+  cost_usd_total: round(costs.reduce((a, b) => a + b, 0), 4),
+  prompt_caching: done.some((r) => r.usage!.cache_read_tokens > 0),
+};
+
+console.log(`\n${model}: ${passed}/${all.length} checks passed${summary.errors ? `, ${summary.errors} runs failed with an error` : ""}. Mean latency ${((summary.latency_ms_mean ?? 0) / 1000).toFixed(1)}s, mean cost ${summary.cost_usd_mean === null ? "unknown" : `$${summary.cost_usd_mean.toFixed(4)}`} per question.`);
+if (save) {
+  const date = new Date().toISOString().slice(0, 10);
+  const file = `evals/${date}-${model.replace(/\//g, "-")}.json`;
+  mkdirSync("evals", { recursive: true });
+  const providers = [...new Set(done.map((r) => r.provider).filter(Boolean))];
+  writeFileSync(file, JSON.stringify({ date, model, providers, openrouter_pricing: routerPrice, runs: runCount, command: `pnpm eval --model=${model} --runs=${runCount} --save`, summary, results }, null, 2) + "\n");
+  console.log(`saved ${file}`);
+}
 if (recordCache) saveQueryCache();
 await sql.end();
-process.exit(passed === total ? 0 : 1);
+process.exit(passed === all.length ? 0 : 1);
