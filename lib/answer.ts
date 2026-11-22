@@ -6,7 +6,7 @@ import { BAR_METRICS, buildChart, type Chart } from "./chart";
 import { sql } from "./db";
 import { findQuote } from "./quote";
 import { SYSTEM } from "./prompt";
-import { makeTools, type SearchTrace, type ToolRun } from "./tools";
+import { makeTools, type RepeatedResult, type SearchTrace, type ToolRun } from "./tools";
 
 export const MODEL = process.env.ASK_MODEL || "claude-sonnet-5-5";
 const MAX_STEPS = 4;
@@ -171,17 +171,16 @@ function check(a: Answer, sources: FinalSource[], traces: SearchTrace[], vizErro
 }
 
 const repeated = (step?: { toolResults: { output: unknown }[] }) =>
-  !!step?.toolResults.length && step.toolResults.some((r) => (r.output as { repeated?: boolean })?.repeated);
+  !!step?.toolResults.length && step.toolResults.some((r) => (r.output as Partial<RepeatedResult>)?.repeated);
 
 export async function* ask(question: string, signal?: AbortSignal, model = MODEL): AsyncGenerator<AskEvent> {
   const t0 = Date.now();
-  const traces: SearchTrace[] = [];
-  const runs: ToolRun[] = [];
+  const { tools, runs, traces } = makeTools();
   const result = streamText({
     model: isClaude(model) ? anthropic(model) : openrouter(model, { usage: { include: true } }),
     instructions: SYSTEM,
     prompt: question,
-    tools: makeTools(traces, runs),
+    tools,
     output: Output.object({ name: "answer", schema: answerSchema }),
     stopWhen: isStepCount(MAX_STEPS),
     prepareStep: ({ stepNumber, steps }) => (stepNumber === MAX_STEPS - 1 || repeated(steps.at(-1)) ? { toolChoice: "none" } : {}),
