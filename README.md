@@ -4,7 +4,9 @@ A concept RAG app that answers questions about upstream oil and gas operations. 
 
 Live demo: https://askthefield.darmina.com
 
-![Ask the Field](docs/screenshot.png)
+![Ask the Field: the morning briefing](docs/screenshot.png)
+
+![An answer that links three pump failures from the same batch](docs/answer.png)
 
 ## How it works
 
@@ -37,7 +39,7 @@ flowchart TD
 - Chunking (`lib/chunker.ts`): structure-aware. It splits on headings, then paragraphs, then sentences, to about 500 tokens with no overlap. Documents under 600 tokens stay whole. Token counts are approximate (characters divided by 4).
 - `data/dump.sql.gz` is the indexed database (chunks and embeddings included), so you do not need any key to run the app.
 
-Field names: Dune Field, Wadi Field and Salt Flat Field. The committed code and data may still use the older names (Field A, Field B, Bayda) until the rename lands. Not verified.
+Field names: Dune Field, Wadi Field and Salt Flat Field.
 
 ## Quick start without keys
 
@@ -75,7 +77,7 @@ pnpm ingest        # chunk, embed with voyage-4, upsert; only new or changed doc
 pnpm db:dump       # rewrite data/dump.sql.gz
 ```
 
-`pnpm gen:docs --dry --list` prints the plan without calling the API. `gen:docs` and `ingest` need `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` in the environment. `gen:docs` makes one Claude call per document, about 400 calls with `claude-sonnet-5-5`, and logs token usage to `data/.gen-usage.jsonl`. I did not measure the total cost. Check the log after a run.
+`pnpm gen:docs --dry --list` prints the plan without calling the API. `gen:docs` and `ingest` need `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` in the environment. `gen:docs` makes one Claude call per document, about 400 calls with `claude-sonnet-5-5`, and logs token usage to `data/.gen-usage.jsonl`. A full run cost about $3.70. Embedding the ~480 chunks with Voyage fits in its free tier.
 
 ## Evals
 
