@@ -17,31 +17,31 @@ const isClaude = (model: string) => model.startsWith("claude-");
 
 export { SUGGESTED } from "./questions";
 
-const wellId = z.string().describe("Well id such as W-17");
+const wellId = z.string().max(10).describe("Well id such as W-17");
 
 export const answerSchema = z.object({
-  answer: z.string().describe("2 to 4 sentences, at most 80 words. Cite with [n] markers that match sources[].n."),
+  answer: z.string().max(1000).describe("2 to 4 sentences, at most 80 words. Cite with [n] markers that match sources[].n."),
   viz: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("map"),
-      title: z.string(),
-      well_ids: z.array(wellId).describe("Wells the map is about; the map draws every well of their fields. Empty means every well"),
-      highlighted: z.array(wellId).describe("Wells the answer is about"),
+      title: z.string().max(120),
+      well_ids: z.array(wellId).max(41).describe("Wells the map is about; the map draws every well of their fields. Empty means every well"),
+      highlighted: z.array(wellId).max(41).describe("Wells the answer is about"),
     }),
     z.object({
       type: z.literal("line"),
-      title: z.string(),
+      title: z.string().max(120),
       ref: z.string().describe("ref of a query_production time series result (group_by day, week, month or quarter), such as P1"),
       metric: z.enum(["oil", "gas", "water_cut"]).describe("The metric the chart shows; it must be the metric of that result"),
-      series: z.array(z.string()).describe("Names of the series to plot; empty for all"),
+      series: z.array(z.string().max(60)).max(10).describe("Names of the series to plot; empty for all"),
     }),
     z.object({
       type: z.literal("bar"),
-      title: z.string(),
+      title: z.string().max(120),
       ref: z.string().describe("ref of a query_production group_by=well result (P1) or of a list_events result (E1)"),
       metric: z.enum(BAR_METRICS).describe("query_production: value, change or change_pct. list_events: lost_oil_bbl, lost_revenue_usd or downtime_hours"),
-      wells: z.array(wellId).describe("query_production: the wells to plot; empty for the top 10"),
-      event_groups: z.array(z.array(z.string())).describe("list_events: one bar per group of event ids, such as a failure and its workover on the same well; empty for one bar per event"),
+      wells: z.array(wellId).max(41).describe("query_production: the wells to plot; empty for the top 10"),
+      event_groups: z.array(z.array(z.string().max(20)).max(10)).max(20).describe("list_events: one bar per group of event ids, such as a failure and its workover on the same well; empty for one bar per event"),
     }),
     z.object({ type: z.literal("none") }),
   ]),
@@ -49,13 +49,13 @@ export const answerSchema = z.object({
     z.object({
       n: z.number().int(),
       kind: z.enum(["table", "chunk"]),
-      id: z.string().describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>"),
-      label: z.string(),
-      quote: z.string().nullable().describe("chunk: one sentence or one table row copied word for word from that chunk's text, under 200 characters, that supports the claim. table: null"),
+      id: z.string().max(120).describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>"),
+      label: z.string().max(200),
+      quote: z.string().max(400).nullable().describe("chunk: one sentence or one table row copied word for word from that chunk's text, under 200 characters, that supports the claim. table: null"),
     }),
-  ),
+  ).max(20),
   confidence: z.enum(["high", "medium", "low"]),
-  could_not_verify: z.string().nullable().describe("One sentence on what the data could not confirm, or null"),
+  could_not_verify: z.string().max(400).nullable().describe("One sentence on what the data could not confirm, or null"),
 });
 
 export type Answer = z.infer<typeof answerSchema>;
@@ -207,7 +207,7 @@ export async function* ask(question: string, signal?: AbortSignal, model = MODEL
     output: Output.object({ name: "answer", schema: answerSchema }),
     stopWhen: isStepCount(MAX_STEPS),
     prepareStep: ({ stepNumber, steps }) => (stepNumber === MAX_STEPS - 1 || repeated(steps.at(-1)) ? { toolChoice: "none" } : {}),
-    maxOutputTokens: 16000,
+    maxOutputTokens: 3000,
     maxRetries: 1,
     abortSignal: signal,
     providerOptions: isClaude(model) ? { anthropic: { effort: "low", cacheControl: { type: "ephemeral" } } } : {},
