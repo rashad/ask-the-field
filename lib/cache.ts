@@ -23,12 +23,12 @@ export function record(question: string, events: { t: number; event: AskEvent }[
   writeFileSync(path(question), JSON.stringify(rec, null, 1) + "\n");
 }
 
-export async function* replay(question: string, reason: string, signal?: AbortSignal): AsyncGenerator<AskEvent> {
+export async function* replay(question: string, reason: string, signal?: AbortSignal, maxGap = MAX_GAP_MS): AsyncGenerator<AskEvent> {
   const rec: Recording = JSON.parse(readFileSync(path(question), "utf8"));
   let last = 0;
   for (const { t, event } of rec.events) {
     if (signal?.aborted) return;
-    await new Promise((r) => setTimeout(r, Math.min(t - last, MAX_GAP_MS)));
+    await new Promise((r) => setTimeout(r, Math.min(t - last, maxGap)));
     last = t;
     yield event.type === "start" ? { ...event, mode: "cache", reason } : event;
   }
