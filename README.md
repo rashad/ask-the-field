@@ -62,6 +62,8 @@ Copy the names from `.env.example` into a `.env.local` file and set your values.
 | --- | --- |
 | `ANTHROPIC_API_KEY` | Claude answers and document generation |
 | `VOYAGE_API_KEY` | Query and document embeddings |
+| `ASK_MODEL` | Model for answers. Default `claude-sonnet-5-5`. `claude-*` ids call Anthropic directly; any other id is an OpenRouter model id |
+| `OPENROUTER_API_KEY` | Only for a non-Claude `ASK_MODEL` or `pnpm eval --model=<openrouter id>` |
 | `DATABASE_URL` | Postgres URL. Default: `postgres://opsrag:opsrag@localhost:5442/opsrag` |
 | `RATE_LIMIT_PER_MINUTE` | Questions per IP per minute. Default 6 |
 | `LLM_DAILY_CAP` | Live questions per day. Default 300 |

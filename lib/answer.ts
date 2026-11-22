@@ -1,4 +1,5 @@
 import { anthropic } from "@ai-sdk/anthropic";
+import { openrouter } from "@openrouter/ai-sdk-provider";
 import { isStepCount, Output, streamText, type LanguageModelUsage } from "ai";
 import { z } from "zod";
 import { BAR_METRICS, buildChart, type Chart, type ToolRun } from "./chart";
@@ -6,9 +7,13 @@ import { sql } from "./db";
 import { findQuote } from "./quote";
 import { DATA_START, makeTools, TODAY, type SearchTrace } from "./tools";
 
-export const MODEL = "claude-sonnet-5-5";
+export const MODEL = process.env.ASK_MODEL || "claude-sonnet-5-5";
 const MAX_STEPS = 4;
-const PRICE = { input: 2, cacheRead: 0.1, cacheWrite: 2.5, output: 10 };
+export const CLAUDE_PRICES: Record<string, { input: number; cacheRead: number; cacheWrite: number; output: number }> = {
+  "claude-sonnet-5-5": { input: 2, cacheRead: 0.1, cacheWrite: 2.5, output: 10 },
+  "claude-haiku-5-5": { input: 0.1, cacheRead: 0.01, cacheWrite: 0.125, output: 0.5 },
+};
+const isClaude = (model: string) => model.startsWith("claude-");
 
 export { SUGGESTED } from "./questions";
 
@@ -87,7 +92,7 @@ export type AskEvent =
   | { type: "tool-call"; id: string; name: string; args: unknown; label: string }
   | { type: "tool-result"; id: string; name: string; output: unknown }
   | { type: "tool-error"; id: string; name: string; error: string }
-  | { type: "final"; answer: Omit<Answer, "viz" | "sources"> & { viz: FinalViz; sources: FinalSource[] }; trace: SearchTrace[]; checks: Checks; usage: Usage; latency_ms: number; model: string }
+  | { type: "final"; answer: Omit<Answer, "viz" | "sources"> & { viz: FinalViz; sources: FinalSource[] }; trace: SearchTrace[]; checks: Checks; usage: Usage; latency_ms: number; model: string; provider?: string }
   | { type: "fallback"; reason: string }
   | { type: "error"; message: string };
 
@@ -97,7 +102,7 @@ export interface Usage {
   cache_write_tokens: number;
   output_tokens: number;
   steps: number;
-  cost_usd: number;
+  cost_usd: number | null;
 }
 
 export type FinalSource = Answer["sources"][number] & { quote_verified: boolean | null };
@@ -136,13 +141,24 @@ export function label(name: string, a: Record<string, any>) {
   }
 }
 
-function toUsage(u: LanguageModelUsage, steps: number): Usage {
+function toUsage(model: string, u: LanguageModelUsage, steps: number, reportedCost: number | null): Usage {
   const cacheRead = u.inputTokenDetails.cacheReadTokens ?? 0;
   const cacheWrite = u.inputTokenDetails.cacheWriteTokens ?? 0;
-  const input = u.inputTokenDetails.noCacheTokens ?? (u.inputTokens ?? 0) - cacheRead - cacheWrite;
+  const input = isClaude(model) && u.inputTokenDetails.noCacheTokens !== undefined ? u.inputTokenDetails.noCacheTokens : (u.inputTokens ?? 0) - cacheRead - cacheWrite;
   const output = u.outputTokens ?? 0;
-  const cost = (input * PRICE.input + cacheRead * PRICE.cacheRead + cacheWrite * PRICE.cacheWrite + output * PRICE.output) / 1e6;
-  return { input_tokens: input, cache_read_tokens: cacheRead, cache_write_tokens: cacheWrite, output_tokens: output, steps, cost_usd: Number(cost.toFixed(4)) };
+  const p = CLAUDE_PRICES[model];
+  const cost = p ? (input * p.input + cacheRead * p.cacheRead + cacheWrite * p.cacheWrite + output * p.output) / 1e6 : reportedCost;
+  return { input_tokens: input, cache_read_tokens: cacheRead, cache_write_tokens: cacheWrite, output_tokens: output, steps, cost_usd: cost === null ? null : Number(cost.toFixed(4)) };
+}
+
+type RouterMeta = { openrouter?: { provider?: string; usage?: { cost?: number } } };
+function routerMeta(steps: { providerMetadata?: unknown }[]) {
+  const metas = steps.map((s) => (s.providerMetadata as RouterMeta | undefined)?.openrouter);
+  const costs = metas.map((m) => m?.usage?.cost);
+  return {
+    cost: costs.length && costs.every((c) => typeof c === "number") ? (costs as number[]).reduce((a, b) => a + b, 0) : null,
+    provider: [...new Set(metas.map((m) => m?.provider).filter(Boolean))].join(", ") || undefined,
+  };
 }
 
 async function withWells(viz: Extract<Answer["viz"], { type: "map" }>) {
@@ -179,12 +195,12 @@ function check(a: Answer, sources: FinalSource[], traces: SearchTrace[], vizErro
 const repeated = (step?: { toolResults: { output: unknown }[] }) =>
   !!step?.toolResults.length && step.toolResults.some((r) => (r.output as { repeated?: boolean })?.repeated);
 
-export async function* ask(question: string, signal?: AbortSignal): AsyncGenerator<AskEvent> {
+export async function* ask(question: string, signal?: AbortSignal, model = MODEL): AsyncGenerator<AskEvent> {
   const t0 = Date.now();
   const traces: SearchTrace[] = [];
   const runs: ToolRun[] = [];
   const result = streamText({
-    model: anthropic(MODEL),
+    model: isClaude(model) ? anthropic(model) : openrouter(model, { usage: { include: true } }),
     instructions: SYSTEM,
     prompt: question,
     tools: makeTools(traces, runs),
@@ -194,7 +210,7 @@ export async function* ask(question: string, signal?: AbortSignal): AsyncGenerat
     maxOutputTokens: 16000,
     maxRetries: 1,
     abortSignal: signal,
-    providerOptions: { anthropic: { effort: "low", cacheControl: { type: "ephemeral" } } },
+    providerOptions: isClaude(model) ? { anthropic: { effort: "low", cacheControl: { type: "ephemeral" } } } : {},
   });
   yield { type: "start", question, mode: "live" };
   for await (const part of result.stream) {
@@ -204,7 +220,8 @@ export async function* ask(question: string, signal?: AbortSignal): AsyncGenerat
     else if (part.type === "error") throw part.error;
   }
   const answer = await result.output;
-  const steps = (await result.steps).length;
+  const steps = await result.steps;
+  const meta = isClaude(model) ? { cost: null, provider: "anthropic" } : routerMeta(steps);
   const viz = await finalViz(answer.viz, runs);
   const sources = verifyQuotes(answer, traces);
   yield {
@@ -212,8 +229,9 @@ export async function* ask(question: string, signal?: AbortSignal): AsyncGenerat
     answer: { ...answer, viz: viz.viz, sources },
     trace: traces,
     checks: check(answer, sources, traces, viz.error),
-    usage: toUsage(await result.totalUsage, steps),
+    usage: toUsage(model, await result.totalUsage, steps.length, meta.cost),
     latency_ms: Date.now() - t0,
-    model: MODEL,
+    model,
+    provider: meta.provider,
   };
 }

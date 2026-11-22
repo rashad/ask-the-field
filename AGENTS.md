@@ -9,7 +9,7 @@ Ask the Field. Concept prototype: ask questions of synthetic upstream oil and ga
 - `lib/chunker.ts`: structure-aware chunker (headings, then paragraphs, then sentences, ~500 tokens, no overlap).
 - `lib/voyage.ts`, `lib/search.ts`: embeddings and hybrid search (vector + full-text, RRF k=60), with metadata filters in SQL on both sides. Query vectors are cached in memory and in `data/cache/query-vectors.json`; if Voyage fails or rate limits a query, search runs full text only and the trace says so (`full_text_only`). The 30 s retry is for ingest only.
 - `lib/tools.ts`: the four LLM tools (`query_production`, `list_events`, `search_documents`, `get_wells`) with Zod inputs; `search_documents` records the retrieval trace. A repeated call (same args, or an earlier complete result narrowed by a filter) returns a short note instead of hitting the database, and the next step must answer.
-- `lib/answer.ts`: `ask()` runs `streamText` (AI SDK, `claude-sonnet-5-5`) with the tools and `Output.object` for the final answer, and yields NDJSON events.
+- `lib/answer.ts`: `ask()` runs `streamText` (AI SDK, `claude-sonnet-5-5` unless `ASK_MODEL` is set) with the tools and `Output.object` for the final answer, and yields NDJSON events. `claude-*` ids go direct through `@ai-sdk/anthropic` (prompt caching, `effort`); any other id goes through OpenRouter (`@openrouter/ai-sdk-provider`, `OPENROUTER_API_KEY`), whose reported cost becomes `usage.cost_usd`.
 - `lib/chart.ts`: the model never writes chart values. For `line` and `bar` it gives a tool result `ref` (P1, E1, set in call order by `lib/tools.ts`), a metric and which series, wells or event groups; `buildChart()` reads the values from that result. A bad reference gives viz `none` and `checks.viz_error`.
 - `lib/quote.ts`: `findQuote()` finds a source quote in its chunk after it normalizes whitespace, bold, heading hashes, table pipes and case. The server sets `quote_verified` on each chunk source; the drawer and `/data?chunk=<id>&quote=<text>` highlight only that span.
 - `app/api/ask/route.ts`: `POST /api/ask { question }`, streams `application/x-ndjson` events: `start`, `tool-call` (with a UI label), `tool-result`, `tool-error`, `fallback`, `final` (answer, viz, sources, confidence, retrieval trace, usage), `error`.
@@ -36,13 +36,13 @@ Postgres runs in Docker, compose project `opsrag`, container `opsrag-postgres`, 
 - `pnpm ingest`: chunk, embed (voyage-4, 1024 dims) and upsert. Idempotent: only new or changed documents are embedded.
 - `pnpm smoke ["question" ...]`: hybrid search smoke check (defaults to two sample queries).
 - `pnpm db:dump`: write `data/dump.sql.gz` after an ingest.
-- `pnpm eval`: ask the 5 briefing questions, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass.
+- `pnpm eval`: ask the 5 briefing questions, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--model=<id>` picks the model; `--runs=3` repeats each question; `--save` writes `evals/<date>-<model>.json`; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass, and only with the default model. `evals/README.md` holds the multi-model benchmark.
 - `pnpm test`: chunker test.
 - `pnpm dev`: Next.js app.
 
 ## Rules
 
-- Keys: `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` come from the environment (`.env.local`, which is gitignored, or your secret manager). Scripts marked as needing keys: `gen:docs`, `ingest`, `smoke`, `eval`, and live answers in `dev`. Never print, log or commit a key. `.env.example` holds names only.
+- Keys: `ANTHROPIC_API_KEY`, `VOYAGE_API_KEY` and (for non-Claude models) `OPENROUTER_API_KEY` come from the environment (`.env.local`, which is gitignored, or your secret manager). Scripts marked as needing keys: `gen:docs`, `ingest`, `smoke`, `eval`, and live answers in `dev`. Never print, log or commit a key. `.env.example` holds names only.
 - Data is synthetic. Never use real company, client, field or well names anywhere in the repo.
 - No em dashes in generated text.
 - Keep it minimal: plain SQL with the `postgres` driver, no ORM. No code comments except a rare one-line WHY.

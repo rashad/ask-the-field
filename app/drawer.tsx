@@ -171,7 +171,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
                 </>
               )}
               <h4 className="caption-3 mute dsec">Run</h4>
-              <p className="mono caption-4">{final.model}, {u.steps} model steps, {(final.latency_ms / 1000).toFixed(1)} s, tokens in {u.input_tokens} + cache read {u.cache_read_tokens} + cache write {u.cache_write_tokens}, out {u.output_tokens}, ${u.cost_usd.toFixed(4)}</p>
+              <p className="mono caption-4">{final.model}, {u.steps} model steps, {(final.latency_ms / 1000).toFixed(1)} s, tokens in {u.input_tokens} + cache read {u.cache_read_tokens} + cache write {u.cache_write_tokens}, out {u.output_tokens}, {u.cost_usd === null ? "cost unknown" : `$${u.cost_usd.toFixed(4)}`}</p>
             </div>
           </details>
         </div>
