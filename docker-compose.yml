@@ -1,0 +1,21 @@
+name: opsrag
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: opsrag-postgres
+    environment:
+      POSTGRES_USER: opsrag
+      POSTGRES_PASSWORD: opsrag
+      POSTGRES_DB: opsrag
+    ports:
+      - "5442:5432"
+    volumes:
+      - opsrag-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsrag"]
+      interval: 2s
+      retries: 20
+
+volumes:
+  opsrag-pgdata:
