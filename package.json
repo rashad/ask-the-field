@@ -13,15 +13,19 @@
     "smoke": "tsx scripts/search.ts",
     "db:dump": "sh scripts/dump.sh",
     "restore": "sh scripts/restore.sh",
-    "test": "tsx --test lib/chunker.test.ts"
+    "test": "tsx --test lib/chunker.test.ts",
+    "eval": "tsx scripts/eval.ts"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.107",
     "@anthropic-ai/sdk": "^1.12.0",
+    "ai": "^7.0.179",
     "next": "16.4.6",
     "postgres": "^4.1.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",
