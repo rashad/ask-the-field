@@ -1,9 +1,9 @@
 {
  "question": "Is the sand alarm at Salt Flat Field still open, and what does the procedure say?",
- "recorded_at": "2026-11-22T15:38:17.385Z",
+ "recorded_at": "2026-11-22T16:57:47.689Z",
  "events": [
   {
-   "t": 6,
+   "t": 1,
    "event": {
     "type": "start",
     "question": "Is the sand alarm at Salt Flat Field still open, and what does the procedure say?",
@@ -11,10 +11,10 @@
    }
   },
   {
-   "t": 2092,
+   "t": 1799,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01W9ToTjibCBKuNL8bhFiFpm",
+    "id": "toolu_01GPt5E4GtcoWGk6TEaTLQcs",
     "name": "list_events",
     "args": {
      "field": "Salt Flat Field",
@@ -24,13 +24,13 @@
    }
   },
   {
-   "t": 2660,
+   "t": 2442,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01FAV2vS5LrKEx2Dj57U9H9z",
+    "id": "toolu_01UhxTSCpQty1KivKQCV78kP",
     "name": "search_documents",
     "args": {
-     "query": "sand alarm procedure response",
+     "query": "sand alarm procedure first actions before normal operation resumes",
      "k": 4,
      "field": "Salt Flat Field",
      "doc_type": "procedure"
@@ -39,12 +39,13 @@
    }
   },
   {
-   "t": 2675,
+   "t": 2450,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01W9ToTjibCBKuNL8bhFiFpm",
+    "id": "toolu_01GPt5E4GtcoWGk6TEaTLQcs",
     "name": "list_events",
     "output": {
+     "ref": "E1",
      "count": 3,
      "truncated": false,
      "events": [
@@ -107,25 +108,26 @@
    }
   },
   {
-   "t": 3299,
+   "t": 3621,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01FAV2vS5LrKEx2Dj57U9H9z",
+    "id": "toolu_01UhxTSCpQty1KivKQCV78kP",
     "name": "search_documents",
     "output": {
+     "ref": "S1",
      "count": 0,
      "chunks": []
     }
    }
   },
   {
-   "t": 4614,
+   "t": 5142,
    "event": {
     "type": "tool-call",
-    "id": "toolu_019xEFbrH9Uzo3x6wB7TxArV",
+    "id": "toolu_019gFTY6HnRDzYu26J95ak5i",
     "name": "search_documents",
     "args": {
-     "query": "sand production alarm procedure choke erosion",
+     "query": "sand production alarm response procedure",
      "k": 4,
      "doc_type": "procedure"
     },
@@ -133,14 +135,14 @@
    }
   },
   {
-   "t": 5254,
+   "t": 5819,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01B79moaBvJYjiJTFHTN1diF",
+    "id": "toolu_018rTjU7rCw7vkhzwfFZE7sd",
     "name": "search_documents",
     "args": {
      "query": "sand alarm W-34",
-     "k": 3,
+     "k": 2,
      "well_ids": [
       "W-34"
      ],
@@ -151,12 +153,13 @@
    }
   },
   {
-   "t": 5962,
+   "t": 5824,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01B79moaBvJYjiJTFHTN1diF",
+    "id": "toolu_018rTjU7rCw7vkhzwfFZE7sd",
     "name": "search_documents",
     "output": {
+     "ref": "S3",
      "count": 1,
      "chunks": [
       {
@@ -173,23 +176,15 @@
    }
   },
   {
-   "t": 6181,
+   "t": 6758,
    "event": {
     "type": "tool-result",
-    "id": "toolu_019xEFbrH9Uzo3x6wB7TxArV",
+    "id": "toolu_019gFTY6HnRDzYu26J95ak5i",
     "name": "search_documents",
     "output": {
+     "ref": "S2",
      "count": 4,
      "chunks": [
-      {
-       "chunk_id": "SOP-OPS-002#4",
-       "document_id": "SOP-OPS-002",
-       "doc_type": "procedure",
-       "well_id": null,
-       "date": "2025-12-01",
-       "section": "Response to a sand alarm: choke bean-down steps",
-       "text": "## Response to a sand alarm: choke bean-down steps\n\nWhen a High-High acoustic alarm or an erosion probe alarm is raised:\n\n1. **Acknowledge** the alarm in the control system and note the time, well and reading. Inform the Production Supervisor.\n2. **Check for noise causes**: recent choke or frequency changes, slugging, gas breakthrough, valve operation upstream or downstream. If a change was made in the last hour, reverse it by one step first.\n3. **First bean-down:** reduce the choke by 2/64 in (or reduce ESP frequency by an equivalent amount agreed with the Production Engineer). Hold for 30 minutes and watch the sand signal.\n4. **Second bean-down:** if the signal remains above the High threshold, reduce by a further 2/64 in. Hold for 30 minutes.\n5. **Third bean-down:** if the signal is still above the High threshold, reduce by a further 2/64 in and notify the Production Engineer immediately.\n6. **Shut-in criterion:** if the signal stays above the High-High threshold after three steps, or if sand is visible at the sampling point, or if wellhead or flowline pressure behaves abnormally, the Lead Operator shuts in the well with Production Supervisor approval. Do not wait for further steps.\n7. **Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.\n8. **Do not reopen** the choke during the stabilisation period, even if production targets are affected.\n\nSafety notes:\n\n- Never open sample points or separator drains on a well in alarm without the proper permit and PPE.\n- On high GOR wells, gas velocity at the choke increases as the choke is reduced in steps. Watch downstream pressure and flowline temperature.\n- Wells with a downhole ESP must not be stopped and restarted repeatedly. Shut-in and restart follows the ESP start procedure."
-      },
       {
        "chunk_id": "SOP-OPS-002#3",
        "document_id": "SOP-OPS-002",
@@ -200,33 +195,42 @@
        "text": "## Acoustic sand monitor and erosion probe alarm thresholds\n\nSand-prone wells are fitted with an acoustic sand monitor and, where installed, an erosion probe. Thresholds are as follows. The Production Engineer may set tighter well-specific values in the register, but never looser ones.\n\n| Instrument | Level | Threshold | Action |\n|---|---|---|---|\n| Acoustic sand monitor | Pre-alarm (High) | Sand signal equivalent to 5 ppm sustained for 10 minutes | Operator investigates, no rate change yet |\n| Acoustic sand monitor | Alarm (High-High) | Sand signal equivalent to 15 ppm sustained for 5 minutes | Start choke bean-down response |\n| Erosion probe | Pre-alarm | Wall loss rate above 0.5 mil/month | Notify Integrity Engineer, increase inspection frequency |\n| Erosion probe | Alarm | Wall loss rate above 1.0 mil/month, or any step change in probe reading | Start choke bean-down response and notify Integrity Engineer |\n\nNotes:\n\n- Acoustic signals are calibrated against sand samples. A signal with no matching gas rate or choke change, or with a flat trend and no sample confirmation, may be noise from valve or choke flow. The operator still treats it as real until the checks below are complete.\n- Instrument faults must be reported to the Maintenance Planner. A well with a failed sand monitor must be treated as being in alarm for sampling purposes and sampled at least every 4 hours."
       },
       {
-       "chunk_id": "SOP-OPS-002#7",
+       "chunk_id": "SOP-OPS-002#4",
        "document_id": "SOP-OPS-002",
        "doc_type": "procedure",
        "well_id": null,
        "date": "2025-12-01",
-       "section": "Return to normal rate",
-       "text": "## Return to normal rate\n\nRate is recovered cautiously and only with Production Engineer approval.\n\n1. Conditions to begin:\n   - Sand signal below the Pre-alarm threshold for at least 2 hours.\n   - Latest wellhead sample below 5 ppm.\n   - No abnormal separator or filter readings.\n   - Erosion inspection results received, where required.\n2. Open the choke in steps of 1/64 in, with at least 1 hour of hold and monitoring between steps.\n3. Stop at any step where the sand signal rises above the Pre-alarm threshold. Return to the previous choke setting and tell the Production Engineer.\n4. The new stable choke becomes the provisional maximum for that well. The Production Engineer updates the register and, if needed, the sand-free drawdown limit.\n5. Do not return to the previous rate if it was the cause of the alarm, unless the Production Engineer documents a reason and a monitoring plan."
+       "section": "Response to a sand alarm: choke bean-down steps",
+       "text": "## Response to a sand alarm: choke bean-down steps\n\nWhen a High-High acoustic alarm or an erosion probe alarm is raised:\n\n1. **Acknowledge** the alarm in the control system and note the time, well and reading. Inform the Production Supervisor.\n2. **Check for noise causes**: recent choke or frequency changes, slugging, gas breakthrough, valve operation upstream or downstream. If a change was made in the last hour, reverse it by one step first.\n3. **First bean-down:** reduce the choke by 2/64 in (or reduce ESP frequency by an equivalent amount agreed with the Production Engineer). Hold for 30 minutes and watch the sand signal.\n4. **Second bean-down:** if the signal remains above the High threshold, reduce by a further 2/64 in. Hold for 30 minutes.\n5. **Third bean-down:** if the signal is still above the High threshold, reduce by a further 2/64 in and notify the Production Engineer immediately.\n6. **Shut-in criterion:** if the signal stays above the High-High threshold after three steps, or if sand is visible at the sampling point, or if wellhead or flowline pressure behaves abnormally, the Lead Operator shuts in the well with Production Supervisor approval. Do not wait for further steps.\n7. **Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.\n8. **Do not reopen** the choke during the stabilisation period, even if production targets are affected.\n\nSafety notes:\n\n- Never open sample points or separator drains on a well in alarm without the proper permit and PPE.\n- On high GOR wells, gas velocity at the choke increases as the choke is reduced in steps. Watch downstream pressure and flowline temperature.\n- Wells with a downhole ESP must not be stopped and restarted repeatedly. Shut-in and restart follows the ESP start procedure."
       },
       {
-       "chunk_id": "SOP-OPS-002#2",
+       "chunk_id": "SOP-OPS-002#1",
        "document_id": "SOP-OPS-002",
        "doc_type": "procedure",
        "well_id": null,
        "date": "2025-12-01",
-       "section": "Sand-prone wells and sand-free drawdown limits",
-       "text": "## Sand-prone wells and sand-free drawdown limits\n\nSalt Flat Field is sand-prone and also has high GOR, so gas velocity adds to erosion risk there. All Salt Flat Field wells are treated as sand-prone by default. Dune Field and Wadi Field wells are treated as sand-prone if they have a recorded sand history, if sand has been seen in a sample, or if the Production Engineer lists them as such.\n\nThe Production Engineer maintains a register of sand-prone wells. For each well it holds:\n\n- The sand-free drawdown limit (maximum bottomhole flowing pressure drawdown, in psi, at which sand has not been detected).\n- The maximum approved choke size (in 64ths of an inch).\n- The last review date.\n\nRules:\n\n1. Wells must not be operated above the register drawdown limit or the maximum approved choke size without written approval from the Production Engineer.\n2. Any choke increase on a sand-prone well must be made in steps of no more than 2/64 in, with at least 30 minutes of stabilisation and sand monitor observation between steps.\n3. On ESP wells, any pump frequency increase is treated as a drawdown increase and follows the same step and hold rules.\n4. On Wadi Field wells, rising water cut can change drawdown behaviour and weaken the formation. Limits are reviewed whenever water cut changes materially.\n5. Limits are reviewed at least every six months, and after any sand alarm that required a bean-down."
+       "section": "Purpose and scope",
+       "text": "## Purpose and scope\n\nThis procedure sets out how sand production is prevented, detected and controlled at all wells feeding CPF-1. It covers Dune Field, Wadi Field and Salt Flat Field, and applies to ESP, gas lift and natural flow wells.\n\nThe aims are to:\n\n1. Protect the wellbore, downhole pumps, chokes, flowlines and CPF-1 separators from erosion and plugging.\n2. Keep every well within its sand-free drawdown limit wherever practical.\n3. Give operators a fixed, step-by-step response when a sand alarm is raised.\n\nResponsibilities:\n\n- **Lead Operator / Night Lead Operator:** carries out the alarm response and records all actions.\n- **Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.\n- **Integrity Engineer:** owns the erosion inspection programme and probe thresholds.\n- **HSE Advisor:** confirms safe handling of sand-contaminated equipment and waste.\n- **Production Supervisor:** authorises any extended restriction or shut-in."
+      },
+      {
+       "chunk_id": "SOP-OPS-002#5",
+       "document_id": "SOP-OPS-002",
+       "doc_type": "procedure",
+       "well_id": null,
+       "date": "2025-12-01",
+       "section": "Sampling and separator checks",
+       "text": "## Sampling and separator checks\n\nSampling confirms the instrument reading and measures the real sand content.\n\n1. Take a wellhead sample within 1 hour of a High-High alarm, using the dedicated sand sampling point and a fine mesh sand catcher or centrifuge tube.\n2. Record the sand content in ppm by volume, along with choke size, wellhead pressure, flow rate and water cut at the time of sampling.\n3. Repeat the sample after each bean-down step and again at the end of the 2 hour stabilisation period.\n4. Sand content above 10 ppm in a sample is treated as confirmed sand production. Any visible sand, or sand above 50 ppm, requires immediate notification of the Production Engineer.\n5. At CPF-1, the Lead Operator checks:\n   - Separator level and interface readings for abnormal behaviour (possible sand build-up).\n   - Differential pressure across inlet devices and downstream filters.\n   - Sand jetting or drain flow, if installed, and quantity removed.\n6. If separator sand accumulation is suspected, the Production Supervisor schedules a clean-out and the HSE Advisor reviews the handling plan for contaminated solids."
       }
      ]
     }
    }
   },
   {
-   "t": 9055,
+   "t": 10838,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "Yes, the sand alarm is still open: W-34, a Salt Flat Field well, alarmed on 9 November 2026 and the incident is rated high severity. Its flowline probe shows metal loss, so the choke (flow valve) was cut to 24/64 and sampling runs every shift [1][2]. The procedure says to cut the choke in 2/64 steps with 30-minute holds, shut in if the alarm persists after three steps or sand is visible, then hold for 2 hours [3].",
+     "answer": "The sand alarm on W-34, a Salt Flat Field well, is still open: it began on 9 November 2026 and has cost about 1,063 barrels, about $74,410 in lost revenue at an assumed $70 a barrel [1][2]. The procedure requires acknowledging the alarm, checking for noise causes, then cutting the choke (flow valve) in 2/64 steps, holding 30 minutes each, and sampling sand [3]. Before normal operation resumes, the choke must be held for at least 2 hours once the signal drops below pre-alarm, and the Production Engineer approves the return to normal rate [3][4].",
      "viz": {
       "type": "none"
      },
@@ -235,29 +239,43 @@
        "n": 1,
        "kind": "table",
        "id": "events:EV-0180",
-       "label": "EV-0180 W-34 sand alarm, open"
+       "label": "EV-0180 sand alarm W-34",
+       "quote": null,
+       "quote_verified": null
       },
       {
        "n": 2,
        "kind": "chunk",
        "id": "IN-067#0",
-       "label": "Incident note IN-067"
+       "label": "Incident note IN-067",
+       "quote": "The incident remains **open**.",
+       "quote_verified": true
       },
       {
        "n": 3,
        "kind": "chunk",
        "id": "SOP-OPS-002#4",
-       "label": "SOP-OPS-002 sand alarm response"
+       "label": "SOP-OPS-002 response steps",
+       "quote": "**Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.",
+       "quote_verified": true
+      },
+      {
+       "n": 4,
+       "kind": "chunk",
+       "id": "SOP-OPS-002#1",
+       "label": "SOP-OPS-002 responsibilities",
+       "quote": "**Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.",
+       "quote_verified": true
       }
      ],
      "confidence": "high",
-     "could_not_verify": "The data does not show whether the sand level has fallen below the alarm threshold since the 9 November note."
+     "could_not_verify": null
     },
     "trace": [
      {
-      "call_id": "toolu_01FAV2vS5LrKEx2Dj57U9H9z",
+      "call_id": "toolu_01UhxTSCpQty1KivKQCV78kP",
       "args": {
-       "query": "sand alarm procedure response",
+       "query": "sand alarm procedure first actions before normal operation resumes",
        "k": 4,
        "field": "Salt Flat Field",
        "doc_type": "procedure"
@@ -269,10 +287,10 @@
       "full_text_only": false
      },
      {
-      "call_id": "toolu_01B79moaBvJYjiJTFHTN1diF",
+      "call_id": "toolu_018rTjU7rCw7vkhzwfFZE7sd",
       "args": {
        "query": "sand alarm W-34",
-       "k": 3,
+       "k": 2,
        "well_ids": [
         "W-34"
        ],
@@ -325,197 +343,197 @@
       "full_text_only": false
      },
      {
-      "call_id": "toolu_019xEFbrH9Uzo3x6wB7TxArV",
+      "call_id": "toolu_019gFTY6HnRDzYu26J95ak5i",
       "args": {
-       "query": "sand production alarm procedure choke erosion",
+       "query": "sand production alarm response procedure",
        "k": 4,
        "doc_type": "procedure"
       },
       "vector": [
        {
-        "chunk_id": "SOP-OPS-002#4",
+        "chunk_id": "SOP-OPS-002#1",
         "rank": 1,
-        "similarity": 0.6913
+        "similarity": 0.6098
        },
        {
-        "chunk_id": "SOP-OPS-002#7",
+        "chunk_id": "SOP-OPS-002#4",
         "rank": 2,
-        "similarity": 0.6707
+        "similarity": 0.5951
        },
        {
         "chunk_id": "SOP-OPS-002#3",
         "rank": 3,
-        "similarity": 0.6662
+        "similarity": 0.5813
        },
        {
-        "chunk_id": "SOP-OPS-002#6",
+        "chunk_id": "SOP-OPS-002#7",
         "rank": 4,
-        "similarity": 0.6346
-       },
-       {
-        "chunk_id": "SOP-OPS-002#1",
-        "rank": 5,
-        "similarity": 0.626
+        "similarity": 0.5781
        },
        {
         "chunk_id": "SOP-OPS-002#5",
-        "rank": 6,
-        "similarity": 0.6054
-       },
-       {
-        "chunk_id": "SOP-OPS-002#2",
-        "rank": 7,
-        "similarity": 0.5921
+        "rank": 5,
+        "similarity": 0.5741
        },
        {
         "chunk_id": "SOP-OPS-002#8",
-        "rank": 8,
-        "similarity": 0.5877
-       },
-       {
-        "chunk_id": "SOP-OPS-002#0",
-        "rank": 9,
-        "similarity": 0.5288
-       },
-       {
-        "chunk_id": "SOP-OPS-009#6",
-        "rank": 10,
-        "similarity": 0.5182
+        "rank": 6,
+        "similarity": 0.5405
        },
        {
         "chunk_id": "SOP-HSE-003#8",
-        "rank": 11,
-        "similarity": 0.5083
+        "rank": 7,
+        "similarity": 0.5326
        },
        {
-        "chunk_id": "SOP-OPS-004#6",
-        "rank": 12,
-        "similarity": 0.4989
-       },
-       {
-        "chunk_id": "SOP-OPS-008#7",
-        "rank": 13,
-        "similarity": 0.4795
-       },
-       {
-        "chunk_id": "SOP-OPS-009#4",
-        "rank": 14,
-        "similarity": 0.4725
-       },
-       {
-        "chunk_id": "SOP-OPS-008#2",
-        "rank": 15,
-        "similarity": 0.463
-       },
-       {
-        "chunk_id": "SOP-OPS-008#3",
-        "rank": 16,
-        "similarity": 0.4445
-       },
-       {
-        "chunk_id": "SOP-OPS-001#3",
-        "rank": 17,
-        "similarity": 0.4383
-       },
-       {
-        "chunk_id": "SOP-HSE-006#2",
-        "rank": 18,
-        "similarity": 0.435
-       },
-       {
-        "chunk_id": "SOP-HSE-006#4",
-        "rank": 19,
-        "similarity": 0.4332
-       },
-       {
-        "chunk_id": "SOP-OPS-008#1",
-        "rank": 20,
-        "similarity": 0.4276
-       }
-      ],
-      "full_text": [
-       {
-        "chunk_id": "SOP-OPS-002#4",
-        "rank": 1,
-        "ts_rank": 2.5
-       },
-       {
-        "chunk_id": "SOP-OPS-002#3",
-        "rank": 2,
-        "ts_rank": 2.2
-       },
-       {
-        "chunk_id": "SOP-OPS-002#2",
-        "rank": 3,
-        "ts_rank": 2.2
-       },
-       {
-        "chunk_id": "SOP-OPS-004#6",
-        "rank": 4,
-        "ts_rank": 2
-       },
-       {
-        "chunk_id": "SOP-OPS-002#5",
-        "rank": 5,
-        "ts_rank": 1.6
-       },
-       {
-        "chunk_id": "SOP-OPS-002#7",
-        "rank": 6,
-        "ts_rank": 1.3
+        "chunk_id": "SOP-OPS-002#0",
+        "rank": 8,
+        "similarity": 0.5227
        },
        {
         "chunk_id": "SOP-OPS-009#6",
-        "rank": 7,
-        "ts_rank": 1.3
-       },
-       {
-        "chunk_id": "SOP-HSE-003#9",
-        "rank": 8,
-        "ts_rank": 1.2
-       },
-       {
-        "chunk_id": "SOP-OPS-002#1",
         "rank": 9,
-        "ts_rank": 1.2
+        "similarity": 0.5225
        },
        {
         "chunk_id": "SOP-OPS-002#6",
         "rank": 10,
-        "ts_rank": 1.1
+        "similarity": 0.5134
        },
        {
-        "chunk_id": "SOP-HSE-005#9",
+        "chunk_id": "SOP-HSE-003#9",
         "rank": 11,
-        "ts_rank": 1
+        "similarity": 0.4635
        },
        {
-        "chunk_id": "SOP-OPS-002#0",
+        "chunk_id": "SOP-OPS-002#2",
         "rank": 12,
-        "ts_rank": 1
+        "similarity": 0.4623
        },
        {
-        "chunk_id": "SOP-HSE-005#4",
+        "chunk_id": "SOP-HSE-003#4",
         "rank": 13,
-        "ts_rank": 0.9
+        "similarity": 0.4598
        },
        {
-        "chunk_id": "SOP-OPS-002#8",
+        "chunk_id": "SOP-HSE-003#3",
         "rank": 14,
-        "ts_rank": 0.8
+        "similarity": 0.4571
        },
        {
-        "chunk_id": "SOP-HSE-005#1",
+        "chunk_id": "SOP-HSE-003#0",
         "rank": 15,
-        "ts_rank": 0.7
+        "similarity": 0.4552
        },
        {
         "chunk_id": "SOP-HSE-003#1",
         "rank": 16,
+        "similarity": 0.4502
+       },
+       {
+        "chunk_id": "SOP-HSE-006#4",
+        "rank": 17,
+        "similarity": 0.4355
+       },
+       {
+        "chunk_id": "SOP-OPS-009#4",
+        "rank": 18,
+        "similarity": 0.4297
+       },
+       {
+        "chunk_id": "SOP-HSE-003#2",
+        "rank": 19,
+        "similarity": 0.4261
+       },
+       {
+        "chunk_id": "SOP-HSE-006#1",
+        "rank": 20,
+        "similarity": 0.4122
+       }
+      ],
+      "full_text": [
+       {
+        "chunk_id": "SOP-OPS-002#2",
+        "rank": 1,
+        "ts_rank": 1.9
+       },
+       {
+        "chunk_id": "SOP-OPS-002#3",
+        "rank": 2,
+        "ts_rank": 1.8
+       },
+       {
+        "chunk_id": "SOP-OPS-004#6",
+        "rank": 3,
+        "ts_rank": 1.8
+       },
+       {
+        "chunk_id": "SOP-OPS-002#4",
+        "rank": 4,
+        "ts_rank": 1.7
+       },
+       {
+        "chunk_id": "SOP-OPS-002#5",
+        "rank": 5,
+        "ts_rank": 1.5
+       },
+       {
+        "chunk_id": "SOP-OPS-009#6",
+        "rank": 6,
+        "ts_rank": 1.3
+       },
+       {
+        "chunk_id": "SOP-HSE-003#9",
+        "rank": 7,
+        "ts_rank": 1.2
+       },
+       {
+        "chunk_id": "SOP-OPS-002#1",
+        "rank": 8,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SOP-OPS-002#7",
+        "rank": 9,
+        "ts_rank": 1
+       },
+       {
+        "chunk_id": "SOP-OPS-002#0",
+        "rank": 10,
+        "ts_rank": 1
+       },
+       {
+        "chunk_id": "SOP-HSE-005#9",
+        "rank": 11,
+        "ts_rank": 0.8
+       },
+       {
+        "chunk_id": "SOP-HSE-005#4",
+        "rank": 12,
+        "ts_rank": 0.8
+       },
+       {
+        "chunk_id": "SOP-HSE-005#1",
+        "rank": 13,
         "ts_rank": 0.7
        },
        {
-        "chunk_id": "SOP-OPS-004#3",
+        "chunk_id": "SOP-HSE-003#1",
+        "rank": 14,
+        "ts_rank": 0.7
+       },
+       {
+        "chunk_id": "SOP-OPS-007#6",
+        "rank": 15,
+        "ts_rank": 0.7
+       },
+       {
+        "chunk_id": "SOP-INT-010#6",
+        "rank": 16,
+        "ts_rank": 0.7
+       },
+       {
+        "chunk_id": "SOP-OPS-002#6",
         "rank": 17,
         "ts_rank": 0.7
        },
@@ -530,235 +548,196 @@
         "ts_rank": 0.7
        },
        {
-        "chunk_id": "SOP-INT-010#6",
+        "chunk_id": "SOP-OPS-002#8",
         "rank": 20,
         "ts_rank": 0.7
        }
       ],
       "fused": [
        {
-        "chunk_id": "SOP-OPS-002#4",
-        "rank": 1,
-        "rrf": 0.03279,
-        "vector_rank": 1,
-        "full_text_rank": 1
-       },
-       {
         "chunk_id": "SOP-OPS-002#3",
-        "rank": 2,
+        "rank": 1,
         "rrf": 0.032,
         "vector_rank": 3,
         "full_text_rank": 2
        },
        {
-        "chunk_id": "SOP-OPS-002#7",
-        "rank": 3,
-        "rrf": 0.03128,
+        "chunk_id": "SOP-OPS-002#4",
+        "rank": 2,
+        "rrf": 0.03175,
         "vector_rank": 2,
-        "full_text_rank": 6
-       },
-       {
-        "chunk_id": "SOP-OPS-002#2",
-        "rank": 4,
-        "rrf": 0.0308,
-        "vector_rank": 7,
-        "full_text_rank": 3
-       },
-       {
-        "chunk_id": "SOP-OPS-002#5",
-        "rank": 5,
-        "rrf": 0.03054,
-        "vector_rank": 6,
-        "full_text_rank": 5
-       },
-       {
-        "chunk_id": "SOP-OPS-002#6",
-        "rank": 6,
-        "rrf": 0.02991,
-        "vector_rank": 4,
-        "full_text_rank": 10
-       },
-       {
-        "chunk_id": "SOP-OPS-002#1",
-        "rank": 7,
-        "rrf": 0.02988,
-        "vector_rank": 5,
-        "full_text_rank": 9
-       },
-       {
-        "chunk_id": "SOP-OPS-004#6",
-        "rank": 8,
-        "rrf": 0.02951,
-        "vector_rank": 12,
         "full_text_rank": 4
        },
        {
+        "chunk_id": "SOP-OPS-002#1",
+        "rank": 3,
+        "rrf": 0.0311,
+        "vector_rank": 1,
+        "full_text_rank": 8
+       },
+       {
+        "chunk_id": "SOP-OPS-002#5",
+        "rank": 4,
+        "rrf": 0.03077,
+        "vector_rank": 5,
+        "full_text_rank": 5
+       },
+       {
+        "chunk_id": "SOP-OPS-002#2",
+        "rank": 5,
+        "rrf": 0.03028,
+        "vector_rank": 12,
+        "full_text_rank": 1
+       },
+       {
+        "chunk_id": "SOP-OPS-002#7",
+        "rank": 6,
+        "rrf": 0.03012,
+        "vector_rank": 4,
+        "full_text_rank": 9
+       },
+       {
         "chunk_id": "SOP-OPS-009#6",
-        "rank": 9,
-        "rrf": 0.02921,
-        "vector_rank": 10,
+        "rank": 7,
+        "rrf": 0.02964,
+        "vector_rank": 9,
+        "full_text_rank": 6
+       },
+       {
+        "chunk_id": "SOP-HSE-003#9",
+        "rank": 8,
+        "rrf": 0.02901,
+        "vector_rank": 11,
         "full_text_rank": 7
        },
        {
         "chunk_id": "SOP-OPS-002#0",
-        "rank": 10,
-        "rrf": 0.02838,
-        "vector_rank": 9,
-        "full_text_rank": 12
+        "rank": 9,
+        "rrf": 0.02899,
+        "vector_rank": 8,
+        "full_text_rank": 10
        },
        {
         "chunk_id": "SOP-OPS-002#8",
+        "rank": 10,
+        "rrf": 0.02765,
+        "vector_rank": 6,
+        "full_text_rank": 20
+       },
+       {
+        "chunk_id": "SOP-OPS-002#6",
         "rank": 11,
-        "rrf": 0.02822,
-        "vector_rank": 8,
+        "rrf": 0.02727,
+        "vector_rank": 10,
+        "full_text_rank": 17
+       },
+       {
+        "chunk_id": "SOP-HSE-003#1",
+        "rank": 12,
+        "rrf": 0.02667,
+        "vector_rank": 16,
         "full_text_rank": 14
        },
        {
-        "chunk_id": "SOP-HSE-003#9",
-        "rank": 12,
-        "rrf": 0.01471,
+        "chunk_id": "SOP-HSE-003#4",
+        "rank": 13,
+        "rrf": 0.02636,
+        "vector_rank": 13,
+        "full_text_rank": 19
+       },
+       {
+        "chunk_id": "SOP-HSE-006#1",
+        "rank": 14,
+        "rrf": 0.02532,
+        "vector_rank": 20,
+        "full_text_rank": 18
+       },
+       {
+        "chunk_id": "SOP-OPS-004#6",
+        "rank": 15,
+        "rrf": 0.01587,
         "vector_rank": null,
-        "full_text_rank": 8
+        "full_text_rank": 3
        },
        {
         "chunk_id": "SOP-HSE-003#8",
-        "rank": 13,
-        "rrf": 0.01408,
-        "vector_rank": 11,
+        "rank": 16,
+        "rrf": 0.01493,
+        "vector_rank": 7,
         "full_text_rank": null
        },
        {
         "chunk_id": "SOP-HSE-005#9",
-        "rank": 14,
+        "rank": 17,
         "rrf": 0.01408,
         "vector_rank": null,
         "full_text_rank": 11
        },
        {
-        "chunk_id": "SOP-OPS-008#7",
-        "rank": 15,
-        "rrf": 0.0137,
-        "vector_rank": 13,
-        "full_text_rank": null
+        "chunk_id": "SOP-HSE-005#4",
+        "rank": 18,
+        "rrf": 0.01389,
+        "vector_rank": null,
+        "full_text_rank": 12
        },
        {
-        "chunk_id": "SOP-HSE-005#4",
-        "rank": 16,
+        "chunk_id": "SOP-HSE-005#1",
+        "rank": 19,
         "rrf": 0.0137,
         "vector_rank": null,
         "full_text_rank": 13
        },
        {
-        "chunk_id": "SOP-OPS-009#4",
-        "rank": 17,
+        "chunk_id": "SOP-HSE-003#3",
+        "rank": 20,
         "rrf": 0.01351,
         "vector_rank": 14,
         "full_text_rank": null
        },
        {
-        "chunk_id": "SOP-OPS-008#2",
-        "rank": 18,
+        "chunk_id": "SOP-HSE-003#0",
+        "rank": 21,
         "rrf": 0.01333,
         "vector_rank": 15,
         "full_text_rank": null
        },
        {
-        "chunk_id": "SOP-HSE-005#1",
-        "rank": 19,
+        "chunk_id": "SOP-OPS-007#6",
+        "rank": 22,
         "rrf": 0.01333,
         "vector_rank": null,
         "full_text_rank": 15
        },
        {
-        "chunk_id": "SOP-OPS-008#3",
-        "rank": 20,
-        "rrf": 0.01316,
-        "vector_rank": 16,
-        "full_text_rank": null
-       },
-       {
-        "chunk_id": "SOP-HSE-003#1",
-        "rank": 21,
+        "chunk_id": "SOP-INT-010#6",
+        "rank": 23,
         "rrf": 0.01316,
         "vector_rank": null,
         "full_text_rank": 16
        },
        {
-        "chunk_id": "SOP-OPS-001#3",
-        "rank": 22,
+        "chunk_id": "SOP-HSE-006#4",
+        "rank": 24,
         "rrf": 0.01299,
         "vector_rank": 17,
         "full_text_rank": null
        },
        {
-        "chunk_id": "SOP-OPS-004#3",
-        "rank": 23,
-        "rrf": 0.01299,
-        "vector_rank": null,
-        "full_text_rank": 17
-       },
-       {
-        "chunk_id": "SOP-HSE-006#2",
-        "rank": 24,
+        "chunk_id": "SOP-OPS-009#4",
+        "rank": 25,
         "rrf": 0.01282,
         "vector_rank": 18,
         "full_text_rank": null
        },
        {
-        "chunk_id": "SOP-HSE-006#1",
-        "rank": 25,
-        "rrf": 0.01282,
-        "vector_rank": null,
-        "full_text_rank": 18
-       },
-       {
-        "chunk_id": "SOP-HSE-006#4",
+        "chunk_id": "SOP-HSE-003#2",
         "rank": 26,
         "rrf": 0.01266,
         "vector_rank": 19,
         "full_text_rank": null
-       },
-       {
-        "chunk_id": "SOP-HSE-003#4",
-        "rank": 27,
-        "rrf": 0.01266,
-        "vector_rank": null,
-        "full_text_rank": 19
-       },
-       {
-        "chunk_id": "SOP-OPS-008#1",
-        "rank": 28,
-        "rrf": 0.0125,
-        "vector_rank": 20,
-        "full_text_rank": null
-       },
-       {
-        "chunk_id": "SOP-INT-010#6",
-        "rank": 29,
-        "rrf": 0.0125,
-        "vector_rank": null,
-        "full_text_rank": 20
        }
       ],
       "chunks_sent": [
-       {
-        "chunk_id": "SOP-OPS-002#4",
-        "document_id": "SOP-OPS-002",
-        "title": "SOP-OPS-002 Sand Management and Sand Production Alarms",
-        "doc_type": "procedure",
-        "well_id": null,
-        "field": null,
-        "date": "2025-12-01",
-        "section": "Response to a sand alarm: choke bean-down steps",
-        "text": "## Response to a sand alarm: choke bean-down steps\n\nWhen a High-High acoustic alarm or an erosion probe alarm is raised:\n\n1. **Acknowledge** the alarm in the control system and note the time, well and reading. Inform the Production Supervisor.\n2. **Check for noise causes**: recent choke or frequency changes, slugging, gas breakthrough, valve operation upstream or downstream. If a change was made in the last hour, reverse it by one step first.\n3. **First bean-down:** reduce the choke by 2/64 in (or reduce ESP frequency by an equivalent amount agreed with the Production Engineer). Hold for 30 minutes and watch the sand signal.\n4. **Second bean-down:** if the signal remains above the High threshold, reduce by a further 2/64 in. Hold for 30 minutes.\n5. **Third bean-down:** if the signal is still above the High threshold, reduce by a further 2/64 in and notify the Production Engineer immediately.\n6. **Shut-in criterion:** if the signal stays above the High-High threshold after three steps, or if sand is visible at the sampling point, or if wellhead or flowline pressure behaves abnormally, the Lead Operator shuts in the well with Production Supervisor approval. Do not wait for further steps.\n7. **Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.\n8. **Do not reopen** the choke during the stabilisation period, even if production targets are affected.\n\nSafety notes:\n\n- Never open sample points or separator drains on a well in alarm without the proper permit and PPE.\n- On high GOR wells, gas velocity at the choke increases as the choke is reduced in steps. Watch downstream pressure and flowline temperature.\n- Wells with a downhole ESP must not be stopped and restarted repeatedly. Shut-in and restart follows the ESP start procedure.",
-        "scores": {
-         "vector_similarity": 0.6913,
-         "vector_rank": 1,
-         "full_text_rank": 1,
-         "full_text_score": 2.5,
-         "rrf": 0.03279
-        }
-       },
        {
         "chunk_id": "SOP-OPS-002#3",
         "document_id": "SOP-OPS-002",
@@ -770,47 +749,65 @@
         "section": "Acoustic sand monitor and erosion probe alarm thresholds",
         "text": "## Acoustic sand monitor and erosion probe alarm thresholds\n\nSand-prone wells are fitted with an acoustic sand monitor and, where installed, an erosion probe. Thresholds are as follows. The Production Engineer may set tighter well-specific values in the register, but never looser ones.\n\n| Instrument | Level | Threshold | Action |\n|---|---|---|---|\n| Acoustic sand monitor | Pre-alarm (High) | Sand signal equivalent to 5 ppm sustained for 10 minutes | Operator investigates, no rate change yet |\n| Acoustic sand monitor | Alarm (High-High) | Sand signal equivalent to 15 ppm sustained for 5 minutes | Start choke bean-down response |\n| Erosion probe | Pre-alarm | Wall loss rate above 0.5 mil/month | Notify Integrity Engineer, increase inspection frequency |\n| Erosion probe | Alarm | Wall loss rate above 1.0 mil/month, or any step change in probe reading | Start choke bean-down response and notify Integrity Engineer |\n\nNotes:\n\n- Acoustic signals are calibrated against sand samples. A signal with no matching gas rate or choke change, or with a flat trend and no sample confirmation, may be noise from valve or choke flow. The operator still treats it as real until the checks below are complete.\n- Instrument faults must be reported to the Maintenance Planner. A well with a failed sand monitor must be treated as being in alarm for sampling purposes and sampled at least every 4 hours.",
         "scores": {
-         "vector_similarity": 0.6662,
+         "vector_similarity": 0.5813,
          "vector_rank": 3,
          "full_text_rank": 2,
-         "full_text_score": 2.2,
+         "full_text_score": 1.8,
          "rrf": 0.032
         }
        },
        {
-        "chunk_id": "SOP-OPS-002#7",
+        "chunk_id": "SOP-OPS-002#4",
         "document_id": "SOP-OPS-002",
         "title": "SOP-OPS-002 Sand Management and Sand Production Alarms",
         "doc_type": "procedure",
         "well_id": null,
         "field": null,
         "date": "2025-12-01",
-        "section": "Return to normal rate",
-        "text": "## Return to normal rate\n\nRate is recovered cautiously and only with Production Engineer approval.\n\n1. Conditions to begin:\n   - Sand signal below the Pre-alarm threshold for at least 2 hours.\n   - Latest wellhead sample below 5 ppm.\n   - No abnormal separator or filter readings.\n   - Erosion inspection results received, where required.\n2. Open the choke in steps of 1/64 in, with at least 1 hour of hold and monitoring between steps.\n3. Stop at any step where the sand signal rises above the Pre-alarm threshold. Return to the previous choke setting and tell the Production Engineer.\n4. The new stable choke becomes the provisional maximum for that well. The Production Engineer updates the register and, if needed, the sand-free drawdown limit.\n5. Do not return to the previous rate if it was the cause of the alarm, unless the Production Engineer documents a reason and a monitoring plan.",
+        "section": "Response to a sand alarm: choke bean-down steps",
+        "text": "## Response to a sand alarm: choke bean-down steps\n\nWhen a High-High acoustic alarm or an erosion probe alarm is raised:\n\n1. **Acknowledge** the alarm in the control system and note the time, well and reading. Inform the Production Supervisor.\n2. **Check for noise causes**: recent choke or frequency changes, slugging, gas breakthrough, valve operation upstream or downstream. If a change was made in the last hour, reverse it by one step first.\n3. **First bean-down:** reduce the choke by 2/64 in (or reduce ESP frequency by an equivalent amount agreed with the Production Engineer). Hold for 30 minutes and watch the sand signal.\n4. **Second bean-down:** if the signal remains above the High threshold, reduce by a further 2/64 in. Hold for 30 minutes.\n5. **Third bean-down:** if the signal is still above the High threshold, reduce by a further 2/64 in and notify the Production Engineer immediately.\n6. **Shut-in criterion:** if the signal stays above the High-High threshold after three steps, or if sand is visible at the sampling point, or if wellhead or flowline pressure behaves abnormally, the Lead Operator shuts in the well with Production Supervisor approval. Do not wait for further steps.\n7. **Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.\n8. **Do not reopen** the choke during the stabilisation period, even if production targets are affected.\n\nSafety notes:\n\n- Never open sample points or separator drains on a well in alarm without the proper permit and PPE.\n- On high GOR wells, gas velocity at the choke increases as the choke is reduced in steps. Watch downstream pressure and flowline temperature.\n- Wells with a downhole ESP must not be stopped and restarted repeatedly. Shut-in and restart follows the ESP start procedure.",
         "scores": {
-         "vector_similarity": 0.6707,
+         "vector_similarity": 0.5951,
          "vector_rank": 2,
-         "full_text_rank": 6,
-         "full_text_score": 1.3,
-         "rrf": 0.03128
+         "full_text_rank": 4,
+         "full_text_score": 1.7,
+         "rrf": 0.03175
         }
        },
        {
-        "chunk_id": "SOP-OPS-002#2",
+        "chunk_id": "SOP-OPS-002#1",
         "document_id": "SOP-OPS-002",
         "title": "SOP-OPS-002 Sand Management and Sand Production Alarms",
         "doc_type": "procedure",
         "well_id": null,
         "field": null,
         "date": "2025-12-01",
-        "section": "Sand-prone wells and sand-free drawdown limits",
-        "text": "## Sand-prone wells and sand-free drawdown limits\n\nSalt Flat Field is sand-prone and also has high GOR, so gas velocity adds to erosion risk there. All Salt Flat Field wells are treated as sand-prone by default. Dune Field and Wadi Field wells are treated as sand-prone if they have a recorded sand history, if sand has been seen in a sample, or if the Production Engineer lists them as such.\n\nThe Production Engineer maintains a register of sand-prone wells. For each well it holds:\n\n- The sand-free drawdown limit (maximum bottomhole flowing pressure drawdown, in psi, at which sand has not been detected).\n- The maximum approved choke size (in 64ths of an inch).\n- The last review date.\n\nRules:\n\n1. Wells must not be operated above the register drawdown limit or the maximum approved choke size without written approval from the Production Engineer.\n2. Any choke increase on a sand-prone well must be made in steps of no more than 2/64 in, with at least 30 minutes of stabilisation and sand monitor observation between steps.\n3. On ESP wells, any pump frequency increase is treated as a drawdown increase and follows the same step and hold rules.\n4. On Wadi Field wells, rising water cut can change drawdown behaviour and weaken the formation. Limits are reviewed whenever water cut changes materially.\n5. Limits are reviewed at least every six months, and after any sand alarm that required a bean-down.",
+        "section": "Purpose and scope",
+        "text": "## Purpose and scope\n\nThis procedure sets out how sand production is prevented, detected and controlled at all wells feeding CPF-1. It covers Dune Field, Wadi Field and Salt Flat Field, and applies to ESP, gas lift and natural flow wells.\n\nThe aims are to:\n\n1. Protect the wellbore, downhole pumps, chokes, flowlines and CPF-1 separators from erosion and plugging.\n2. Keep every well within its sand-free drawdown limit wherever practical.\n3. Give operators a fixed, step-by-step response when a sand alarm is raised.\n\nResponsibilities:\n\n- **Lead Operator / Night Lead Operator:** carries out the alarm response and records all actions.\n- **Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.\n- **Integrity Engineer:** owns the erosion inspection programme and probe thresholds.\n- **HSE Advisor:** confirms safe handling of sand-contaminated equipment and waste.\n- **Production Supervisor:** authorises any extended restriction or shut-in.",
         "scores": {
-         "vector_similarity": 0.5921,
-         "vector_rank": 7,
-         "full_text_rank": 3,
-         "full_text_score": 2.2,
-         "rrf": 0.0308
+         "vector_similarity": 0.6098,
+         "vector_rank": 1,
+         "full_text_rank": 8,
+         "full_text_score": 1.1,
+         "rrf": 0.0311
+        }
+       },
+       {
+        "chunk_id": "SOP-OPS-002#5",
+        "document_id": "SOP-OPS-002",
+        "title": "SOP-OPS-002 Sand Management and Sand Production Alarms",
+        "doc_type": "procedure",
+        "well_id": null,
+        "field": null,
+        "date": "2025-12-01",
+        "section": "Sampling and separator checks",
+        "text": "## Sampling and separator checks\n\nSampling confirms the instrument reading and measures the real sand content.\n\n1. Take a wellhead sample within 1 hour of a High-High alarm, using the dedicated sand sampling point and a fine mesh sand catcher or centrifuge tube.\n2. Record the sand content in ppm by volume, along with choke size, wellhead pressure, flow rate and water cut at the time of sampling.\n3. Repeat the sample after each bean-down step and again at the end of the 2 hour stabilisation period.\n4. Sand content above 10 ppm in a sample is treated as confirmed sand production. Any visible sand, or sand above 50 ppm, requires immediate notification of the Production Engineer.\n5. At CPF-1, the Lead Operator checks:\n   - Separator level and interface readings for abnormal behaviour (possible sand build-up).\n   - Differential pressure across inlet devices and downstream filters.\n   - Sand jetting or drain flow, if installed, and quantity removed.\n6. If separator sand accumulation is suspected, the Production Supervisor schedules a clean-out and the HSE Advisor reviews the handling plan for contaminated solids.",
+        "scores": {
+         "vector_similarity": 0.5741,
+         "vector_rank": 5,
+         "full_text_rank": 5,
+         "full_text_score": 1.5,
+         "rrf": 0.03077
         }
        }
       ],
@@ -819,17 +816,19 @@
     ],
     "checks": {
      "unknown_chunk_ids": [],
-     "refs_without_source": []
+     "refs_without_source": [],
+     "viz_error": null,
+     "unverified_quotes": []
     },
     "usage": {
      "input_tokens": 8,
-     "cache_read_tokens": 12716,
-     "cache_write_tokens": 10395,
-     "output_tokens": 838,
+     "cache_read_tokens": 21919,
+     "cache_write_tokens": 3577,
+     "output_tokens": 1004,
      "steps": 3,
-     "cost_usd": 0.0357
+     "cost_usd": 0.0212
     },
-    "latency_ms": 9055,
+    "latency_ms": 10838,
     "model": "claude-sonnet-5-5"
    }
   }

@@ -1,6 +1,6 @@
 {
  "question": "Where are this morning's open incidents, and how bad are they?",
- "recorded_at": "2026-11-22T15:37:39.993Z",
+ "recorded_at": "2026-11-22T16:57:07.183Z",
  "events": [
   {
    "t": 4,
@@ -11,10 +11,10 @@
    }
   },
   {
-   "t": 2130,
+   "t": 2194,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01L9RcTXW6RR3cJMZdAdjmaJ",
+    "id": "toolu_01Kau5kDDgXxo8W9XDXxzfhm",
     "name": "list_events",
     "args": {
      "type": "incident",
@@ -24,12 +24,13 @@
    }
   },
   {
-   "t": 2136,
+   "t": 2203,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01L9RcTXW6RR3cJMZdAdjmaJ",
+    "id": "toolu_01Kau5kDDgXxo8W9XDXxzfhm",
     "name": "list_events",
     "output": {
+     "ref": "E1",
      "count": 5,
      "truncated": false,
      "events": [
@@ -128,10 +129,10 @@
    }
   },
   {
-   "t": 4360,
+   "t": 3917,
    "event": {
     "type": "tool-call",
-    "id": "toolu_011VsfjAw5NUTVHUCDQPg3uw",
+    "id": "toolu_01UGvpH7xuWAfkgYvc4zoMEz",
     "name": "search_documents",
     "args": {
      "query": "open incident notes",
@@ -150,12 +151,13 @@
    }
   },
   {
-   "t": 4373,
+   "t": 3939,
    "event": {
     "type": "tool-result",
-    "id": "toolu_011VsfjAw5NUTVHUCDQPg3uw",
+    "id": "toolu_01UGvpH7xuWAfkgYvc4zoMEz",
     "name": "search_documents",
     "output": {
+     "ref": "S1",
      "count": 5,
      "chunks": [
       {
@@ -208,11 +210,11 @@
    }
   },
   {
-   "t": 10337,
+   "t": 9212,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "Five incidents are open: two in Dune Field (W-12, W-05), one in Wadi Field (W-25) and two in Salt Flat Field (W-36, W-34). They have cost about 31,800 barrels so far, about $2.23 million in lost revenue at an assumed $70 a barrel [1][2][3][4][5]. Three are high severity: W-12 (Dune Field, pressure trapped between casing strings) and W-36 (Salt Flat Field, flowline leak awaiting a clamp repair) are both shut in, while W-34 (Salt Flat Field, sand eroding the flowline) is producing on a reduced choke [1][2][3][6][7][8]. The other two, W-05 (unstable wellhead pressure) and W-25 (pump vibration), are medium severity and still producing [4][5][9][10].",
+     "answer": "Five incidents are open, two in Dune Field, one in Wadi Field and two in Salt Flat Field, and they have cost about 31,830 barrels of oil, about $2,228,000 in lost revenue at an assumed $70 a barrel [1]. The high-severity ones are W-12 in Dune Field, shut in with casing pressure that won't bleed off [2], W-36 in Salt Flat Field, shut in with a flowline leak [3], and W-34 in Salt Flat Field, a sand alarm with the choke cut back [4]. The others are medium: W-05 in Dune Field has pressure swings [5], and W-25 in Wadi Field has a pump vibrating, so it was slowed [6].",
      "viz": {
       "type": "map",
       "title": "Open incidents",
@@ -560,69 +562,57 @@
        "n": 1,
        "kind": "table",
        "id": "events:EV-0179",
-       "label": "EV-0179 W-12 annulus pressure"
+       "label": "Open incident events (EV-0179, 0180, 0181, 0183, 0184)",
+       "quote": null,
+       "quote_verified": null
       },
       {
        "n": 2,
-       "kind": "table",
-       "id": "events:EV-0183",
-       "label": "EV-0183 W-36 flowline leak"
+       "kind": "chunk",
+       "id": "IN-066#0",
+       "label": "IN-066 W-12 annulus pressure",
+       "quote": "The well was shut in pending integrity diagnostics.",
+       "quote_verified": true
       },
       {
        "n": 3,
-       "kind": "table",
-       "id": "events:EV-0180",
-       "label": "EV-0180 W-34 sand alarm"
+       "kind": "chunk",
+       "id": "IN-069#0",
+       "label": "IN-069 W-36 flowline leak",
+       "quote": "W-36 was shut in and the ESP stopped.",
+       "quote_verified": true
       },
       {
        "n": 4,
-       "kind": "table",
-       "id": "events:EV-0181",
-       "label": "EV-0181 W-05 pressure anomaly"
+       "kind": "chunk",
+       "id": "IN-067#0",
+       "label": "IN-067 W-34 sand alarm",
+       "quote": "Choke reduced again to 24/64.",
+       "quote_verified": true
       },
       {
        "n": 5,
-       "kind": "table",
-       "id": "events:EV-0184",
-       "label": "EV-0184 W-25 ESP vibration"
+       "kind": "chunk",
+       "id": "IN-068#0",
+       "label": "IN-068 W-05 pressure anomaly",
+       "quote": "The working suspicion is partial choke plugging.",
+       "quote_verified": true
       },
       {
        "n": 6,
        "kind": "chunk",
-       "id": "IN-066#0",
-       "label": "Incident note W-12"
-      },
-      {
-       "n": 7,
-       "kind": "chunk",
-       "id": "IN-069#0",
-       "label": "Incident note W-36"
-      },
-      {
-       "n": 8,
-       "kind": "chunk",
-       "id": "IN-067#0",
-       "label": "Incident note W-34"
-      },
-      {
-       "n": 9,
-       "kind": "chunk",
-       "id": "IN-068#0",
-       "label": "Incident note W-05"
-      },
-      {
-       "n": 10,
-       "kind": "chunk",
        "id": "IN-070#0",
-       "label": "Incident note W-25"
+       "label": "IN-070 W-25 ESP vibration",
+       "quote": "Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.",
+       "quote_verified": true
       }
      ],
      "confidence": "high",
-     "could_not_verify": "Root causes are not yet established for any of the five incidents, and the lost-oil totals are estimates that keep growing while the wells stay affected."
+     "could_not_verify": "No root cause has been found yet for W-12, W-36 or W-34."
     },
     "trace": [
      {
-      "call_id": "toolu_011VsfjAw5NUTVHUCDQPg3uw",
+      "call_id": "toolu_01UGvpH7xuWAfkgYvc4zoMEz",
       "args": {
        "query": "open incident notes",
        "k": 8,
@@ -824,17 +814,19 @@
     ],
     "checks": {
      "unknown_chunk_ids": [],
-     "refs_without_source": []
+     "refs_without_source": [],
+     "viz_error": null,
+     "unverified_quotes": []
     },
     "usage": {
      "input_tokens": 8,
-     "cache_read_tokens": 24398,
+     "cache_read_tokens": 26789,
      "cache_write_tokens": 0,
-     "output_tokens": 1157,
+     "output_tokens": 1077,
      "steps": 3,
-     "cost_usd": 0.014
+     "cost_usd": 0.0135
     },
-    "latency_ms": 10337,
+    "latency_ms": 9212,
     "model": "claude-sonnet-5-5"
    }
   }
