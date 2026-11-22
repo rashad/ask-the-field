@@ -1,0 +1,35 @@
+{
+  "name": "ops-rag-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "db:up": "docker compose up -d --wait",
+    "db:seed": "tsx scripts/seed.ts",
+    "gen:docs": "tsx scripts/gen-docs.ts",
+    "ingest": "tsx scripts/ingest.ts",
+    "search": "tsx scripts/search.ts",
+    "db:dump": "sh scripts/dump.sh",
+    "restore": "sh scripts/restore.sh",
+    "test": "tsx --test lib/chunker.test.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "next": "16.4.6",
+    "postgres": "^4.1.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.29.3",
+  "type": "module"
+}
