@@ -477,6 +477,9 @@ table.data td.wrapok{min-width:360px}
 .srclink{display:inline-flex;align-items:center;gap:4px}
 .credit .srclink{margin-left:12px}
 .srclink svg{width:14px;height:14px;flex:none}
+.quote-ok{color:var(--mute);display:inline-flex;align-items:center;gap:4px}
+.quote-miss{color:#B3261E;display:inline-flex;align-items:center;gap:4px}
+.chip .qmiss{margin-left:4px;color:#B3261E}
 @media (max-width:640px){.credit{margin-left:0;flex-basis:100%}}
 
 .eyebrow{display:inline-flex;align-items:center;gap:var(--sp-75);text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:var(--sp-200)}

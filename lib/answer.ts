@@ -1,7 +1,9 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { isStepCount, Output, streamText, type LanguageModelUsage } from "ai";
 import { z } from "zod";
+import { BAR_METRICS, buildChart, type Chart, type ToolRun } from "./chart";
 import { sql } from "./db";
+import { findQuote } from "./quote";
 import { DATA_START, makeTools, TODAY, type SearchTrace } from "./tools";
 
 export const MODEL = "claude-sonnet-5-5";
@@ -24,14 +26,17 @@ export const answerSchema = z.object({
     z.object({
       type: z.literal("line"),
       title: z.string(),
-      unit: z.string(),
-      series: z.array(z.object({ name: z.string(), points: z.array(z.object({ x: z.string(), y: z.number() })) })),
+      ref: z.string().describe("ref of a query_production time series result (group_by day, week, month or quarter), such as P1"),
+      metric: z.enum(["oil", "gas", "water_cut"]).describe("The metric the chart shows; it must be the metric of that result"),
+      series: z.array(z.string()).describe("Names of the series to plot; empty for all"),
     }),
     z.object({
       type: z.literal("bar"),
       title: z.string(),
-      unit: z.string(),
-      bars: z.array(z.object({ label: z.string(), value: z.number() })).describe("Ranked, most important first"),
+      ref: z.string().describe("ref of a query_production group_by=well result (P1) or of a list_events result (E1)"),
+      metric: z.enum(BAR_METRICS).describe("query_production: value, change or change_pct. list_events: lost_oil_bbl, lost_revenue_usd or downtime_hours"),
+      wells: z.array(wellId).describe("query_production: the wells to plot; empty for the top 10"),
+      event_groups: z.array(z.array(z.string())).describe("list_events: one bar per group of event ids, such as a failure and its workover on the same well; empty for one bar per event"),
     }),
     z.object({ type: z.literal("none") }),
   ]),
@@ -41,6 +46,7 @@ export const answerSchema = z.object({
       kind: z.enum(["table", "chunk"]),
       id: z.string().describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>"),
       label: z.string(),
+      quote: z.string().nullable().describe("chunk: one sentence or one table row copied word for word from that chunk's text, under 200 characters, that supports the claim. table: null"),
     }),
   ),
   confidence: z.enum(["high", "medium", "low"]),
@@ -58,9 +64,10 @@ Tools, and when to use them:
 - list_events: what happened, when, what is open now, and what it cost (lost_oil_bbl, lost_revenue_usd). type='incident' for incidents.
 - search_documents: why something happened, findings, equipment and actions. A "why" question always needs it; when the question names the well, call it in the first round alongside list_events. Filter by well_ids, field, doc_type and dates whenever the question names them.
 - Chain events to documents: when the question names no well, call list_events first; once it finds the specific events, call search_documents in the next round filtered on those events' well_ids and on a window from 7 days before the event start to 30 days after. Never run a field-wide document search for a specific event.
-- Open incidents ("where are the open incidents", "what is open this morning"): call list_events with type='incident' and status='open' first. In the next round, call search_documents once with doc_type='incident_note', the well_ids of those open events, from = 7 days before the earliest start date, and k = the number of open events plus 3. Each event lists the ids of the incident notes that cite it (documents): cite that incident note chunk for each incident, not only the events table. Answer in exactly 3 sentences, with no extra sentence for money: how many are open and in which fields, with the oil they have cost so far and its lost revenue; then the high-severity ones (say which wells are shut in) with their notes; then all the others together in one sentence with their notes.
+- Open incidents ("where are the open incidents", "what is open this morning"): call list_events with type='incident' and status='open' first. In the next round, call search_documents once with doc_type='incident_note', the well_ids of those open events, from = 7 days before the earliest start date, and k = the number of open events plus 3. Each event lists the ids of the incident notes that cite it (documents): cite that incident note chunk for each incident, not only the events table. Answer in exactly 3 sentences, with no extra sentence for money: one sentence with how many are open and in which fields, joined by "and they have cost" to the oil lost so far and its lost revenue; then all the high-severity ones in one sentence, separated by commas (say which wells are shut in), with their notes; then all the others together in one sentence with their notes.
+- Outage questions ("why was W-17 down"): answer in exactly 3 sentences and at most 75 words, with [n] after each: sentence 1 gives the cause and the dates the well was down, citing the incident note of the failure; sentence 2 gives what the repair found and what it replaced, joined with "and" in one sentence; sentence 3 gives the lost oil and the lost revenue of the failure and its repair together, citing both events. The restart date goes in sentence 1, never in a sentence of its own.
 - Repeat failures ("was it a one-off", "has this happened before", "is there a pattern"): in the first round call list_events with the equipment as type (for a pump failure, type='ESP') and no well filter, and search_documents on the named well's failure (well_ids, doc_type omitted, query with the failure and the pump serial and batch). Read the pump serial and batch in the descriptions and passages. In the second round call search_documents with the batch id as query (for example "ESP pump batch 2M-1187 serial motor failure", with the real batch id), no well filter, k=8. Answer in exactly 3 sentences, with [n] after each claim: sentence 1 starts with "It was not a one-off:" (never a bare "No.") and names the other wells, their fields and failure months, and the shared batch; sentence 2 gives the common finding and the total lost oil and lost revenue, cited to the events; sentence 3 says what this means (other pumps from the batch are at risk). Cite one incident note or work order for each well. Answer after the second round: no production query is needed.
-- Procedure questions ("what does the procedure say"): call search_documents with doc_type='procedure' and the topic, in the same round as the other calls. Cite the procedure chunk.
+- Procedure questions ("what does the procedure say"): call search_documents with doc_type='procedure' and the topic, in the same round as the other calls. Cite the procedure chunk. When the question also asks about an event's status, answer in exactly 3 sentences and at most 70 words, with [n] after each: sentence 1 starts with "The <event> on <well> is still open" or "is closed" (never a bare "Yes." or "No.") and gives the start date, the lost oil and the lost revenue, citing the event and its incident note; sentence 2 gives the first actions the procedure requires, in one sentence; sentence 3 says what the procedure requires before normal operation resumes.
 - get_wells: well lists and current status. A map viz needs only well ids: the server adds coordinates, so do not call get_wells just to draw a map.
 Use the fewest calls that answer the question; call independent tools in parallel. Results are deterministic: never call a tool twice with the same arguments, and answer after at most three rounds of calls.
 
@@ -70,8 +77,8 @@ Dates: "last quarter" is the previous calendar quarter (2026-07-01 to 2026-09-30
 
 Final answer:
 - answer: 2 to 4 sentences, at most 80 words, never 5 (a fragment without a verb counts as a sentence): sentence 1 gives the direct answer, the next ones the key evidence. Leave other details out. Do not start with a bare "Yes." or "No.": put it in sentence 1. Keep it plain and specific (wells, dates, values), each claim followed by [n]. Write ranges with "to", never with a dash. Plain words for a manager: the first time you name a well, say where it is ("W-17, a Wadi Field well"); dates as "4 March 2026", never 2026-03-04; spell out a technical term the first time in a few plain words ("its electric pump (ESP)", "water cut (the share of water in what the well brings up)", "a workover (a repair job with a rig)"); round numbers ("about 1,190 barrels a day"). These rules never add a sentence: the limit of 4 sentences and 80 words always wins, so merge or drop details instead.
-- viz: map for "where" questions and open items (highlighted = the wells concerned; well_ids empty for all wells); line for a trend over time (copy the points from query_production); bar for a ranking or comparison across wells (copy the values, ranked); for a repeat failure, a bar of lost oil per failure (label "W-09, Oct 2025"); none when no chart helps.
-- sources: only rows and chunks that the tools returned in this conversation. Never invent an id, a number or a date.
+- viz: you pick the chart and point at the data; the server reads every value from that tool result, so never write chart numbers. Each tool result has a ref (P1, E1, S1...). map for "where" questions and open items (highlighted = the wells concerned; well_ids empty for all wells); line for a trend over time (ref of the query_production time series of the metric the question is about, that metric, series empty for all); bar for a ranking or comparison across wells (ref of a query_production group_by=well result, metric value, change or change_pct, wells empty for the top 10); for a repeat failure, a bar with the ref of the list_events result, metric lost_oil_bbl and event_groups with one group per failure: the failure event id plus the id of its workover on the same well; none when no chart helps.
+- sources: only rows and chunks that the tools returned in this conversation. Never invent an id, a number or a date. For each chunk source, quote is one sentence or one table row copied word for word from that chunk's text (under 200 characters) that supports the claim; the server checks it against the report. For a table source, quote is null.
 - confidence: high when tables and documents agree, medium when only one kind of evidence exists, low when evidence is thin or conflicting.
 - could_not_verify: one sentence on what you could not confirm from the data, or null.`;
 
@@ -80,7 +87,7 @@ export type AskEvent =
   | { type: "tool-call"; id: string; name: string; args: unknown; label: string }
   | { type: "tool-result"; id: string; name: string; output: unknown }
   | { type: "tool-error"; id: string; name: string; error: string }
-  | { type: "final"; answer: Answer & { viz: unknown }; trace: SearchTrace[]; checks: Checks; usage: Usage; latency_ms: number; model: string }
+  | { type: "final"; answer: Omit<Answer, "viz" | "sources"> & { viz: FinalViz; sources: FinalSource[] }; trace: SearchTrace[]; checks: Checks; usage: Usage; latency_ms: number; model: string }
   | { type: "fallback"; reason: string }
   | { type: "error"; message: string };
 
@@ -93,9 +100,14 @@ export interface Usage {
   cost_usd: number;
 }
 
+export type FinalSource = Answer["sources"][number] & { quote_verified: boolean | null };
+export type FinalViz = Chart | (Extract<Answer["viz"], { type: "map" }> & { wells: unknown[] }) | { type: "none" };
+
 interface Checks {
   unknown_chunk_ids: string[];
   refs_without_source: number[];
+  viz_error: string | null;
+  unverified_quotes: number[];
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -133,8 +145,7 @@ function toUsage(u: LanguageModelUsage, steps: number): Usage {
   return { input_tokens: input, cache_read_tokens: cacheRead, cache_write_tokens: cacheWrite, output_tokens: output, steps, cost_usd: Number(cost.toFixed(4)) };
 }
 
-async function withWells(viz: Answer["viz"]) {
-  if (viz.type !== "map") return viz;
+async function withWells(viz: Extract<Answer["viz"], { type: "map" }>) {
   const wells = await sql<{ well_id: string; field: string; lat: number; lon: number; status: string }[]>`
     SELECT well_id, field, lat, lon, status FROM wells
     ${viz.well_ids.length ? sql`WHERE field IN (SELECT field FROM wells WHERE well_id = ANY(${[...viz.well_ids, ...viz.highlighted]}))` : sql``} ORDER BY well_id`;
@@ -142,12 +153,26 @@ async function withWells(viz: Answer["viz"]) {
   return { ...viz, wells: wells.map((w) => ({ ...w, highlighted: highlighted.has(w.well_id) })) };
 }
 
-function check(a: Answer, traces: SearchTrace[]): Checks {
+async function finalViz(viz: Answer["viz"], runs: ToolRun[]): Promise<{ viz: FinalViz; error: string | null }> {
+  if (viz.type === "none") return { viz, error: null };
+  if (viz.type === "map") return { viz: await withWells(viz), error: null };
+  const { chart, error } = buildChart(viz, runs);
+  return { viz: chart ?? { type: "none" }, error };
+}
+
+function verifyQuotes(a: Answer, traces: SearchTrace[]): FinalSource[] {
+  const text = new Map(traces.flatMap((t) => t.chunks_sent.map((c) => [c.chunk_id, c.text] as const)));
+  return a.sources.map((s) => ({ ...s, quote_verified: s.kind === "chunk" ? !!findQuote(text.get(s.id) ?? "", s.quote) : null }));
+}
+
+function check(a: Answer, sources: FinalSource[], traces: SearchTrace[], vizError: string | null): Checks {
   const sent = new Set(traces.flatMap((t) => t.chunks_sent.map((c) => c.chunk_id)));
   const ns = new Set(a.sources.map((s) => s.n));
   return {
     unknown_chunk_ids: a.sources.filter((s) => s.kind === "chunk" && !sent.has(s.id)).map((s) => s.id),
     refs_without_source: [...new Set([...a.answer.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])))].filter((n) => !ns.has(n)),
+    viz_error: vizError,
+    unverified_quotes: sources.filter((s) => s.quote_verified === false).map((s) => s.n),
   };
 }
 
@@ -157,11 +182,12 @@ const repeated = (step?: { toolResults: { output: unknown }[] }) =>
 export async function* ask(question: string, signal?: AbortSignal): AsyncGenerator<AskEvent> {
   const t0 = Date.now();
   const traces: SearchTrace[] = [];
+  const runs: ToolRun[] = [];
   const result = streamText({
     model: anthropic(MODEL),
     instructions: SYSTEM,
     prompt: question,
-    tools: makeTools(traces),
+    tools: makeTools(traces, runs),
     output: Output.object({ name: "answer", schema: answerSchema }),
     stopWhen: isStepCount(MAX_STEPS),
     prepareStep: ({ stepNumber, steps }) => (stepNumber === MAX_STEPS - 1 || repeated(steps.at(-1)) ? { toolChoice: "none" } : {}),
@@ -179,11 +205,13 @@ export async function* ask(question: string, signal?: AbortSignal): AsyncGenerat
   }
   const answer = await result.output;
   const steps = (await result.steps).length;
+  const viz = await finalViz(answer.viz, runs);
+  const sources = verifyQuotes(answer, traces);
   yield {
     type: "final",
-    answer: { ...answer, viz: await withWells(answer.viz) },
+    answer: { ...answer, viz: viz.viz, sources },
     trace: traces,
-    checks: check(answer, traces),
+    checks: check(answer, sources, traces, viz.error),
     usage: toUsage(await result.totalUsage, steps),
     latency_ms: Date.now() - t0,
     model: MODEL,

@@ -1,6 +1,7 @@
 import { ask, SUGGESTED, type AskEvent } from "../lib/answer";
 import { record } from "../lib/cache";
 import { sql } from "../lib/db";
+import { findQuote } from "../lib/quote";
 import { saveQueryCache } from "../lib/voyage";
 
 type Final = Extract<AskEvent, { type: "final" }>;
@@ -13,6 +14,34 @@ const highlighted = (f: Final) => ((f.answer.viz as { highlighted?: string[] }).
 const args = (c: Call) => c.args as Record<string, unknown>;
 const sentences = (text: string) => text.replace(/\s*\[\d+\]/g, "").trim().split(/(?<=[.!?])\s+(?=["(A-Z0-9])/).filter(Boolean).length;
 const SHORT: Check = ["answer has 2 to 4 sentences", (f) => { const n = sentences(f.answer.answer); return n >= 2 && n <= 4; }];
+
+type Out = { ref?: string; series?: { name: string; points: { x: string; y: number }[] }[]; rows?: Record<string, unknown>[]; events?: Record<string, unknown>[] };
+function plottedFromTools(f: Final, results: AskEvent[]) {
+  const v = f.answer.viz;
+  if (v.type !== "line" && v.type !== "bar") return true;
+  const out = results.map((r) => (r as { output?: Out }).output).find((o) => o?.ref === v.ref);
+  if (!out) return false;
+  if (v.type === "line")
+    return v.series.length > 0 && v.series.every((s) => {
+      const src = out.series?.find((x) => x.name === s.name);
+      return !!src && s.points.length === src.points.length && s.points.every((p) => src.points.some((q) => q.x === p.x && q.y === p.y));
+    });
+  return v.bars.length > 0 && v.bars.every((b) => {
+    if (out.rows) return out.rows.find((r) => r.well_id === b.ids[0])?.[v.metric] === b.value;
+    const vals = b.ids.map((id) => out.events?.find((e) => e.event_id === id)?.[v.metric]);
+    return vals.every((x) => typeof x === "number") && (vals as number[]).reduce((a, c) => a + c, 0) === b.value;
+  });
+}
+function quotesVerified(f: Final) {
+  const text = new Map(f.trace.flatMap((t) => t.chunks_sent.map((c) => [c.chunk_id, c.text] as const)));
+  return f.answer.sources.filter((s) => s.kind === "chunk").every((s) => s.quote_verified === true && !!findQuote(text.get(s.id) ?? "", s.quote));
+}
+const COMMON: Check[] = [
+  SHORT,
+  ["chart reference is valid", (f) => f.checks.viz_error === null],
+  ["every plotted value equals the referenced tool output", (f, _, results) => plottedFromTools(f, results)],
+  ["every chunk source has a verified quote", (f) => quotesVerified(f)],
+];
 
 const docOf = async (well: string, type: string, from: string, to: string) =>
   (await sql<{ doc_id: string }[]>`SELECT doc_id FROM documents WHERE well_id = ${well} AND doc_type = ${type} AND date BETWEEN ${from} AND ${to} ORDER BY date LIMIT 1`)[0]?.doc_id ?? "missing";
@@ -51,6 +80,7 @@ const CASES: { question: string; checks: Check[] }[] = [
       ["answer names W-09, W-17 and W-27", (f) => BATCH_WELLS.every((w) => f.answer.answer.includes(w))],
       ["answer names batch 7Q-0419", (f) => f.answer.answer.includes("7Q-0419")],
       ["sources cover all 3 batch failures", (f, _, results) => { const w = citedWells(f, results); return BATCH_WELLS.every((x) => w.has(x)); }],
+      ["viz is a bar of lost oil per failure for W-09, W-17 and W-27", (f) => f.answer.viz.type === "bar" && f.answer.viz.metric === "lost_oil_bbl" && BATCH_WELLS.every((w) => bars(f).some((b) => b.label.startsWith(w)))],
     ],
   },
   {
@@ -87,8 +117,8 @@ for (const [i, c] of CASES.entries()) {
   } catch (err) {
     console.log(`  ERROR ${(err as Error).message}`);
     for (const { event } of events) if (event.type === "tool-call" || event.type === "tool-error") console.log(`    ${event.type} ${JSON.stringify(event).slice(0, 400)}`);
-    [...c.checks, SHORT].forEach(([name]) => console.log(`  FAIL ${name}`));
-    total += c.checks.length + 1;
+    [...c.checks, ...COMMON].forEach(([name]) => console.log(`  FAIL ${name}`));
+    total += c.checks.length + COMMON.length;
     continue;
   }
   const evs = events.map((e) => e.event);
@@ -96,7 +126,7 @@ for (const [i, c] of CASES.entries()) {
   const calls = evs.filter((e): e is Call => e.type === "tool-call");
   const results = evs.filter((e) => e.type === "tool-result");
   let ok = true;
-  for (const [name, fn] of [...c.checks, SHORT]) {
+  for (const [name, fn] of [...c.checks, ...COMMON]) {
     const pass = fn(final, calls, results);
     ok &&= pass;
     passed += Number(pass);
@@ -112,7 +142,8 @@ for (const [i, c] of CASES.entries()) {
   console.log(`  viz: ${final.answer.viz.type}, confidence: ${final.answer.confidence}, sources: ${final.answer.sources.map((s) => s.id).join(", ")}`);
   console.log(`  answer: ${final.answer.answer}`);
   if (final.answer.could_not_verify) console.log(`  not verified: ${final.answer.could_not_verify}`);
-  if (final.checks.unknown_chunk_ids.length || final.checks.refs_without_source.length) console.log(`  grounding: ${JSON.stringify(final.checks)}`);
+  if (final.checks.unknown_chunk_ids.length || final.checks.refs_without_source.length || final.checks.viz_error || final.checks.unverified_quotes.length) console.log(`  grounding: ${JSON.stringify(final.checks)}`);
+  for (const s of final.answer.sources.filter((x) => x.quote_verified === false)) console.log(`  quote not found [${s.n}] ${s.id}: ${s.quote}`);
   if (recordCache && ok && SUGGESTED.includes(c.question)) {
     record(c.question, events);
     console.log("  recorded to data/cache");

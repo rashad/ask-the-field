@@ -3,6 +3,7 @@ import { CaretDown, CaretUpDown, Check, CursorClick, FileText, Table, WarningCir
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { findQuote } from "@/lib/quote";
 import { Md } from "../md";
 import { shortDate } from "../fmt";
 
@@ -42,6 +43,7 @@ function Documents() {
   const params = useSearchParams();
   const router = useRouter();
   const chunkParam = params.get("chunk");
+  const quote = params.get("quote");
   const selected = params.get("doc") ?? chunkParam?.split("#")[0] ?? null;
   const [type, setType] = useState("");
   const [well, setWell] = useState("");
@@ -120,8 +122,8 @@ function Documents() {
                     <span className="caption-4 mute">Chunk {c.ordinal + 1} of {detail.chunks.length}{c.section ? `, ${c.section}` : ""}</span>
                     <span className="caption-4 mute mono">{c.tokens} tokens</span>
                   </div>
-                  {c.id === chunkParam && <span className="badge badge-mint caption-3" style={{ marginBottom: "var(--sp-75)" }}><Check weight="bold" aria-hidden />Opened from an answer</span>}
-                  <Md text={c.text} />
+                  {c.id === chunkParam && <span className="badge badge-mint caption-3" style={{ marginBottom: "var(--sp-75)" }}><Check weight="bold" aria-hidden />Opened from an answer{c.id === chunkParam && findQuote(c.text, quote) ? ", quote highlighted" : ""}</span>}
+                  <Md text={c.text} span={c.id === chunkParam ? findQuote(c.text, quote) : null} />
                   <details open={c.id === chunkParam}>
                     <summary className="caption-4"><CaretDown aria-hidden />Metadata and vector</summary>
                     <dl className="kv body-6">

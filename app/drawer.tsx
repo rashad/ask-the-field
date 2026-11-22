@@ -1,8 +1,9 @@
 "use client";
-import { ArrowUpRight, CaretDown, CheckCircle, Database, FileText, X, XCircle } from "@phosphor-icons/react/ssr";
+import { ArrowUpRight, CaretDown, CheckCircle, Database, FileText, Quotes, X, XCircle } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
+import { findQuote } from "@/lib/quote";
 import type { SearchChunk } from "@/lib/tools";
 import { shortDate } from "./fmt";
 import { found, say, type Step } from "./human";
@@ -14,25 +15,9 @@ type Source = Final["answer"]["sources"][number];
 
 const MAX_RRF = 2 / 61;
 const TYPE: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
-const STOP = new Set("about after again also been before being both from have into more most only over same some such than that their them then there these they this those through under were what when where which while with would well wells field".split(" "));
-
-function tokens(text: string) {
-  return new Set((text.toLowerCase().match(/[a-z0-9][a-z0-9/.-]*[a-z0-9]/g) ?? []).filter((t) => (/\d/.test(t) && t.length >= 2) || (t.length >= 5 && !STOP.has(t))));
-}
-
-function marker(answer: string, n: number) {
-  const sentences = answer.split(/(?<=[.!?])\s+/).filter((s) => s.includes(`[${n}]`));
-  const keys = tokens(sentences.join(" ").replace(/\[\d+\]/g, ""));
-  return (line: string) => {
-    if (/^\*\*[^*]+:\*\*/.test(line)) return false;
-    let hits = 0;
-    for (const t of tokens(line)) if (keys.has(t)) hits++;
-    return hits >= 2;
-  };
-}
-
-function sourceHref(kind: string, id: string) {
-  if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}`;
+export function sourceHref(s: Source) {
+  const { kind, id } = s;
+  if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}${s.quote_verified && s.quote ? `&quote=${encodeURIComponent(s.quote)}` : ""}`;
   const [table, scope] = id.split(":");
   const name = table === "production_daily" ? "production" : table;
   const q = name === "production" ? (scope === "all" ? "" : scope) : scope;
@@ -80,6 +65,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
   const others = [...chunks.values()].filter((c) => !cited.has(c.chunk_id));
   const docs = new Set([...chunks.values()].map((c) => c.document_id)).size;
   const fullTextOnly = trace.some((t) => t.full_text_only);
+  const quoted = answer.sources.filter((s) => s.kind === "chunk");
   const u = final.usage;
 
   return (
@@ -107,7 +93,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
             ))}
             <li>
               <span className="n mono caption-3">{steps.length + 1}</span>
-              <div><p className="body-5">Wrote the answer and linked each fact to its source.</p><p className="body-6 mute">It may only cite what the steps above returned. Nothing else counts as a source.</p></div>
+              <div><p className="body-5">Wrote the answer and linked each fact to its source.</p><p className="body-6 mute">It may only cite what the steps above returned. Nothing else counts as a source.{quoted.length > 0 && ` The server checked ${quoted.filter((q) => q.quote_verified).length} of ${quoted.length} quotes word for word against their reports.`}</p></div>
             </li>
           </ol>
           {fullTextOnly && <p className="note body-6"><XCircle aria-hidden />The meaning search service did not answer, so this search matched exact words only.</p>}
@@ -116,6 +102,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
           <ol className="passes">
             {answer.sources.map((s) => {
               const c = s.kind === "chunk" ? chunks.get(s.id) : undefined;
+              const span = c && s.quote_verified ? findQuote(c.text, s.quote) : null;
               return (
                 <li key={s.n + s.id} id={`src-${s.n}`} className={`pass${focus === s.n ? " focus" : ""}`}>
                   <div className="pass-top">
@@ -127,9 +114,14 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
                       </p>
                     </div>
                   </div>
-                  {focus === s.n && <p className="caption-3 you">You opened this source.{c ? " The lines that support the answer are highlighted." : ""}</p>}
-                  {c ? <div className="pass-text"><Md text={c.text} mark={marker(answer.answer, s.n)} skipTitle /></div> : <TableSource s={s} events={events} />}
-                  <Link className="textlink button-sm" href={sourceHref(s.kind, s.id)}>{c ? "Open the full report" : "Open the table"}<ArrowUpRight aria-hidden /></Link>
+                  {focus === s.n && <p className="caption-3 you">You opened this source.{span ? " The quoted passage is highlighted." : ""}</p>}
+                  {c && (span ? (
+                    <p className="caption-4 quote-ok"><CheckCircle weight="fill" aria-hidden />Quote checked against the report, word for word.</p>
+                  ) : (
+                    <p className="caption-4 quote-miss"><Quotes aria-hidden />Quote not found in the report, so nothing is highlighted.</p>
+                  ))}
+                  {c ? <div className="pass-text"><Md text={c.text} span={span} skipTitle /></div> : <TableSource s={s} events={events} />}
+                  <Link className="textlink button-sm" href={sourceHref(s)}>{c ? "Open the full report" : "Open the table"}<ArrowUpRight aria-hidden /></Link>
                 </li>
               );
             })}

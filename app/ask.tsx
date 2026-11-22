@@ -326,6 +326,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
                     {answer.sources.map((s) => (
                       <button key={s.n + s.id} type="button" className="chip caption-4" onClick={() => openSource(s.n)} title={s.id}>
                         <span className="n mono caption-3">{s.n}</span>{s.label}
+                        {s.quote_verified === false && <span className="qmiss caption-4">quote not found</span>}
                       </button>
                     ))}
                   </div>

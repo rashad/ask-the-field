@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sql } from "./db";
 import { PRICE_PER_BBL } from "./money";
 import { hybridSearch } from "./search";
+import type { ToolRun } from "./chart";
 import { lostOil } from "./stakes";
 
 export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
@@ -211,7 +212,7 @@ const sortKeys = (v: unknown): unknown =>
 
 const NARROWING = ["field", "well_ids", "from", "to"];
 
-interface Seen { name: string; args: Record<string, unknown>; id: string; complete: boolean }
+interface Seen { name: string; args: Record<string, unknown>; ref: string; complete: boolean }
 
 // A call that only adds filters to an earlier complete result asks for a subset the model already holds.
 function earlier(seen: Seen[], name: string, args: Record<string, unknown>) {
@@ -224,41 +225,46 @@ function earlier(seen: Seen[], name: string, args: Record<string, unknown>) {
   });
 }
 
-function once<A extends Record<string, unknown>, R>(name: string, seen: Seen[], run: (a: A, o: { toolCallId: string }) => Promise<R>) {
+const PREFIX: Record<string, string> = { query_production: "P", list_events: "E", search_documents: "S", get_wells: "W" };
+
+function once<A extends Record<string, unknown>, R extends object>(name: string, seen: Seen[], runs: ToolRun[], counter: Record<string, number>, run: (a: A, o: { toolCallId: string }) => Promise<R>) {
   return async (a: A, o: { toolCallId: string }) => {
     const first = earlier(seen, name, a);
-    if (first) return { repeated: true, note: `Call ${first.id} already returned this data. Reuse that result; do not call again.` };
-    const result = await run(a, o);
-    seen.push({ name, args: a, id: o.toolCallId, complete: !(result as { truncated?: boolean }).truncated });
+    if (first) return { repeated: true, ref: first.ref, note: `Call ${first.ref} already returned this data. Reuse that result (ref ${first.ref}); do not call again.` };
+    const ref = `${PREFIX[name]}${++counter[name]}`;
+    const result = { ref, ...(await run(a, o)) };
+    runs.push({ ref, name, output: result });
+    seen.push({ name, args: a, ref, complete: !(result as { truncated?: boolean }).truncated });
     return result;
   };
 }
 
-export function makeTools(traces: SearchTrace[]) {
+export function makeTools(traces: SearchTrace[], runs: ToolRun[]) {
   const seen: Seen[] = [];
+  const counter: Record<string, number> = { query_production: 0, list_events: 0, search_documents: 0, get_wells: 0 };
   return {
     query_production: tool({
       description:
         "Daily production from the production_daily table. metric: oil (bbl/d), gas (mscf/d) or water_cut (fraction 0-1). group_by day|week|month|quarter returns a time series (one series per well when 1-6 well_ids are given, else one aggregate series). group_by well returns one average value per well over from..to; add compare_from/compare_to to get the change against a baseline period, sorted by largest drop first. That one call covers every well in scope.",
       inputSchema: productionInput,
-      execute: once("query_production", seen, queryProduction),
+      execute: once("query_production", seen, runs, counter, queryProduction),
     }),
     list_events: tool({
       description:
         "Maintenance and incident events from the events table (date, type, status open/closed, severity, downtime, lost_oil_bbl = normal rate before the event times hours offline, lost_revenue_usd at an assumed $70 a barrel, description with equipment details, and the ids of the incident notes and work orders that cite the event). type accepts 'incident', 'maintenance', or a substring of an event type. from/to keep events active in that window; an event with no end date is still active. Newest first, max 50.",
       inputSchema: eventsInput,
-      execute: once("list_events", seen, listEvents),
+      execute: once("list_events", seen, runs, counter, listEvents),
     }),
     search_documents: tool({
       description:
         "Hybrid search (vector + full text, fused with RRF) over field documents: shift reports, incident notes, work orders, well tests, procedures. Use for causes, findings, actions and context that the tables do not hold. Filters are applied before ranking. For a specific event, call list_events first, then filter this search on that event's well_ids and dates; a field-wide search returns older notes from other wells.",
       inputSchema: searchInput,
-      execute: once("search_documents", seen, (a: z.infer<typeof searchInput>, { toolCallId }) => searchDocuments(a, toolCallId, traces)),
+      execute: once("search_documents", seen, runs, counter, (a: z.infer<typeof searchInput>, { toolCallId }) => searchDocuments(a, toolCallId, traces)),
     }),
     get_wells: tool({
       description: "Wells with field, coordinates (lat/lon), current status (producing, shut_in, workover, suspended), type, lift and the count of open incidents.",
       inputSchema: wellsInput,
-      execute: once("get_wells", seen, getWells),
+      execute: once("get_wells", seen, runs, counter, getWells),
     }),
   };
 }
