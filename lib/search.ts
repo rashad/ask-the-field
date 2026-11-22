@@ -1,5 +1,5 @@
 import { sql } from "./db";
-import { embed, toVector } from "./voyage";
+import { embedQuery, toVector } from "./voyage";
 
 export interface Hit {
   id: string;
@@ -37,8 +37,7 @@ function where(f: Filters) {
 }
 
 // Exact scan on a materialized CTE: 484 chunks are cheap, and filters never starve the HNSW candidate list.
-export async function vectorSearch(query: string, k = 8, f: Filters = {}): Promise<Hit[]> {
-  const [vec] = await embed([query], "query");
+export async function vectorSearch(vec: number[], k = 8, f: Filters = {}): Promise<Hit[]> {
   return sql<Hit[]>`
     WITH s AS MATERIALIZED (
       SELECT c.id, c.document_id, d.title, c.doc_type, c.well_id, c.field, c.date::text, c.section, c.text,
@@ -77,6 +76,7 @@ export function rrf(...lists: Hit[][]): (Hit & { rrf: number; ranks: (number | n
 }
 
 export async function hybridSearch(query: string, k = 8, f: Filters = {}) {
-  const [vector, fullText] = await Promise.all([vectorSearch(query, k, f), fullTextSearch(query, k, f)]);
-  return { vector, fullText, fused: rrf(vector, fullText) };
+  const [vec, fullText] = await Promise.all([embedQuery(query), fullTextSearch(query, k, f)]);
+  const vector = vec ? await vectorSearch(vec, k, f) : [];
+  return { vector, fullText, fused: rrf(vector, fullText), full_text_only: !vec };
 }

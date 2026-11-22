@@ -5,7 +5,7 @@ import { sql } from "./db";
 import { DATA_START, makeTools, TODAY, type SearchTrace } from "./tools";
 
 export const MODEL = "claude-sonnet-5-5";
-const MAX_STEPS = 6;
+const MAX_STEPS = 4;
 const PRICE = { input: 2, cacheRead: 0.1, cacheWrite: 2.5, output: 10 };
 
 export const SUGGESTED = [
@@ -18,7 +18,7 @@ export const SUGGESTED = [
 const wellId = z.string().describe("Well id such as W-17");
 
 export const answerSchema = z.object({
-  answer: z.string().describe("2 to 4 sentences, at most 90 words. Cite with [n] markers that match sources[].n."),
+  answer: z.string().describe("3 sentences (4 at most), at most 70 words. Cite with [n] markers that match sources[].n."),
   viz: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("map"),
@@ -59,16 +59,17 @@ const SYSTEM = `You answer questions from operations engineers about a synthetic
 Data (synthetic): 3 fields (Field A, Field B, Bayda), 41 wells W-01 to W-41 with coordinates and status; daily production per well from ${DATA_START} to ${TODAY} (oil bbl/d, gas mscf/d, water cut as a fraction); maintenance and incident events per well; about 400 field documents (shift reports, incident notes, work orders, well tests, procedures).
 
 Tools, and when to use them:
-- query_production: numbers and trends. For "which wells dropped", use group_by=well with compare_from/compare_to.
+- query_production: numbers and trends. For "which wells dropped", use one call with group_by=well and compare_from/compare_to: it returns every well's value and change, so never query wells one by one after it.
 - list_events: what happened, when, and what is open now. type='incident' for incidents.
-- search_documents: why something happened, findings and actions. Filter by well_ids, field, doc_type and dates whenever the question names them.
+- search_documents: why something happened, findings and actions. A "why" question always needs it; when the question names the well, call it in the first round alongside list_events. Filter by well_ids, field, doc_type and dates whenever the question names them.
+- Chain events to documents: when the question names no well, call list_events first; once it finds the specific events, call search_documents in the next round filtered on those events' well_ids and on a window from 7 days before the event start to 30 days after. Never run a field-wide document search for a specific event.
 - get_wells: well lists and current status. A map viz needs only well ids: the server adds coordinates, so do not call get_wells just to draw a map.
-Use the fewest calls that answer the question; call independent tools in parallel. Results are deterministic: never repeat a call, and answer after at most three rounds of calls.
+Use the fewest calls that answer the question; call independent tools in parallel. Results are deterministic: never call a tool twice with the same arguments, and answer after at most three rounds of calls.
 
 Dates: "last quarter" is the previous calendar quarter (2026-07-01 to 2026-09-30), compared with the quarter before it. "This year" is 2026-01-01 to today. A month without a year is the latest one on or before today.
 
 Final answer:
-- answer: 2 to 4 sentences and at most 90 words, plain and specific (wells, dates, values), each claim followed by [n]. Write ranges with "to", never with a dash.
+- answer: exactly 3 sentences (4 only when needed, never more), at most 70 words: sentence 1 gives the direct answer, sentences 2 and 3 the key evidence. Leave other details out. Do not start with a bare "Yes." or "No.": put it in sentence 1. Keep it plain and specific (wells, dates, values), each claim followed by [n]. Write ranges with "to", never with a dash.
 - viz: map for "where" questions and open items (highlighted = the wells concerned; well_ids empty for all wells); line for a trend over time (copy the points from query_production); bar for a ranking or comparison across wells (copy the values, ranked); none when no chart helps.
 - sources: only rows and chunks that the tools returned in this conversation. Never invent an id, a number or a date.
 - confidence: high when tables and documents agree, medium when only one kind of evidence exists, low when evidence is thin or conflicting.
@@ -149,6 +150,9 @@ function check(a: Answer, traces: SearchTrace[]): Checks {
   };
 }
 
+const repeated = (step?: { toolResults: { output: unknown }[] }) =>
+  !!step?.toolResults.length && step.toolResults.some((r) => (r.output as { repeated?: boolean })?.repeated);
+
 export async function* ask(question: string, signal?: AbortSignal): AsyncGenerator<AskEvent> {
   const t0 = Date.now();
   const traces: SearchTrace[] = [];
@@ -159,7 +163,7 @@ export async function* ask(question: string, signal?: AbortSignal): AsyncGenerat
     tools: makeTools(traces),
     output: Output.object({ name: "answer", schema: answerSchema }),
     stopWhen: isStepCount(MAX_STEPS),
-    prepareStep: ({ stepNumber }) => (stepNumber === MAX_STEPS - 1 ? { toolChoice: "none" } : {}),
+    prepareStep: ({ stepNumber, steps }) => (stepNumber === MAX_STEPS - 1 || repeated(steps.at(-1)) ? { toolChoice: "none" } : {}),
     maxOutputTokens: 16000,
     maxRetries: 1,
     abortSignal: signal,

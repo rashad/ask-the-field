@@ -7,8 +7,8 @@ Concept prototype: ask questions of synthetic upstream oil and gas operations da
 - `db/schema.sql`: tables `wells`, `production_daily`, `events`, `documents`, `chunks`.
 - `lib/synth.ts`: seeded generator for wells, daily production and events (no LLM).
 - `lib/chunker.ts`: structure-aware chunker (headings, then paragraphs, then sentences, ~500 tokens, no overlap).
-- `lib/voyage.ts`, `lib/search.ts`: embeddings and hybrid search (vector + full-text, RRF k=60), with metadata filters in SQL on both sides.
-- `lib/tools.ts`: the four LLM tools (`query_production`, `list_events`, `search_documents`, `get_wells`) with Zod inputs; `search_documents` records the retrieval trace.
+- `lib/voyage.ts`, `lib/search.ts`: embeddings and hybrid search (vector + full-text, RRF k=60), with metadata filters in SQL on both sides. Query vectors are cached in memory and in `data/cache/query-vectors.json`; if Voyage fails or rate limits a query, search runs full text only and the trace says so (`full_text_only`). The 30 s retry is for ingest only.
+- `lib/tools.ts`: the four LLM tools (`query_production`, `list_events`, `search_documents`, `get_wells`) with Zod inputs; `search_documents` records the retrieval trace. A repeated call (same args, or an earlier complete result narrowed by a filter) returns a short note instead of hitting the database, and the next step must answer.
 - `lib/answer.ts`: `ask()` runs `streamText` (AI SDK, `claude-sonnet-5-5`) with the tools and `Output.object` for the final answer, and yields NDJSON events.
 - `app/api/ask/route.ts`: `POST /api/ask { question }`, streams `application/x-ndjson` events: `start`, `tool-call` (with a UI label), `tool-result`, `tool-error`, `fallback`, `final` (answer, viz, sources, confidence, retrieval trace, usage), `error`.
 - `lib/cache.ts`, `data/cache/*.json`: recorded runs of the 4 suggested questions, replayed when a key is missing, the daily cap is reached, or the API fails.
@@ -27,7 +27,7 @@ Postgres runs in Docker (OrbStack), compose project `opsrag`, container `opsrag-
 - `sec opsrag pnpm ingest`: chunk, embed (voyage-4, 1024 dims) and upsert. Idempotent: only new or changed documents are embedded.
 - `sec opsrag pnpm smoke ["question" ...]`: hybrid search smoke check (defaults to two sample queries).
 - `pnpm db:dump`: write `data/dump.sql.gz` after an ingest.
-- `sec opsrag pnpm eval`: ask the 4 suggested questions plus a Bayda check, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` for the suggested questions that pass.
+- `sec opsrag pnpm eval`: ask the 4 suggested questions plus a Bayda check, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass.
 - `pnpm test`: chunker test.
 - `pnpm dev`: Next.js app.
 
