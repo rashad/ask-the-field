@@ -72,7 +72,10 @@ export function Shell({ model, children }: { model: string; children: React.Reac
     setOpen(false);
   };
 
-  useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    setOpen(false);
+    if (path !== "/") takeTyped(null);
+  }, [path]);
 
   useEffect(() => {
     const wide = window.matchMedia("(min-width: 900px)");

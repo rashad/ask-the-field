@@ -84,13 +84,18 @@ function DocGrid({ steps }: { steps: Step[] }) {
   );
 }
 
-function Narration({ steps, writing }: { steps: Step[]; writing: boolean }) {
+function narrate(steps: Step[], writing: boolean) {
   const current = steps.filter((s) => s.state === "running").sort((a, b) => Number(b.name === "search_documents") - Number(a.name === "search_documents"));
   const caption = writing ? "Writing the answer and linking each fact to its source..." : current.length ? say(current[0].name, current[0].args) : steps.length ? "Deciding what to check next..." : "Reading your question and deciding where to look...";
+  return { current, caption };
+}
+
+function Narration({ steps, writing }: { steps: Step[]; writing: boolean }) {
+  const { current, caption } = narrate(steps, writing);
   return (
     <section className="narr" aria-label="What the AI is doing now">
       <p className="narr-k">Live, step by step</p>
-      <div aria-live="polite"><p className="narr-cap" key={caption}><CircleNotch className="spin" aria-hidden />{caption}</p></div>
+      <p className="narr-cap" key={caption}><CircleNotch className="spin" aria-hidden />{caption}</p>
       {current.length > 1 && <p className="narr-also">At the same time: {current.slice(1).map((s) => say(s.name, s.args).replace(/\.\.\.$/, "").replace(/^./, (c) => c.toLowerCase())).join("; ")}.</p>}
       <ol className="narr-done">
         {steps.filter((s) => s.state !== "running").map((s) => (
@@ -265,8 +270,13 @@ export function Ask({ morning }: { morning: Morning | null }) {
     try { localStorage.setItem("tips-off", "1"); } catch {}
   };
 
+  const writing = steps.length > 0 && steps.every((s) => s.state !== "running");
+  const live = <p className="sr" aria-live="polite">{status === "done" ? "Answer ready" : status === "running" ? narrate(steps, writing).caption : ""}</p>;
+
   if (status === "idle") {
     return (
+      <>
+      {live}
       <div className="page">
         <Intro m={morning} />
         <form className="composer" data-invalid={invalid ? "" : undefined} noValidate onSubmit={(e) => { e.preventDefault(); submit(input); }}>
@@ -284,6 +294,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
         <Briefing m={morning} onPick={(x) => { setInput(x); submit(x); }} onDemo={() => router.push(`/?q=${encodeURIComponent(DEMO[0])}&demo=1`)} />
         <HowItWorks />
       </div>
+      </>
     );
   }
 
@@ -296,6 +307,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
 
   return (
     <>
+      {live}
       <div className="stage" ref={stage}>
         <svg className="links" aria-hidden="true" data-links />
         <div className="col-main" data-col>
@@ -324,8 +336,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
           {recorded !== null && (
             <div className="notice"><Record weight="bold" aria-hidden /><div><b>Recorded answer. </b>{REASON[recorded] ? `${REASON[recorded][0].toUpperCase()}${REASON[recorded].slice(1)}.` : "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</div></div>
           )}
-          <p className="sr" aria-live="polite">{status === "done" ? "Answer ready" : ""}</p>
-          {status === "running" && <Narration steps={steps} writing={steps.length > 0 && steps.every((s) => s.state !== "running")} />}
+          {status === "running" && <Narration steps={steps} writing={writing} />}
           {status === "error" && (
             <div className="notice bad" role="alert">
               <WarningCircle weight="fill" aria-hidden />
