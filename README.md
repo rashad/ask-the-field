@@ -32,7 +32,7 @@ flowchart TD
 - Hybrid search merges a pgvector cosine search (Voyage `voyage-4`, 1024 dimensions) and a Postgres full-text search with reciprocal rank fusion. Metadata filters (well, field, document type, date) apply in SQL on both sides.
 - If Voyage fails for a query, search falls back to full text only and the retrieval trace says so.
 - The model picks the chart and points at a tool call; the server fills it from the database rows that call returned. Every quote is checked word for word against its report before the UI highlights it.
-- The UI shows live steps and a "How this answer was built" drawer with the tool calls and retrieved chunks.
+- The UI shows live steps, the answer with numbered citations, an evidence panel with one card per source (a line links each citation to its card), and a "How this answer was built" section with the tool calls, the hybrid search ranks and the quote check. The `/evals` page shows the saved multi-model eval runs.
 - The app replays recorded answers for the five suggested questions when keys are missing, the daily cap or the rate limit is reached, the API fails, or a live answer takes more than 20 seconds. The UI labels every replay.
 
 ## Data
@@ -120,7 +120,7 @@ Multi-model run on 2026-11-22, 5 questions, 3 runs each, 108 checks per model. C
 ## Project layout
 
 ```
-app/          Next.js App Router: Ask page, Data browser, About page, API routes
+app/          Next.js App Router: Ask page, Data browser, Evals page, About page, API routes
 lib/          domain, synth, chunker, voyage, search, tools, prompt, answer, chart, quote, morning, money, questions, cache, guard, db
 scripts/      seed, gen-docs, ingest, search (smoke), eval, dump, restore
 db/           schema.sql (wells, production_daily, events, documents, chunks)
