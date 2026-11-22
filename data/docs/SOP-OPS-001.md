@@ -14,114 +14,131 @@ title: SOP-OPS-001 ESP Trip Response and Restart
 | Procedure ID | SOP-OPS-001 |
 | Title | ESP Trip Response and Restart |
 | Revision date | 2025-09-15 |
-| Applies to | All three fields: Field A, Field B and Bayda |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | Production Engineer |
-| Related equipment | ESP downhole assembly, variable speed drive (VSD), step-up transformer, junction box, wellhead feed-through |
+| Equipment | Varenta VL-538 ESP, variable speed drive (VSD), downhole sensor, wellhead and flowline |
 
 ## Purpose and scope
 
-This procedure sets out how operations staff respond when an electric submersible pump (ESP) well trips, how the cause is diagnosed, when a restart may be attempted and when the well must be handed to the workover team. The aim is to restore production quickly without damaging the motor, cable or pump through repeated restarts into an unresolved fault.
+This procedure sets out how the operations team responds when an electric submersible pump (ESP) well trips, how the cause is diagnosed, when and how many times a restart may be attempted, how insulation checks are performed, and when the well must be handed to the workover team.
 
-It applies to all ESP wells in Field A, Field B and Bayda, whether the pump is run on a fixed-speed starter or a VSD. Gas lift and natural flow wells are out of scope. Bayda wells are sand-prone and have high GOR, so the additional cautions marked "Bayda" in this document apply to them in particular.
+The aim is to restore production quickly where the trip is benign, and to avoid damaging the pump, motor and cable by repeated restarts where the trip points to a real fault.
 
-The procedure covers trips detected locally at the VSD or remotely from the control room. It does not replace the facility electrical isolation procedure or the permit-to-work system, which always take precedence for any hands-on work.
+It applies to all ESP wells in Dune Field, Wadi Field and Salt Flat Field that feed CPF-1. Conditions differ between fields, and operators should keep them in mind:
+
+- Dune Field: mostly stable conditions, trips are often power-related or caused by process upsets at CPF-1.
+- Wadi Field: water flood with rising water cut. Changes in fluid load can cause underload or overload trips.
+- Salt Flat Field: sand-prone with high GOR. Gas interference and sand can cause underload, overload and locked-rotor trips.
+
+It does not cover gas lift or natural flow wells, and it does not replace the site electrical isolation procedure or the permit to work system.
 
 ## Roles
 
-- **Lead Operator**: first responder on shift. Confirms the trip, makes the well and location safe, reads and records the trip data, and carries out permitted restarts.
-- **Night Lead Operator**: same duties as the Lead Operator on night shift, and ensures open trips are handed over in writing at shift change.
-- **Production Engineer**: reviews trip data, decides whether a restart is justified, and interprets downhole sensor trends. Recommends workover when criteria are met.
-- **Field Engineer**: supports electrical checks, performs or witnesses megger tests with the authorized electrician, and verifies VSD settings.
-- **Production Supervisor**: approves any restart beyond the first attempt, informs CPF-1 control of expected loss of production, and approves the workover request.
-- **HSE Advisor**: consulted if there is any sign of fire, arcing, oil leak at the wellhead or electrical shock hazard.
+- **Lead Operator**: first responder. Carries out the immediate actions, reads the VSD, makes the first restart decision within the rules below, and keeps the log.
+- **Night Lead Operator**: same duties as the Lead Operator on night shift, and ensures a trip in progress is fully handed over in the morning.
+- **Field Engineer**: attends the VSD when a trip code is not cleared by a single restart, and performs or supervises the megger test.
+- **Production Engineer**: reviews trend data, approves a third or later start after investigation, and recommends a workover.
+- **Production Supervisor**: approves deferment reporting and authorises the workover request.
+- **HSE Advisor**: confirms that isolation and permit requirements are met before any electrical testing.
 - **Workover Supervisor**: receives the workover request and plans the intervention.
+- **Maintenance Planner**: schedules electrical work and tests, and tracks spares.
 
 ## Immediate actions after a trip
 
-1. Confirm the trip from the VSD display or SCADA alarm. Note the exact time of the trip and the well flowing parameters just before it (frequency, motor current, intake pressure, wellhead pressure, choke position).
-2. Do not press reset or restart at this stage. Walk to the VSD and look for smoke, burning smell, tripped breakers or physical damage. If any are present, isolate per the electrical isolation procedure and call the HSE Advisor.
-3. Check the wellhead for leaks, abnormal noise or cable feed-through damage. Check the flowline and manifold valves are in their normal positions.
-4. Confirm the upstream conditions: power supply to the location, other wells on the same feeder, and whether CPF-1 reported a power dip, process trip or high separator level that could have caused a plant-driven trip.
-5. Close the wellhead production valve only if there is a leak, back-flow through the pump is suspected, or the Production Engineer instructs it.
-6. Inform the Production Engineer and the control room that the well is down. Record the estimated rate lost.
+1. Note the exact time of the trip and the well name. Confirm the well is not producing and the choke and wing valve positions.
+2. Check whether the trip is isolated to one well. If several wells have tripped at once, treat it as a power or CPF-1 upset first, and check the supply, the bus and CPF-1 status before looking at individual wells.
+3. Do not press reset or start at once. Go to the VSD and read the display first.
+4. Record the trip code, the last running frequency, motor current at trip and any alarms active before the trip.
+5. Check the wellhead pressure, flowline pressure and casing pressure against the last logged values. A sudden rise or loss of pressure is a sign of a flowline problem rather than a pump problem.
+6. Look for visible issues: leaks at the wellhead, damage to the power cable at surface, burnt smell, tripped breakers, or an open junction box.
+7. If there is any sign of fire, smoke, arcing, a gas leak or a hydrocarbon release, stop. Isolate, raise the alarm and follow the site emergency response plan. Do not attempt a restart.
+8. Inform the Production Supervisor of the trip if the well is not restarted within 30 minutes.
 
 ## Diagnosis: reading VSD trip codes, phase currents and downhole sensor data
 
-Capture the trip code and the event log before any reset. Take photographs or screenshots where possible.
+Use the data in the order below. Record every reading on the trip sheet.
 
-**Trip codes (typical groupings; use the vendor manual for exact code numbers):**
+### 1. VSD trip code
 
-- **Underload:** motor current fell below the set underload threshold. Usual causes are gas interference, pump off, low fluid level, worn pump or a shaft failure. Often recoverable after a wait period.
-- **Overload / overcurrent:** current exceeded the overload setting. Causes include sand or scale in the pump, high viscosity or emulsion, a locked or stuck pump, or a failing motor. Treat as potentially mechanical.
-- **Current imbalance:** phase currents differ by more than the set limit. Suggests cable or motor winding degradation, a poor connection at the junction box, or a supply problem.
-- **Ground fault / insulation fault:** leakage to earth. Do not restart until the megger checks below are done.
-- **Over/under voltage, phase loss:** usually upstream power quality. Check supply before blaming the downhole system.
-- **Overtemperature (VSD or motor winding):** check VSD cooling and filters; check motor temperature trend from the downhole gauge.
+| Trip type | Typical meaning | First check |
+|---|---|---|
+| Underload | Low motor current, pump off, gas lock, low fluid level, or a closed valve downstream | Wellhead and flowline valves, gas content, intake pressure trend |
+| Overload | High current from heavy or viscous fluid, sand, scale, or a mechanical drag | Current trend before trip, sand, recent choke changes |
+| Overcurrent or short circuit | Possible cable or motor fault | Phase currents, insulation test |
+| Current imbalance | Fault in the cable, motor or surface connections, or an unstable supply | Phase currents, connections in the VSD and junction box |
+| Ground fault | Insulation breakdown to earth | Do not restart. Go to the megger section |
+| Over or under voltage | Supply problem | Supply voltage, other wells on the same bus |
+| Locked rotor or stall | Pump or motor stuck, often by sand | Treat as serious, limit restarts |
 
-**Phase currents:**
+### 2. Phase currents
 
-1. Read the three phase currents from the last recorded running data and from the trip snapshot.
-2. Calculate imbalance as the maximum deviation from the average divided by the average. Imbalance above 5 percent while running is a warning; above 10 percent is a reason not to restart without Production Engineer approval.
-3. A sharp rise in current followed by a trip points to a mechanical jam or sand. A slow decline followed by underload points to gas or falling inflow. A steady current with a sudden drop to zero points to a broken shaft, open circuit or supply loss.
+1. Read the three phase currents at the last running point and at the trip.
+2. Calculate imbalance as (largest deviation from the average current / average current) x 100.
+3. Imbalance up to 5 percent is normal. Between 5 and 10 percent, investigate the supply and connections. Above 10 percent, treat it as a possible downhole or cable fault and do not restart before an insulation check.
+4. A fast rise in current before the trip suggests overload or sand. A steady fall suggests gas interference or low inflow.
 
-**Downhole sensor data (where a gauge is installed):**
+### 3. Downhole sensor data
 
-1. Review pump intake pressure, discharge pressure, motor temperature and vibration for the 24 hours before the trip.
-2. Rapidly falling intake pressure indicates drawdown too high or gas breakout. Motor temperature above the vendor limit, or climbing steadily, indicates inadequate cooling or an electrical problem.
-3. Loss of the gauge signal at the same time as the trip suggests a cable or motor fault rather than a process cause.
-4. Bayda: also review sand production trend and GOR from the latest test. Rising sand with rising current supports a sand-related trip.
+1. Read pump intake pressure, discharge pressure, motor winding temperature, intake temperature and vibration if available.
+2. A falling intake pressure with falling current points to drawdown or gas. A rising motor temperature before the trip points to heat, poor cooling or a developing electrical fault.
+3. Loss of sensor signal together with a ground fault or imbalance trip is a strong sign of a cable or motor failure.
+4. Compare with the last stable values and with the trend over the previous 24 hours, not only with the last reading.
 
-Record the likely cause category (process, power, mechanical, electrical, unknown) before deciding on a restart.
+### 4. Classify
+
+Classify the trip as one of: surface or supply cause, process or flowline cause, fluid or gas related, or suspected downhole electrical or mechanical fault. This class decides the restart route.
 
 ## Restart rules (no more than two restart attempts, wait times)
 
-1. **No more than two restart attempts** may be made after any single trip event. A third attempt is not permitted under any circumstances without a workover decision or a documented megger pass and Production Supervisor sign-off.
-2. **Ground fault, insulation fault or phase loss with suspected cable damage:** no restart until the megger checks in the next section are complete and acceptable.
-3. **Wait times before the first restart:**
-   - Underload or suspected gas lock: wait at least 30 minutes to allow fluid level to recover and the motor to cool.
-   - Overload or overcurrent: wait at least 60 minutes, and do not restart until the Production Engineer has reviewed the data.
-   - Power or plant-driven trip with a clean ESP history: wait for stable supply, then restart after the minimum back-spin time set by the vendor (not less than 20 minutes).
-4. **Wait time before the second restart:** at least 60 minutes after a failed first attempt, and only with Production Engineer and Production Supervisor approval.
-5. **Restart method:** start at the low end of the frequency range, ramp slowly to the previous operating frequency, and watch phase currents and intake pressure through the ramp. Keep the choke at the previous position unless the Production Engineer directs otherwise. Bayda: restart with a conservative choke and frequency to limit sand production.
-6. **Success criteria:** the well is considered restarted when it has run stable for at least 2 hours with balanced currents, normal intake pressure and flow reaching the flowline.
-7. If the unit trips again within 2 hours of a restart, that counts as a failed attempt.
-8. Never bypass or raise trip settings (underload, overload, imbalance) to force a restart.
+1. A maximum of **two** restart attempts is allowed after a trip. A third attempt is not permitted without written approval from the Production Engineer after review of the data and a clear megger result.
+2. Restart is allowed only when the cause is understood or clearly benign and the checks above show no sign of ground fault, severe imbalance or fire risk.
+3. Wait times before restart:
+   - Surface supply or process trip, cause cleared: restart when conditions are normal, with a minimum of 5 minutes for the VSD to settle.
+   - Underload or gas related trip: wait at least 30 minutes so that fluid can fall back and the pump can cool.
+   - Overload trip: wait at least 60 minutes. Reduce the start frequency.
+   - Any trip with a rising motor temperature: wait until the winding temperature has dropped to normal, and at least 60 minutes.
+4. Before each attempt, confirm the wing valve and choke are in their normal position and the flowline is open. Start at the lowest set frequency and ramp up gradually.
+5. After a start, watch the well for at least 15 minutes. Check that the currents are balanced and stable, the intake pressure is stable and the flow reaches the flowline.
+6. If the well trips again within 60 minutes of a start, it counts as a failed attempt.
+7. After two failed attempts, leave the well shut in, inform the Field Engineer and the Production Engineer, and do not try again.
+8. Ground fault, locked rotor and imbalance above 10 percent: no restart until the Field Engineer has completed the insulation check.
+9. In sand-prone service, avoid repeated starts against a possibly sanded pump. Use a longer wait and a low start frequency.
 
 ## Megger and insulation resistance checks
 
-Insulation tests are carried out by the Field Engineer with an authorized electrician under a permit to work.
+Only competent electrical personnel carry out the test, under a valid permit to work and with the HSE Advisor satisfied that isolation is in place.
 
-1. Isolate and lock out the VSD or starter output. Prove dead. Discharge the cable to earth before and after each test.
-2. Disconnect the cable from the VSD or transformer output so the test covers the cable and motor only.
-3. Use a megger set to the voltage specified by the ESP vendor (commonly 1000 V or 5000 V DC for medium voltage systems). Apply for 60 seconds.
-4. Measure phase-to-earth for each phase, and phase-to-phase if required. Record the 60-second reading and the ambient temperature.
-5. Acceptance guide (confirm against vendor data):
-   - Above 100 megohms: healthy, restart permitted.
-   - 20 to 100 megohms: marginal. Compare with the previous test and trend. One restart only with Production Engineer approval.
-   - Below 20 megohms: unacceptable. No restart. Raise a workover request.
-   - Readings that are very low on one phase or unequal between phases indicate cable or motor damage.
-6. Also check the junction box and wellhead feed-through visually for moisture, tracking or burnt connectors, and test the cable separately from the motor where the layout allows.
-7. Record all readings on the ESP electrical check sheet and file with the trip record.
+1. Isolate and lock out the VSD. Prove dead. Disconnect the output to the cable at the VSD or junction box, so that the drive is not exposed to test voltage.
+2. Discharge the cable to earth before and after the test.
+3. Use a megger at the voltage specified for the cable and motor system. Test phase to earth for each phase, and between phases where the instrument allows.
+4. Apply the test voltage for 60 seconds and record the value, the time, the temperature and the instrument used.
+5. Judge the results:
+   - 100 megohm or more: good.
+   - Between 10 and 100 megohm: marginal. Record the value, check for moisture at the junction box, and retest. Restart only with Production Engineer approval and close monitoring.
+   - Below 10 megohm: failed. Do not restart.
+   - Large differences between phases, or a reading that falls steadily during the test, point to a developing fault even when the value looks acceptable.
+6. Test at the surface cable end first. If the surface cable and junction box are clean and dry, a low reading means the fault is downhole.
+7. Restore the connections, remove the locks and close the permit only after the test sheet is signed.
 
 ## When to call a workover
 
-Raise a workover request through the Production Engineer to the Production Supervisor when any of the following applies:
+Raise a workover request through the Production Engineer when any of the following applies:
 
-- Insulation resistance below 20 megohms, or a confirmed ground fault that persists after connectors and junction box are cleaned and rechecked.
-- Two restart attempts have failed.
-- Open circuit, shaft failure or no load signature (current drops to near zero with a running motor).
-- Repeated trips (three or more in 7 days) with the same fault pattern, even if restarts were successful.
-- Downhole sensor data showing sustained motor overtemperature, high vibration or loss of pump performance that the Production Engineer judges to be mechanical.
-- Evidence of severe sand or scale plugging that does not clear after a controlled restart (Bayda in particular).
+- Insulation resistance fails (below 10 megohm) and the surface cable and junction box are healthy.
+- Two restart attempts have failed and no surface or process cause has been found.
+- Locked rotor or stall trips repeat, or the sensor shows a mechanical problem such as high vibration.
+- Phase imbalance remains above 10 percent after surface connections are checked.
+- Downhole sensor signal is lost with an electrical trip.
+- The data show a pump that cannot lift against the well conditions, with the well running in repeated underload or overload cycles.
 
-The request should include trip history, VSD event logs, phase current data, megger results, last well test, and the estimated deferred oil per day. The Workover Supervisor then schedules the job against the rig and workover queue. Keep the well shut in and safe, with the VSD locked out, until the workover starts.
+The Production Engineer prepares the request with the trip history, readings, megger results and the expected deferred production. The Production Supervisor authorises it and the Workover Supervisor schedules the work. Keep the well shut in and safe until handover to the workover team.
 
 ## Records and handover
 
-1. Log every trip in the shift report with: well, trip time, trip code, cause category, actions taken, restart times, outcome and estimated deferred oil.
-2. Attach or file the VSD event log, phase current readings and megger sheet to the well electrical record.
-3. Count restart attempts explicitly in the shift report ("restart attempt 1 of 2") so the next shift cannot exceed the limit.
-4. At shift change, the outgoing Lead Operator or Night Lead Operator briefs the incoming Lead Operator in person on every well that is tripped, restarted within the last 4 hours, or waiting for a wait period to expire.
-5. The Production Engineer updates the well status, deferred production and the workover request log by the end of the next working day.
-6. Repeat trips and any trip with a safety element (arcing, fire, leak) are reviewed at the next production meeting, and an incident note is raised if the HSE Advisor requires it.
-7. This procedure is reviewed at least every two years or after any ESP-related incident. The current revision is dated 2025-09-15.
+1. Complete the ESP trip sheet for every trip: well, time of trip, trip code, phase currents, sensor readings, class of cause, each restart attempt with time and result, and megger values.
+2. Log the downtime and the estimated deferred oil, using the last stable rate, for the daily production report.
+3. Enter the trip and the actions in the shift report under wells offline or restricted and events.
+4. At shift change, the outgoing Lead Operator briefs the incoming Lead Operator in person. The brief states how many restart attempts have been made, the time the next attempt is allowed, and any approvals needed.
+5. File trip sheets and megger records with the Production Engineer within 24 hours. Pump serial and batch details are recorded on the sheet as plain equipment data.
+6. The Production Engineer reviews the trip sheets each week, and the Maintenance Planner updates the ESP maintenance records and spares needs.
+7. Review this procedure at least once a year, or after any incident involving an ESP restart.

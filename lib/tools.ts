@@ -1,9 +1,11 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { sql } from "./db";
+import { PRICE_PER_BBL } from "./money";
 import { hybridSearch } from "./search";
+import { lostOil } from "./stakes";
 
-export const FIELDS = ["Field A", "Field B", "Bayda"] as const;
+export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
 export const DOC_TYPES = ["shift_report", "incident_note", "work_order", "well_test", "procedure"] as const;
 export const DATA_START = "2025-05-23";
 export const TODAY = "2026-11-22";
@@ -60,6 +62,7 @@ const unit = { oil: "bbl/d", gas: "mscf/d", water_cut: "fraction" };
 
 async function queryProduction(a: z.infer<typeof productionInput>) {
   const scope = sql`
+    ${a.metric === "water_cut" ? sql`AND p.uptime_hours > 0` : sql``}
     ${a.well_ids ? sql`AND p.well_id = ANY(${a.well_ids})` : sql``}
     ${a.field ? sql`AND w.field = ${a.field}` : sql``}`;
   const col = column[a.metric];
@@ -131,7 +134,7 @@ const eventsInput = z
 async function listEvents(a: z.infer<typeof eventsInput>) {
   const category = a.type === "incident" || a.type === "maintenance" ? a.type : null;
   const rows = await sql`
-    SELECT e.event_id, e.well_id, w.field, e.category, e.type, e.start_date::text, e.end_date::text, e.downtime_hours, e.status, e.severity, e.description,
+    SELECT e.event_id, e.well_id, w.field, e.category, e.type, e.start_date::text, e.end_date::text, e.downtime_hours, ${lostOil()} AS lost_oil_bbl, e.status, e.severity, e.description,
       (SELECT array_agg(d.doc_id ORDER BY d.date) FROM documents d
        WHERE d.well_id = e.well_id AND d.doc_type IN ('incident_note', 'work_order') AND strpos(d.body, e.event_id) > 0) AS documents
     FROM events e JOIN wells w USING (well_id)
@@ -143,7 +146,8 @@ async function listEvents(a: z.infer<typeof eventsInput>) {
       ${a.from ? sql`AND (e.end_date IS NULL OR e.end_date >= ${a.from})` : sql``}
       ${a.to ? sql`AND e.start_date <= ${a.to}` : sql``}
     ORDER BY e.start_date DESC LIMIT 51`;
-  return { count: Math.min(rows.length, 50), truncated: rows.length > 50, events: rows.slice(0, 50) };
+  const events = rows.slice(0, 50).map((r) => ({ ...r, lost_revenue_usd: r.lost_oil_bbl == null ? null : r.lost_oil_bbl * PRICE_PER_BBL }));
+  return { count: events.length, truncated: rows.length > 50, events };
 }
 
 const searchInput = z
@@ -241,7 +245,7 @@ export function makeTools(traces: SearchTrace[]) {
     }),
     list_events: tool({
       description:
-        "Maintenance and incident events from the events table (date, type, status open/closed, severity, downtime, description, and the ids of the incident notes and work orders that cite the event). type accepts 'incident', 'maintenance', or a substring of an event type. from/to keep events active in that window; an event with no end date is still active. Newest first, max 50.",
+        "Maintenance and incident events from the events table (date, type, status open/closed, severity, downtime, lost_oil_bbl = normal rate before the event times hours offline, lost_revenue_usd at an assumed $70 a barrel, description with equipment details, and the ids of the incident notes and work orders that cite the event). type accepts 'incident', 'maintenance', or a substring of an event type. from/to keep events active in that window; an event with no end date is still active. Newest first, max 50.",
       inputSchema: eventsInput,
       execute: once("list_events", seen, listEvents),
     }),

@@ -9,100 +9,133 @@ title: SOP-OPS-002 Sand Management and Sand Production Alarms
 
 # SOP-OPS-002 Sand Management and Sand Production Alarms
 
-| Field | Entry |
+| Field | Value |
 |---|---|
-| Procedure ID | SOP-OPS-002 |
+| Document ID | SOP-OPS-002 |
 | Revision date | 2025-12-01 |
-| Applies to | All three fields: Field A, Field B and Bayda |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | Production Engineer |
-| Reviewers | Lead Operator, Integrity Engineer, HSE Advisor |
+| Reviewers | Integrity Engineer, HSE Advisor, Production Supervisor |
 
 ## Purpose and scope
 
-This procedure sets out how sand production is prevented, detected and controlled on wells flowing to CPF-1. It aims to protect people, wellhead and flowline integrity, separators and downhole equipment from erosion and solids build-up, while keeping deferred oil to a minimum.
+This procedure sets out how sand production is prevented, detected and controlled at all wells feeding CPF-1. It covers Dune Field, Wadi Field and Salt Flat Field, and applies to ESP, gas lift and natural flow wells.
 
-It applies to all producing wells in Field A, Field B and Bayda, whatever the lift method (natural flow, gas lift or ESP) and well type (vertical, deviated or horizontal). It covers operators, lead operators, production engineers, integrity engineers and the HSE Advisor. It does not cover planned sand cleanout operations during workover, which follow the workover programme.
+The aims are to:
 
-Definitions:
-- **Sand-free drawdown limit**: the highest drawdown or rate at which a well has shown sand at or below the clean-production threshold in a test.
-- **Bean-down**: a reduction of choke size, in 64ths of an inch, to reduce rate and drawdown.
-- **Clean-production threshold**: sand content of 10 ppm or less in the produced stream.
+1. Protect the wellbore, downhole pumps, chokes, flowlines and CPF-1 separators from erosion and plugging.
+2. Keep every well within its sand-free drawdown limit wherever practical.
+3. Give operators a fixed, step-by-step response when a sand alarm is raised.
+
+Responsibilities:
+
+- **Lead Operator / Night Lead Operator:** carries out the alarm response and records all actions.
+- **Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.
+- **Integrity Engineer:** owns the erosion inspection programme and probe thresholds.
+- **HSE Advisor:** confirms safe handling of sand-contaminated equipment and waste.
+- **Production Supervisor:** authorises any extended restriction or shut-in.
 
 ## Sand-prone wells and sand-free drawdown limits
 
-1. Bayda is classed as sand-prone. All Bayda wells are treated as sand-prone unless the Production Engineer documents otherwise after sustained clean testing.
-2. Wells in Field A and Field B are treated as sand-prone if they have a recorded sand alarm, a sand-related ESP trip or a sand finding at a separator inspection in the previous 12 months. The Production Engineer keeps this list current.
-3. Each sand-prone well has a sand-free drawdown limit set by the Production Engineer from step-rate testing and well test sand results. The limit is stated as a maximum choke size and a maximum rate, and posted in the control room.
-4. Operators must not open a sand-prone well beyond its posted limit without written approval from the Production Engineer.
-5. Limits are reviewed after every well test, after any workover or completion change, and after any sand alarm event. A limit may be tightened by the Production Engineer at once. A limit may be relaxed only after a documented test showing sand at or below 10 ppm at the higher rate.
-6. For ESP wells, frequency changes count as rate changes and must stay inside the posted limit.
-7. Choke changes on sand-prone wells are made in steps of no more than 4/64 inch, with at least 30 minutes of stabilisation between steps, unless this SOP says otherwise.
+Salt Flat Field is sand-prone and also has high GOR, so gas velocity adds to erosion risk there. All Salt Flat Field wells are treated as sand-prone by default. Dune Field and Wadi Field wells are treated as sand-prone if they have a recorded sand history, if sand has been seen in a sample, or if the Production Engineer lists them as such.
+
+The Production Engineer maintains a register of sand-prone wells. For each well it holds:
+
+- The sand-free drawdown limit (maximum bottomhole flowing pressure drawdown, in psi, at which sand has not been detected).
+- The maximum approved choke size (in 64ths of an inch).
+- The last review date.
+
+Rules:
+
+1. Wells must not be operated above the register drawdown limit or the maximum approved choke size without written approval from the Production Engineer.
+2. Any choke increase on a sand-prone well must be made in steps of no more than 2/64 in, with at least 30 minutes of stabilisation and sand monitor observation between steps.
+3. On ESP wells, any pump frequency increase is treated as a drawdown increase and follows the same step and hold rules.
+4. On Wadi Field wells, rising water cut can change drawdown behaviour and weaken the formation. Limits are reviewed whenever water cut changes materially.
+5. Limits are reviewed at least every six months, and after any sand alarm that required a bean-down.
 
 ## Acoustic sand monitor and erosion probe alarm thresholds
 
-Sand-prone wells are fitted with an acoustic sand monitor and, where installed, an erosion probe on the flowline or choke downstream spool. Thresholds below apply unless a well-specific value is posted.
+Sand-prone wells are fitted with an acoustic sand monitor and, where installed, an erosion probe. Thresholds are as follows. The Production Engineer may set tighter well-specific values in the register, but never looser ones.
 
 | Instrument | Level | Threshold | Action |
 |---|---|---|---|
-| Acoustic sand monitor | Alert (high) | Equivalent sand rate above 5 ppm for 10 minutes | Operator checks the trend and prepares to bean down |
-| Acoustic sand monitor | Alarm (high-high) | Equivalent sand rate above 20 ppm for 5 minutes | Start bean-down steps immediately |
-| Erosion probe | Alert | Wall loss rate above 0.5 mil per week | Notify the Integrity Engineer, increase inspection frequency |
-| Erosion probe | Alarm | Wall loss rate above 2 mil per week | Bean down and request an urgent inspection |
+| Acoustic sand monitor | Pre-alarm (High) | Sand signal equivalent to 5 ppm sustained for 10 minutes | Operator investigates, no rate change yet |
+| Acoustic sand monitor | Alarm (High-High) | Sand signal equivalent to 15 ppm sustained for 5 minutes | Start choke bean-down response |
+| Erosion probe | Pre-alarm | Wall loss rate above 0.5 mil/month | Notify Integrity Engineer, increase inspection frequency |
+| Erosion probe | Alarm | Wall loss rate above 1.0 mil/month, or any step change in probe reading | Start choke bean-down response and notify Integrity Engineer |
 
-1. Monitors are checked for noise at the start of each shift. Flow noise from gas breakout, choke cavitation or a gas lift valve can mimic sand. The operator compares the signal against the last stable baseline before acting.
-2. An alarm must never be inhibited or reset without a recorded reason and the Lead Operator's approval.
-3. A well with a failed or bypassed sand monitor is produced at no more than 80 percent of its sand-free rate limit until the instrument is repaired. The Maintenance Planner raises a priority work order.
-4. Monitors and probes are function-tested every 6 months by the instrument technician.
+Notes:
+
+- Acoustic signals are calibrated against sand samples. A signal with no matching gas rate or choke change, or with a flat trend and no sample confirmation, may be noise from valve or choke flow. The operator still treats it as real until the checks below are complete.
+- Instrument faults must be reported to the Maintenance Planner. A well with a failed sand monitor must be treated as being in alarm for sampling purposes and sampled at least every 4 hours.
 
 ## Response to a sand alarm: choke bean-down steps
 
-1. **Confirm.** The operator checks that the alarm is real: review the trend, compare with the baseline, and note any recent changes in choke, ESP frequency, gas lift rate or line pressure. Inform the Lead Operator.
-2. **Step 1.** If the alarm is high-high or the signal is rising, reduce the choke by 4/64 inch (or reduce ESP frequency by an equivalent amount agreed with the Production Engineer). Record the time, choke, wellhead pressure and flowing pressure.
-3. **Observe.** Wait 30 minutes and review the sand signal and wellhead pressure.
-4. **Step 2.** If the signal is still above the alert level, reduce the choke by a further 4/64 inch and wait another 30 minutes.
-5. **Step 3.** If the signal is still above the alarm level after two steps, reduce by a third 4/64 inch step. Call the Production Engineer.
-6. **Shut-in criteria.** If the sand signal exceeds 50 ppm equivalent, if the erosion probe alarm persists after three steps, or if a pressure surge, loud flow noise or a visible leak is observed, the Lead Operator orders the well shut in using the normal shutdown sequence. The Production Supervisor is informed at once.
-7. **Do not** bean up again to recover rate until the Return to normal rate section is satisfied.
-8. For several wells alarming at once, suspect a common cause such as a separator or header pressure change. The Lead Operator decides whether to stabilise CPF-1 first, but bean-down on individual wells is never delayed for more than 15 minutes.
-9. Personnel must stay clear of the flowline and choke area while a well is alarming at high-high, except for essential checks done at a safe distance with an approved gas detector.
+When a High-High acoustic alarm or an erosion probe alarm is raised:
+
+1. **Acknowledge** the alarm in the control system and note the time, well and reading. Inform the Production Supervisor.
+2. **Check for noise causes**: recent choke or frequency changes, slugging, gas breakthrough, valve operation upstream or downstream. If a change was made in the last hour, reverse it by one step first.
+3. **First bean-down:** reduce the choke by 2/64 in (or reduce ESP frequency by an equivalent amount agreed with the Production Engineer). Hold for 30 minutes and watch the sand signal.
+4. **Second bean-down:** if the signal remains above the High threshold, reduce by a further 2/64 in. Hold for 30 minutes.
+5. **Third bean-down:** if the signal is still above the High threshold, reduce by a further 2/64 in and notify the Production Engineer immediately.
+6. **Shut-in criterion:** if the signal stays above the High-High threshold after three steps, or if sand is visible at the sampling point, or if wellhead or flowline pressure behaves abnormally, the Lead Operator shuts in the well with Production Supervisor approval. Do not wait for further steps.
+7. **Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.
+8. **Do not reopen** the choke during the stabilisation period, even if production targets are affected.
+
+Safety notes:
+
+- Never open sample points or separator drains on a well in alarm without the proper permit and PPE.
+- On high GOR wells, gas velocity at the choke increases as the choke is reduced in steps. Watch downstream pressure and flowline temperature.
+- Wells with a downhole ESP must not be stopped and restarted repeatedly. Shut-in and restart follows the ESP start procedure.
 
 ## Sampling and separator checks
 
-1. After the first bean-down step, the operator takes a wellhead sample from the sample point using the sand-catching sample pot. Samples are taken at the start, again at 30 minutes and at each further step.
-2. The sample is allowed to settle and the solids volume is read in the graduated tube. The result is converted to ppm using the sample volume and recorded. Where lab capability exists, a grain size and composition analysis is requested.
-3. The operator checks the production separator and test separator for sand accumulation: check the level and interface readings, the sand jetting system, and the differential pressure across internals. A rise in differential pressure or an unexplained level shift is reported to the Lead Operator.
-4. If sand jetting is available, run a jetting cycle in line with the separator manual. Record the volume of sand removed.
-5. Check downstream filters, the produced water system and the strainers for solids. Replace elements when the differential pressure limit in the filter datasheet is reached.
-6. If sand carry-over to the water or crude handling system is suspected, notify the Production Engineer. The HSE Advisor is informed when sand removal requires opening a vessel, because this involves confined space entry controls and possible NORM scale.
-7. Sand and sludge are handled and disposed of according to the waste management plan.
+Sampling confirms the instrument reading and measures the real sand content.
+
+1. Take a wellhead sample within 1 hour of a High-High alarm, using the dedicated sand sampling point and a fine mesh sand catcher or centrifuge tube.
+2. Record the sand content in ppm by volume, along with choke size, wellhead pressure, flow rate and water cut at the time of sampling.
+3. Repeat the sample after each bean-down step and again at the end of the 2 hour stabilisation period.
+4. Sand content above 10 ppm in a sample is treated as confirmed sand production. Any visible sand, or sand above 50 ppm, requires immediate notification of the Production Engineer.
+5. At CPF-1, the Lead Operator checks:
+   - Separator level and interface readings for abnormal behaviour (possible sand build-up).
+   - Differential pressure across inlet devices and downstream filters.
+   - Sand jetting or drain flow, if installed, and quantity removed.
+6. If separator sand accumulation is suspected, the Production Supervisor schedules a clean-out and the HSE Advisor reviews the handling plan for contaminated solids.
 
 ## Flowline erosion inspection
 
-1. After any sand alarm that lasted more than 30 minutes or reached high-high, the Integrity Engineer arranges an ultrasonic wall thickness inspection of the choke body, downstream spool, first elbows and the flowline bends nearest the wellhead.
-2. Inspections are done within 72 hours of the event, or within 24 hours if the erosion probe alarm was active.
-3. Readings are compared with the last baseline. If wall loss exceeds 10 percent of nominal thickness since baseline, or the remaining thickness is within 20 percent of the minimum allowable, the Integrity Engineer recommends a rate restriction, component replacement or repair.
-4. Chokes and trims are inspected for washout whenever a sand event is recorded. A washed choke is replaced before the well returns to full rate.
-5. Routine inspection of sand-prone flowlines is done at least every 6 months, or every 3 months for wells with a sand alarm in the previous quarter.
-6. Findings are reported to the Production Engineer and the Production Supervisor. Any condition that threatens containment is treated as an incident and handled under the incident procedure.
+Sand erodes chokes, bends, tees and flowline sections near the wellhead and manifold. The Integrity Engineer manages the following inspection regime:
+
+1. **Routine:** ultrasonic wall thickness checks on choke downstream spools, first bends and manifold tie-ins on all sand-prone wells every 6 months.
+2. **After a High-High alarm:** an ultrasonic thickness check of the choke body, downstream spool and first elbow within 7 days.
+3. **After sand above 50 ppm or visible sand:** inspection within 48 hours, and a decision on whether the flowline can stay in service.
+4. **Probe pre-alarm:** inspection interval for the affected line is halved until the probe rate returns below threshold for 3 consecutive months.
+5. Wall loss of more than 10 percent from nominal, or any reading below the minimum allowable thickness, must be reported to the Production Supervisor on the same day. The line may need a rate restriction or repair.
+6. Choke trim and bean wear is checked at each inspection and replaced when out of tolerance.
 
 ## Return to normal rate
 
-1. A well may be returned to its previous rate only when all of the following are met:
-   - Sand signal has stayed below the alert level for at least 24 hours at the reduced rate.
-   - Two consecutive wellhead samples show sand at or below 10 ppm.
-   - The erosion inspection has been completed, and the Integrity Engineer has not placed a restriction.
-   - The separator and filters have been checked and cleared.
-2. Rate is restored in steps of no more than 2/64 inch (or an equivalent ESP frequency step), with at least 4 hours of observation between steps.
-3. If the sand signal rises above the alert level during a step, return to the previous stable setting and inform the Production Engineer. Do not try again without a revised plan.
-4. If the well cannot reach its previous rate without sand, the Production Engineer revises the sand-free drawdown limit and updates the posted limits. A well test is requested to confirm the new limit.
-5. Repeated alarms on the same well (three or more in 30 days) trigger a review for remedial options, such as a downhole sand control assessment, an ESP check or a workover proposal.
-6. The Production Supervisor approves the return to normal rate and the Lead Operator confirms it in the shift report.
+Rate is recovered cautiously and only with Production Engineer approval.
+
+1. Conditions to begin:
+   - Sand signal below the Pre-alarm threshold for at least 2 hours.
+   - Latest wellhead sample below 5 ppm.
+   - No abnormal separator or filter readings.
+   - Erosion inspection results received, where required.
+2. Open the choke in steps of 1/64 in, with at least 1 hour of hold and monitoring between steps.
+3. Stop at any step where the sand signal rises above the Pre-alarm threshold. Return to the previous choke setting and tell the Production Engineer.
+4. The new stable choke becomes the provisional maximum for that well. The Production Engineer updates the register and, if needed, the sand-free drawdown limit.
+5. Do not return to the previous rate if it was the cause of the alarm, unless the Production Engineer documents a reason and a monitoring plan.
 
 ## Records
 
-1. The operator records, for every sand alarm: well, time of alarm, alarm level, sand signal values, choke and wellhead pressure before and after each step, sample results, actions and the time of return to rate.
-2. The Lead Operator includes the event, deferred oil estimate and handover actions in the shift report.
-3. The Integrity Engineer files inspection readings and the comparison with baseline in the integrity database.
-4. The Production Engineer updates the sand-prone well list, the posted drawdown limits and the sand event log, and issues an incident note where required.
-5. Instrument overrides, bypasses and test results are logged by the Maintenance Planner against the instrument tag.
-6. Records are kept for at least 5 years. This SOP is reviewed every 2 years or after any sand-related incident, and the next review follows the revision date of 2025-12-01.
+The Lead Operator records the following in the shift report and the sand log:
+
+- Alarm time, well, instrument, and reading.
+- Each choke or frequency step with time and the resulting sand signal.
+- Sample results (ppm, time, location).
+- Separator and filter observations.
+- Any shut-in, who approved it, and the restart time.
+- Estimated oil deferred (bbl) due to the restriction.
+
+The Production Engineer keeps the sand-prone well register, drawdown limits and review dates. The Integrity Engineer keeps inspection results and probe trend data. All records are kept for at least 5 years. This procedure is reviewed every 2 years or after any significant sand-related incident.

@@ -9,118 +9,144 @@ title: SOP-OPS-004 Well Test Procedure with the Mobile Test Separator
 
 # SOP-OPS-004 Well Test Procedure with the Mobile Test Separator
 
-| Field | Value |
+| Field | Detail |
 |---|---|
 | Procedure ID | SOP-OPS-004 |
-| Title | Well Test Procedure with the Mobile Test Separator |
 | Revision date | 2025-10-20 |
-| Applies to | All three fields: Field A, Field B and Bayda |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | Production Engineer |
-| Approver | Production Supervisor |
+| Users | Lead Operator, Night Lead Operator, Field Engineer, HSE Advisor |
 
 ## Purpose and scope
 
-This procedure sets out how a single well is tested with the mobile test separator so that oil, gas and water rates are measured in a repeatable way. The results are used for reservoir surveillance, artificial lift optimisation and allocation of CPF-1 production back to wells.
-
-It applies to all producing wells in Field A, Field B and Bayda, whatever the lift method (ESP, gas lift or natural flow) and whatever the well geometry (vertical, deviated or horizontal). Wells that are shut in, suspended or under workover are not tested until they have been returned to stable production.
-
-Responsibilities:
-
-- The Production Engineer schedules tests, reviews results and approves the test report.
-- The Lead Operator supervises the line-up, the stabilisation period and the readings.
-- The Field Engineer checks instrument calibration and supports troubleshooting.
-- The HSE Advisor confirms that permits and gas detection are in place for hookup and sampling.
+1. This procedure sets out how a single well is tested with the mobile test separator so that oil, gas and water rates are measured consistently across the asset.
+2. It applies to all producing wells in Dune Field, Wadi Field and Salt Flat Field, whatever the lift method (ESP, gas lift or natural flow) and well type (vertical, deviated or horizontal). Fluids from the test separator return to the CPF-1 inlet system after measurement.
+3. Test results are used for:
+   - well performance monitoring and decline tracking;
+   - water cut trending, particularly on wells under water flood;
+   - GOR monitoring, particularly on high GOR wells;
+   - sand monitoring, particularly on sand-prone wells;
+   - back-allocation of CPF-1 production to individual wells.
+4. Responsibilities:
+   - The Lead Operator runs the test on shift and signs the test sheet.
+   - The Night Lead Operator continues any test that spans shift change and records the handover.
+   - The Production Engineer approves the test schedule and validates results.
+   - The Field Engineer supports instrument checks and calibration.
+   - The HSE Advisor confirms that the line-up, permits and gas handling are safe.
+5. Work on hydrocarbon lines follows the site permit-to-work system. This procedure does not replace it.
 
 ## Test frequency per well
 
-1. Every producing well is tested at least once every 60 days under normal conditions.
-2. Bayda wells are tested at least once every 30 days. The reasons are the sand-prone formation and the high GOR, both of which can change quickly.
-3. A well must be re-tested within 7 days if any of the following occurs:
-   - a workover, ESP change-out, gas lift valve change or stimulation job has been completed;
-   - a choke change of more than 8/64 in has been made;
-   - the allocation check (see the data validation section) fails for the well;
-   - the Production Engineer suspects a change in water cut, GOR or sand production.
-4. A well with a test older than the maximum interval is flagged as overdue in the weekly test schedule. The Production Supervisor decides on priority when several wells are overdue.
-5. A test may be repeated once if it is rejected on validation. A second rejection triggers a review by the Production Engineer and the Field Engineer before further attempts.
+1. Every producing well is tested at least once per calendar month, with a valid test being one that meets the stabilisation and duration criteria below.
+2. Higher frequencies apply to wells with a specific risk:
+
+| Well category | Minimum frequency |
+|---|---|
+| Wells under water flood with rising water cut (Wadi Field) | Every 14 days |
+| Sand-prone or high GOR wells (Salt Flat Field) | Every 14 days |
+| ESP wells with unstable amps, intake pressure or vibration | Every 7 days until stable |
+| Wells after workover, pump change, choke change or stimulation | Within 72 hours of restart, then monthly |
+| All other producing wells | Every 30 days |
+
+3. A well must also be retested when:
+   - the previous test was rejected at validation;
+   - the allocation factor for the field moves outside the limit in the validation section;
+   - production on the well changes by more than 15 percent between two consecutive daily readings without a known cause;
+   - the Production Engineer requests a retest.
+4. Shut-in, suspended and workover wells are excluded from the schedule. They are added back at restart according to the post-restart rule above.
+5. The Production Engineer issues the test schedule weekly. The Lead Operator may reorder tests for operational reasons but must inform the Production Engineer of any test that slips past its due date.
 
 ## Line-up and stabilisation
 
-Before line-up:
-
-1. Confirm the well is producing and stable, with no active alarms on the wellhead, ESP drive or gas lift manifold.
-2. Check that the test separator pressure rating is above the maximum expected flowing wellhead pressure, and that the relief valve certificate is in date.
-3. Verify the calibration stickers on the flow meters, the water cut meter and the pressure and temperature transmitters. Do not use any instrument with an expired calibration.
-4. Obtain the work permit and confirm gas detection is working at the separator skid and the manifold.
-
-Line-up:
-
-5. Record the choke size (in 64ths of an inch), the lift parameters (ESP frequency and amps, or gas lift injection rate) and the flowing wellhead pressure before changing anything.
-6. Open the test header valve for the well and close the production header valve for that well only after the test flow is confirmed. Never have both closed at the same time.
-7. Open the separator outlet valves slowly and confirm that the level controllers are in automatic.
-8. Send the well flow to the test separator and begin the stabilisation clock.
-
-Stabilisation:
-
-9. The minimum stabilisation period is 2 hours for ESP and natural flow wells, and 3 hours for gas lift wells. For Bayda wells with high GOR, extend the period by 1 hour if separator pressure is still swinging.
-10. The well is considered stable when, over the last 30 minutes, wellhead pressure varies by less than 5 percent, separator pressure varies by less than 3 percent, and liquid rate varies by less than 5 percent.
-11. Do not adjust the choke or lift parameters during stabilisation or during the test. If an adjustment is unavoidable, restart the stabilisation clock.
-12. After stabilisation, run the test for a minimum of 6 hours. For wells with slugging behaviour, run it for 12 hours.
+1. Before line-up:
+   - confirm the test separator is on location, grounded and inspected, with relief valve certification in date;
+   - confirm the level controls, gas meter, liquid meters and pressure transmitters are in calibration;
+   - hold a pre-job safety meeting with the HSE Advisor or delegate, covering gas release, hot surfaces and manual valve operation;
+   - confirm the permit-to-work is issued where required.
+2. Line-up steps:
+   1. Open the test header valve for the selected well and then close the well's production valve to the group header, following the valve sequence on the manifold sheet. Never close in the well against a blocked flow path.
+   2. Set the test separator pressure at least 20 psi below the group header pressure so that flow is not backed up.
+   3. Bring the separator to its working level and confirm level control is in automatic.
+   4. Check the lines to the test separator outlets for leaks.
+3. Record the starting conditions: choke size (in 64ths of an inch), wellhead pressure, flowline pressure and, for ESP wells, frequency, motor amps and intake pressure. For gas lift wells, record the injection rate and injection pressure.
+4. Stabilisation:
+   - Allow a minimum of 2 hours of flow before measurement starts. Allow 4 hours after a workover, pump change or choke change.
+   - Stabilisation is reached when wellhead pressure varies by less than 5 percent, separator pressure by less than 3 percent and the liquid rate by less than 10 percent over the last 30 minutes.
+   - If the well will not stabilise (slugging, gas locking, sand production or ESP trips), continue for up to 4 additional hours and note the behaviour. If it still has not stabilised, stop the test and inform the Production Engineer.
+5. Do not change the choke, ESP frequency or gas lift rate during the test. If a change is unavoidable, restart stabilisation and note the time.
+6. The measurement period is a minimum of 6 hours, or 12 hours for wells with slugging, high GOR or high water cut variability.
 
 ## Measurements: oil, gas, water cut, pressures
 
-The Lead Operator records the following at 15-minute intervals, and the data logger stores them continuously:
-
-1. **Oil rate (bbl/d):** from the separator oil meter, corrected to standard conditions with the shrinkage factor and the temperature correction in the current fluid properties sheet.
-2. **Gas rate (Mscf/d):** from the separator gas meter, with the differential pressure, static pressure and temperature recorded. Check the orifice plate size against the register once per campaign.
-3. **Water rate and water cut (percent):** from the water meter and the online water cut meter. Cross-check with the manual sample result described in the next section. If the two differ by more than 3 percentage points, flag the test for review.
-4. **Pressures (psi):** flowing wellhead pressure, flowline pressure, separator pressure and, for ESP wells, intake and discharge pressure from the drive or downhole gauge. For gas lift wells, record injection pressure and casing pressure.
-5. **Temperatures:** wellhead and separator temperature.
-6. **Choke and lift settings:** choke size in 64ths of an inch, ESP frequency and motor amps, or gas lift injection rate, taken at the start and end of the test.
-
-Calculated results:
-
-7. GOR is calculated as the gas rate in scf divided by the oil rate in bbl, using the average over the test period.
-8. The test rates are the averages over the valid test period, excluding any interval where the separator was upset or the well was unstable.
-9. If separator level or pressure control is lost for more than 10 minutes, mark that interval as invalid and extend the test accordingly.
+1. Read and log the following at 30-minute intervals during the measurement period:
+   - separator pressure and temperature;
+   - wellhead tubing pressure and casing pressure;
+   - flowline pressure at the manifold;
+   - gas meter totalised volume and flowing rate;
+   - liquid meter totalised volume;
+   - ESP data where applicable: frequency, motor amps, intake pressure, motor temperature and vibration.
+2. Oil rate:
+   - Calculate gross liquid from the liquid meter over the measurement period and scale to a 24-hour rate.
+   - Apply the measured water cut to obtain net oil in bbl/d.
+   - Correct for shrinkage and temperature using the factors on the test sheet.
+3. Gas rate:
+   - Read the gas meter totaliser at the start and end of the period and report in Mscf/d.
+   - Apply the separator pressure and temperature corrections.
+   - Calculate GOR as gas rate in Mscf/d divided by oil rate in bbl/d, then report it in scf/bbl (multiply by 1000).
+4. Water cut:
+   - Take a minimum of 4 samples during the measurement period, equally spaced, from the liquid outlet sampling point.
+   - Determine the water cut by centrifuge on site and report it in percent. Use the average of the valid samples, and flag any sample that differs from the average by more than 3 percentage points.
+   - If an online water cut meter is available, compare its reading with the centrifuge average and log the difference.
+5. Pressures: log the wellhead pressure, separator pressure and flowline pressure in psi. For ESP wells also log intake pressure in psi.
+6. If any instrument fails or goes out of range during the period, record the time, repair or replace the instrument and extend the measurement period by the duration of the lost data.
 
 ## Sand and BS&W sampling
 
-1. Take a minimum of three liquid samples per test, at the start, middle and end of the test period, from the sample point downstream of the separator oil outlet.
-2. Use clean, labelled sample bottles. Label with the well name, date, time, choke size and the sampler role.
-3. Determine BS&W by the centrifuge method on site. Record each result in percent and report the average. Where the samples show free water separation or emulsion, record this as a note.
-4. Sand is measured with the sand monitor, where fitted, and with a sand trap or filter sample at the separator. Report sand in ppm.
-5. For Bayda wells, take one additional sample at the end of the test through the sand trap and note the visual size and colour of the solids.
-6. Sand thresholds:
-   - Below 10 ppm: normal, no action.
-   - 10 to 50 ppm: report to the Production Engineer in the test report and increase monitoring.
-   - Above 50 ppm: notify the Production Engineer and the Lead Operator immediately, and consider reducing the choke. Do not open the choke to chase rate.
-7. Drain and flush the separator sand jets after any test with sand above 10 ppm, and record the quantity removed.
-8. Handle all samples in line with the HSE Advisor's instructions for hydrocarbon and solids handling, including appropriate gloves and eye protection.
+1. Sand monitoring is mandatory on every test for sand-prone wells and for any well with a history of sand production. For all other wells it is done at least once per test as a check.
+2. Sand sampling:
+   - Take samples at the start, middle and end of the measurement period, from the sand trap or the dedicated sample point on the liquid outlet.
+   - Use clean, labelled containers. Record well, date, time and sample point.
+   - Determine sand content in ppm by filtration and weighing, or by the field sand kit.
+3. Report the highest and the average sand value. If sand exceeds 50 ppm in any sample, inform the Production Engineer on the same shift. If the value exceeds 100 ppm, reduce the rate or choke down in consultation with the Production Engineer and check erosion-prone points on the flowline and choke.
+4. BS&W:
+   - Take BS&W samples with the water cut samples and report the BS&W in percent.
+   - Where the BS&W differs from the centrifuge water cut by more than 2 percentage points, record the likely cause (emulsion, solids or sampling error) and repeat the sample.
+5. Drain the sand trap after the test, measure the volume collected and record it in the test sheet. Handle and dispose of sand according to the site waste procedure.
+6. Retain a labelled sample from each test for 30 days for the Production Engineer to review if needed.
 
 ## Data validation against allocation
 
-1. Within 24 hours of test completion, the Production Engineer compares the test results with the allocation system for the same well.
-2. Compare the test oil rate with the allocated oil rate for the days preceding the test. The test is accepted if the difference is within 10 percent. A difference between 10 and 20 percent requires a documented explanation. A difference above 20 percent means the test is rejected until the cause is understood.
-3. Compare the test water cut with the allocation water cut. A difference above 5 percentage points requires review.
-4. Compare the test GOR with the previous valid test. A change above 25 percent requires a check of the gas meter, the lift gas allocation and the well conditions.
-5. Check that the sum of all well tests, scaled by the well uptime, is within 5 percent of the CPF-1 metered totals over the same month. If not, the Production Engineer and the Field Engineer review the meters and factors.
-6. Typical causes of a mismatch are unstable flow, an expired meter calibration, incorrect shrinkage factors, lift gas not accounted for, and a leaking header valve. Investigate these before rejecting a test.
-7. Accepted tests update the well baseline in the allocation system. Rejected tests are filed with the reason and are not used for allocation.
+1. After each test the Production Engineer compares the test results with the daily allocated rates for the same well.
+2. Check the following:
+   - Test oil rate versus allocated oil rate: acceptable agreement is within 10 percent.
+   - Test gas rate versus allocated gas rate: acceptable agreement is within 15 percent.
+   - Test water cut versus the previous test: investigate any change greater than 5 percentage points that is not explained by field behaviour.
+3. Check the sum of well allocations against the CPF-1 metered totals. The field allocation factor should be between 0.95 and 1.05. A value outside this range triggers a review of the most recent tests and of the CPF-1 meters.
+4. Validate the test with the following checks:
+   - the stabilisation and duration criteria were met;
+   - the instruments were in calibration;
+   - the sample results are consistent with each other;
+   - the gas and liquid mass balance is plausible.
+5. Outcomes:
+   - **Accepted:** the test becomes the current baseline for the well and updates the allocation key from the next day.
+   - **Accepted with comment:** the test is used but the deviation is recorded.
+   - **Rejected:** the test is not used. A retest is scheduled within 7 days, or sooner where the well is a priority.
+6. Where a test is accepted and differs from the allocated rate by more than the limits above, the Production Engineer updates the allocation keys and records the effective date. Back-allocation of past days is only done with the approval of the Production Supervisor.
 
 ## Test report contents
 
-Each test report is issued by the Production Engineer within 48 hours of test completion and must contain:
-
-1. Well name, field, well type, lift method and the report date in YYYY-MM-DD format.
-2. Test start and end times, stabilisation duration and valid test duration.
-3. Choke size (64ths of an inch), lift settings and flowing wellhead pressure at start and end.
-4. Average oil rate (bbl/d), gas rate (Mscf/d), water rate and water cut (percent), and GOR.
-5. Separator pressure and temperature, and the other pressures recorded.
-6. BS&W results from each sample, the average, and the sand result in ppm.
-7. Comparison with the previous valid test and with the allocated rates, with the percentage differences.
-8. Validation outcome: accepted, accepted with comment, or rejected, with the reason.
-9. Operational observations such as slugging, emulsion, separator upsets, instrument issues and any deviations from this procedure.
-10. A recommendation, for example continue as is, re-test, adjust choke or lift, investigate sand, or plan a well intervention.
-11. Sign-off by the Lead Operator, the Production Engineer and, where the test was rejected or flagged, the Production Supervisor.
-
-Reports are stored in the well file and a copy is sent to the Production Supervisor and the Field Engineer.
+1. The Lead Operator completes the test sheet and sends it to the Production Engineer within 24 hours of test completion. The report must contain:
+   - well name, field, lift method and well type;
+   - test start and end times, stabilisation time and measurement duration;
+   - choke size (64ths of an inch), ESP frequency or gas lift rate where applicable;
+   - pressures: wellhead, casing, flowline, separator and ESP intake, in psi;
+   - measured gross liquid, oil in bbl/d, gas in Mscf/d, water cut in percent, and GOR;
+   - sand results in ppm (highest and average) and BS&W in percent;
+   - comparison with the previous accepted test: change in oil, gas, water cut and GOR;
+   - ESP pump serial and batch where applicable, stated as a plain equipment detail;
+   - abnormal events during the test (trips, slugging, instrument problems);
+   - validation outcome and name of the reviewer by role;
+   - recommendations, such as choke change, retest, chemical treatment, ESP optimisation or workover review.
+2. The Production Engineer files the approved report in the well file within 3 working days and updates the well performance dashboard.
+3. Reports that recommend a change in operating conditions are copied to the Production Supervisor.
+4. Test sheets, raw meter logs and sample records are retained according to the site records procedure.

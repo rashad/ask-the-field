@@ -200,7 +200,7 @@ function Tables() {
           <label className="sel"><span className="sr">Field</span>
             <select className="body-6" value={field} onChange={(e) => setField(e.target.value)}>
               <option value="">All fields</option>
-              {["Field A", "Field B", "Bayda"].map((f) => <option key={f}>{f}</option>)}
+              {["Dune Field", "Wadi Field", "Salt Flat Field"].map((f) => <option key={f}>{f}</option>)}
             </select><CaretDown aria-hidden />
           </label>
           {table === "production" && (

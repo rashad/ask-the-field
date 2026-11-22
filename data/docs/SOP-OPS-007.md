@@ -11,116 +11,100 @@ title: SOP-OPS-007 Gas Lift Troubleshooting
 
 | Field | Detail |
 |---|---|
-| Procedure ID | SOP-OPS-007 |
-| Title | Gas Lift Troubleshooting |
+| Document ID | SOP-OPS-007 |
 | Revision date | 2026-02-18 |
-| Applies to | All three fields: Field A, Field B and Bayda |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | Production Engineer |
-| Reviewers | Lead Operator, Field Engineer, Integrity Engineer, HSE Advisor |
+| Reviewers | Production Supervisor, Lead Operator, Workover Supervisor, HSE Advisor |
 
 ## Purpose and scope
 
-This procedure gives a consistent method for diagnosing and correcting problems on gas lifted wells. It covers recognising a stuck, leaking or failed gas lift valve, carrying out surface checks, planning a slickline valve change-out, and tuning injection once the well is repaired.
+This procedure sets out how operations and engineering staff diagnose and correct gas lift problems on gas lift wells in Dune Field, Wadi Field and Salt Flat Field. It covers recognition of a stuck or failed gas lift valve, the surface checks that confirm the diagnosis, planning of a slickline valve change-out, and the steps to optimise injection once the repair is complete.
 
-It applies to every gas lift well in Field A, Field B and Bayda, and to the gas lift distribution system between CPF-1 and the wellheads. It does not cover ESP failures, natural flow wells, or compressor faults at CPF-1, which are handled by their own procedures. Where a symptom could come from several causes, the operator follows this procedure first to rule gas lift in or out, then escalates.
+It applies to all gas lift wells tied back to CPF-1, whether the lift gas is supplied from the common injection header or from a local manifold. It does not cover ESP wells, natural flow wells, or the compression and gas treatment plant upstream of the injection header. Faults in those systems are handled under their own procedures.
 
 Responsibilities:
 
-- Lead Operator: carries out surface checks, records readings, informs the Production Engineer.
-- Production Engineer: interprets data, decides on intervention, owns the optimisation step.
-- Field Engineer: prepares the slickline programme and supervises the job.
-- HSE Advisor: confirms permits and verifies the job safety analysis.
-- Maintenance Planner: books the slickline unit and materials.
+- The Lead Operator carries out surface checks, records readings and informs the Production Engineer of any deviation.
+- The Production Engineer interprets the data, decides on the diagnosis and prepares the intervention plan.
+- The Workover Supervisor and slickline crew run the valve change-out under an approved permit.
+- The HSE Advisor confirms that permits and gas handling precautions are in place.
 
 ## Normal gas lift operating envelope
 
-Each gas lift well has a design sheet held by the Production Engineer giving the valve depths, valve test rack opening pressures, target injection rate and expected casing pressure. The values below are generic guides and the well design sheet takes precedence.
+Each gas lift well has a design sheet held by the Production Engineer. The sheet lists the mandrel depths, valve types and test rack opening pressures, the target injection rate and the expected casing pressure. The well-specific sheet always takes precedence over the general guidance here. As a general guide, a healthy well shows the following behaviour:
 
-1. Injection gas rate is stable within +/- 10 percent of the target over a 24 hour period.
-2. Casing (annulus) pressure is stable within +/- 50 psi over a shift, with no steady rise or fall when the injection choke setting is unchanged.
-3. Injection pressure at the wellhead is at least 100 psi below the distribution header pressure, so that flow control is maintained.
-4. Tubing head pressure is steady, with oscillations under 5 percent of the mean.
-5. Liquid production follows the injection rate in the expected way: more gas gives more liquid until the optimum point, after which liquid rate flattens or falls.
-6. Injection gas is dry. Dew point margin must be kept so that no hydrates or free water form in the injection line.
+1. Injection rate is stable. Variation of more than 10 percent from the target over a 4 hour period, with no choke or header change, is treated as a deviation.
+2. Casing (annulus) pressure is steady and sits within roughly 50 psi of its normal daily value. Slow cyclic movement is acceptable only if it matches the established pattern for that well.
+3. Tubing head pressure and flowline pressure are steady, with no regular slugging.
+4. Production rate and water cut follow the recent trend. Gas lift response should be smooth when injection is adjusted.
+5. Injection gas supply pressure at the header must stay above the design operating valve pressure plus a margin set by the Production Engineer on the design sheet.
 
-A well running outside these limits for more than one shift is flagged as under investigation in the shift report.
+Wells in Salt Flat Field have high GOR and are sand-prone, so produced gas rates and sand readings are expected to be higher than elsewhere. Operators must therefore compare any reading with that well's own history and not with another field. In Wadi Field, rising water cut raises the fluid column weight and lowers the lift efficiency, so a falling rate with rising water cut is not on its own evidence of a valve fault.
 
 ## Symptoms of a stuck or failed valve
 
-Watch for the following, alone or in combination.
+Report any of the following to the Production Engineer in the same shift:
 
-**Valve stuck closed or unloading valve not closing**
-- Injection rate falls while the surface choke is unchanged.
-- Casing pressure climbs towards the header pressure.
-- Liquid rate drops with no change in water cut.
+1. **Injection rate drops with no change at the surface.** Casing pressure rises as gas is no longer passing through the operating valve. This suggests a valve stuck closed, a plugged port or a blocked orifice.
+2. **Injection rate rises sharply and casing pressure falls.** This suggests a valve stuck open, a leaking valve, a cut seat or a tubing leak at a mandrel.
+3. **Unstable or heading flow.** Regular cycles in tubing head pressure and injection rate suggest valve chatter or injection through the wrong valve.
+4. **Loss of production** with unchanged water cut and unchanged reservoir conditions.
+5. **Inability to reach the operating point.** Casing pressure cannot be built to the unloading pressure, or the well will not unload after a shut-in.
+6. **Unexpected gas in the flowline** at the well, with a higher produced GOR than the last valid well test.
 
-**Valve leaking or failed open (communication through an upper valve)**
-- Injection rate higher than target with the choke unchanged.
-- Casing pressure drifts down or will not build to normal.
-- Gas is injected above the intended point, so lift efficiency drops and liquid rate falls.
-- Tubing head pressure shows heading or slugging.
-
-**Operating valve unstable**
-- Regular cycles in injection rate and tubing pressure with a period of minutes to hours.
-- Slugging arrives at the CPF-1 inlet separator from that well.
-
-**Other causes to rule out first**
-- Frozen or plugged injection choke or meter.
-- Header pressure change, or a change in injection gas supply at CPF-1.
-- Increase in water cut or loss of reservoir pressure.
-- Sand or scale restriction in the tubing, most common in Bayda.
-- Surface valve left in the wrong position after previous work.
+Before concluding that a valve has failed, rule out the common surface causes: closed or partly closed injection choke or isolation valve, plugged injection line filter or strainer, flow meter fault, low header pressure, and hydrate or ice formation at the choke. Rule out the reservoir causes as well: rising water cut, sand fill or declining reservoir pressure.
 
 ## Surface checks: injection rate, casing pressure, temperature survey
 
-Complete the checks in the order below and record every reading with time and choke setting.
+Carry out the checks below in order and record all readings on the well check sheet.
 
-**Step 1: Verify instruments**
-1. Compare the injection flow meter reading with the previous 24 hour trend.
-2. Check the differential pressure cell and zero it if the reading has drifted.
-3. Confirm casing and tubing pressure gauges against the transmitter values.
+### Injection rate
 
-**Step 2: Injection rate check**
-1. Record the injection rate at the current choke setting.
-2. Change the choke by one step (of the order of 2/64 inch) and wait 30 minutes. Record the new rate and casing pressure.
-3. Return to the original setting unless the Production Engineer instructs otherwise.
-4. A rate that does not respond to the choke points to a plugged choke or a downhole restriction. A rate that responds but does not match the design curve suggests a leaking valve.
+1. Read the injection rate on the well meter and compare it with the header meter and the target on the design sheet.
+2. Confirm the injection choke position (in 64ths of an inch) and the differential pressure across it. Check the meter calibration date.
+3. Inspect the injection line strainer and clean it if the differential pressure is high.
+4. Make one small choke step (not more than 2/64 inch), wait 30 minutes and record the response in injection rate, casing pressure and production. A healthy well responds smoothly. No response, or an abrupt response, points to a valve problem.
 
-**Step 3: Casing pressure behaviour**
-1. Trend casing pressure for at least 4 hours.
-2. If the pressure rises steadily with a constant choke, suspect a stuck closed valve or blocked orifice.
-3. If it will not build, suspect a leak or open valve.
-4. Do not bleed the casing without the Production Engineer approval. Any bleed down must be to the approved line and under a permit.
+### Casing pressure
 
-**Step 4: Temperature survey**
-1. Where a temperature log or fibre/point sensor is available, run the survey under stable injection for at least 6 hours.
-2. If no downhole data exist, use a surface infrared reading on the flowline as an indication only.
-3. A cooling anomaly (Joule-Thomson effect) at a depth above the design operating valve indicates gas entering the tubing at that point.
-4. Compare with the survey from the last baseline. A shift of the injection point of more than one valve station confirms a valve problem.
+1. Record casing pressure at the wellhead gauge and at the transmitter. If they differ by more than 25 psi, calibrate or replace the instrument before drawing conclusions.
+2. Trend the casing pressure for the last 7 days. Note the date any change began and any operations that took place around that date.
+3. Carry out a casing pressure build-up and bleed-down test only with the Production Engineer's approval. Close the injection, record the pressure decay over 15 minutes and compare it with the expected valve behaviour on the design sheet. A very fast fall points to a leak or a valve stuck open. A pressure that stays high and does not move points to a closed valve or blocked port.
+4. Never bleed casing gas to atmosphere. Route it to the flare or the low pressure system as the HSE Advisor directs.
 
-**Step 5: Decision**
-1. If surface checks show an instrument or choke fault, correct it and re-trend for one shift.
-2. If the data indicate a downhole valve fault, the Lead Operator raises a notification and the Production Engineer decides on a slickline intervention.
-3. Where the well is producing at a rate that creates a safety or integrity risk (for example, casing pressure above 90 percent of the annulus maximum allowable pressure), reduce or stop injection first.
+### Temperature survey
+
+1. Request a temperature survey from the slickline or wireline crew, or use the permanent sensor if one is installed.
+2. Run the survey with the well on stable injection for at least 6 hours before the run.
+3. Compare the profile with the last baseline survey. A cooling anomaly (gas expansion) below the design operating valve depth suggests injection through a shallower valve or a tubing leak. A cooling anomaly at a mandrel suggests a leaking valve at that point. No cooling at the operating valve suggests no gas is passing.
+4. Pass the survey data to the Production Engineer on the same day it is acquired.
 
 ## Slickline valve change-out planning
 
-1. **Scoping.** The Production Engineer issues a short intervention request with the diagnosis, expected valve station, and expected gain in oil. The Field Engineer checks the well schematic, mandrel type (retrievable or fixed), minimum restriction, and deviation, which limits slickline access in highly deviated and horizontal wells.
-2. **Well condition.** Confirm the well can be killed or isolated as the programme requires. Confirm tubing and annulus barriers. Check the history for sand, scale or wax that could stop tools.
-3. **Programme.** The Field Engineer writes the programme including: tool string, gauge run and tag depths, pulling and setting steps, valve type and test rack pressure for each replacement valve, and contingency (fishing and stuck tool plan).
-4. **Materials.** The Maintenance Planner confirms the replacement valves, latches, packing and seals are available and have valid test certificates. Valves must be pressure tested on the rack before dispatch.
-5. **Permits and safety.** The HSE Advisor reviews the job safety analysis. Required permits are work at height where needed, pressure control equipment, and simultaneous operations if other crews are near. Pressure test the lubricator and BOP before opening the well.
-6. **Scheduling.** Coordinate with the Production Supervisor to choose a window that limits deferred oil. Where several wells need slickline work in the same field, group them to reduce mobilisation.
-7. **Execution.** The slickline supervisor holds a toolbox talk. Record all depths, weights and pressure tests. After the valve change, leave a post-job report with serial numbers of valves pulled and set.
-8. **Failed valve analysis.** Return the pulled valves to the workshop. Record the failure mode (stuck, leaking, eroded seat, corrosion, debris) and send findings to the Production Engineer for trend tracking.
+When the surface checks support a valve fault, the Production Engineer prepares a change-out plan. The plan must include:
+
+1. **Objective and diagnosis.** State the suspected valve, the evidence and the expected benefit in bbl/d.
+2. **Well status.** Record the tubing and casing barriers, the last known obstructions, deviation at the mandrels, and any sand or scale history. Deviated and horizontal wells need the slickline tool string reviewed for access.
+3. **Equipment.** Reserve the slickline unit and crew, the pulling and running tools, a calibrated pressure test rig and replacement valves tested to the design opening pressure. Confirm that a spare valve and latch are on site.
+4. **Permits and safety.** The HSE Advisor reviews the permit to work, the lift gas isolation plan, the pressure control equipment rating, the gas detection setup and the emergency response arrangement. The lift gas supply is isolated and depressured before the lubricator is rigged up.
+5. **Program.** Set out the steps: kill or isolate as required, tag and confirm access, pull the suspect valve, run a dummy or the replacement valve, pressure test and record.
+6. **Production deferral.** Estimate the downtime and the deferred oil in bbl, and agree the schedule with the Production Supervisor so that other work is aligned.
+7. **Approval.** The Production Supervisor and the Workover Supervisor sign the plan before mobilisation.
+
+During execution, the Workover Supervisor records each run, the depth, the condition of the retrieved valve (cut seat, plugging, scale, corrosion, sand) and the test result. Photograph the retrieved valve and keep it for inspection until the Production Engineer releases it.
 
 ## Optimising injection after repair
 
-1. **Restart.** Reopen injection gradually. Start at about 50 percent of the target rate and raise in steps of 10 to 15 percent, waiting at least 30 minutes for stabilisation at each step. Unload the well and watch for slugging at CPF-1.
-2. **Confirm valve depth.** Compare the temperature survey and casing pressure behaviour with the design. Injection should now be at the operating valve.
-3. **Gas lift performance test.** Run a stepped injection test, normally 4 to 6 rates across the expected range. At each step hold for a minimum of 4 hours and record oil, water, gas, tubing head pressure and casing pressure through the test separator.
-4. **Find the optimum.** Plot liquid rate against injection rate. Select the injection rate at the point where the incremental oil per unit of extra gas falls below the economic threshold set by the Production Supervisor. Do not run beyond the plateau, as extra gas only adds compressor load and backpressure.
-5. **Update targets.** The Production Engineer updates the target rate and alarm limits (injection rate +/- 10 percent, casing pressure +/- 50 psi) in the control system and the well design sheet.
-6. **Stability check.** Monitor for 72 hours after the change. If cycling or heading returns, repeat the surface checks above.
-7. **Reporting.** The Lead Operator notes the well as normal in the shift report once targets hold. The Production Engineer records the oil gain, cost and failure mode in the gas lift well log.
-8. **Review.** If a well has had two valve problems within 12 months, the Production Engineer and Integrity Engineer review the completion design, gas quality and mandrel condition.
+1. After the valve change-out, restart injection slowly. Open the choke in steps of not more than 2/64 inch and hold each step for at least 30 minutes while recording rate, casing pressure and tubing head pressure.
+2. Allow the well to unload and stabilise. Do not conclude any optimisation until the readings have been steady for at least 6 hours.
+3. Build the gas lift performance curve: step the injection rate up and down around the design target and record the oil rate at each step. The optimum is the point beyond which more gas gives no gain in oil or reduces it.
+4. Select the operating injection rate at or slightly below the point of maximum oil rate, taking into account the gas available at the header. Where gas is constrained, allocate it to the wells with the highest incremental oil per Mscf/d.
+5. Take a well test within 7 days of the repair and compare the rate, water cut and GOR with the previous baseline. Report the result to the Production Engineer.
+6. Update the design sheet, the well check sheet and the injection allocation. Record the new casing pressure and injection rate as the reference values for the alarm settings.
+7. Brief the Lead Operator and the Night Lead Operator at handover on the new operating point, the expected readings and the actions to take if they drift.
+8. Record the final results, the lessons learned and the retrieved valve findings in the well file and close the change-out plan.
+
+## Revision
+
+This revision, dated 2026-02-18, is the current version. Questions or proposed changes go to the Production Engineer.

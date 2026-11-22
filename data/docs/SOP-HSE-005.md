@@ -11,147 +11,121 @@ title: SOP-HSE-005 Permit to Work for Workover and Rig Operations
 
 | Field | Detail |
 |---|---|
-| Procedure ID | SOP-HSE-005 |
+| Document ID | SOP-HSE-005 |
 | Revision date | 2026-01-05 |
-| Applies to | All three fields: Field A, Field B and Bayda |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | HSE Advisor |
 | Approvers | Production Supervisor, Workover Supervisor |
 | Related facility | CPF-1 |
 
 ## Purpose and scope
 
-1. This procedure sets out how work on wells is controlled through the permit to work (PTW) system when a workover rig, coiled tubing unit, slickline unit or any other well intervention equipment is brought to a well.
-2. It applies to all three fields: Field A, Field B and Bayda. It covers every well type on the asset (vertical, deviated and horizontal) and every lift method (ESP, gas lift and natural flow).
-3. It covers the full cycle: handover of the well from production to the rig, verification of isolations and barriers, control of simultaneous operations near live wells, and handback and restart of the well.
-4. It applies to company staff, the rig contractor, the ESP vendor, the wireline and slickline crews and any other contractor working on the well site.
-5. No work on a well, wellhead, flowline tie-in or well site utility covered by this procedure may start without a valid, signed permit.
-6. Any person on site holds stop-work authority. Work must stop if conditions differ from those described on the permit.
+This procedure sets out how permits to work are requested, issued, controlled and closed for workover and rig operations. Its aim is to make sure that every well is handed over to the rig in a known, isolated and verified condition, that rig work does not put people, the well or the facility at risk, and that the well is handed back to production in a documented and safe state.
 
-Roles:
+It applies to all three fields: Dune Field, Wadi Field and Salt Flat Field, and to all well types (natural flow, gas lift and ESP) and all well profiles (vertical, deviated and horizontal). It covers:
 
-- **Production Supervisor**: authorises handover and handback of the well on behalf of production.
-- **Workover Supervisor**: is the performing authority for rig operations and signs for the rig contractor's compliance.
-- **Lead Operator**: is the issuing authority at the well site, carries out isolations and witnesses tests.
-- **HSE Advisor**: reviews permits, attends the pre-job meeting and audits compliance.
-- **Integrity Engineer**: confirms barrier status and approves any deviation from barrier requirements.
-- **Production Engineer**: provides well data and the programme requirements.
+- Rig moves onto a wellsite, rig-up, workover, well intervention using the rig, rig-down and rig move off.
+- Work by the rig contractor, the ESP vendor, the slickline unit and any other service company on a well under workover.
+- Interfaces with production activities on neighbouring wells and with the flowline and gathering system feeding CPF-1.
+
+Routine slickline or ESP work that does not involve a rig is controlled under the general permit to work system, but the isolation and handback rules in this procedure apply when the Production Supervisor judges that the risk is similar.
+
+Salt Flat Field wells are sand-prone with high GOR, so extra care with sand, trapped pressure and gas is required there. Wadi Field wells are under water flood, so produced water and rising water cut must be considered in fluid handling and disposal during workover.
 
 ## Permit types
 
-The following permit types are used. More than one may be needed for a single job, and each must be raised, signed and closed separately.
+The following permits are used. Every permit is written, numbered, signed by the issuing authority and the receiving authority, and displayed at the work location.
 
-1. **General work permit**: non-hazardous work in a defined area with no ignition source and no breaking of containment, for example inspection and housekeeping.
-2. **Hot work permit**: welding, grinding, cutting or any activity that may produce a spark or heat. Requires a gas test immediately before work and at the interval stated on the permit (not exceeding 2 hours).
-3. **Cold work permit**: work that breaks containment or intrudes on live equipment without an ignition source, for example removing a wellhead gauge or replacing a flange gasket.
-4. **Confined space entry permit**: entry into tanks, vessels or pits. Requires atmospheric testing, a standby person and a rescue plan.
-5. **Excavation permit**: any ground disturbance, requiring a check of buried cables and flowlines.
-6. **Lifting permit**: crane and rig lifts, with a lift plan for any critical lift.
-7. **Electrical isolation certificate**: required for ESP power cables, variable speed drives, transformers and junction boxes before any work. Locks and tags are applied at the source.
-8. **Well intervention permit**: specific to workover and rig operations. It covers the rig-up, programme steps and rig-down. It is issued only after the well handover certificate is signed (see the next section).
-9. **Simultaneous operations (SIMOPS) permit**: required whenever two or more activities that could affect each other take place within the SIMOPS exclusion zone (see the Simultaneous operations section).
+1. **General work permit.** Cold work with no ignition source and no breaking of containment, for example inspection, housekeeping, rig-up of non-pressure equipment.
+2. **Hot work permit.** Welding, grinding, cutting and any work that can create a spark or flame. Requires gas testing and a fire watch.
+3. **Confined space entry permit.** Entry into tanks, vessels or pits. Requires atmosphere testing, a standby person and a rescue plan.
+4. **Electrical isolation permit.** Work on or near ESP power cables, switchboards, variable speed drives and transformers. Requires lock-out and tag-out, and proof of dead.
+5. **Breaking containment permit.** Opening of flowlines, wellheads, valves or any equipment that has held hydrocarbons. Requires verified isolation and depressurisation.
+6. **Lifting permit.** Crane and heavy lift operations, including BOP handling and ESP equipment handling. Requires a lift plan and a certified rigger.
+7. **Well work permit.** The master permit for any workover or rig operation on a well. It is issued only after the well handover checklist and the barrier verification in this procedure are complete. Other permits for work on that well are subordinate to it.
 
-General rules for all permits:
+### Roles
 
-- A permit is valid for one shift only, up to a maximum of 12 hours. It must be revalidated at shift handover by both the outgoing and incoming authorities on site.
-- The permit must state the well, the location, the work, the hazards, the controls, the isolation points and the people authorised.
-- The permit must be displayed at the work site and a copy kept in the control room.
-- If wind, weather or gas readings change, the permit is suspended until the Lead Operator re-assesses.
-- H2S and combustible gas detectors must be tested and in date before any permit is issued.
-- Permits may not be extended verbally.
+- **Issuing authority:** Production Supervisor (or delegate appointed in writing) for all permits on live production areas. Workover Supervisor issues sub-permits inside the rig area once the well work permit is active.
+- **Receiving authority:** Workover Supervisor or the service company supervisor doing the work.
+- **HSE Advisor:** audits permits, attends the pre-job meeting for every well work permit and has stop-work authority.
+- **Lead Operator:** carries out the production-side isolations and verifications and signs the handover.
+
+### Permit validity
+
+- A general, hot work or breaking containment permit is valid for one shift only and must be reissued at shift change after a joint site check.
+- A well work permit is valid for the duration of the workover programme, but is reviewed and countersigned at every shift handover by the Production Supervisor and the Workover Supervisor.
+- Any permit is suspended immediately on a gas alarm, an emergency shutdown, a loss of containment, or a change in scope. It is re-validated only after the cause is resolved and the area is re-checked.
 
 ## Well handover from production to rig
 
-1. The Production Engineer issues the workover programme, including well history, current completion schematic, last test data, expected pressures and known hazards (for example sand production, scale, high gas-oil ratio or trapped pressure).
-2. The Production Supervisor and Workover Supervisor hold a joint site visit to confirm access, pad layout, tie-ins, power cables and the position of nearby live wells.
-3. A pre-job meeting is held with the rig crew, the Lead Operator, the HSE Advisor and all contractors. The meeting covers the programme, the permits, emergency response, muster points, stop-work authority and communications.
-4. Production shuts in the well in a controlled way:
-   1. Reduce the choke or ESP frequency stepwise to avoid pressure and temperature shocks.
-   2. For gas lift wells, stop the lift gas injection and close the injection valve at the manifold.
-   3. For ESP wells, stop the pump through the drive and apply electrical isolation with lock and tag.
-   4. Close the wing valve and the master valve. Record the closing times.
-5. Flowline and tie-in:
-   1. Isolate the flowline at the wellhead and at the manifold, with a double block and bleed where the design allows.
-   2. Depressurise, drain and, if required, flush the flowline to a safe place.
-   3. Fit blinds or spades where the programme requires and record their numbers.
-6. The Lead Operator records shut-in tubing pressure and casing annulus pressures and compares them with the expected values. A difference of more than 10 percent from the expected value must be explained before continuing.
-7. The Lead Operator and Workover Supervisor walk the well site together, check the isolation tags, and sign the **well handover certificate**. The Production Supervisor countersigns.
-8. From signing, the Workover Supervisor has custody of the well. Production staff may not operate any valve on the well without a request from the Workover Supervisor and a valid permit.
-9. The well status is updated in the daily production report and the control room board as "workover".
+The handover moves control of the well from the Production Supervisor to the Workover Supervisor. It is a formal step and is not complete until both signatures are on the handover checklist.
+
+1. The Workover Supervisor submits the workover programme, including the well schematic, planned barriers, expected pressures and fluids, and the planned work sequence, at least 48 hours before the planned start.
+2. The Production Engineer confirms the latest reservoir and well data: static and flowing pressures, water cut, GOR, sand production, and any known H2S or scale risk. For ESP wells, the Production Engineer also provides the pump model, serial and installation data.
+3. The Lead Operator shuts in the well in a controlled way following the shut-in sequence: reduce the choke in steps, stop the ESP using the drive ramp-down where applicable, close the wing valve, then the master valve as per the well-specific instruction.
+4. For gas lift wells, the lift gas supply is closed at the manifold and the injection line is bled down to a safe location.
+5. The Lead Operator records the final shut-in tubing and casing pressures and the time of shut-in on the handover checklist.
+6. The flowline to CPF-1 is isolated at the wellhead and at the manifold, and then depressurised or displaced as required. CPF-1 control room is informed so that production allocation and deferment are recorded.
+7. Joint site visit: the Lead Operator and the Workover Supervisor walk the wellsite, check the wellhead condition, the cellar or pad, access routes and any nearby live equipment.
+8. Both supervisors sign the handover checklist. The well work permit can then be issued.
+
+No rig activity starts on a well that has not been formally handed over.
 
 ## Isolation and barrier verification
 
-1. Two independent, tested barriers must be in place between the reservoir and the surface before any work that opens the wellbore. The barrier envelope must be defined in the programme and drawn on a barrier diagram.
-2. Typical barriers include a kill-weight fluid column, a tested downhole plug, a tested downhole safety valve, the tree master valve and a tested blowout preventer (BOP) stack. The Integrity Engineer confirms which elements count as the primary and secondary barriers.
-3. Verification of each barrier:
-   1. Pressure test in the direction of flow where possible. Inflow tests are used where the barrier cannot be tested from above.
-   2. Hold the test for at least 15 minutes with no visible pressure drop beyond the limit stated in the programme (normally not more than 2 percent of the test pressure).
-   3. Record the test pressure, hold time, result and the name and role of the witness.
-4. Before nippling down the tree and nippling up the BOP, confirm the kill fluid density and volume, and that the well is static. Monitor for flow for at least 30 minutes with a trip tank or equivalent.
-5. After BOP installation, test the BOP stack to the pressures in the programme, and function test the accumulator and the remote panel. Tests are witnessed by the Workover Supervisor and the Production Engineer or Field Engineer.
-6. Electrical isolation:
-   1. Isolate the ESP drive at the breaker and apply a personal lock and tag.
-   2. Prove dead with a rated tester, and discharge residual energy per the vendor procedure.
-   3. Keep the key with the person holding the permit.
-7. Mechanical isolation:
-   1. Use lock-out devices on valves, with a tag showing the permit number.
-   2. Record every isolation point on the isolation register with the status "applied", and "removed" only at handback.
-8. If a barrier fails or a test result is doubtful, stop work, secure the well, inform the Production Supervisor and HSE Advisor, and obtain the Integrity Engineer's written approval before continuing. No work may proceed on a single barrier.
-9. Barrier status must be reviewed at every shift handover and every time the programme changes.
+Two independent, tested barriers must be in place between the reservoir and the surface before any work that opens the wellbore or the wellhead.
+
+1. **Barrier identification.** The Workover Supervisor and the Production Engineer identify the primary and secondary barriers on the well schematic. Typical barriers include a kill-weight fluid column, a set and tested plug, a tested downhole safety valve and a tested tree valve.
+2. **Kill and fluid column.** Where a fluid column is the primary barrier, the kill fluid density is calculated to give an overbalance with a margin approved by the Production Engineer. The well is circulated and monitored until it is static. A flow check of at least 30 minutes with no flow is required before the next step.
+3. **Mechanical barriers.** Each plug, valve or packer used as a barrier is pressure tested in the direction of flow, with the test pressure and hold time stated in the programme. A test that does not hold is a failure. The barrier is repaired or replaced and retested before work continues.
+4. **Trapped pressure.** The area between barriers and any annulus is bled to zero in a controlled way. Trapped gas is a particular concern on high GOR wells and must be bled to a safe flare or vent location, not to open atmosphere on the pad.
+5. **Electrical isolation.** For ESP wells, the drive is locked out and tagged, the power cable is proved dead and earthed before the wellhead penetrator or cable is touched.
+6. **Process isolation.** Flowlines, lift gas lines and chemical injection lines connected to the well are positively isolated by a blind, spade or double block and bleed. A single valve is never accepted as isolation for breaking containment.
+7. **BOP.** The BOP stack is function tested and pressure tested after installation and at the interval stated in the programme. Results are recorded on the BOP test sheet and signed by the Workover Supervisor and the HSE Advisor.
+8. **Verification record.** The barrier verification form lists each barrier, its test result, the date and time and the person who witnessed it. The Production Supervisor reviews the form before the well work permit is activated.
+
+If a barrier is lost or degraded during the job, work stops, the well is made safe, the Production Supervisor and HSE Advisor are informed, and work restarts only after the barrier is reinstated and verified again.
 
 ## Simultaneous operations
 
-1. SIMOPS exist when rig work and another activity (production, drilling support, construction, maintenance, lifting, wireline or testing) take place close enough to affect each other.
-2. The Workover Supervisor and Production Supervisor define a **SIMOPS exclusion zone** around the rig and set it out with barriers and signs. The minimum radius is 30 m from the wellhead, and larger if the risk assessment requires it.
-3. A SIMOPS matrix is prepared for each job. It lists each pair of activities as allowed, allowed with controls, or prohibited.
-4. Prohibited combinations:
-   1. Hot work within the exclusion zone while the well is open or while hydrocarbons may be released.
-   2. Heavy lifts over live flowlines or live wells.
-   3. Vehicle movements inside the zone without a banksman.
-   4. Venting or flaring upwind of the rig without agreement from both supervisors.
-5. Where a nearby well stays on production, the following controls apply:
-   1. Its wellhead is protected from dropped objects and vehicle impact.
-   2. Its emergency shutdown function is tested before rig-up.
-   3. Its operating condition is monitored from the control room and reported to the Workover Supervisor on request.
-6. A daily SIMOPS meeting is held at the start of each shift, led by the Workover Supervisor and attended by the Lead Operator and all contractors working in the area.
-7. Communications:
-   1. A single radio channel is assigned to the job.
-   2. Any gas alarm, shutdown or emergency at CPF-1 or on a neighbouring pad is reported to the rig immediately.
-   3. The rig must report any well control event to the control room at once.
-8. The Production Supervisor may stop production, and the Workover Supervisor may stop rig work, whenever the SIMOPS controls cannot be maintained.
+Simultaneous operations (SIMOPS) occur when rig work takes place near live wells, live flowlines, other rigs, construction, or heavy lifting. They require a documented risk assessment.
+
+1. The Production Supervisor and Workover Supervisor prepare a SIMOPS matrix for each rig location, listing activities that can and cannot take place at the same time.
+2. A minimum exclusion distance is set around the rig, the wellhead and the BOP. Live wells inside the exclusion distance are shut in unless the HSE Advisor approves a written exception.
+3. Hot work within the rig area, or near a live well or live flowline, is not permitted while the well is open, while gas is being vented, or during well control operations.
+4. Heavy lifts over live flowlines or live wellheads are prohibited. Lift plans must show the lift path and the exclusion zone.
+5. Gas detectors and wind direction indicators are in place at the pad. Muster points are set upwind and communicated at the induction.
+6. A daily coordination meeting is held between the Workover Supervisor, Lead Operator, Night Lead Operator (for night shift), HSE Advisor and service company supervisors. Planned activities, permits in force and any changes are reviewed.
+7. Traffic on the access road and pad is controlled. Vehicles are not allowed within the exclusion distance without a permit and an escort.
+8. Production upsets at CPF-1 that affect flare load, gas supply or power are communicated to the rig immediately, since they can change the risk to the work.
 
 ## Well handback and restart
 
-1. When the programme is complete, the Workover Supervisor confirms that all work is done, the well is left in a safe and stable condition, and the final completion schematic is updated.
-2. Before handback, check and record:
-   1. All debris and tools removed from the well site.
-   2. The tree installed and pressure tested to the programme values.
-   3. Any new downhole equipment (for example a new ESP, gas lift valves or a plug) recorded in the completion record.
-   4. Spades and blinds removed and logged.
-3. The Lead Operator and Workover Supervisor walk the site, verify the condition of the wellhead and flowline, and sign the **well handback certificate**. The Production Supervisor countersigns.
-4. All permits for the job are closed out, and all locks and tags are removed in the order recorded on the isolation register. Each person removes their own lock.
-5. Restart sequence:
-   1. Confirm the flowline is lined up to the manifold and CPF-1 has capacity to accept the well.
-   2. Restore electrical power under a permit and check the ESP rotation and insulation values with the vendor.
-   3. For gas lift wells, open the injection valve slowly and monitor the casing pressure.
-   4. Open the master and wing valves, and start the well on a conservative choke or low ESP frequency.
-   5. Increase rate in steps, holding each step until pressure, temperature, water cut and sand readings are stable. Sand-prone wells must be raised more slowly and sand monitored throughout.
-6. The Production Engineer arranges a well test within the period stated in the programme, to set a new baseline. Results are compared with the pre-workover test.
-7. Any abnormal behaviour during restart (for example unexpected pressure rise, vibration, gas breakthrough or sand) leads to a controlled shut-in and a review with the Production Engineer.
-8. The well status is changed from "workover" to "producing" in the daily report only after the handback certificate is signed and the well is stable.
+The handback moves control of the well from the Workover Supervisor to the Production Supervisor.
+
+1. The Workover Supervisor confirms that the programme is complete, all debris and chemicals are removed, and the wellhead and tree are fully assembled and pressure tested.
+2. The final well schematic and as-built data are issued, including tubing and completion details, new equipment installed, and any ESP serial and batch information, which is recorded as a plain equipment detail.
+3. The BOP is removed, and the cellar or pad is cleaned and inspected. The HSE Advisor checks the site and signs the closure of the well work permit.
+4. Subordinate permits are closed, locks and tags are removed by their owners, and the isolation register is updated.
+5. The Lead Operator and the Workover Supervisor carry out a joint inspection, check tree valve positions and gauges, and sign the handback checklist.
+6. The Production Engineer issues the restart plan, which gives the start-up choke, minimum flowing pressure, ESP frequency ramp or lift gas rate, and the first well test timing.
+7. Restart sequence: line up the flowline to CPF-1, open the master and wing valves, start the ESP or the lift gas or open the choke in steps, and monitor pressures, rates, motor current and vibration during the ramp-up.
+8. The CPF-1 control room is informed of the restart so that the well is brought into production allocation.
+9. A well test is carried out after stabilisation to establish a new baseline for rate, water cut, GOR and sand. Results are compared with the pre-workover baseline by the Production Engineer.
+10. Any abnormal reading during the first 24 hours, such as rising sand, unstable pressure or motor trips, is reported to the Production Supervisor and the Production Engineer immediately.
 
 ## Records
 
-1. The following records are kept for every job:
-   1. Signed permits and revalidations
-   2. Well handover and handback certificates
-   3. Barrier diagrams and pressure test records
-   4. Isolation register
-   5. SIMOPS matrix and daily meeting notes
-   6. Pre-job meeting attendance list
-   7. Gas test logs
-   8. Deviation approvals from the Integrity Engineer
-   9. Incident, near miss and stop-work reports
-2. The HSE Advisor files originals in the PTW archive within 3 working days of job completion. Electronic copies are indexed by well and permit number.
-3. Records are retained for at least 5 years, and records linked to an incident or well integrity issue are kept for the life of the well.
-4. The HSE Advisor audits at least 10 percent of closed permits each quarter and reports findings to the Production Supervisor.
-5. This procedure is reviewed every 12 months or after any significant incident, and changes are issued with a new revision date.
+The following records are kept for each workover and retained according to the document control procedure:
+
+- Well work permit and all subordinate permits, with signatures and times.
+- Well handover checklist and handback checklist.
+- Barrier verification form, BOP test sheets and pressure test charts.
+- Isolation register and lock-out and tag-out records.
+- SIMOPS matrix and daily coordination meeting notes.
+- Lift plans and gas test records.
+- Incident, near-miss and stop-work reports, if any.
+- Restart plan, restart log and first well test results.
+
+The HSE Advisor audits a sample of permits each month and reports findings to the Production Supervisor. Corrective actions are tracked until closed. This procedure is reviewed at least once a year or after any significant incident, and the revision date above is updated at each review.

@@ -1,7 +1,7 @@
 export const START = "2025-05-23";
 export const TODAY = "2026-11-22";
 
-export type Field = "Field A" | "Field B" | "Bayda";
+export type Field = "Dune Field" | "Wadi Field" | "Salt Flat Field";
 export type WellStatus = "producing" | "shut_in" | "workover" | "suspended";
 
 export interface Well {
@@ -63,13 +63,13 @@ export const NDAYS = dayIndex(TODAY) + 1;
 const round = (x: number, p = 1) => Math.round(x * 10 ** p) / 10 ** p;
 
 const FIELDS: { field: Field; count: number; lat: number; lon: number; lift: string[] }[] = [
-  { field: "Field A", count: 16, lat: 20.15, lon: 48.3, lift: ["ESP", "ESP", "gas lift", "natural flow"] },
-  { field: "Field B", count: 14, lat: 20.42, lon: 48.78, lift: ["ESP", "ESP", "ESP", "gas lift"] },
-  { field: "Bayda", count: 11, lat: 19.86, lon: 48.97, lift: ["gas lift", "gas lift", "ESP", "natural flow"] },
+  { field: "Dune Field", count: 16, lat: 20.15, lon: 48.3, lift: ["ESP", "ESP", "gas lift", "natural flow"] },
+  { field: "Wadi Field", count: 14, lat: 20.42, lon: 48.78, lift: ["ESP", "ESP", "ESP", "gas lift"] },
+  { field: "Salt Flat Field", count: 11, lat: 19.86, lon: 48.97, lift: ["gas lift", "gas lift", "ESP", "natural flow"] },
 ];
 
 const LIFT_OVERRIDES: Record<string, string> = {
-  "W-17": "ESP", "W-21": "ESP", "W-25": "ESP", "W-08": "ESP", "W-38": "gas lift", "W-34": "gas lift",
+  "W-09": "ESP", "W-17": "ESP", "W-21": "ESP", "W-27": "ESP", "W-25": "ESP", "W-08": "ESP", "W-38": "gas lift", "W-34": "gas lift",
 };
 
 const STATUS_OVERRIDES: Record<string, WellStatus> = {
@@ -88,10 +88,18 @@ interface Story {
 }
 
 const STORIES: Story[] = [
-  { well_id: "W-17", category: "incident", type: "ESP trip", start: "2026-03-04", end: "2026-03-10", dailyDown: 24, severity: "high",
-    description: "ESP tripped on motor overload with phase current imbalance. Restart attempts failed; megger test showed low insulation resistance on the motor lead. Well shut in pending workover." },
-  { well_id: "W-17", category: "maintenance", type: "Workover - ESP replacement", start: "2026-03-11", end: "2026-03-20", dailyDown: 24, severity: null,
-    description: "Workover rig mobilized. Pulled completion, found burnt motor lead extension and scaled pump stages. Replaced ESP motor, pump and cable. Well returned to production on 2026-03-21." },
+  { well_id: "W-09", category: "incident", type: "ESP failure", start: "2025-10-21", end: "2025-10-26", dailyDown: 24, severity: "high",
+    description: "ESP shut down on ground fault alarm and would not restart. Megger test showed near-zero insulation resistance phase to ground. Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months. Well shut in pending workover." },
+  { well_id: "W-09", category: "maintenance", type: "Workover - ESP replacement", start: "2025-10-27", end: "2025-11-02", dailyDown: 24, severity: null,
+    description: "Pulled ESP serial 7Q-0419-027. Teardown found motor winding insulation breakdown, no sand, scale or cable damage. Installed new Varenta VL-538, serial 4D-0733-115 (batch 4D-0733). Well returned to production on 2025-11-03." },
+  { well_id: "W-17", category: "incident", type: "ESP trip", start: "2026-03-04", end: "2026-03-09", dailyDown: 24, severity: "high",
+    description: "ESP tripped on motor overload with phase current imbalance. Restart attempts failed; megger test showed low insulation resistance on the motor. Installed pump: Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), run life 13 months. Well shut in pending workover." },
+  { well_id: "W-17", category: "maintenance", type: "Workover - ESP replacement", start: "2026-03-10", end: "2026-03-17", dailyDown: 24, severity: null,
+    description: "Workover rig mobilized. Pulled ESP serial 7Q-0419-112. Teardown found motor winding insulation breakdown and light scale on the pump stages. Installed new Varenta VL-538, serial 2M-1187-044 (batch 2M-1187), and new cable. Well returned to production on 2026-03-18." },
+  { well_id: "W-27", category: "incident", type: "ESP failure", start: "2026-08-18", end: "2026-08-22", dailyDown: 24, severity: "high",
+    description: "ESP tripped on motor overtemperature, then on ground fault at restart. Insulation resistance on the motor below the minimum. Installed pump: Varenta VL-538, serial 7Q-0419-086 (batch 7Q-0419), run life 11 months. Well shut in pending workover." },
+  { well_id: "W-27", category: "maintenance", type: "Workover - ESP replacement", start: "2026-08-23", end: "2026-08-29", dailyDown: 24, severity: null,
+    description: "Pulled ESP serial 7Q-0419-086. Teardown found motor winding insulation breakdown; pump stages and cable in good condition. Installed new Varenta VL-538, serial 5C-0822-019 (batch 5C-0822). Well returned to production on 2026-08-30." },
   { well_id: "W-08", category: "maintenance", type: "Scale squeeze treatment", start: "2026-10-05", end: "2026-10-07", dailyDown: 24, severity: null,
     description: "Scale inhibitor squeeze after carbonate scale build-up reduced ESP intake pressure and rate through Q3 2026." },
   { well_id: "W-23", category: "incident", type: "Water breakthrough", start: "2026-06-14", end: "2026-06-15", dailyDown: 4, severity: "medium",
@@ -105,13 +113,13 @@ const STORIES: Story[] = [
   { well_id: "W-38", category: "maintenance", type: "Gas lift valve change-out", start: "2026-12-03", end: null, dailyDown: 0, severity: null,
     description: "Slickline change-out of the stuck unloading valve, planned for early December 2026." },
   { well_id: "W-21", category: "maintenance", type: "ESP replacement", start: "2026-10-14", end: "2026-10-18", dailyDown: 24, severity: null,
-    description: "ESP replaced after gradual pump wear reduced rate through Q3 2026." },
+    description: "ESP replaced after gradual pump wear reduced rate through Q3 2026. Pulled Varenta VL-538 serial 1H-0956-071 (batch 1H-0956) after 31 months in service; installed serial 5C-0822-034 (batch 5C-0822)." },
   { well_id: "W-12", category: "incident", type: "Sustained casing annulus pressure", start: "2026-10-28", end: null, dailyDown: 24, severity: "high",
     description: "B-annulus pressure built up above the allowed limit and did not bleed off. Well shut in pending integrity diagnostics." },
   { well_id: "W-05", category: "incident", type: "Wellhead pressure anomaly", start: "2026-11-15", end: null, dailyDown: 3, severity: "medium",
     description: "Flowing wellhead pressure swings of plus or minus 60 psi with no choke change. Gauge checked; suspected partial choke plugging. Monitoring." },
   { well_id: "W-25", category: "incident", type: "ESP high vibration", start: "2026-11-20", end: null, dailyDown: 2, severity: "medium",
-    description: "ESP vibration rising above alarm level on the downhole sensor. Frequency reduced from 55 to 50 Hz, trend under review." },
+    description: "ESP vibration rising above alarm level on the downhole sensor. Frequency reduced from 55 to 50 Hz, trend under review. Installed pump: Varenta VL-538, serial 3K-1102-058 (batch 3K-1102), run life 22 months." },
   { well_id: "W-36", category: "incident", type: "Flowline leak", start: "2026-11-18", end: null, dailyDown: 24, severity: "high",
     description: "Pinhole leak found on flowline near the manifold during patrol. Well shut in, area isolated, clamp repair pending." },
   { well_id: "W-29", category: "maintenance", type: "Workover - tubing replacement", start: "2026-11-16", end: null, dailyDown: 24, severity: null,
@@ -170,7 +178,7 @@ function storyFactor(well_id: string, date: string): { liquid: number; wcAdd: nu
     case "W-38":
       return { liquid: d < dayIndex("2026-07-20") ? 1 : 0.54, wcAdd: 0 };
     case "W-17":
-      return { liquid: d < dayIndex("2026-03-21") ? ramp("2026-01-20", "2026-03-03", 1, 0.86) : 0.92, wcAdd: 0 };
+      return { liquid: d < dayIndex("2026-03-18") ? ramp("2026-01-20", "2026-03-03", 1, 0.86) : 0.92, wcAdd: 0 };
     case "W-40":
       return { liquid: 1, wcAdd: ramp("2025-08-01", "2026-01-11", 0, 0.25) };
     default:
@@ -206,13 +214,13 @@ export function generate(seed = 42): Dataset {
         lift_type: LIFT_OVERRIDES[well_id] ?? pick(f.lift),
         spud_date: fmt(new Date(toDate("2012-01-01").getTime() + Math.floor(rnd() * 11 * 365) * DAY)),
       });
-      const fieldWc = f.field === "Field B" ? [0.18, 0.32] : f.field === "Bayda" ? [0.1, 0.25] : [0.05, 0.3];
+      const fieldWc = f.field === "Wadi Field" ? [0.18, 0.32] : f.field === "Salt Flat Field" ? [0.1, 0.25] : [0.05, 0.3];
       models.set(well_id, {
         qL0: between(700, 2600),
         decline: between(0.08, 0.26),
         wc0: between(fieldWc[0], fieldWc[1]),
-        wcSlope: f.field === "Field B" ? between(0.08, 0.14) : between(0.02, 0.08),
-        gor: f.field === "Bayda" ? between(1100, 1900) : between(450, 1100),
+        wcSlope: f.field === "Wadi Field" ? between(0.08, 0.14) : between(0.02, 0.08),
+        gor: f.field === "Salt Flat Field" ? between(1100, 1900) : between(450, 1100),
       });
     }
   }
@@ -259,13 +267,17 @@ export function generate(seed = 42): Dataset {
   const storyIncidents = events.filter((e) => e.category === "incident").length;
   const storyMaintenance = events.filter((e) => e.category === "maintenance").length;
   const randomEvent = (category: Event["category"]) => {
-    const w = pick(wells.filter((x) => x.status !== "suspended"));
-    const fits = (t: string) => (!t.includes("ESP") || w.lift_type === "ESP") && (!t.toLowerCase().includes("gas lift") || w.lift_type === "gas lift");
-    const tpl = pick((category === "incident" ? RANDOM_INCIDENTS : RANDOM_MAINTENANCE).filter((t) => fits(t.type)));
-    const start = addDays(START, Math.floor(between(5, NDAYS - 30)));
-    const hours = Math.round(between(tpl.down[0], tpl.down[1]));
-    const days = Math.ceil(hours / 24);
-    const end = addDays(start, days - 1);
+    let w: Well, tpl: (typeof RANDOM_INCIDENTS)[0], start: string, hours: number, days: number, end: string;
+    do {
+      const x = pick(wells.filter((x) => x.status !== "suspended"));
+      const fits = (t: string) => (!t.includes("ESP") || x.lift_type === "ESP") && (!t.toLowerCase().includes("gas lift") || x.lift_type === "gas lift");
+      w = x;
+      tpl = pick((category === "incident" ? RANDOM_INCIDENTS : RANDOM_MAINTENANCE).filter((t) => fits(t.type)));
+      start = addDays(START, Math.floor(between(5, NDAYS - 30)));
+      hours = Math.round(between(tpl.down[0], tpl.down[1]));
+      days = Math.ceil(hours / 24);
+      end = addDays(start, days - 1);
+    } while (down.get(w.well_id)!.slice(dayIndex(start), dayIndex(end) + 1).some((h) => h > 0));
     const daily = hours / days;
     const actual = applyDown(w.well_id, start, end, daily);
     events.push({

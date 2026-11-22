@@ -2,7 +2,7 @@ import { sql } from "../lib/db";
 import { hybridSearch } from "../lib/search";
 
 const queries = process.argv.slice(2);
-for (const q of queries.length ? queries : ["Why did W-17 go down in March?", "sand production alarm Bayda"]) {
+for (const q of queries.length ? queries : ["Why did W-17 go down in March?", "sand production alarm Salt Flat Field"]) {
   const { vector, fullText, fused } = await hybridSearch(q);
   console.log(`\nQuery: ${q}`);
   console.log(`vector top ${vector.length}: ${vector.map((h) => `${h.document_id}#${h.id.split("#")[1]} (${Number(h.score).toFixed(3)})`).join(", ")}`);

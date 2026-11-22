@@ -14,16 +14,23 @@ const args = (c: Call) => c.args as Record<string, unknown>;
 const sentences = (text: string) => text.replace(/\s*\[\d+\]/g, "").trim().split(/(?<=[.!?])\s+(?=["(A-Z0-9])/).filter(Boolean).length;
 const SHORT: Check = ["answer has 2 to 4 sentences", (f) => { const n = sentences(f.answer.answer); return n >= 2 && n <= 4; }];
 
+const docOf = async (well: string, type: string, from: string, to: string) =>
+  (await sql<{ doc_id: string }[]>`SELECT doc_id FROM documents WHERE well_id = ${well} AND doc_type = ${type} AND date BETWEEN ${from} AND ${to} ORDER BY date LIMIT 1`)[0]?.doc_id ?? "missing";
+const W17_NOTE = await docOf("W-17", "incident_note", "2026-03-01", "2026-03-31");
+const SAND_NOTE = await docOf("W-34", "incident_note", "2026-11-09", "2026-11-22");
+const BATCH_WELLS = ["W-09", "W-17", "W-27"];
+
+const cites = (f: Final, prefix: string) => f.answer.sources.some((s) => s.id.startsWith(prefix));
+function citedWells(f: Final, results: AskEvent[]) {
+  const chunkWell = new Map(f.trace.flatMap((t) => t.chunks_sent.map((c) => [c.chunk_id, c.well_id] as const)));
+  const eventWell = new Map(results.flatMap((r) => ((r as { output?: { events?: { event_id: string; well_id: string }[] } }).output?.events ?? []).map((e) => [e.event_id, e.well_id] as const)));
+  return new Set(f.answer.sources.map((s) => (s.kind === "chunk" ? chunkWell.get(s.id) : eventWell.get(s.id.replace(/^events:/, "")) ?? s.id.match(/W-\d{2}/)?.[0])).filter(Boolean));
+}
+const points = (f: Final) => (f.answer.viz as { series?: { points: { y: number }[] }[] }).series?.[0]?.points ?? [];
+
 const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[0],
-    checks: [
-      ["viz is ranked bars", (f) => f.answer.viz.type === "bar"],
-      ["bars led by W-38 and W-23", (f) => { const top = bars(f).slice(0, 2).map((b) => b.label).join(" "); return top.includes("W-38") && top.includes("W-23"); }],
-    ],
-  },
-  {
-    question: SUGGESTED[1],
     checks: [
       ["viz is a map", (f) => f.answer.viz.type === "map"],
       ["highlights exactly W-05, W-12, W-25, W-34, W-36", (f) => highlighted(f).join(",") === "W-05,W-12,W-25,W-34,W-36"],
@@ -31,25 +38,35 @@ const CASES: { question: string; checks: Check[] }[] = [
     ],
   },
   {
+    question: SUGGESTED[1],
+    checks: [
+      [`cites the W-17 incident note (${W17_NOTE})`, (f) => cites(f, W17_NOTE)],
+      ["answer dates the outage in March 2026", (f) => /March/.test(f.answer.answer) && /2026/.test(f.answer.answer)],
+      ["answer gives the lost revenue in dollars", (f) => /\$\d/.test(f.answer.answer)],
+    ],
+  },
+  {
     question: SUGGESTED[2],
     checks: [
-      ["viz is a line", (f) => f.answer.viz.type === "line"],
-      ["line is for Field B", (f, calls) => series(f).some((s) => s.name.includes("Field B")) || calls.some((c) => c.name === "query_production" && args(c).field === "Field B" && args(c).metric === "water_cut")],
+      ["answer names W-09, W-17 and W-27", (f) => BATCH_WELLS.every((w) => f.answer.answer.includes(w))],
+      ["answer names batch 7Q-0419", (f) => f.answer.answer.includes("7Q-0419")],
+      ["sources cover all 3 batch failures", (f, _, results) => { const w = citedWells(f, results); return BATCH_WELLS.every((x) => w.has(x)); }],
     ],
   },
   {
     question: SUGGESTED[3],
     checks: [
-      ["cites the ESP trip incident note (IN-032)", (f) => f.answer.sources.some((s) => s.id.startsWith("IN-032"))],
-      ["answer dates the event in March 2026", (f) => /March|2026-03/.test(f.answer.answer) && /2026/.test(f.answer.answer)],
+      ["viz is a line", (f) => f.answer.viz.type === "line"],
+      ["line is for Wadi Field", (f, calls) => series(f).some((s) => s.name.includes("Wadi")) || calls.some((c) => c.name === "query_production" && args(c).field === "Wadi Field" && args(c).metric === "water_cut")],
+      ["water cut line rises", (f) => { const p = points(f); return p.length >= 6 && p.at(-1)!.y > p[0].y * 1.2; }],
     ],
   },
   {
-    question: "Is the sand alarm in Bayda still open?",
+    question: SUGGESTED[4],
     checks: [
-      ["uses the Bayda field filter", (_, calls) => calls.some((c) => args(c).field === "Bayda")],
-      ["finds the open W-34 alarm", (f, _, results) => /W-34/.test(f.answer.answer) && /open/i.test(f.answer.answer) && JSON.stringify(results).includes("EV-0180")],
-      ["cites the sand alarm incident note (IN-067)", (f) => f.answer.sources.some((s) => s.id.startsWith("IN-067"))],
+      ["finds the open W-34 alarm", (f, _, results) => /W-34/.test(f.answer.answer) && /open/i.test(f.answer.answer) && JSON.stringify(results).includes('"status":"open"')],
+      [`cites the sand alarm incident note (${SAND_NOTE})`, (f) => cites(f, SAND_NOTE)],
+      ["cites the sand procedure (SOP-OPS-002)", (f) => cites(f, "SOP-OPS-002")],
     ],
   },
 ];

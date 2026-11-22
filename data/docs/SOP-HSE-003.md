@@ -9,115 +9,119 @@ title: SOP-HSE-003 H2S Alarm Response
 
 # SOP-HSE-003 H2S Alarm Response
 
-| Field | Entry |
+| Field | Detail |
 |---|---|
 | Procedure ID | SOP-HSE-003 |
 | Title | H2S Alarm Response |
 | Revision date | 2025-07-10 |
-| Applies to | All three fields: Field A, Field B and Bayda, including CPF-1 |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | HSE Advisor |
 | Approver | Production Supervisor |
-| Review cycle | Annual, or after any confirmed H2S release |
+| Related facilities | Wellsites, flowlines, manifolds and CPF-1 |
 
 ## Purpose and scope
 
-1. This procedure sets out how personnel respond when a fixed or portable hydrogen sulphide (H2S) detector alarms at any wellsite, manifold, flowline corridor or at CPF-1.
-2. It applies to all employees, contractors and visitors on the concession, in Field A, Field B and Bayda. Bayda wells carry higher gas rates and a higher gas-oil ratio, so the potential release volume there is larger. The same rules apply, but crews must treat every alarm at Bayda with particular caution.
-3. The aims are to protect life first, then to stop the source, then to protect the environment and equipment.
-4. Responsibilities:
-   - Lead Operator: first-line response coordinator at the affected site until relieved.
-   - Night Lead Operator: holds the same role on night shift.
-   - HSE Advisor: verifies gas readings, authorises all-clear and completes the report.
-   - Production Supervisor: decides on shutdown escalation and external notification.
-   - Production Engineer and Field Engineer: support the leak search and isolation planning.
-   - Maintenance Planner: raises repair work orders after the event.
-5. Every person on site is authorised to stop work and leave the area when an H2S alarm sounds. No one needs permission to evacuate.
+1. This procedure sets out how personnel respond when a hydrogen sulphide (H2S) detector alarms, or when H2S is suspected by smell, instrument reading or personal monitor, anywhere on the asset.
+2. It applies to Dune Field, Wadi Field and Salt Flat Field, including wellsites, flowlines, manifolds, tie-ins and the central processing facility CPF-1. It covers employees, contractors and visitors.
+3. It covers three outcomes: protecting people first, stopping the release at source, and restoring normal operations only when the area is verified safe.
+4. Sour gas can be present at any wellsite and at CPF-1, particularly where gas is released from solution (gas lift gas, high GOR streams, separator and flare systems, sample points and open vents). Treat every alarm as real until proven otherwise.
+5. Nobody is to investigate an alarm alone, and nobody is to enter an alarming area to "check" without breathing apparatus and a standby person, regardless of how low the reading appears.
+6. Roles referred to in this document: Lead Operator, Night Lead Operator, Production Supervisor, HSE Advisor, Production Engineer, Field Engineer, Maintenance Planner and Workover Supervisor.
 
 ## Detector set points
 
-1. Fixed detectors are set at two levels. Portable personal monitors use the same levels.
+1. Fixed detectors and personal monitors are set to the following levels. Set points are reviewed only through a controlled change by the HSE Advisor.
 
-| Level | Concentration | Alarm type | Meaning |
+| Level | Concentration | Alarm type | Required response |
 |---|---|---|---|
-| Low alarm | 10 ppm | Flashing beacon and intermittent horn | Hazard present. Prepare to respond. |
-| High alarm | 15 ppm | Flashing beacon and continuous horn | Danger. Evacuate to the muster point. |
-| Confirmed high | 30 ppm or above at any detector or personal monitor | Continuous horn, plus CPF-1 control room escalation | Serious release. Breathing apparatus mandatory. |
+| Low alarm | 10 ppm | Amber beacon, intermittent horn | Stop work, don escape set if carried, move upwind, assess |
+| High alarm | 20 ppm | Red beacon, continuous horn | Full muster, emergency response, automatic shutdown actions as configured |
+| Personal monitor alarm | 10 ppm (low), 15 ppm (high, time-weighted) | Vibration and audible | Leave the area immediately, report to the Lead Operator |
 
-2. Detectors are function tested (bump tested) at least monthly and calibrated at least every six months. A detector that is overdue for test or in fault must be reported to the Lead Operator and replaced with a portable unit until repaired.
-3. Detector bypass or inhibit requires a written authorisation from the Production Supervisor and must be time limited. A bypass must never be left in place across a shift handover without being listed in the handover notes.
-4. Personnel must carry a personal H2S monitor at all times outside the camp and offices. Check the monitor display and battery before leaving the vehicle.
-5. A low alarm must never be dismissed as a nuisance alarm until the HSE Advisor or a trained Lead Operator has confirmed it with a calibrated portable instrument.
+2. Concentrations above 100 ppm are treated as immediately dangerous to life and health. At that level, or if a person has collapsed, the response is rescue by trained and equipped personnel only.
+3. Detectors are function-tested and bump-tested at the interval defined in the maintenance plan, and calibrated with certified gas at least at the vendor-recommended interval. The Maintenance Planner schedules these tasks and the HSE Advisor reviews the records.
+4. A detector in fault, bypass or inhibit state is logged in the shift report and covered by a temporary measure (portable monitor, restricted access) agreed by the Production Supervisor and the HSE Advisor.
+5. Windsocks at each wellsite and at CPF-1 are kept visible and in good condition. Operators check wind direction before approaching any site.
+6. A single detector alarming is acted on in full. Do not wait for a second detector to confirm.
 
 ## Immediate actions and muster
 
-1. On a low alarm (10 ppm):
-   1. Stop non-essential work and tell the Lead Operator by radio.
-   2. Check wind direction using the nearest windsock and move crosswind or upwind of the alarm location.
-   3. Put on an escape set if the area is confined or the reading is rising.
-   4. The Lead Operator sends a trained person with a calibrated portable monitor, wearing breathing apparatus if any reading above 10 ppm is expected, to verify the reading from upwind.
-2. On a high alarm (15 ppm) or any confirmed high reading:
-   1. Stop work, make the equipment safe only if this can be done in a few seconds and without exposure, then leave the area immediately.
-   2. Move upwind or crosswind, away from the suspected source, to the designated muster point. Do not run through a gas cloud. If the primary muster point is downwind, go to the alternate muster point.
-   3. Do not return for tools, vehicles or personal items.
-   4. Warn others on the way by radio and by shouting. Say "H2S, H2S, H2S" with the location.
-3. Radio call. The first person to raise the alarm states: the location, the reading, the wind direction and the number of people in the area.
-4. The CPF-1 control room operator:
-   1. Acknowledges the alarm and records the time.
-   2. Starts the site alarm sequence if it has not started automatically.
-   3. Initiates the process shutdown for the affected area if the high alarm is confirmed, following the cause-and-effect chart.
-   4. Informs the Production Supervisor and the HSE Advisor.
-5. Muster:
-   1. Each supervisor or Lead Operator takes a head count against the daily personnel list and the vehicle log.
-   2. The head count result is reported to the control room within 10 minutes of the alarm.
-   3. If anyone is missing, report it at once to the Production Supervisor. Do not send anyone back in without breathing apparatus, a buddy and a standby person.
-6. Keep the muster point crew in a position where they can see the windsock and have a clear exit route. Move the muster point if the wind shifts and the area becomes affected.
-7. Stop all vehicle movement into the affected area. Ignition sources are controlled: no vehicles, no hot work and no unapproved electrical equipment within the exclusion zone.
+1. **Any person who hears the alarm or smells H2S**:
+   1. Stop work and make the equipment safe only if this takes a few seconds and carries no exposure risk.
+   2. Hold breath if a strong smell is noticed, put on the escape set, and move crosswind then upwind.
+   3. Go to the nearest designated muster point, selected by wind direction. Each wellsite and CPF-1 has a primary and an alternate muster point.
+   4. Warn others on the way. Do not use vehicles that would drive through the affected area.
+2. **Lead Operator (or Night Lead Operator out of day shift)**:
+   1. Confirm the alarm location and level on the control room panel.
+   2. Sound or confirm the general alarm if it has not activated and call the emergency on the site radio channel: "H2S alarm, location, level, wind direction".
+   3. Confirm that automatic shutdown, isolation valves and ventilation have operated as designed. If not, initiate shutdown from the control room.
+   4. Take the roll call at the muster point using the daily site log and the permit board. Report any missing person immediately to the Production Supervisor.
+   5. Start an event log with times of alarm, actions and instructions.
+3. **Production Supervisor**:
+   1. Assume incident command until relieved, or delegate to the HSE Advisor.
+   2. Stop all non-essential traffic into the area and post a road block upwind and crosswind of the affected site.
+   3. Suspend hot work, vehicle entry and lifting operations on the asset until the source is understood.
+   4. Inform the on-call management contacts per the emergency call tree.
+4. **Muster rules**:
+   1. Remain at the muster point until released by the incident commander. Nobody leaves site without being counted out.
+   2. Contractors report to their supervisor, who confirms the headcount to the Lead Operator.
+   3. If wind shifts and the muster point is affected, move to the alternate point and report the move on the radio.
+5. **Missing or injured person**:
+   1. Do not attempt a rescue without breathing apparatus. A second casualty is not an acceptable outcome.
+   2. Trained rescuers don breathing apparatus, with a standby team, and recover the casualty to fresh air.
+   3. Begin first aid, administer oxygen where trained, and call for medical evacuation.
+   4. Treat every person exposed to a high alarm as a potential casualty and have them assessed even if they feel well.
 
 ## Breathing apparatus and entry rules
 
-1. Only personnel who are in date for H2S awareness training, breathing apparatus training and medical fitness may wear breathing apparatus or take part in a rescue or leak search.
-2. Breathing apparatus (self-contained, positive pressure) is required for any entry where the reading is 10 ppm or above, where the reading is unknown, or where it is rising. Escape sets alone are not suitable for entry. They are for escape only.
-3. Entry team rules:
-   1. A minimum of two trained people enter together as a buddy pair.
-   2. A standby person with breathing apparatus remains outside in radio contact, ready to assist.
-   3. Each cylinder is checked for pressure and the face mask for fit before entry. Beards or facial hair that break the seal are not permitted.
-   4. Entry time is limited by the lowest cylinder gauge in the team. Turn back at one half of the starting pressure or when the low-pressure whistle sounds.
-   5. The entry team carries a calibrated portable multi-gas monitor and a radio.
-4. Permits: an entry into the exclusion zone for leak search or isolation requires authorisation from the Production Supervisor and the HSE Advisor. A written record of the entry team, the start time and the cylinder pressures is kept by the standby person.
-5. Do not remove breathing apparatus until the HSE Advisor or the trained gas tester confirms the reading is below 1 ppm at the location and in the breathing zone.
-6. Rescue: no unprotected rescue. A casualty is removed by a rescue team wearing breathing apparatus, moved upwind and given oxygen if available. Call for medical help and report any exposure symptoms, such as eye irritation, cough, dizziness or loss of smell. Loss of smell does not mean the gas has gone.
-7. Any person who has been exposed above the high alarm level, or who feels unwell, is examined by the medic even if symptoms pass.
+1. Only personnel who hold a current breathing apparatus (BA) competence and a valid medical clearance may wear BA. Records are held by the HSE Advisor.
+2. Entry into an area with an active alarm, or any reading above 10 ppm, requires all of the following:
+   1. Approval from the incident commander recorded in the event log.
+   2. A minimum entry team of two persons in self-contained breathing apparatus (SCBA), plus a standby team of two at the edge of the safe area, also equipped.
+   3. A radio check, an agreed time limit, and an agreed turn-around cylinder pressure.
+   4. A portable multi-gas detector carried by each team member.
+3. Cascade or airline sets without an escape cylinder are not to be used for investigation entry.
+4. Before donning, each wearer completes a pre-use check: cylinder pressure, mask seal (negative pressure test), low pressure warning whistle, and harness. Facial hair that breaks the mask seal prevents use of BA.
+5. Entry teams approach from upwind, keep to the planned route and remain in sight of each other. If either person has a problem, both leave.
+6. Escape sets are carried by all personnel working at wellsites and CPF-1 process areas. They are for escape only and are never used to investigate or to rescue.
+7. Confined space entry, vessel entry and tank gauging remain under the permit to work system. A gas test is carried out by a competent person before and during entry, and H2S must read zero before work without BA is allowed.
+8. BA sets are inspected monthly and after every use by a nominated operator, and the check is signed on the set record. Used cylinders are exchanged and tagged before the set returns to service.
+9. A person who has been exposed, even briefly, does not return to work in the area until cleared by the HSE Advisor and, if medically needed, by the medical provider.
 
 ## Leak search and isolation
 
-1. The leak search starts only after the head count is complete, the exclusion zone is set and the Production Supervisor has authorised it.
-2. Set the exclusion zone upwind-marked with barrier tape or cones. Start with a radius that matches the highest reading and wind conditions, and extend it if readings rise. Post a guard at each approach road.
+1. Leak search begins only after all persons are accounted for and the incident commander has authorised it.
+2. Plan the search before entry:
+   1. Review the last known operations: sampling, venting, pigging, well intervention, flaring, valve line-ups or maintenance in the area.
+   2. Use the wind direction, detector pattern and the panel history to identify the most likely source.
+   3. Agree the route, isolation targets and communication with the entry team.
 3. Search method:
-   1. Approach from upwind with the buddy pair and the standby person in position.
-   2. Use the portable monitor to trace the highest readings. Check likely points first: wellhead flanges and stuffing box, flowline connections, valve packing, pig launcher and receiver doors, separator and tank vents, sample points, relief valve tailpipes and pump seals.
-   3. Use leak detection fluid on suspect joints. Do not use ignition-based methods.
+   1. Use portable detectors at breathing height first, then near flanges, valves, seals, sample points, vents, drains and tank hatches.
+   2. Use a gas leak detection spray or approved acoustic or optical method to confirm a source. Do not use ignition sources, and use only intrinsically safe or certified equipment.
+   3. Record the location, reading and photograph of the suspect point if safe.
 4. Isolation:
-   1. Where the source is a well or flowline, close the master or wing valve or the nearest remote isolation valve, using remote operation where possible.
-   2. Where the source is a vessel or piece of process equipment, isolate inlet and outlet and depressure to the flare or closed drain according to the operating procedure for that unit.
-   3. If isolation would put the team at risk, withdraw and leave the area isolated by process shutdown only.
-5. The Production Engineer and Field Engineer review the findings and agree on a safe plan for any repair. Short-term clamping or temporary repair must be approved by the Integrity Engineer.
-6. Keep the lowered production rate in mind: the Production Supervisor may decide to restrict or shut in neighbouring wells if the gas source cannot be located quickly.
-7. A tank or vessel vent releasing H2S is treated as a source. Do not open hatches or sample until the reading is confirmed safe.
-8. If the release cannot be controlled or readings stay above 30 ppm beyond the site boundary, the Production Supervisor activates the emergency response plan and informs the camp, neighbouring sites and the authorities as required.
+   1. Isolate the source using the shutdown valves, manual block valves or well safety valves. Where safe isolation cannot be reached, shut in upstream wells through the control room.
+   2. Depressurise to the flare or closed drain system only as per the operating procedure for that facility. Do not vent sour gas to atmosphere.
+   3. Apply lock-out and tag-out to the isolated line and update the permit board.
+5. Small leaks that can be stopped (tightening a flange, closing a drain or valve) may be corrected by the entry team only if the Production Supervisor agrees and the work stays within the BA time limit. Otherwise isolate and raise a work order.
+6. Where a leak is on a wellhead, flowline or high-pressure equipment, the Field Engineer and Production Engineer advise on safe shut-in and restart sequence before any equipment is returned to service.
+7. Liquids and residues from the leak point (sour water, sludge, scale) may release H2S when disturbed. Treat them as sour until tested.
+8. Wet or sour sand, filters and pig debris are handled with gas monitoring and bagged for controlled disposal.
 
 ## All-clear and reporting
 
-1. All-clear is given only by the HSE Advisor, or by a delegated trained person, after:
-   1. The source is isolated or repaired and confirmed by gas testing.
-   2. Readings are below 1 ppm at the former source, the exclusion zone boundary and the muster point, over at least 15 minutes with steady wind.
-   3. Fixed detectors have reset and are healthy. Any detector that alarmed is bump tested before being returned to normal service.
-2. The Production Supervisor authorises the return to work. The control room makes a site announcement. Personnel return in groups, and a second head count is taken at the work location.
-3. Restart of the affected equipment follows the normal start-up procedure. A second person checks that all isolations are restored before restart.
-4. Reporting:
-   1. The Lead Operator records the alarm in the shift report: time, location, reading, actions and persons involved.
-   2. The HSE Advisor opens an incident record within 24 hours for every high alarm and every confirmed release, and for any low alarm without an identified cause.
-   3. The incident note covers: what happened, immediate actions, findings, estimated downtime and deferred oil, current status and next actions.
-   4. The Maintenance Planner raises a work order for any repair, replacement of detectors or follow-up inspection.
-   5. Any exposure, injury or medical treatment is reported immediately to the Production Supervisor and logged separately.
-5. Within 7 days the HSE Advisor leads a short review with the Production Supervisor, the Lead Operator, the Production Engineer and the Integrity Engineer. Lessons learned are shared with the Night Lead Operator and all crews at the next safety meeting.
-6. Drills: an H2S muster drill is run at least quarterly for each field, rotating between day and night shifts. Drill results, including head count time, are recorded and reviewed under this procedure.
+1. An all-clear may be declared only by the incident commander, after the HSE Advisor confirms in person or by radio that:
+   1. All fixed detectors in the area read zero and have reset without fault.
+   2. A portable gas survey by a competent person, carried out in BA where needed, shows zero H2S at the affected equipment and in low points and enclosed spaces.
+   3. The source is isolated, repaired or controlled, and the isolation is recorded on the permit board.
+   4. Personnel accounting is complete and no one is receiving medical care that affects the area.
+2. The all-clear is announced on the radio and the general alarm, and the time is entered in the event log. Personnel return to work in stages. Process restart follows the normal start-up procedure.
+3. If an alarm cannot be explained, a detector is suspected faulty, or the reading cannot be repeated, the area stays restricted until the detector is tested with calibration gas and a second portable instrument confirms zero. A false alarm is never assumed.
+4. Reporting timeline:
+   1. Immediately: the Lead Operator informs the Production Supervisor and records the event in the shift report.
+   2. Within 1 hour: the Production Supervisor notifies senior management and the HSE Advisor opens an incident record.
+   3. Within 24 hours: the HSE Advisor issues an incident note with timeline, readings, people exposed, actions and production impact. The Production Engineer adds deferred production.
+   4. Within 5 working days: a review meeting is held and corrective actions are assigned with owners and due dates.
+5. Reportable items include any alarm at or above the low set point, any personal exposure at or above 10 ppm, any detector failure found during an event, and any near miss during BA entry.
+6. Lessons learned are shared at the next shift handover and toolbox talks at all three fields. The HSE Advisor reviews this procedure after any high alarm and at least annually.
+7. Records (event log, roll call sheet, gas test results, BA set records, calibration certificates and the incident note) are retained in the HSE document system under SOP-HSE-003.

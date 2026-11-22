@@ -1,0 +1,1852 @@
+{
+ "question": "Was W-17's pump failure a one-off?",
+ "recorded_at": "2026-11-22T15:35:10.055Z",
+ "events": [
+  {
+   "t": 0,
+   "event": {
+    "type": "start",
+    "question": "Was W-17's pump failure a one-off?",
+    "mode": "live"
+   }
+  },
+  {
+   "t": 1285,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_01SYXaUBYLr4MEEqGsspGGpS",
+    "name": "list_events",
+    "args": {
+     "type": "ESP"
+    },
+    "label": "Listing ESP..."
+   }
+  },
+  {
+   "t": 1985,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_01LpuoPRtxRKiWj7PSuGKq4s",
+    "name": "search_documents",
+    "args": {
+     "query": "W-17 ESP pump failure serial batch",
+     "k": 6,
+     "well_ids": [
+      "W-17"
+     ]
+    },
+    "label": "Searching documents (W-17)..."
+   }
+  },
+  {
+   "t": 1994,
+   "event": {
+    "type": "tool-result",
+    "id": "toolu_01SYXaUBYLr4MEEqGsspGGpS",
+    "name": "list_events",
+    "output": {
+     "count": 26,
+     "truncated": false,
+     "events": [
+      {
+       "event_id": "EV-0184",
+       "well_id": "W-25",
+       "field": "Wadi Field",
+       "category": "incident",
+       "type": "ESP high vibration",
+       "start_date": "2026-11-20",
+       "end_date": null,
+       "downtime_hours": 6,
+       "lost_oil_bbl": 106,
+       "status": "open",
+       "severity": "medium",
+       "description": "ESP vibration rising above alarm level on the downhole sensor. Frequency reduced from 55 to 50 Hz, trend under review. Installed pump: Varenta VL-538, serial 3K-1102-058 (batch 3K-1102), run life 22 months.",
+       "documents": [
+        "IN-070"
+       ],
+       "lost_revenue_usd": 7420
+      },
+      {
+       "event_id": "EV-0174",
+       "well_id": "W-21",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "ESP replacement",
+       "start_date": "2026-10-14",
+       "end_date": "2026-10-18",
+       "downtime_hours": 120,
+       "lost_oil_bbl": 1270,
+       "status": "closed",
+       "severity": null,
+       "description": "ESP replaced after gradual pump wear reduced rate through Q3 2026. Pulled Varenta VL-538 serial 1H-0956-071 (batch 1H-0956) after 31 months in service; installed serial 5C-0822-034 (batch 5C-0822).",
+       "documents": [
+        "WO-058"
+       ],
+       "lost_revenue_usd": 88900
+      },
+      {
+       "event_id": "EV-0163",
+       "well_id": "W-03",
+       "field": "Dune Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2026-09-07",
+       "end_date": "2026-09-07",
+       "downtime_hours": 6,
+       "lost_oil_bbl": 393,
+       "status": "closed",
+       "severity": "low",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-060"
+       ],
+       "lost_revenue_usd": 27510
+      },
+      {
+       "event_id": "EV-0159",
+       "well_id": "W-22",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-08-30",
+       "end_date": "2026-08-30",
+       "downtime_hours": 4,
+       "lost_oil_bbl": 69,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "IN-059"
+       ],
+       "lost_revenue_usd": 4830
+      },
+      {
+       "event_id": "EV-0156",
+       "well_id": "W-27",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "Workover - ESP replacement",
+       "start_date": "2026-08-23",
+       "end_date": "2026-08-29",
+       "downtime_hours": 168,
+       "lost_oil_bbl": 3878,
+       "status": "closed",
+       "severity": null,
+       "description": "Pulled ESP serial 7Q-0419-086. Teardown found motor winding insulation breakdown; pump stages and cable in good condition. Installed new Varenta VL-538, serial 5C-0822-019 (batch 5C-0822). Well returned to production on 2026-08-30.",
+       "documents": [
+        "IN-057",
+        "WO-054"
+       ],
+       "lost_revenue_usd": 271460
+      },
+      {
+       "event_id": "EV-0150",
+       "well_id": "W-27",
+       "field": "Wadi Field",
+       "category": "incident",
+       "type": "ESP failure",
+       "start_date": "2026-08-18",
+       "end_date": "2026-08-22",
+       "downtime_hours": 120,
+       "lost_oil_bbl": 2776,
+       "status": "closed",
+       "severity": "high",
+       "description": "ESP tripped on motor overtemperature, then on ground fault at restart. Insulation resistance on the motor below the minimum. Installed pump: Varenta VL-538, serial 7Q-0419-086 (batch 7Q-0419), run life 11 months. Well shut in pending workover.",
+       "documents": [
+        "IN-057",
+        "WO-054"
+       ],
+       "lost_revenue_usd": 194320
+      },
+      {
+       "event_id": "EV-0136",
+       "well_id": "W-09",
+       "field": "Dune Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-07-18",
+       "end_date": "2026-07-18",
+       "downtime_hours": 2,
+       "lost_oil_bbl": 108,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "IN-051",
+        "WO-050"
+       ],
+       "lost_revenue_usd": 7560
+      },
+      {
+       "event_id": "EV-0132",
+       "well_id": "W-20",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-07-09",
+       "end_date": "2026-07-09",
+       "downtime_hours": 4,
+       "lost_oil_bbl": 199,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": null,
+       "lost_revenue_usd": 13930
+      },
+      {
+       "event_id": "EV-0127",
+       "well_id": "W-21",
+       "field": "Wadi Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2026-06-14",
+       "end_date": "2026-06-14",
+       "downtime_hours": 21,
+       "lost_oil_bbl": 358,
+       "status": "closed",
+       "severity": "low",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-049"
+       ],
+       "lost_revenue_usd": 25060
+      },
+      {
+       "event_id": "EV-0126",
+       "well_id": "W-32",
+       "field": "Salt Flat Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-06-08",
+       "end_date": "2026-06-08",
+       "downtime_hours": 4,
+       "lost_oil_bbl": 100,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": null,
+       "lost_revenue_usd": 7000
+      },
+      {
+       "event_id": "EV-0120",
+       "well_id": "W-08",
+       "field": "Dune Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2026-05-26",
+       "end_date": "2026-05-26",
+       "downtime_hours": 24,
+       "lost_oil_bbl": 1167,
+       "status": "closed",
+       "severity": "low",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-046"
+       ],
+       "lost_revenue_usd": 81690
+      },
+      {
+       "event_id": "EV-0113",
+       "well_id": "W-24",
+       "field": "Wadi Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2026-04-24",
+       "end_date": "2026-04-25",
+       "downtime_hours": 25,
+       "lost_oil_bbl": 1296,
+       "status": "closed",
+       "severity": "medium",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-039",
+        "IN-041"
+       ],
+       "lost_revenue_usd": 90720
+      },
+      {
+       "event_id": "EV-0110",
+       "well_id": "W-27",
+       "field": "Wadi Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2026-04-14",
+       "end_date": "2026-04-14",
+       "downtime_hours": 20,
+       "lost_oil_bbl": 530,
+       "status": "closed",
+       "severity": "high",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-040"
+       ],
+       "lost_revenue_usd": 37100
+      },
+      {
+       "event_id": "EV-0107",
+       "well_id": "W-24",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-04-11",
+       "end_date": "2026-04-11",
+       "downtime_hours": 6,
+       "lost_oil_bbl": 310,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "IN-036",
+        "IN-039",
+        "IN-041"
+       ],
+       "lost_revenue_usd": 21700
+      },
+      {
+       "event_id": "EV-0104",
+       "well_id": "W-03",
+       "field": "Dune Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-04-09",
+       "end_date": "2026-04-09",
+       "downtime_hours": 4,
+       "lost_oil_bbl": 290,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": null,
+       "lost_revenue_usd": 20300
+      },
+      {
+       "event_id": "EV-0094",
+       "well_id": "W-17",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "Workover - ESP replacement",
+       "start_date": "2026-03-10",
+       "end_date": "2026-03-17",
+       "downtime_hours": 192,
+       "lost_oil_bbl": 10176,
+       "status": "closed",
+       "severity": null,
+       "description": "Workover rig mobilized. Pulled ESP serial 7Q-0419-112. Teardown found motor winding insulation breakdown and light scale on the pump stages. Installed new Varenta VL-538, serial 2M-1187-044 (batch 2M-1187), and new cable. Well returned to production on 2026-03-18.",
+       "documents": [
+        "IN-032",
+        "WO-048"
+       ],
+       "lost_revenue_usd": 712320
+      },
+      {
+       "event_id": "EV-0092",
+       "well_id": "W-17",
+       "field": "Wadi Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2026-03-04",
+       "end_date": "2026-03-09",
+       "downtime_hours": 144,
+       "lost_oil_bbl": 7766,
+       "status": "closed",
+       "severity": "high",
+       "description": "ESP tripped on motor overload with phase current imbalance. Restart attempts failed; megger test showed low insulation resistance on the motor. Installed pump: Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), run life 13 months. Well shut in pending workover.",
+       "documents": [
+        "IN-032",
+        "WO-048"
+       ],
+       "lost_revenue_usd": 543620
+      },
+      {
+       "event_id": "EV-0082",
+       "well_id": "W-08",
+       "field": "Dune Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2026-02-12",
+       "end_date": "2026-02-12",
+       "downtime_hours": 4,
+       "lost_oil_bbl": 207,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "WO-046"
+       ],
+       "lost_revenue_usd": 14490
+      },
+      {
+       "event_id": "EV-0046",
+       "well_id": "W-09",
+       "field": "Dune Field",
+       "category": "maintenance",
+       "type": "Workover - ESP replacement",
+       "start_date": "2025-10-27",
+       "end_date": "2025-11-02",
+       "downtime_hours": 168,
+       "lost_oil_bbl": 10354,
+       "status": "closed",
+       "severity": null,
+       "description": "Pulled ESP serial 7Q-0419-027. Teardown found motor winding insulation breakdown, no sand, scale or cable damage. Installed new Varenta VL-538, serial 4D-0733-115 (batch 4D-0733). Well returned to production on 2025-11-03.",
+       "documents": [
+        "IN-010",
+        "WO-035"
+       ],
+       "lost_revenue_usd": 724780
+      },
+      {
+       "event_id": "EV-0042",
+       "well_id": "W-09",
+       "field": "Dune Field",
+       "category": "incident",
+       "type": "ESP failure",
+       "start_date": "2025-10-21",
+       "end_date": "2025-10-26",
+       "downtime_hours": 144,
+       "lost_oil_bbl": 8903,
+       "status": "closed",
+       "severity": "high",
+       "description": "ESP shut down on ground fault alarm and would not restart. Megger test showed near-zero insulation resistance phase to ground. Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months. Well shut in pending workover.",
+       "documents": [
+        "IN-010",
+        "WO-035"
+       ],
+       "lost_revenue_usd": 623210
+      },
+      {
+       "event_id": "EV-0035",
+       "well_id": "W-03",
+       "field": "Dune Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2025-09-28",
+       "end_date": "2025-09-28",
+       "downtime_hours": 21,
+       "lost_oil_bbl": 1689,
+       "status": "closed",
+       "severity": "low",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-008"
+       ],
+       "lost_revenue_usd": 118230
+      },
+      {
+       "event_id": "EV-0033",
+       "well_id": "W-36",
+       "field": "Salt Flat Field",
+       "category": "incident",
+       "type": "ESP trip",
+       "start_date": "2025-09-20",
+       "end_date": "2025-09-21",
+       "downtime_hours": 28,
+       "lost_oil_bbl": 1827,
+       "status": "closed",
+       "severity": "low",
+       "description": "ESP tripped on underload; restarted after checks.",
+       "documents": [
+        "IN-007",
+        "WO-030"
+       ],
+       "lost_revenue_usd": 127890
+      },
+      {
+       "event_id": "EV-0025",
+       "well_id": "W-04",
+       "field": "Dune Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2025-09-04",
+       "end_date": "2025-09-04",
+       "downtime_hours": 3,
+       "lost_oil_bbl": 184,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "WO-020"
+       ],
+       "lost_revenue_usd": 12880
+      },
+      {
+       "event_id": "EV-0016",
+       "well_id": "W-27",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2025-08-10",
+       "end_date": "2025-08-10",
+       "downtime_hours": 4,
+       "lost_oil_bbl": 137,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "WO-010",
+        "WO-013",
+        "IN-004",
+        "WO-021"
+       ],
+       "lost_revenue_usd": 9590
+      },
+      {
+       "event_id": "EV-0015",
+       "well_id": "W-25",
+       "field": "Wadi Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2025-08-02",
+       "end_date": "2025-08-02",
+       "downtime_hours": 5,
+       "lost_oil_bbl": 142,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "WO-012"
+       ],
+       "lost_revenue_usd": 9940
+      },
+      {
+       "event_id": "EV-0002",
+       "well_id": "W-10",
+       "field": "Dune Field",
+       "category": "maintenance",
+       "type": "ESP inspection",
+       "start_date": "2025-06-02",
+       "end_date": "2025-06-02",
+       "downtime_hours": 6,
+       "lost_oil_bbl": 213,
+       "status": "closed",
+       "severity": null,
+       "description": "Routine ESP surface equipment inspection and VSD parameter check.",
+       "documents": [
+        "WO-001"
+       ],
+       "lost_revenue_usd": 14910
+      }
+     ]
+    }
+   }
+  },
+  {
+   "t": 2787,
+   "event": {
+    "type": "tool-result",
+    "id": "toolu_01LpuoPRtxRKiWj7PSuGKq4s",
+    "name": "search_documents",
+    "output": {
+     "count": 6,
+     "chunks": [
+      {
+       "chunk_id": "WO-048#0",
+       "document_id": "WO-048",
+       "doc_type": "work_order",
+       "well_id": "W-17",
+       "date": "2026-03-10",
+       "section": null,
+       "text": "# Work order: Workover - ESP replacement, W-17\n\n| Field | Detail |\n|---|---|\n| WO number | WO-048 |\n| Event reference | EV-0094 |\n| Well | W-17 (Wadi Field, vertical, ESP) |\n| Category | Maintenance |\n| Priority | High |\n| Raised | 2026-03-08 |\n| Planned start | 2026-03-10 |\n| Completion | 2026-03-17 |\n| Status | Closed |\n\n## Scope of work\nReplace the failed ESP on W-17 following the ESP trip on 2026-03-04 (EV-0092: motor overload, phase current imbalance, low insulation resistance on megger test). Mobilize workover rig, pull the existing completion, replace pump, motor and cable, run back and restore production.\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before pulling the string.\n- Pre-job safety meeting held with rig crew, ESP vendor and Lead Operator.\n\n## Materials\n- Varenta VL-538 pump, serial 2M-1187-044 (batch 2M-1187)\n- New ESP power cable\n- Standard consumables and cable clamps\n\n## Execution notes and close-out remarks\n- Workover rig mobilized and work started 2026-03-10.\n- Pulled ESP serial 7Q-0419-112 (batch 7Q-0419), which had run 13 months.\n- Teardown found motor winding insulation breakdown and light scale on the pump stages.\n- Installed new Varenta VL-538, serial 2M-1187-044 (batch 2M-1187), with new cable.\n- Work completed 2026-03-17. Well returned to production on 2026-03-18.\n- Total downtime recorded: 192 hours.\n\n## Production check\n| Period | Days | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | GOR (scf/bbl) |\n|---|---|---|---|---|---|\n| Before (to 2026-03-09) | 8 | 1203 | 928.8 | 32.6 | 772 |\n| After restart (to 2026-03-24) | 6 | 1288 | 1029.9 | 32.7 | 800 |\n\nWater cut is essentially unchanged. Oil rate is higher after restart. Production Engineer to continue monitoring ESP parameters. Work order closed."
+      },
+      {
+       "chunk_id": "IN-032#0",
+       "document_id": "IN-032",
+       "doc_type": "incident_note",
+       "well_id": "W-17",
+       "date": "2026-03-09",
+       "section": null,
+       "text": "# Incident note: ESP trip on W-17\n\n**Document ID:** IN-032\n**Note date:** 2026-03-09\n**Event ID:** EV-0092\n**Well:** W-17 (Wadi Field, vertical, ESP)\n**Severity:** High\n**Status at note date:** Closed\n**Prepared by:** Production Engineer\n\n## What happened\nOn 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance. The installed pump is a Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), with a run life of 13 months.\n\n## Immediate actions\n- Restart attempts were made by the operations team and all failed.\n- A megger test on the motor showed low insulation resistance.\n- The well was shut in and held shut in pending workover.\n- The Production Supervisor and Workover Supervisor were informed.\n\n## Findings so far\nThe electrical readings point to a motor fault. Downhole inspection is only possible once the pump is pulled, so the root cause is not yet confirmed.\n\n## Impact\n- Event period: 2026-03-04 to 2026-03-09.\n- Downtime as of the note date: 144 hours.\n- Production on 2026-03-04 was 0 bbl oil, 0 Mscf gas and 0 hours uptime.\n- Rates in the 7 days to 2026-03-03 averaged 1198.5 bbl/d oil, 925.4 Mscf/d gas, 32.6% water cut and GOR 772 scf/bbl. Deferred oil is estimated from this baseline, about 1198.5 bbl for each day of downtime.\n\n## Status\nThe incident record is closed at the note date. The well remains shut in. A workover to replace the ESP is planned to start on 2026-03-10 (EV-0094) and is tracked under its own maintenance event. Return-to-production timing will be confirmed after the workover.\n\n## Next actions\n1. Workover Supervisor to confirm the rig and the ESP vendor crew for 2026-03-10.\n2. Field Engineer to request a teardown inspection of the pulled equipment.\n3. Production Engineer to review the restart conditions and set the post-workover startup plan.\n4. Lead Operator to keep the wellhead isolated and log checks until the rig arrives.\n\n## Reference\nSOP-OPS-001 ESP Trip Response and Restart."
+      },
+      {
+       "chunk_id": "SR-107#0",
+       "document_id": "SR-107",
+       "doc_type": "shift_report",
+       "well_id": null,
+       "date": "2026-03-17",
+       "section": null,
+       "text": "# Shift report: Wadi Field, 2026-03-17, day shift\n\n**Document ID:** SR-107\n**Prepared by:** Lead Operator (K.M.)\n**Field:** Wadi Field (14 wells, 13 online)\n\n## Production summary\n- Field oil: 10564.4 bbl/d\n- Field gas: 8364.6 Mscf/d\n- Field average water cut: 34.3 %\n- Water cut trend: 32.5 % in January 2026, 33.9 % over the last 30 days, 34.3 % today.\n\n**Top producers today**\n\n| Well | Oil (bbl) | Gas (Mscf) | Water cut (%) | Uptime (h) |\n|------|-----------|------------|---------------|------------|\n| W-20 | 1293.9 | 1101.4 | 36.2 | 24 |\n| W-24 | 1264.7 | 688.9 | 25.8 | 24 |\n| W-26 | 1036.1 | 803.4 | 37.8 | 24 |\n\n## Wells offline or restricted\n- W-17: offline, 0 h uptime, 0 bbl oil. Workover in progress (see events).\n\n## Events\n- EV-0094, W-17, Workover - ESP replacement (maintenance). Started 2026-03-10, end date 2026-03-17, status closed, 192 hours of downtime as of today.\n- Workover rig mobilized. Old ESP, serial 7Q-0419-112, was pulled. Teardown found motor winding insulation breakdown and light scale on the pump stages.\n- New Varenta VL-538 installed, pump serial 2M-1187-044 (batch 2M-1187), with new cable.\n- Well returns to production on 2026-03-18. Start-up to be monitored by the day crew.\n- No new events started today.\n\n## Routine work\n- Flowline patrol completed, no leaks or abnormalities observed.\n\n## Handover notes\n- Night crew: W-17 remains shut in until start-up on 2026-03-18. Confirm the start-up sequence with the Production Engineer before opening the well.\n- Record the first flowing parameters of W-17 on the new pump once it is online.\n- All other Wadi wells to continue on current settings."
+      },
+      {
+       "chunk_id": "SR-099#0",
+       "document_id": "SR-099",
+       "doc_type": "shift_report",
+       "well_id": "W-17",
+       "date": "2026-03-04",
+       "section": null,
+       "text": "# Shift report: Wadi Field, 2026-03-04, day shift\n\n**Document ID:** SR-099\n**Prepared by:** Lead Operator (K.M.)\n\n## Production summary\n- Wells online: 13 of 14\n- Field oil: 10958.7 bbl/d\n- Field gas: 8601.5 Mscf/d\n- Field average water cut: 34.2 % (January 2026: 32.5 %, last 30 days: 33.4 %, still trending up)\n- Top producers:\n  - W-24: 1374.5 bbl, 717.8 Mscf, water cut 24.4 %, 24 h uptime\n  - W-20: 1287.6 bbl, 1065.9 Mscf, water cut 32.5 %, 24 h uptime\n  - W-30: 1161.5 bbl, 795.7 Mscf, water cut 33.8 %, 24 h uptime\n\n## Wells offline or restricted\n- **W-17:** 0 h uptime, 0 bbl. Shut in after an ESP trip (see Events).\n\n## Events\n- **EV-0092, W-17, ESP trip (incident, severity high), open.**\n  - The ESP tripped on motor overload with phase current imbalance.\n  - Restart attempts failed. The megger test showed low insulation resistance on the motor.\n  - Installed pump: Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), run life 13 months.\n  - Downtime so far: 24 h. The well is shut in pending workover.\n  - Wellhead and surface electrical isolation confirmed. The Production Supervisor and Production Engineer were informed.\n\n## Routine work\n- Separator sampling completed, samples sent to the lab.\n\n## Handover notes\n- W-17 remains shut in. Do not attempt further restarts of the ESP.\n- Workover planning for W-17 to be confirmed with the Workover Supervisor.\n- Keep monitoring Wadi Field water cut and report any further rise on the next shift.\n- All other Wadi wells are running normally."
+      },
+      {
+       "chunk_id": "WT-016#0",
+       "document_id": "WT-016",
+       "doc_type": "well_test",
+       "well_id": "W-17",
+       "date": "2026-03-23",
+       "section": null,
+       "text": "# Well test: W-17, 2026-03-23\n\n**Document ID:** WT-016\n**Well:** W-17 (Wadi Field, vertical, ESP)\n**Test date:** 2026-03-23\n**Procedure:** SOP-OPS-004 Well Test Procedure with the Mobile Test Separator\n\n## Test conditions\n- Duration: 24 hours\n- Choke: 48/64 in\n- Flowing wellhead pressure: 445 psi\n- Installed ESP: Varenta VL-538, pump serial 2M-1187-044 (batch 2M-1187), installed 2026-03-17\n- Well status: producing\n\n## Measured results (3-day period ending 2026-03-23)\n| Parameter | Result |\n|---|---|\n| Oil | 1281 bbl/d |\n| Gas | 1036.2 Mscf/d |\n| Water cut | 32.9 % |\n| GOR | 809 scf/bbl |\n| Sand | 0 ppm |\n\n## Comparison with previous baseline (7-day period ending 2026-01-22)\n| Parameter | Baseline | Change |\n|---|---|---|\n| Oil | 1480.9 bbl/d | -199.9 bbl/d |\n| Gas | 1183.4 Mscf/d | -147.2 Mscf/d |\n| Water cut | 30.2 % | +2.7 points |\n| GOR | 799 scf/bbl | +10 scf/bbl |\n\n## Observations\n- This is the first test after the ESP replacement workover (EV-0094, closed), with the well back on production since 2026-03-18.\n- The earlier shut-in (EV-0092, ESP trip, closed) kept the well down before the workover.\n- Oil is below the January baseline and water cut is slightly higher. Wadi Field average water cut was 32.5 % in January 2026 and 34.1 % over the last 30 days, so the rise on W-17 is in line with the field trend.\n- GOR is essentially unchanged. No sand was detected.\n\n## Recommendation\n- Treat this test as the new baseline for the replacement pump.\n- Repeat the test in about 30 days to confirm that the rates have stabilised.\n- Keep monitoring water cut and ESP motor current."
+      },
+      {
+       "chunk_id": "WO-026#0",
+       "document_id": "WO-026",
+       "doc_type": "work_order",
+       "well_id": "W-17",
+       "date": "2025-09-18",
+       "section": null,
+       "text": "# Work order: Scale squeeze treatment, W-17\n\n| Field | Detail |\n|---|---|\n| WO number | WO-026 |\n| Event reference | EV-0032 |\n| Well | W-17 (Wadi Field, vertical, ESP) |\n| Category | Maintenance |\n| Priority | Medium (preventive) |\n| Raised | 2025-09-16 |\n| Actual start | 2025-09-18 |\n| Completion | 2025-09-19 |\n| Status | Closed |\n| Procedure | SOP-OPS-008 Scale Inhibitor Squeeze Treatment |\n\n## Scope of work\nPreventive scale inhibitor squeeze on W-17 to protect the completion and ESP as water cut rises in Wadi Field. Well shut in, treatment bullheaded, overflushed and held for the inhibitor soak, then the well was restarted.\n\n## Safety and permits\n- Hot work not required. Pumping permit and pressure-test permit issued by the Production Supervisor.\n- Toolbox talk held before rigging up. Chemical handling PPE in use and the HSE Advisor checked the bunding at the pump skid.\n- Lines pressure tested before pumping, as required by the SOP.\n\n## Materials\n- Scale inhibitor and overflush fluid supplied by the chemical vendor.\n- Pumping unit and transfer tank from the service contractor.\n\n## Execution and close-out remarks\n- Work ran from 2025-09-18 to 2025-09-19 as planned. Total downtime was 34 hours.\n- Squeeze pumped and soaked per SOP-OPS-008, no leaks or pressure excursions reported. Site cleared and the well handed back to the Lead Operator.\n- Production, 14 days before shutdown (to 2025-09-17): oil 1644.7 bbl/d, gas 1307.5 Mscf/d, water cut 26.3 %, GOR 795 scf/bbl.\n- Production, 6 days after restart (to 2025-09-26): oil 1671.3 bbl/d, gas 1333.8 Mscf/d, water cut 26 %, GOR 798 scf/bbl.\n- No adverse change after restart. Well is producing.\n- Follow-up: Production Engineer to schedule produced-water residual inhibitor sampling to set the next squeeze interval.\n\n**Work order closed.**"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "t": 4330,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_019cXmjhio7bEeJ4T1H78VKK",
+    "name": "search_documents",
+    "args": {
+     "query": "ESP pump batch 7Q-0419 serial motor failure",
+     "k": 8
+    },
+    "label": "Searching documents..."
+   }
+  },
+  {
+   "t": 5053,
+   "event": {
+    "type": "tool-result",
+    "id": "toolu_019cXmjhio7bEeJ4T1H78VKK",
+    "name": "search_documents",
+    "output": {
+     "count": 8,
+     "chunks": [
+      {
+       "chunk_id": "IN-057#0",
+       "document_id": "IN-057",
+       "doc_type": "incident_note",
+       "well_id": "W-27",
+       "date": "2026-08-22",
+       "section": null,
+       "text": "# Incident note: ESP failure on W-27\n\n**Document ID:** IN-057\n**Note date:** 2026-08-22\n**Event:** EV-0150\n**Well:** W-27 (Wadi Field, horizontal, ESP)\n**Severity:** High\n**Status at note date:** Closed\n\n## What happened\nOn 2026-08-18 the ESP on W-27 tripped on motor overtemperature. A restart attempt then tripped on ground fault. Insulation resistance measured on the motor was below the minimum acceptable value. The installed pump is a Varenta VL-538, pump serial 7Q-0419-086 (batch 7Q-0419), with a run life of 11 months. The well was shut in pending workover.\n\n## Immediate actions\n- The well was kept shut in after the ground fault trip, and no further restarts were attempted.\n- The drive was isolated and the surface cable and connections were checked.\n- The Production Supervisor and the Workover Supervisor were informed.\n\n## Findings so far\n- The overtemperature trip followed by a ground fault at restart, together with low motor insulation resistance, points to a motor electrical failure.\n- The cause of the failure will be confirmed when the unit is pulled and inspected.\n\n## Impact\n- Downtime: 120 hours from 2026-08-18 to 2026-08-22.\n- Production on 2026-08-18 was 0 bbl of oil and 0 Mscf of gas, with 0 hours of uptime.\n- The 7-day average before the event (to 2026-08-17) was 558.2 bbl/d oil, 611 Mscf/d gas, water cut 41.1 percent and GOR 1095 scf/bbl. This is the rate deferred for each day of shut-in.\n\n## Status\nThe incident record is closed as of 2026-08-22. The well remains shut in until the workover.\n\n## Next actions\n- An ESP replacement workover is planned to start on 2026-08-23 (EV-0156).\n- The Production Engineer will review the teardown findings once the unit is out of the hole.\n- Post-workover rates are to be compared with the baseline above.\n\n## Applicable procedure\nNo specific procedure is referenced for this incident."
+      },
+      {
+       "chunk_id": "WO-054#0",
+       "document_id": "WO-054",
+       "doc_type": "work_order",
+       "well_id": "W-27",
+       "date": "2026-08-23",
+       "section": null,
+       "text": "# Work order: Workover - ESP replacement, W-27\n\n**WO number:** WO-054\n**Related event:** EV-0156 (follow-up to EV-0150, ESP failure)\n**Well:** W-27, Wadi Field, horizontal, ESP\n**Category:** Maintenance\n**Priority:** High\n**Raised:** 2026-08-21\n**Planned start:** 2026-08-23\n**Completion date:** 2026-08-29\n**Status:** Closed\n\n## Scope of work\n- Kill the well and pull the failed ESP completion (pump serial 7Q-0419-086, batch 7Q-0419, run life 11 months).\n- Carry out teardown inspection of motor, pump stages and cable.\n- Run a new Varenta VL-538 ESP, serial 5C-0822-019 (batch 5C-0822).\n- Restart and hand the well back to production.\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Pre-job meeting held with the rig crew and the ESP vendor representative.\n- Well barriers verified before the BOP was nippled up.\n\n## Materials\n- New Varenta VL-538 pump assembly, serial 5C-0822-019.\n- Completion running tools and consumables supplied by the rig contractor.\n\n## Execution notes and close-out remarks\n- Work ran from 2026-08-23 to 2026-08-29. Total downtime for the workover event was 168 hours (EV-0150 had already accounted for 120 hours).\n- Teardown found motor winding insulation breakdown. Pump stages and cable were in good condition, so only the pump and motor assembly was replaced.\n- The new ESP was installed and tested. The well returned to production on 2026-08-30.\n- Production before the failure (9 days to 2026-08-22): 554 bbl/d oil, 604.3 Mscf/d gas, 40.8% water cut, GOR 1091 scf/bbl.\n- Production after restart (6 days to 2026-09-05): 545.9 bbl/d oil, 594.1 Mscf/d gas, 41.7% water cut, GOR 1088 scf/bbl.\n- Rates are in line with pre-failure performance. Continue routine ESP surveillance.\n- Work order closed. Well status today: producing."
+      },
+      {
+       "chunk_id": "WO-048#0",
+       "document_id": "WO-048",
+       "doc_type": "work_order",
+       "well_id": "W-17",
+       "date": "2026-03-10",
+       "section": null,
+       "text": "# Work order: Workover - ESP replacement, W-17\n\n| Field | Detail |\n|---|---|\n| WO number | WO-048 |\n| Event reference | EV-0094 |\n| Well | W-17 (Wadi Field, vertical, ESP) |\n| Category | Maintenance |\n| Priority | High |\n| Raised | 2026-03-08 |\n| Planned start | 2026-03-10 |\n| Completion | 2026-03-17 |\n| Status | Closed |\n\n## Scope of work\nReplace the failed ESP on W-17 following the ESP trip on 2026-03-04 (EV-0092: motor overload, phase current imbalance, low insulation resistance on megger test). Mobilize workover rig, pull the existing completion, replace pump, motor and cable, run back and restore production.\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before pulling the string.\n- Pre-job safety meeting held with rig crew, ESP vendor and Lead Operator.\n\n## Materials\n- Varenta VL-538 pump, serial 2M-1187-044 (batch 2M-1187)\n- New ESP power cable\n- Standard consumables and cable clamps\n\n## Execution notes and close-out remarks\n- Workover rig mobilized and work started 2026-03-10.\n- Pulled ESP serial 7Q-0419-112 (batch 7Q-0419), which had run 13 months.\n- Teardown found motor winding insulation breakdown and light scale on the pump stages.\n- Installed new Varenta VL-538, serial 2M-1187-044 (batch 2M-1187), with new cable.\n- Work completed 2026-03-17. Well returned to production on 2026-03-18.\n- Total downtime recorded: 192 hours.\n\n## Production check\n| Period | Days | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | GOR (scf/bbl) |\n|---|---|---|---|---|---|\n| Before (to 2026-03-09) | 8 | 1203 | 928.8 | 32.6 | 772 |\n| After restart (to 2026-03-24) | 6 | 1288 | 1029.9 | 32.7 | 800 |\n\nWater cut is essentially unchanged. Oil rate is higher after restart. Production Engineer to continue monitoring ESP parameters. Work order closed."
+      },
+      {
+       "chunk_id": "IN-010#0",
+       "document_id": "IN-010",
+       "doc_type": "incident_note",
+       "well_id": "W-09",
+       "date": "2025-10-26",
+       "section": null,
+       "text": "# Incident note: ESP failure on W-09\n\n**Document ID:** IN-010\n**Event ID:** EV-0042\n**Note date:** 2025-10-26\n**Well:** W-09 (Dune Field, vertical, ESP)\n**Severity:** High\n**Status at note date:** Closed\n**Prepared by:** Production Engineer\n\n## What happened\nOn 2025-10-21 the W-09 ESP shut down on a ground fault alarm and would not restart. The well was shut in pending workover.\n\n## Immediate actions\n- Operators isolated the ESP at the variable speed drive and locked out the supply.\n- A megger test was run on the motor circuit. It showed near-zero insulation resistance phase to ground.\n- The Production Supervisor was informed and the well was left shut in.\n\n## Findings so far\n- Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months.\n- The megger result is consistent with an electrical failure in the downhole motor or cable. The failed component can only be confirmed when the pump is pulled and inspected.\n\n## Impact\n- Production before the event (7 days to 2025-10-20): oil 1461.8 bbl/d, gas 957.5 Mscf/d, water cut 10.1 %, GOR 655 scf/bbl.\n- On 2025-10-21 the well produced 0 bbl oil and 0 Mscf gas, with 0 hours uptime.\n- Downtime as of this note: 144 hours (2025-10-21 to 2025-10-26).\n- Deferred oil is roughly 1461.8 bbl/d for the downtime period, based on the pre-event rate.\n\n## Status at note date\nThe incident record EV-0042 is closed. The well remains shut in until the replacement of the ESP.\n\n## Next actions\n- A workover to replace the ESP is planned to start on 2025-10-27 (EV-0046). It is a planned activity only, and its results are not yet known.\n- The Workover Supervisor will confirm rig and ESP vendor readiness.\n- The Maintenance Planner will update the deferment log once the well is back on production.\n\n## Procedure reference\nNo specific procedure applies to this incident."
+      },
+      {
+       "chunk_id": "IN-032#0",
+       "document_id": "IN-032",
+       "doc_type": "incident_note",
+       "well_id": "W-17",
+       "date": "2026-03-09",
+       "section": null,
+       "text": "# Incident note: ESP trip on W-17\n\n**Document ID:** IN-032\n**Note date:** 2026-03-09\n**Event ID:** EV-0092\n**Well:** W-17 (Wadi Field, vertical, ESP)\n**Severity:** High\n**Status at note date:** Closed\n**Prepared by:** Production Engineer\n\n## What happened\nOn 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance. The installed pump is a Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), with a run life of 13 months.\n\n## Immediate actions\n- Restart attempts were made by the operations team and all failed.\n- A megger test on the motor showed low insulation resistance.\n- The well was shut in and held shut in pending workover.\n- The Production Supervisor and Workover Supervisor were informed.\n\n## Findings so far\nThe electrical readings point to a motor fault. Downhole inspection is only possible once the pump is pulled, so the root cause is not yet confirmed.\n\n## Impact\n- Event period: 2026-03-04 to 2026-03-09.\n- Downtime as of the note date: 144 hours.\n- Production on 2026-03-04 was 0 bbl oil, 0 Mscf gas and 0 hours uptime.\n- Rates in the 7 days to 2026-03-03 averaged 1198.5 bbl/d oil, 925.4 Mscf/d gas, 32.6% water cut and GOR 772 scf/bbl. Deferred oil is estimated from this baseline, about 1198.5 bbl for each day of downtime.\n\n## Status\nThe incident record is closed at the note date. The well remains shut in. A workover to replace the ESP is planned to start on 2026-03-10 (EV-0094) and is tracked under its own maintenance event. Return-to-production timing will be confirmed after the workover.\n\n## Next actions\n1. Workover Supervisor to confirm the rig and the ESP vendor crew for 2026-03-10.\n2. Field Engineer to request a teardown inspection of the pulled equipment.\n3. Production Engineer to review the restart conditions and set the post-workover startup plan.\n4. Lead Operator to keep the wellhead isolated and log checks until the rig arrives.\n\n## Reference\nSOP-OPS-001 ESP Trip Response and Restart."
+      },
+      {
+       "chunk_id": "WO-035#0",
+       "document_id": "WO-035",
+       "doc_type": "work_order",
+       "well_id": "W-09",
+       "date": "2025-10-27",
+       "section": null,
+       "text": "# Work order: Workover - ESP replacement, W-09\n\n**WO number:** WO-035\n**Well:** W-09 (Dune Field, vertical, ESP)\n**Related event:** EV-0046 (maintenance); follows EV-0042 (ESP failure)\n**Priority:** High\n**Raised:** 2025-10-25\n**Planned start:** 2025-10-27\n**Completion date:** 2025-11-02\n**Status:** Closed\n\n## Scope of work\n- Pull the failed ESP and tubing string.\n- Carry out a teardown inspection of the pump, seal section, motor and cable.\n- Install a new Varenta VL-538 ESP and return the well to production.\n\nBackground: on 2025-10-21 the ESP shut down on a ground fault alarm and would not restart. A megger test showed near-zero insulation resistance phase to ground. The well was shut in pending workover (144 h downtime to 2025-10-26).\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before the BOP was nippled up.\n- Electrical isolation and lock-out of the ESP power feed confirmed by the Field Engineer.\n\n## Materials\n- Varenta VL-538 ESP, serial 4D-0733-115 (batch 4D-0733).\n- New cable splice kit and clamps.\n\n## Execution notes\n- Removed pump serial 7Q-0419-027 (batch 7Q-0419).\n- Teardown found motor winding insulation breakdown. No sand, scale or cable damage was seen.\n- New pump installed and tested electrically before running in.\n\n## Close-out remarks\n- Work ran from 2025-10-27 to 2025-11-02, total downtime 168 h.\n- The well returned to production on 2025-11-03 and is producing.\n- Rates before the failure (8 days to 2025-10-26): oil 1472.4 bbl/d, gas 965 Mscf/d, water cut 10.2 %, GOR 655 scf/bbl.\n- Rates after restart (6 days to 2025-11-09): oil 1417.5 bbl/d, gas 932.5 Mscf/d, water cut 11 %, GOR 658 scf/bbl.\n- Continue routine ESP monitoring. Work order closed."
+      },
+      {
+       "chunk_id": "WO-058#0",
+       "document_id": "WO-058",
+       "doc_type": "work_order",
+       "well_id": "W-21",
+       "date": "2026-10-14",
+       "section": null,
+       "text": "# Work order: ESP replacement, W-21\n\n**WO number:** WO-058\n**Event reference:** EV-0174\n**Well:** W-21 (Wadi Field, horizontal, ESP)\n**Category:** Maintenance\n**Priority:** Medium\n**Raised:** 2026-10-12\n**Planned start:** 2026-10-14\n**Completion date:** 2026-10-18\n**Status:** Closed\n\n## Scope of work\nReplace the ESP on W-21. Rate declined gradually through Q3 2026 as the pump wore. Pull the installed Varenta VL-538 pump, serial 1H-0956-071 (batch 1H-0956), after 31 months in service, and install a new Varenta VL-538, serial 5C-0822-034 (batch 5C-0822). Restart the well and confirm stable operation.\n\n## Safety and permits\n- Work performed under a permit to work per SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before pulling the completion.\n- Isolation of the ESP power supply confirmed and locked out.\n- Toolbox talk held with the rig crew and the ESP vendor technician before each lifting operation.\n\n## Materials\n- Varenta VL-538 pump, serial 5C-0822-034\n- Motor and cable connections as supplied in the ESP vendor kit\n- Replacement gaskets and wellhead seals\n\n## Execution notes\n- 2026-10-14: Rig up started, well secured, tubing pulled.\n- Old pump recovered and tagged for vendor inspection, with wear consistent with the gradual rate decline.\n- New pump run and tested.\n- 2026-10-18: Work completed and handed back to Operations.\n\n## Close-out remarks\nTotal downtime was 120 hours. The well was restarted and is producing.\n\n| Period | Days | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | GOR (scf/bbl) |\n|---|---|---|---|---|---|\n| Before (to 2026-10-13) | 14 | 243.6 | 255.9 | 44.2 | 1050 |\n| After restart (to 2026-10-25) | 6 | 353.6 | 377.2 | 44.9 | 1067 |\n\nOil rate improved after the replacement, and water cut and GOR stayed essentially unchanged. No further actions are required, and the work order is closed."
+      },
+      {
+       "chunk_id": "SOP-OPS-001#5",
+       "document_id": "SOP-OPS-001",
+       "doc_type": "procedure",
+       "well_id": null,
+       "date": "2025-09-15",
+       "section": "Diagnosis: reading VSD trip codes, phase currents and downhole sensor data",
+       "text": "1. Read pump intake pressure, discharge pressure, motor winding temperature, intake temperature and vibration if available.\n2. A falling intake pressure with falling current points to drawdown or gas. A rising motor temperature before the trip points to heat, poor cooling or a developing electrical fault.\n3. Loss of sensor signal together with a ground fault or imbalance trip is a strong sign of a cable or motor failure.\n4. Compare with the last stable values and with the trend over the previous 24 hours, not only with the last reading.\n\n### 4. Classify\n\nClassify the trip as one of: surface or supply cause, process or flowline cause, fluid or gas related, or suspected downhole electrical or mechanical fault. This class decides the restart route."
+      }
+     ]
+    }
+   }
+  },
+  {
+   "t": 10308,
+   "event": {
+    "type": "final",
+    "answer": {
+     "answer": "It was not a one-off: W-09 (Dune Field, October 2025) [1][2] and W-27 (Wadi Field, August 2026) [3][4] had the same failure on pumps from batch 7Q-0419, the batch W-17 had in March 2026 [5]. All three teardowns found motor winding insulation breakdown, costing about 43,900 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [6][7]. Other pumps from batch 7Q-0419 are at risk.",
+     "viz": {
+      "type": "bar",
+      "title": "Lost oil per failure (incident plus workover)",
+      "unit": "bbl",
+      "bars": [
+       {
+        "label": "W-09, Oct 2025",
+        "value": 19257
+       },
+       {
+        "label": "W-17, Mar 2026",
+        "value": 17942
+       },
+       {
+        "label": "W-27, Aug 2026",
+        "value": 6654
+       }
+      ]
+     },
+     "sources": [
+      {
+       "n": 1,
+       "kind": "chunk",
+       "id": "IN-010#0",
+       "label": "IN-010 W-09 ESP failure note"
+      },
+      {
+       "n": 2,
+       "kind": "chunk",
+       "id": "WO-035#0",
+       "label": "WO-035 W-09 workover"
+      },
+      {
+       "n": 3,
+       "kind": "chunk",
+       "id": "IN-057#0",
+       "label": "IN-057 W-27 ESP failure note"
+      },
+      {
+       "n": 4,
+       "kind": "chunk",
+       "id": "WO-054#0",
+       "label": "WO-054 W-27 workover"
+      },
+      {
+       "n": 5,
+       "kind": "chunk",
+       "id": "WO-048#0",
+       "label": "WO-048 W-17 workover"
+      },
+      {
+       "n": 6,
+       "kind": "table",
+       "id": "events:EV-0092",
+       "label": "W-17 incident and workover EV-0092/EV-0094"
+      },
+      {
+       "n": 7,
+       "kind": "table",
+       "id": "events:EV-0042",
+       "label": "W-09 EV-0042/EV-0046 and W-27 EV-0150/EV-0156"
+      }
+     ],
+     "confidence": "high",
+     "could_not_verify": "The data does not show how many other pumps from batch 7Q-0419 are still running."
+    },
+    "trace": [
+     {
+      "call_id": "toolu_01LpuoPRtxRKiWj7PSuGKq4s",
+      "args": {
+       "query": "W-17 ESP pump failure serial batch",
+       "k": 6,
+       "well_ids": [
+        "W-17"
+       ]
+      },
+      "vector": [
+       {
+        "chunk_id": "WO-048#0",
+        "rank": 1,
+        "similarity": 0.5607
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "rank": 2,
+        "similarity": 0.5537
+       },
+       {
+        "chunk_id": "SR-099#0",
+        "rank": 3,
+        "similarity": 0.4724
+       },
+       {
+        "chunk_id": "SR-107#0",
+        "rank": 4,
+        "similarity": 0.4472
+       },
+       {
+        "chunk_id": "SR-100#0",
+        "rank": 5,
+        "similarity": 0.4453
+       },
+       {
+        "chunk_id": "WO-026#0",
+        "rank": 6,
+        "similarity": 0.4412
+       },
+       {
+        "chunk_id": "WT-016#0",
+        "rank": 7,
+        "similarity": 0.4389
+       },
+       {
+        "chunk_id": "SR-103#0",
+        "rank": 8,
+        "similarity": 0.4317
+       },
+       {
+        "chunk_id": "WO-051#0",
+        "rank": 9,
+        "similarity": 0.4301
+       },
+       {
+        "chunk_id": "SR-101#0",
+        "rank": 10,
+        "similarity": 0.4278
+       },
+       {
+        "chunk_id": "SR-201#0",
+        "rank": 11,
+        "similarity": 0.4179
+       },
+       {
+        "chunk_id": "SR-105#0",
+        "rank": 12,
+        "similarity": 0.4087
+       },
+       {
+        "chunk_id": "WO-056#0",
+        "rank": 13,
+        "similarity": 0.3922
+       },
+       {
+        "chunk_id": "WT-013#0",
+        "rank": 14,
+        "similarity": 0.3658
+       },
+       {
+        "chunk_id": "IN-013#0",
+        "rank": 15,
+        "similarity": 0.3647
+       },
+       {
+        "chunk_id": "WT-019#0",
+        "rank": 16,
+        "similarity": 0.3614
+       },
+       {
+        "chunk_id": "SR-165#0",
+        "rank": 17,
+        "similarity": 0.3413
+       },
+       {
+        "chunk_id": "SR-054#0",
+        "rank": 18,
+        "similarity": 0.3246
+       },
+       {
+        "chunk_id": "SR-167#0",
+        "rank": 19,
+        "similarity": 0.3163
+       },
+       {
+        "chunk_id": "SR-066#0",
+        "rank": 20,
+        "similarity": 0.3148
+       }
+      ],
+      "full_text": [
+       {
+        "chunk_id": "WO-048#0",
+        "rank": 1,
+        "ts_rank": 2.2
+       },
+       {
+        "chunk_id": "SR-107#0",
+        "rank": 2,
+        "ts_rank": 1.4
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "rank": 3,
+        "ts_rank": 1.3
+       },
+       {
+        "chunk_id": "WT-016#0",
+        "rank": 4,
+        "ts_rank": 1.3
+       },
+       {
+        "chunk_id": "WO-026#0",
+        "rank": 5,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "WO-051#0",
+        "rank": 6,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SR-099#0",
+        "rank": 7,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SR-103#0",
+        "rank": 8,
+        "ts_rank": 1
+       },
+       {
+        "chunk_id": "SR-105#0",
+        "rank": 9,
+        "ts_rank": 1
+       },
+       {
+        "chunk_id": "WT-019#0",
+        "rank": 10,
+        "ts_rank": 1
+       },
+       {
+        "chunk_id": "SR-201#0",
+        "rank": 11,
+        "ts_rank": 0.8
+       },
+       {
+        "chunk_id": "WT-013#0",
+        "rank": 12,
+        "ts_rank": 0.8
+       },
+       {
+        "chunk_id": "SR-101#0",
+        "rank": 13,
+        "ts_rank": 0.8
+       },
+       {
+        "chunk_id": "SR-100#0",
+        "rank": 14,
+        "ts_rank": 0.8
+       },
+       {
+        "chunk_id": "IN-013#0",
+        "rank": 15,
+        "ts_rank": 0.7
+       },
+       {
+        "chunk_id": "SR-054#0",
+        "rank": 16,
+        "ts_rank": 0.4
+       },
+       {
+        "chunk_id": "WO-056#0",
+        "rank": 17,
+        "ts_rank": 0.4
+       },
+       {
+        "chunk_id": "SR-165#0",
+        "rank": 18,
+        "ts_rank": 0.4
+       },
+       {
+        "chunk_id": "SR-167#0",
+        "rank": 19,
+        "ts_rank": 0.2
+       },
+       {
+        "chunk_id": "SR-209#0",
+        "rank": 20,
+        "ts_rank": 0.2
+       }
+      ],
+      "fused": [
+       {
+        "chunk_id": "WO-048#0",
+        "rank": 1,
+        "rrf": 0.03279,
+        "vector_rank": 1,
+        "full_text_rank": 1
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "rank": 2,
+        "rrf": 0.032,
+        "vector_rank": 2,
+        "full_text_rank": 3
+       },
+       {
+        "chunk_id": "SR-107#0",
+        "rank": 3,
+        "rrf": 0.03175,
+        "vector_rank": 4,
+        "full_text_rank": 2
+       },
+       {
+        "chunk_id": "SR-099#0",
+        "rank": 4,
+        "rrf": 0.0308,
+        "vector_rank": 3,
+        "full_text_rank": 7
+       },
+       {
+        "chunk_id": "WT-016#0",
+        "rank": 5,
+        "rrf": 0.03055,
+        "vector_rank": 7,
+        "full_text_rank": 4
+       },
+       {
+        "chunk_id": "WO-026#0",
+        "rank": 6,
+        "rrf": 0.03054,
+        "vector_rank": 6,
+        "full_text_rank": 5
+       },
+       {
+        "chunk_id": "WO-051#0",
+        "rank": 7,
+        "rrf": 0.02964,
+        "vector_rank": 9,
+        "full_text_rank": 6
+       },
+       {
+        "chunk_id": "SR-103#0",
+        "rank": 8,
+        "rrf": 0.02941,
+        "vector_rank": 8,
+        "full_text_rank": 8
+       },
+       {
+        "chunk_id": "SR-100#0",
+        "rank": 9,
+        "rrf": 0.0289,
+        "vector_rank": 5,
+        "full_text_rank": 14
+       },
+       {
+        "chunk_id": "SR-105#0",
+        "rank": 10,
+        "rrf": 0.02838,
+        "vector_rank": 12,
+        "full_text_rank": 9
+       },
+       {
+        "chunk_id": "SR-201#0",
+        "rank": 11,
+        "rrf": 0.02817,
+        "vector_rank": 11,
+        "full_text_rank": 11
+       },
+       {
+        "chunk_id": "SR-101#0",
+        "rank": 12,
+        "rrf": 0.02798,
+        "vector_rank": 10,
+        "full_text_rank": 13
+       },
+       {
+        "chunk_id": "WT-019#0",
+        "rank": 13,
+        "rrf": 0.02744,
+        "vector_rank": 16,
+        "full_text_rank": 10
+       },
+       {
+        "chunk_id": "WT-013#0",
+        "rank": 14,
+        "rrf": 0.0274,
+        "vector_rank": 14,
+        "full_text_rank": 12
+       },
+       {
+        "chunk_id": "WO-056#0",
+        "rank": 15,
+        "rrf": 0.02669,
+        "vector_rank": 13,
+        "full_text_rank": 17
+       },
+       {
+        "chunk_id": "IN-013#0",
+        "rank": 16,
+        "rrf": 0.02667,
+        "vector_rank": 15,
+        "full_text_rank": 15
+       },
+       {
+        "chunk_id": "SR-054#0",
+        "rank": 17,
+        "rrf": 0.02598,
+        "vector_rank": 18,
+        "full_text_rank": 16
+       },
+       {
+        "chunk_id": "SR-165#0",
+        "rank": 18,
+        "rrf": 0.02581,
+        "vector_rank": 17,
+        "full_text_rank": 18
+       },
+       {
+        "chunk_id": "SR-167#0",
+        "rank": 19,
+        "rrf": 0.02532,
+        "vector_rank": 19,
+        "full_text_rank": 19
+       },
+       {
+        "chunk_id": "SR-066#0",
+        "rank": 20,
+        "rrf": 0.0125,
+        "vector_rank": 20,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-209#0",
+        "rank": 21,
+        "rrf": 0.0125,
+        "vector_rank": null,
+        "full_text_rank": 20
+       }
+      ],
+      "chunks_sent": [
+       {
+        "chunk_id": "WO-048#0",
+        "document_id": "WO-048",
+        "title": "Work order: Workover - ESP replacement, W-17",
+        "doc_type": "work_order",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2026-03-10",
+        "section": null,
+        "text": "# Work order: Workover - ESP replacement, W-17\n\n| Field | Detail |\n|---|---|\n| WO number | WO-048 |\n| Event reference | EV-0094 |\n| Well | W-17 (Wadi Field, vertical, ESP) |\n| Category | Maintenance |\n| Priority | High |\n| Raised | 2026-03-08 |\n| Planned start | 2026-03-10 |\n| Completion | 2026-03-17 |\n| Status | Closed |\n\n## Scope of work\nReplace the failed ESP on W-17 following the ESP trip on 2026-03-04 (EV-0092: motor overload, phase current imbalance, low insulation resistance on megger test). Mobilize workover rig, pull the existing completion, replace pump, motor and cable, run back and restore production.\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before pulling the string.\n- Pre-job safety meeting held with rig crew, ESP vendor and Lead Operator.\n\n## Materials\n- Varenta VL-538 pump, serial 2M-1187-044 (batch 2M-1187)\n- New ESP power cable\n- Standard consumables and cable clamps\n\n## Execution notes and close-out remarks\n- Workover rig mobilized and work started 2026-03-10.\n- Pulled ESP serial 7Q-0419-112 (batch 7Q-0419), which had run 13 months.\n- Teardown found motor winding insulation breakdown and light scale on the pump stages.\n- Installed new Varenta VL-538, serial 2M-1187-044 (batch 2M-1187), with new cable.\n- Work completed 2026-03-17. Well returned to production on 2026-03-18.\n- Total downtime recorded: 192 hours.\n\n## Production check\n| Period | Days | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | GOR (scf/bbl) |\n|---|---|---|---|---|---|\n| Before (to 2026-03-09) | 8 | 1203 | 928.8 | 32.6 | 772 |\n| After restart (to 2026-03-24) | 6 | 1288 | 1029.9 | 32.7 | 800 |\n\nWater cut is essentially unchanged. Oil rate is higher after restart. Production Engineer to continue monitoring ESP parameters. Work order closed.",
+        "scores": {
+         "vector_similarity": 0.5607,
+         "vector_rank": 1,
+         "full_text_rank": 1,
+         "full_text_score": 2.2,
+         "rrf": 0.03279
+        }
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "document_id": "IN-032",
+        "title": "Incident note: ESP trip on W-17",
+        "doc_type": "incident_note",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2026-03-09",
+        "section": null,
+        "text": "# Incident note: ESP trip on W-17\n\n**Document ID:** IN-032\n**Note date:** 2026-03-09\n**Event ID:** EV-0092\n**Well:** W-17 (Wadi Field, vertical, ESP)\n**Severity:** High\n**Status at note date:** Closed\n**Prepared by:** Production Engineer\n\n## What happened\nOn 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance. The installed pump is a Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), with a run life of 13 months.\n\n## Immediate actions\n- Restart attempts were made by the operations team and all failed.\n- A megger test on the motor showed low insulation resistance.\n- The well was shut in and held shut in pending workover.\n- The Production Supervisor and Workover Supervisor were informed.\n\n## Findings so far\nThe electrical readings point to a motor fault. Downhole inspection is only possible once the pump is pulled, so the root cause is not yet confirmed.\n\n## Impact\n- Event period: 2026-03-04 to 2026-03-09.\n- Downtime as of the note date: 144 hours.\n- Production on 2026-03-04 was 0 bbl oil, 0 Mscf gas and 0 hours uptime.\n- Rates in the 7 days to 2026-03-03 averaged 1198.5 bbl/d oil, 925.4 Mscf/d gas, 32.6% water cut and GOR 772 scf/bbl. Deferred oil is estimated from this baseline, about 1198.5 bbl for each day of downtime.\n\n## Status\nThe incident record is closed at the note date. The well remains shut in. A workover to replace the ESP is planned to start on 2026-03-10 (EV-0094) and is tracked under its own maintenance event. Return-to-production timing will be confirmed after the workover.\n\n## Next actions\n1. Workover Supervisor to confirm the rig and the ESP vendor crew for 2026-03-10.\n2. Field Engineer to request a teardown inspection of the pulled equipment.\n3. Production Engineer to review the restart conditions and set the post-workover startup plan.\n4. Lead Operator to keep the wellhead isolated and log checks until the rig arrives.\n\n## Reference\nSOP-OPS-001 ESP Trip Response and Restart.",
+        "scores": {
+         "vector_similarity": 0.5537,
+         "vector_rank": 2,
+         "full_text_rank": 3,
+         "full_text_score": 1.3,
+         "rrf": 0.032
+        }
+       },
+       {
+        "chunk_id": "SR-107#0",
+        "document_id": "SR-107",
+        "title": "Shift report: Wadi Field, 2026-03-17, day shift",
+        "doc_type": "shift_report",
+        "well_id": null,
+        "field": "Wadi Field",
+        "date": "2026-03-17",
+        "section": null,
+        "text": "# Shift report: Wadi Field, 2026-03-17, day shift\n\n**Document ID:** SR-107\n**Prepared by:** Lead Operator (K.M.)\n**Field:** Wadi Field (14 wells, 13 online)\n\n## Production summary\n- Field oil: 10564.4 bbl/d\n- Field gas: 8364.6 Mscf/d\n- Field average water cut: 34.3 %\n- Water cut trend: 32.5 % in January 2026, 33.9 % over the last 30 days, 34.3 % today.\n\n**Top producers today**\n\n| Well | Oil (bbl) | Gas (Mscf) | Water cut (%) | Uptime (h) |\n|------|-----------|------------|---------------|------------|\n| W-20 | 1293.9 | 1101.4 | 36.2 | 24 |\n| W-24 | 1264.7 | 688.9 | 25.8 | 24 |\n| W-26 | 1036.1 | 803.4 | 37.8 | 24 |\n\n## Wells offline or restricted\n- W-17: offline, 0 h uptime, 0 bbl oil. Workover in progress (see events).\n\n## Events\n- EV-0094, W-17, Workover - ESP replacement (maintenance). Started 2026-03-10, end date 2026-03-17, status closed, 192 hours of downtime as of today.\n- Workover rig mobilized. Old ESP, serial 7Q-0419-112, was pulled. Teardown found motor winding insulation breakdown and light scale on the pump stages.\n- New Varenta VL-538 installed, pump serial 2M-1187-044 (batch 2M-1187), with new cable.\n- Well returns to production on 2026-03-18. Start-up to be monitored by the day crew.\n- No new events started today.\n\n## Routine work\n- Flowline patrol completed, no leaks or abnormalities observed.\n\n## Handover notes\n- Night crew: W-17 remains shut in until start-up on 2026-03-18. Confirm the start-up sequence with the Production Engineer before opening the well.\n- Record the first flowing parameters of W-17 on the new pump once it is online.\n- All other Wadi wells to continue on current settings.",
+        "scores": {
+         "vector_similarity": 0.4472,
+         "vector_rank": 4,
+         "full_text_rank": 2,
+         "full_text_score": 1.4,
+         "rrf": 0.03175
+        }
+       },
+       {
+        "chunk_id": "SR-099#0",
+        "document_id": "SR-099",
+        "title": "Shift report: Wadi Field, 2026-03-04, day shift",
+        "doc_type": "shift_report",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2026-03-04",
+        "section": null,
+        "text": "# Shift report: Wadi Field, 2026-03-04, day shift\n\n**Document ID:** SR-099\n**Prepared by:** Lead Operator (K.M.)\n\n## Production summary\n- Wells online: 13 of 14\n- Field oil: 10958.7 bbl/d\n- Field gas: 8601.5 Mscf/d\n- Field average water cut: 34.2 % (January 2026: 32.5 %, last 30 days: 33.4 %, still trending up)\n- Top producers:\n  - W-24: 1374.5 bbl, 717.8 Mscf, water cut 24.4 %, 24 h uptime\n  - W-20: 1287.6 bbl, 1065.9 Mscf, water cut 32.5 %, 24 h uptime\n  - W-30: 1161.5 bbl, 795.7 Mscf, water cut 33.8 %, 24 h uptime\n\n## Wells offline or restricted\n- **W-17:** 0 h uptime, 0 bbl. Shut in after an ESP trip (see Events).\n\n## Events\n- **EV-0092, W-17, ESP trip (incident, severity high), open.**\n  - The ESP tripped on motor overload with phase current imbalance.\n  - Restart attempts failed. The megger test showed low insulation resistance on the motor.\n  - Installed pump: Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), run life 13 months.\n  - Downtime so far: 24 h. The well is shut in pending workover.\n  - Wellhead and surface electrical isolation confirmed. The Production Supervisor and Production Engineer were informed.\n\n## Routine work\n- Separator sampling completed, samples sent to the lab.\n\n## Handover notes\n- W-17 remains shut in. Do not attempt further restarts of the ESP.\n- Workover planning for W-17 to be confirmed with the Workover Supervisor.\n- Keep monitoring Wadi Field water cut and report any further rise on the next shift.\n- All other Wadi wells are running normally.",
+        "scores": {
+         "vector_similarity": 0.4724,
+         "vector_rank": 3,
+         "full_text_rank": 7,
+         "full_text_score": 1.1,
+         "rrf": 0.0308
+        }
+       },
+       {
+        "chunk_id": "WT-016#0",
+        "document_id": "WT-016",
+        "title": "Well test: W-17, 2026-03-23",
+        "doc_type": "well_test",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2026-03-23",
+        "section": null,
+        "text": "# Well test: W-17, 2026-03-23\n\n**Document ID:** WT-016\n**Well:** W-17 (Wadi Field, vertical, ESP)\n**Test date:** 2026-03-23\n**Procedure:** SOP-OPS-004 Well Test Procedure with the Mobile Test Separator\n\n## Test conditions\n- Duration: 24 hours\n- Choke: 48/64 in\n- Flowing wellhead pressure: 445 psi\n- Installed ESP: Varenta VL-538, pump serial 2M-1187-044 (batch 2M-1187), installed 2026-03-17\n- Well status: producing\n\n## Measured results (3-day period ending 2026-03-23)\n| Parameter | Result |\n|---|---|\n| Oil | 1281 bbl/d |\n| Gas | 1036.2 Mscf/d |\n| Water cut | 32.9 % |\n| GOR | 809 scf/bbl |\n| Sand | 0 ppm |\n\n## Comparison with previous baseline (7-day period ending 2026-01-22)\n| Parameter | Baseline | Change |\n|---|---|---|\n| Oil | 1480.9 bbl/d | -199.9 bbl/d |\n| Gas | 1183.4 Mscf/d | -147.2 Mscf/d |\n| Water cut | 30.2 % | +2.7 points |\n| GOR | 799 scf/bbl | +10 scf/bbl |\n\n## Observations\n- This is the first test after the ESP replacement workover (EV-0094, closed), with the well back on production since 2026-03-18.\n- The earlier shut-in (EV-0092, ESP trip, closed) kept the well down before the workover.\n- Oil is below the January baseline and water cut is slightly higher. Wadi Field average water cut was 32.5 % in January 2026 and 34.1 % over the last 30 days, so the rise on W-17 is in line with the field trend.\n- GOR is essentially unchanged. No sand was detected.\n\n## Recommendation\n- Treat this test as the new baseline for the replacement pump.\n- Repeat the test in about 30 days to confirm that the rates have stabilised.\n- Keep monitoring water cut and ESP motor current.",
+        "scores": {
+         "vector_similarity": 0.4389,
+         "vector_rank": 7,
+         "full_text_rank": 4,
+         "full_text_score": 1.3,
+         "rrf": 0.03055
+        }
+       },
+       {
+        "chunk_id": "WO-026#0",
+        "document_id": "WO-026",
+        "title": "Work order: Scale squeeze treatment, W-17",
+        "doc_type": "work_order",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2025-09-18",
+        "section": null,
+        "text": "# Work order: Scale squeeze treatment, W-17\n\n| Field | Detail |\n|---|---|\n| WO number | WO-026 |\n| Event reference | EV-0032 |\n| Well | W-17 (Wadi Field, vertical, ESP) |\n| Category | Maintenance |\n| Priority | Medium (preventive) |\n| Raised | 2025-09-16 |\n| Actual start | 2025-09-18 |\n| Completion | 2025-09-19 |\n| Status | Closed |\n| Procedure | SOP-OPS-008 Scale Inhibitor Squeeze Treatment |\n\n## Scope of work\nPreventive scale inhibitor squeeze on W-17 to protect the completion and ESP as water cut rises in Wadi Field. Well shut in, treatment bullheaded, overflushed and held for the inhibitor soak, then the well was restarted.\n\n## Safety and permits\n- Hot work not required. Pumping permit and pressure-test permit issued by the Production Supervisor.\n- Toolbox talk held before rigging up. Chemical handling PPE in use and the HSE Advisor checked the bunding at the pump skid.\n- Lines pressure tested before pumping, as required by the SOP.\n\n## Materials\n- Scale inhibitor and overflush fluid supplied by the chemical vendor.\n- Pumping unit and transfer tank from the service contractor.\n\n## Execution and close-out remarks\n- Work ran from 2025-09-18 to 2025-09-19 as planned. Total downtime was 34 hours.\n- Squeeze pumped and soaked per SOP-OPS-008, no leaks or pressure excursions reported. Site cleared and the well handed back to the Lead Operator.\n- Production, 14 days before shutdown (to 2025-09-17): oil 1644.7 bbl/d, gas 1307.5 Mscf/d, water cut 26.3 %, GOR 795 scf/bbl.\n- Production, 6 days after restart (to 2025-09-26): oil 1671.3 bbl/d, gas 1333.8 Mscf/d, water cut 26 %, GOR 798 scf/bbl.\n- No adverse change after restart. Well is producing.\n- Follow-up: Production Engineer to schedule produced-water residual inhibitor sampling to set the next squeeze interval.\n\n**Work order closed.**",
+        "scores": {
+         "vector_similarity": 0.4412,
+         "vector_rank": 6,
+         "full_text_rank": 5,
+         "full_text_score": 1.1,
+         "rrf": 0.03054
+        }
+       }
+      ],
+      "full_text_only": false
+     },
+     {
+      "call_id": "toolu_019cXmjhio7bEeJ4T1H78VKK",
+      "args": {
+       "query": "ESP pump batch 7Q-0419 serial motor failure",
+       "k": 8
+      },
+      "vector": [
+       {
+        "chunk_id": "IN-057#0",
+        "rank": 1,
+        "similarity": 0.5316
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "rank": 2,
+        "similarity": 0.5098
+       },
+       {
+        "chunk_id": "IN-010#0",
+        "rank": 3,
+        "similarity": 0.4937
+       },
+       {
+        "chunk_id": "WO-054#0",
+        "rank": 4,
+        "similarity": 0.4789
+       },
+       {
+        "chunk_id": "WO-048#0",
+        "rank": 5,
+        "similarity": 0.4754
+       },
+       {
+        "chunk_id": "SOP-OPS-001#5",
+        "rank": 6,
+        "similarity": 0.469
+       },
+       {
+        "chunk_id": "WO-035#0",
+        "rank": 7,
+        "similarity": 0.4605
+       },
+       {
+        "chunk_id": "IN-049#0",
+        "rank": 8,
+        "similarity": 0.4449
+       },
+       {
+        "chunk_id": "IN-040#0",
+        "rank": 9,
+        "similarity": 0.4435
+       },
+       {
+        "chunk_id": "SOP-OPS-001#6",
+        "rank": 10,
+        "similarity": 0.4335
+       },
+       {
+        "chunk_id": "IN-060#0",
+        "rank": 11,
+        "similarity": 0.4294
+       },
+       {
+        "chunk_id": "SOP-OPS-001#4",
+        "rank": 12,
+        "similarity": 0.427
+       },
+       {
+        "chunk_id": "WO-058#0",
+        "rank": 13,
+        "similarity": 0.4227
+       },
+       {
+        "chunk_id": "SOP-OPS-001#1",
+        "rank": 14,
+        "similarity": 0.418
+       },
+       {
+        "chunk_id": "SOP-OPS-001#8",
+        "rank": 15,
+        "similarity": 0.4173
+       },
+       {
+        "chunk_id": "SOP-OPS-001#3",
+        "rank": 16,
+        "similarity": 0.4159
+       },
+       {
+        "chunk_id": "IN-070#0",
+        "rank": 17,
+        "similarity": 0.4109
+       },
+       {
+        "chunk_id": "IN-007#0",
+        "rank": 18,
+        "similarity": 0.4045
+       },
+       {
+        "chunk_id": "IN-046#0",
+        "rank": 19,
+        "similarity": 0.3997
+       },
+       {
+        "chunk_id": "SOP-OPS-001#9",
+        "rank": 20,
+        "similarity": 0.3977
+       }
+      ],
+      "full_text": [
+       {
+        "chunk_id": "WO-054#0",
+        "rank": 1,
+        "ts_rank": 2.8
+       },
+       {
+        "chunk_id": "WO-048#0",
+        "rank": 2,
+        "ts_rank": 2.4
+       },
+       {
+        "chunk_id": "WO-035#0",
+        "rank": 3,
+        "ts_rank": 2.4
+       },
+       {
+        "chunk_id": "IN-057#0",
+        "rank": 4,
+        "ts_rank": 1.9
+       },
+       {
+        "chunk_id": "IN-010#0",
+        "rank": 5,
+        "ts_rank": 1.9
+       },
+       {
+        "chunk_id": "WO-058#0",
+        "rank": 6,
+        "ts_rank": 1.7
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "rank": 7,
+        "ts_rank": 1.7
+       },
+       {
+        "chunk_id": "WT-006#0",
+        "rank": 8,
+        "ts_rank": 1.4
+       },
+       {
+        "chunk_id": "SR-099#0",
+        "rank": 9,
+        "ts_rank": 1.3
+       },
+       {
+        "chunk_id": "SR-175#0",
+        "rank": 10,
+        "ts_rank": 1.3
+       },
+       {
+        "chunk_id": "SR-047#0",
+        "rank": 11,
+        "ts_rank": 1.3
+       },
+       {
+        "chunk_id": "SR-177#0",
+        "rank": 12,
+        "ts_rank": 1.2
+       },
+       {
+        "chunk_id": "SR-046#0",
+        "rank": 13,
+        "ts_rank": 1.2
+       },
+       {
+        "chunk_id": "SR-100#0",
+        "rank": 14,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SR-101#0",
+        "rank": 15,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SR-107#0",
+        "rank": 16,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SOP-OPS-008#6",
+        "rank": 17,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "SR-045#0",
+        "rank": 18,
+        "ts_rank": 1.1
+       },
+       {
+        "chunk_id": "WO-044#0",
+        "rank": 19,
+        "ts_rank": 1
+       },
+       {
+        "chunk_id": "SR-105#0",
+        "rank": 20,
+        "ts_rank": 1
+       }
+      ],
+      "fused": [
+       {
+        "chunk_id": "IN-057#0",
+        "rank": 1,
+        "rrf": 0.03202,
+        "vector_rank": 1,
+        "full_text_rank": 4
+       },
+       {
+        "chunk_id": "WO-054#0",
+        "rank": 2,
+        "rrf": 0.03202,
+        "vector_rank": 4,
+        "full_text_rank": 1
+       },
+       {
+        "chunk_id": "WO-048#0",
+        "rank": 3,
+        "rrf": 0.03151,
+        "vector_rank": 5,
+        "full_text_rank": 2
+       },
+       {
+        "chunk_id": "IN-010#0",
+        "rank": 4,
+        "rrf": 0.03126,
+        "vector_rank": 3,
+        "full_text_rank": 5
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "rank": 5,
+        "rrf": 0.03105,
+        "vector_rank": 2,
+        "full_text_rank": 7
+       },
+       {
+        "chunk_id": "WO-035#0",
+        "rank": 6,
+        "rrf": 0.0308,
+        "vector_rank": 7,
+        "full_text_rank": 3
+       },
+       {
+        "chunk_id": "WO-058#0",
+        "rank": 7,
+        "rrf": 0.02885,
+        "vector_rank": 13,
+        "full_text_rank": 6
+       },
+       {
+        "chunk_id": "SOP-OPS-001#5",
+        "rank": 8,
+        "rrf": 0.01515,
+        "vector_rank": 6,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "IN-049#0",
+        "rank": 9,
+        "rrf": 0.01471,
+        "vector_rank": 8,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "WT-006#0",
+        "rank": 10,
+        "rrf": 0.01471,
+        "vector_rank": null,
+        "full_text_rank": 8
+       },
+       {
+        "chunk_id": "IN-040#0",
+        "rank": 11,
+        "rrf": 0.01449,
+        "vector_rank": 9,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-099#0",
+        "rank": 12,
+        "rrf": 0.01449,
+        "vector_rank": null,
+        "full_text_rank": 9
+       },
+       {
+        "chunk_id": "SOP-OPS-001#6",
+        "rank": 13,
+        "rrf": 0.01429,
+        "vector_rank": 10,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-175#0",
+        "rank": 14,
+        "rrf": 0.01429,
+        "vector_rank": null,
+        "full_text_rank": 10
+       },
+       {
+        "chunk_id": "IN-060#0",
+        "rank": 15,
+        "rrf": 0.01408,
+        "vector_rank": 11,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-047#0",
+        "rank": 16,
+        "rrf": 0.01408,
+        "vector_rank": null,
+        "full_text_rank": 11
+       },
+       {
+        "chunk_id": "SOP-OPS-001#4",
+        "rank": 17,
+        "rrf": 0.01389,
+        "vector_rank": 12,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-177#0",
+        "rank": 18,
+        "rrf": 0.01389,
+        "vector_rank": null,
+        "full_text_rank": 12
+       },
+       {
+        "chunk_id": "SR-046#0",
+        "rank": 19,
+        "rrf": 0.0137,
+        "vector_rank": null,
+        "full_text_rank": 13
+       },
+       {
+        "chunk_id": "SOP-OPS-001#1",
+        "rank": 20,
+        "rrf": 0.01351,
+        "vector_rank": 14,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-100#0",
+        "rank": 21,
+        "rrf": 0.01351,
+        "vector_rank": null,
+        "full_text_rank": 14
+       },
+       {
+        "chunk_id": "SOP-OPS-001#8",
+        "rank": 22,
+        "rrf": 0.01333,
+        "vector_rank": 15,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-101#0",
+        "rank": 23,
+        "rrf": 0.01333,
+        "vector_rank": null,
+        "full_text_rank": 15
+       },
+       {
+        "chunk_id": "SOP-OPS-001#3",
+        "rank": 24,
+        "rrf": 0.01316,
+        "vector_rank": 16,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-107#0",
+        "rank": 25,
+        "rrf": 0.01316,
+        "vector_rank": null,
+        "full_text_rank": 16
+       },
+       {
+        "chunk_id": "IN-070#0",
+        "rank": 26,
+        "rrf": 0.01299,
+        "vector_rank": 17,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SOP-OPS-008#6",
+        "rank": 27,
+        "rrf": 0.01299,
+        "vector_rank": null,
+        "full_text_rank": 17
+       },
+       {
+        "chunk_id": "IN-007#0",
+        "rank": 28,
+        "rrf": 0.01282,
+        "vector_rank": 18,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-045#0",
+        "rank": 29,
+        "rrf": 0.01282,
+        "vector_rank": null,
+        "full_text_rank": 18
+       },
+       {
+        "chunk_id": "IN-046#0",
+        "rank": 30,
+        "rrf": 0.01266,
+        "vector_rank": 19,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "WO-044#0",
+        "rank": 31,
+        "rrf": 0.01266,
+        "vector_rank": null,
+        "full_text_rank": 19
+       },
+       {
+        "chunk_id": "SOP-OPS-001#9",
+        "rank": 32,
+        "rrf": 0.0125,
+        "vector_rank": 20,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-105#0",
+        "rank": 33,
+        "rrf": 0.0125,
+        "vector_rank": null,
+        "full_text_rank": 20
+       }
+      ],
+      "chunks_sent": [
+       {
+        "chunk_id": "IN-057#0",
+        "document_id": "IN-057",
+        "title": "Incident note: ESP failure on W-27",
+        "doc_type": "incident_note",
+        "well_id": "W-27",
+        "field": "Wadi Field",
+        "date": "2026-08-22",
+        "section": null,
+        "text": "# Incident note: ESP failure on W-27\n\n**Document ID:** IN-057\n**Note date:** 2026-08-22\n**Event:** EV-0150\n**Well:** W-27 (Wadi Field, horizontal, ESP)\n**Severity:** High\n**Status at note date:** Closed\n\n## What happened\nOn 2026-08-18 the ESP on W-27 tripped on motor overtemperature. A restart attempt then tripped on ground fault. Insulation resistance measured on the motor was below the minimum acceptable value. The installed pump is a Varenta VL-538, pump serial 7Q-0419-086 (batch 7Q-0419), with a run life of 11 months. The well was shut in pending workover.\n\n## Immediate actions\n- The well was kept shut in after the ground fault trip, and no further restarts were attempted.\n- The drive was isolated and the surface cable and connections were checked.\n- The Production Supervisor and the Workover Supervisor were informed.\n\n## Findings so far\n- The overtemperature trip followed by a ground fault at restart, together with low motor insulation resistance, points to a motor electrical failure.\n- The cause of the failure will be confirmed when the unit is pulled and inspected.\n\n## Impact\n- Downtime: 120 hours from 2026-08-18 to 2026-08-22.\n- Production on 2026-08-18 was 0 bbl of oil and 0 Mscf of gas, with 0 hours of uptime.\n- The 7-day average before the event (to 2026-08-17) was 558.2 bbl/d oil, 611 Mscf/d gas, water cut 41.1 percent and GOR 1095 scf/bbl. This is the rate deferred for each day of shut-in.\n\n## Status\nThe incident record is closed as of 2026-08-22. The well remains shut in until the workover.\n\n## Next actions\n- An ESP replacement workover is planned to start on 2026-08-23 (EV-0156).\n- The Production Engineer will review the teardown findings once the unit is out of the hole.\n- Post-workover rates are to be compared with the baseline above.\n\n## Applicable procedure\nNo specific procedure is referenced for this incident.",
+        "scores": {
+         "vector_similarity": 0.5316,
+         "vector_rank": 1,
+         "full_text_rank": 4,
+         "full_text_score": 1.9,
+         "rrf": 0.03202
+        }
+       },
+       {
+        "chunk_id": "WO-054#0",
+        "document_id": "WO-054",
+        "title": "Work order: Workover - ESP replacement, W-27",
+        "doc_type": "work_order",
+        "well_id": "W-27",
+        "field": "Wadi Field",
+        "date": "2026-08-23",
+        "section": null,
+        "text": "# Work order: Workover - ESP replacement, W-27\n\n**WO number:** WO-054\n**Related event:** EV-0156 (follow-up to EV-0150, ESP failure)\n**Well:** W-27, Wadi Field, horizontal, ESP\n**Category:** Maintenance\n**Priority:** High\n**Raised:** 2026-08-21\n**Planned start:** 2026-08-23\n**Completion date:** 2026-08-29\n**Status:** Closed\n\n## Scope of work\n- Kill the well and pull the failed ESP completion (pump serial 7Q-0419-086, batch 7Q-0419, run life 11 months).\n- Carry out teardown inspection of motor, pump stages and cable.\n- Run a new Varenta VL-538 ESP, serial 5C-0822-019 (batch 5C-0822).\n- Restart and hand the well back to production.\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Pre-job meeting held with the rig crew and the ESP vendor representative.\n- Well barriers verified before the BOP was nippled up.\n\n## Materials\n- New Varenta VL-538 pump assembly, serial 5C-0822-019.\n- Completion running tools and consumables supplied by the rig contractor.\n\n## Execution notes and close-out remarks\n- Work ran from 2026-08-23 to 2026-08-29. Total downtime for the workover event was 168 hours (EV-0150 had already accounted for 120 hours).\n- Teardown found motor winding insulation breakdown. Pump stages and cable were in good condition, so only the pump and motor assembly was replaced.\n- The new ESP was installed and tested. The well returned to production on 2026-08-30.\n- Production before the failure (9 days to 2026-08-22): 554 bbl/d oil, 604.3 Mscf/d gas, 40.8% water cut, GOR 1091 scf/bbl.\n- Production after restart (6 days to 2026-09-05): 545.9 bbl/d oil, 594.1 Mscf/d gas, 41.7% water cut, GOR 1088 scf/bbl.\n- Rates are in line with pre-failure performance. Continue routine ESP surveillance.\n- Work order closed. Well status today: producing.",
+        "scores": {
+         "vector_similarity": 0.4789,
+         "vector_rank": 4,
+         "full_text_rank": 1,
+         "full_text_score": 2.8,
+         "rrf": 0.03202
+        }
+       },
+       {
+        "chunk_id": "WO-048#0",
+        "document_id": "WO-048",
+        "title": "Work order: Workover - ESP replacement, W-17",
+        "doc_type": "work_order",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2026-03-10",
+        "section": null,
+        "text": "# Work order: Workover - ESP replacement, W-17\n\n| Field | Detail |\n|---|---|\n| WO number | WO-048 |\n| Event reference | EV-0094 |\n| Well | W-17 (Wadi Field, vertical, ESP) |\n| Category | Maintenance |\n| Priority | High |\n| Raised | 2026-03-08 |\n| Planned start | 2026-03-10 |\n| Completion | 2026-03-17 |\n| Status | Closed |\n\n## Scope of work\nReplace the failed ESP on W-17 following the ESP trip on 2026-03-04 (EV-0092: motor overload, phase current imbalance, low insulation resistance on megger test). Mobilize workover rig, pull the existing completion, replace pump, motor and cable, run back and restore production.\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before pulling the string.\n- Pre-job safety meeting held with rig crew, ESP vendor and Lead Operator.\n\n## Materials\n- Varenta VL-538 pump, serial 2M-1187-044 (batch 2M-1187)\n- New ESP power cable\n- Standard consumables and cable clamps\n\n## Execution notes and close-out remarks\n- Workover rig mobilized and work started 2026-03-10.\n- Pulled ESP serial 7Q-0419-112 (batch 7Q-0419), which had run 13 months.\n- Teardown found motor winding insulation breakdown and light scale on the pump stages.\n- Installed new Varenta VL-538, serial 2M-1187-044 (batch 2M-1187), with new cable.\n- Work completed 2026-03-17. Well returned to production on 2026-03-18.\n- Total downtime recorded: 192 hours.\n\n## Production check\n| Period | Days | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | GOR (scf/bbl) |\n|---|---|---|---|---|---|\n| Before (to 2026-03-09) | 8 | 1203 | 928.8 | 32.6 | 772 |\n| After restart (to 2026-03-24) | 6 | 1288 | 1029.9 | 32.7 | 800 |\n\nWater cut is essentially unchanged. Oil rate is higher after restart. Production Engineer to continue monitoring ESP parameters. Work order closed.",
+        "scores": {
+         "vector_similarity": 0.4754,
+         "vector_rank": 5,
+         "full_text_rank": 2,
+         "full_text_score": 2.4,
+         "rrf": 0.03151
+        }
+       },
+       {
+        "chunk_id": "IN-010#0",
+        "document_id": "IN-010",
+        "title": "Incident note: ESP failure on W-09",
+        "doc_type": "incident_note",
+        "well_id": "W-09",
+        "field": "Dune Field",
+        "date": "2025-10-26",
+        "section": null,
+        "text": "# Incident note: ESP failure on W-09\n\n**Document ID:** IN-010\n**Event ID:** EV-0042\n**Note date:** 2025-10-26\n**Well:** W-09 (Dune Field, vertical, ESP)\n**Severity:** High\n**Status at note date:** Closed\n**Prepared by:** Production Engineer\n\n## What happened\nOn 2025-10-21 the W-09 ESP shut down on a ground fault alarm and would not restart. The well was shut in pending workover.\n\n## Immediate actions\n- Operators isolated the ESP at the variable speed drive and locked out the supply.\n- A megger test was run on the motor circuit. It showed near-zero insulation resistance phase to ground.\n- The Production Supervisor was informed and the well was left shut in.\n\n## Findings so far\n- Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months.\n- The megger result is consistent with an electrical failure in the downhole motor or cable. The failed component can only be confirmed when the pump is pulled and inspected.\n\n## Impact\n- Production before the event (7 days to 2025-10-20): oil 1461.8 bbl/d, gas 957.5 Mscf/d, water cut 10.1 %, GOR 655 scf/bbl.\n- On 2025-10-21 the well produced 0 bbl oil and 0 Mscf gas, with 0 hours uptime.\n- Downtime as of this note: 144 hours (2025-10-21 to 2025-10-26).\n- Deferred oil is roughly 1461.8 bbl/d for the downtime period, based on the pre-event rate.\n\n## Status at note date\nThe incident record EV-0042 is closed. The well remains shut in until the replacement of the ESP.\n\n## Next actions\n- A workover to replace the ESP is planned to start on 2025-10-27 (EV-0046). It is a planned activity only, and its results are not yet known.\n- The Workover Supervisor will confirm rig and ESP vendor readiness.\n- The Maintenance Planner will update the deferment log once the well is back on production.\n\n## Procedure reference\nNo specific procedure applies to this incident.",
+        "scores": {
+         "vector_similarity": 0.4937,
+         "vector_rank": 3,
+         "full_text_rank": 5,
+         "full_text_score": 1.9,
+         "rrf": 0.03126
+        }
+       },
+       {
+        "chunk_id": "IN-032#0",
+        "document_id": "IN-032",
+        "title": "Incident note: ESP trip on W-17",
+        "doc_type": "incident_note",
+        "well_id": "W-17",
+        "field": "Wadi Field",
+        "date": "2026-03-09",
+        "section": null,
+        "text": "# Incident note: ESP trip on W-17\n\n**Document ID:** IN-032\n**Note date:** 2026-03-09\n**Event ID:** EV-0092\n**Well:** W-17 (Wadi Field, vertical, ESP)\n**Severity:** High\n**Status at note date:** Closed\n**Prepared by:** Production Engineer\n\n## What happened\nOn 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance. The installed pump is a Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), with a run life of 13 months.\n\n## Immediate actions\n- Restart attempts were made by the operations team and all failed.\n- A megger test on the motor showed low insulation resistance.\n- The well was shut in and held shut in pending workover.\n- The Production Supervisor and Workover Supervisor were informed.\n\n## Findings so far\nThe electrical readings point to a motor fault. Downhole inspection is only possible once the pump is pulled, so the root cause is not yet confirmed.\n\n## Impact\n- Event period: 2026-03-04 to 2026-03-09.\n- Downtime as of the note date: 144 hours.\n- Production on 2026-03-04 was 0 bbl oil, 0 Mscf gas and 0 hours uptime.\n- Rates in the 7 days to 2026-03-03 averaged 1198.5 bbl/d oil, 925.4 Mscf/d gas, 32.6% water cut and GOR 772 scf/bbl. Deferred oil is estimated from this baseline, about 1198.5 bbl for each day of downtime.\n\n## Status\nThe incident record is closed at the note date. The well remains shut in. A workover to replace the ESP is planned to start on 2026-03-10 (EV-0094) and is tracked under its own maintenance event. Return-to-production timing will be confirmed after the workover.\n\n## Next actions\n1. Workover Supervisor to confirm the rig and the ESP vendor crew for 2026-03-10.\n2. Field Engineer to request a teardown inspection of the pulled equipment.\n3. Production Engineer to review the restart conditions and set the post-workover startup plan.\n4. Lead Operator to keep the wellhead isolated and log checks until the rig arrives.\n\n## Reference\nSOP-OPS-001 ESP Trip Response and Restart.",
+        "scores": {
+         "vector_similarity": 0.5098,
+         "vector_rank": 2,
+         "full_text_rank": 7,
+         "full_text_score": 1.7,
+         "rrf": 0.03105
+        }
+       },
+       {
+        "chunk_id": "WO-035#0",
+        "document_id": "WO-035",
+        "title": "Work order: Workover - ESP replacement, W-09",
+        "doc_type": "work_order",
+        "well_id": "W-09",
+        "field": "Dune Field",
+        "date": "2025-10-27",
+        "section": null,
+        "text": "# Work order: Workover - ESP replacement, W-09\n\n**WO number:** WO-035\n**Well:** W-09 (Dune Field, vertical, ESP)\n**Related event:** EV-0046 (maintenance); follows EV-0042 (ESP failure)\n**Priority:** High\n**Raised:** 2025-10-25\n**Planned start:** 2025-10-27\n**Completion date:** 2025-11-02\n**Status:** Closed\n\n## Scope of work\n- Pull the failed ESP and tubing string.\n- Carry out a teardown inspection of the pump, seal section, motor and cable.\n- Install a new Varenta VL-538 ESP and return the well to production.\n\nBackground: on 2025-10-21 the ESP shut down on a ground fault alarm and would not restart. A megger test showed near-zero insulation resistance phase to ground. The well was shut in pending workover (144 h downtime to 2025-10-26).\n\n## Safety and permits\n- Permit to Work issued under SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before the BOP was nippled up.\n- Electrical isolation and lock-out of the ESP power feed confirmed by the Field Engineer.\n\n## Materials\n- Varenta VL-538 ESP, serial 4D-0733-115 (batch 4D-0733).\n- New cable splice kit and clamps.\n\n## Execution notes\n- Removed pump serial 7Q-0419-027 (batch 7Q-0419).\n- Teardown found motor winding insulation breakdown. No sand, scale or cable damage was seen.\n- New pump installed and tested electrically before running in.\n\n## Close-out remarks\n- Work ran from 2025-10-27 to 2025-11-02, total downtime 168 h.\n- The well returned to production on 2025-11-03 and is producing.\n- Rates before the failure (8 days to 2025-10-26): oil 1472.4 bbl/d, gas 965 Mscf/d, water cut 10.2 %, GOR 655 scf/bbl.\n- Rates after restart (6 days to 2025-11-09): oil 1417.5 bbl/d, gas 932.5 Mscf/d, water cut 11 %, GOR 658 scf/bbl.\n- Continue routine ESP monitoring. Work order closed.",
+        "scores": {
+         "vector_similarity": 0.4605,
+         "vector_rank": 7,
+         "full_text_rank": 3,
+         "full_text_score": 2.4,
+         "rrf": 0.0308
+        }
+       },
+       {
+        "chunk_id": "WO-058#0",
+        "document_id": "WO-058",
+        "title": "Work order: ESP replacement, W-21",
+        "doc_type": "work_order",
+        "well_id": "W-21",
+        "field": "Wadi Field",
+        "date": "2026-10-14",
+        "section": null,
+        "text": "# Work order: ESP replacement, W-21\n\n**WO number:** WO-058\n**Event reference:** EV-0174\n**Well:** W-21 (Wadi Field, horizontal, ESP)\n**Category:** Maintenance\n**Priority:** Medium\n**Raised:** 2026-10-12\n**Planned start:** 2026-10-14\n**Completion date:** 2026-10-18\n**Status:** Closed\n\n## Scope of work\nReplace the ESP on W-21. Rate declined gradually through Q3 2026 as the pump wore. Pull the installed Varenta VL-538 pump, serial 1H-0956-071 (batch 1H-0956), after 31 months in service, and install a new Varenta VL-538, serial 5C-0822-034 (batch 5C-0822). Restart the well and confirm stable operation.\n\n## Safety and permits\n- Work performed under a permit to work per SOP-HSE-005 Permit to Work for Workover and Rig Operations.\n- Well killed and barriers verified before pulling the completion.\n- Isolation of the ESP power supply confirmed and locked out.\n- Toolbox talk held with the rig crew and the ESP vendor technician before each lifting operation.\n\n## Materials\n- Varenta VL-538 pump, serial 5C-0822-034\n- Motor and cable connections as supplied in the ESP vendor kit\n- Replacement gaskets and wellhead seals\n\n## Execution notes\n- 2026-10-14: Rig up started, well secured, tubing pulled.\n- Old pump recovered and tagged for vendor inspection, with wear consistent with the gradual rate decline.\n- New pump run and tested.\n- 2026-10-18: Work completed and handed back to Operations.\n\n## Close-out remarks\nTotal downtime was 120 hours. The well was restarted and is producing.\n\n| Period | Days | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | GOR (scf/bbl) |\n|---|---|---|---|---|---|\n| Before (to 2026-10-13) | 14 | 243.6 | 255.9 | 44.2 | 1050 |\n| After restart (to 2026-10-25) | 6 | 353.6 | 377.2 | 44.9 | 1067 |\n\nOil rate improved after the replacement, and water cut and GOR stayed essentially unchanged. No further actions are required, and the work order is closed.",
+        "scores": {
+         "vector_similarity": 0.4227,
+         "vector_rank": 13,
+         "full_text_rank": 6,
+         "full_text_score": 1.7,
+         "rrf": 0.02885
+        }
+       },
+       {
+        "chunk_id": "SOP-OPS-001#5",
+        "document_id": "SOP-OPS-001",
+        "title": "SOP-OPS-001 ESP Trip Response and Restart",
+        "doc_type": "procedure",
+        "well_id": null,
+        "field": null,
+        "date": "2025-09-15",
+        "section": "Diagnosis: reading VSD trip codes, phase currents and downhole sensor data",
+        "text": "1. Read pump intake pressure, discharge pressure, motor winding temperature, intake temperature and vibration if available.\n2. A falling intake pressure with falling current points to drawdown or gas. A rising motor temperature before the trip points to heat, poor cooling or a developing electrical fault.\n3. Loss of sensor signal together with a ground fault or imbalance trip is a strong sign of a cable or motor failure.\n4. Compare with the last stable values and with the trend over the previous 24 hours, not only with the last reading.\n\n### 4. Classify\n\nClassify the trip as one of: surface or supply cause, process or flowline cause, fluid or gas related, or suspected downhole electrical or mechanical fault. This class decides the restart route.",
+        "scores": {
+         "vector_similarity": 0.469,
+         "vector_rank": 6,
+         "full_text_rank": null,
+         "full_text_score": null,
+         "rrf": 0.01515
+        }
+       }
+      ],
+      "full_text_only": false
+     }
+    ],
+    "checks": {
+     "unknown_chunk_ids": [],
+     "refs_without_source": []
+    },
+    "usage": {
+     "input_tokens": 8,
+     "cache_read_tokens": 38125,
+     "cache_write_tokens": 6737,
+     "output_tokens": 1121,
+     "steps": 3,
+     "cost_usd": 0.0319
+    },
+    "latency_ms": 10308,
+    "model": "claude-sonnet-5-5"
+   }
+  }
+ ]
+}

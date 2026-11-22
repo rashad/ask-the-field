@@ -12,119 +12,133 @@ title: SOP-OPS-008 Scale Inhibitor Squeeze Treatment
 | Field | Entry |
 |---|---|
 | Procedure ID | SOP-OPS-008 |
-| Title | Scale Inhibitor Squeeze Treatment |
 | Revision date | 2026-04-02 |
-| Applies to | All three fields: Field A, Field B and Bayda |
+| Applies to | All three fields: Dune Field, Wadi Field and Salt Flat Field |
 | Owner | Production Engineer |
 | Approvers | Production Supervisor, HSE Advisor |
+| Related facility | CPF-1 |
 
 ## Purpose and scope
 
-This procedure sets out how a scale inhibitor squeeze treatment is selected, designed, pumped and monitored on producing wells in Field A, Field B and Bayda. The aim is to protect the near-wellbore area, the completion and the lift equipment from mineral scale, and to keep inhibitor concentration in the produced water above the minimum effective level for as long as practical.
+This procedure sets out how a scale inhibitor squeeze treatment is selected, designed, pumped, restarted and recorded on producing wells. The aim is to protect the near-wellbore area, completion and lift equipment from mineral scale deposition and so keep productivity and equipment run life.
 
-Scope:
-- Producing wells on ESP, gas lift and natural flow in all three fields.
-- Bullhead squeeze treatments pumped through the tubing or annulus by the pumping service contractor under the direction of the Production Engineer.
-- Restart of the well and monitoring of inhibitor return until the next treatment decision.
+The procedure applies to oil producers in Dune Field, Wadi Field and Salt Flat Field, whatever the lift method (ESP, gas lift or natural flow) and whatever the well geometry (vertical, deviated or horizontal). It covers the decision to treat, the treatment design, field execution with the pumping unit, restart and the monitoring of inhibitor return.
 
-Out of scope: continuous chemical injection through capillary or gas lift lines (covered by the chemical injection routine), acid stimulation, and any treatment requiring a rig on location. Where a rig is needed to pull the ESP or the completion, the Workover Supervisor takes over under the workover plan and this procedure is used only for the chemical design and monitoring portions.
+It does not cover continuous chemical injection through capillary lines or downhole injection valves, acid stimulation for damage removal, or mechanical scale removal. These are handled under separate procedures. Where a well already has heavy scale in the tubing or pump, remove the scale first by the appropriate method and then treat with a squeeze.
 
 Responsibilities:
-- **Production Engineer:** decides on treatment, issues the design, signs the pumping program.
-- **Lead Operator:** shuts in and restarts the well, witnesses sampling, keeps the shift log.
-- **Field Engineer:** supervises the pumping contractor on location and verifies volumes.
-- **HSE Advisor:** reviews the chemical hazards, permits and spill containment.
-- **Production Supervisor:** approves the deferral of production and the timing of the shut-in.
+
+- Production Engineer: owns the treatment design, the economic and risk justification and the post-treatment evaluation.
+- Production Supervisor: authorises the treatment and the deferment of production.
+- Lead Operator: coordinates field activity, isolates the well and restarts it.
+- Workover Supervisor: supervises the pumping unit and any wellhead or downhole intervention needed.
+- HSE Advisor: reviews the job safety analysis and permits.
+- Maintenance Planner: schedules the unit, chemicals and wellhead equipment.
 
 ## Scale risk indicators: intake pressure, rate loss, water chemistry
 
-A squeeze is considered when one or more of the indicators below is confirmed. A single indicator alone is a trigger for investigation, not for pumping. Two or more together, or one indicator with a clear water chemistry result, justify a treatment proposal.
+A squeeze is considered when one or more of the indicators below is confirmed. No single reading justifies a treatment alone unless it is clearly outside the thresholds.
 
 ### Intake pressure
 
-1. For ESP wells, compare pump intake pressure with the trend of the previous 30 days at similar frequency and choke. A steady rise in drawdown demand (intake pressure falling by more than 10 percent with no change in rate target or water cut) suggests restriction at the perforations or pump intake.
-2. For ESP wells, also check motor amperage and motor temperature. A rising motor temperature with stable load points to scale on the pump stages or motor housing.
-3. For gas lift and natural flow wells, compare flowing tubing head pressure and bottomhole gauge data (where available) against the baseline. A rise in tubing head pressure of more than 10 percent at constant choke is an indicator.
+- For ESP wells, trend pump intake pressure and motor current. A rise in drawdown at constant frequency, or an unexplained pump intake pressure drop of more than 10 percent over 14 days with falling rate, is a scale flag.
+- Rising motor amps with falling stage pressure gain suggests deposits in the stages.
+- For gas lift and natural flow wells, trend flowing tubing head pressure against choke size (in 64ths of an inch). A rise of more than 10 percent at constant choke with no change in line pressure is a flag.
 
 ### Rate loss
 
-1. Compare the latest valid well test against the baseline test. A decline in net oil rate greater than 10 percent not explained by reservoir decline, water cut increase or lift changes is an indicator.
-2. Check for unexplained gas lift valve behavior (unstable injection pressure, repeated cycling) that may be linked to deposits.
-3. Confirm that the rate loss is not caused by surface restrictions such as a partly closed choke, a fouled flowline or separator back pressure at CPF-1.
+- Compare the last two valid well tests with the baseline test at the same choke or frequency.
+- A decline in liquid or oil rate greater than 8 percent not explained by reservoir pressure decline, gas interference or a change in water cut is a flag.
+- A productivity index decline of more than 10 percent over one quarter is a flag.
+- In Wadi Field, where the water flood is increasing water cut, separate the effect of the water cut change from true productivity loss before declaring rate loss.
 
 ### Water chemistry
 
-1. Take produced water samples at the wellhead sample point at least quarterly, and monthly for wells already flagged.
-2. Request analysis of calcium, barium, strontium, sulfate, bicarbonate, iron, pH and total dissolved solids.
-3. Calculate the saturation index for carbonate and sulfate scales at wellhead and estimated downhole conditions. A saturation index above 0.5 for any scale type is an indicator. A saturation index above 1.0 requires a treatment proposal within 14 days.
-4. Where seawater or injection water breakthrough is suspected, compare sulfate and barium trends. Rising sulfate with falling barium indicates scale forming in the reservoir or near the wellbore.
-5. Residual inhibitor in produced water below the minimum effective concentration set in the design (see below) is a trigger for re-treatment planning.
+- Take produced water samples at the wellhead at least quarterly, and monthly where water cut is rising.
+- Laboratory analysis must include barium, strontium, calcium, sulphate, bicarbonate, total dissolved solids, pH and iron.
+- A saturation index above 0.5 for barium sulphate or calcium carbonate at wellhead or downhole conditions is a flag.
+- Injection water breakthrough, indicated by a rising sulphate or falling barium and strontium trend, is a flag for sulphate scale. Treat it as a priority in water flood wells.
+- Residual inhibitor below the minimum effective concentration (MEC) set in the design, in a well already treated, means retreatment is due.
+- In Salt Flat Field, which is sand-prone with high GOR, check carbonate scale risk from pressure drop and gas breakout, and check that sand production is not being mistaken for a scale signal.
 
-Bayda wells are sand-prone with high gas-oil ratio. For these wells, confirm that apparent intake pressure and rate changes are not caused by sand fill or gas interference before attributing them to scale. Review the latest sand reading and the downhole gas separation performance as part of the screening.
+Record each flag with its date, source data and the engineer who confirmed it. Two confirmed flags, or one flag with a laboratory saturation index above 1.0, justify a treatment.
 
 ## Treatment design
 
-The Production Engineer issues a written design for each treatment, reviewed by the HSE Advisor before approval.
+The Production Engineer issues a treatment design sheet at least 10 days before pumping. It must contain:
 
-1. **Candidate review.** Confirm the well integrity status, the last well test, the water chemistry result, the completion type (vertical, deviated or horizontal) and the lift method. For horizontal wells, consider the need for a diverter or extended overflush to place inhibitor along the lateral.
-2. **Inhibitor selection.** Use only an inhibitor qualified through compatibility and thermal stability testing with the produced water and reservoir fluids of the target field. Record the product name, batch and the test report reference in the design.
-3. **Volumes.**
-   - Preflush: sized to clean the near-wellbore area and condition the rock, typically a brine or water volume matching the treated interval.
-   - Main treatment: inhibitor in brine at the designed concentration, sized by the treated height and target radius of placement.
-   - Overflush: sized to push the inhibitor to the target radius, with a minimum of one tubing volume plus the designed radial volume.
-   - Record all volumes in barrels and give a tolerance of plus or minus 5 percent.
-4. **Pressure limits.** Set maximum surface treating pressure below the lower of the formation fracture limit and the tubing, casing and wellhead rating with a safety margin. The pumping contractor sets the high-pressure trip at the approved value. Never exceed the approved maximum.
-5. **Injectivity.** Plan an injectivity test with treated water before the main stage. If injectivity is lower than the design assumes, stop and consult the Production Engineer before continuing.
-6. **ESP wells.** Decide whether the pump stays in the hole. If it does, confirm that the fluids are compatible with elastomers and cable and that the pump will not be started against a high-viscosity pill. Define the minimum back-flow wait before the restart.
-7. **Target minimum effective concentration.** State the minimum effective inhibitor concentration in produced water (in ppm) and the expected treatment life in days. These values are the basis for the monitoring plan.
-8. **Deferment estimate.** Provide an estimate of deferred oil for the shut-in period, including the time to return to the pre-treatment rate. The Production Supervisor approves the estimate.
-9. **Permits.** A work permit, a chemical handling assessment and a pressure test certificate for temporary lines are required before mobilization.
+1. **Well data.** Completion type, perforated or open-hole interval, reservoir temperature, current pressure, lift method and equipment depths.
+2. **Candidate check.** Confirm the well is stable, has a recent valid test, and has no casing or tubing integrity problem. A well with an open integrity issue is not treated until the Integrity Engineer clears it.
+3. **Chemical selection.** Choose a scale inhibitor compatible with reservoir fluids, formation mineralogy, produced water and the lift system. For ESP wells confirm compatibility with pump and motor materials and the cable. Run compatibility and thermal stability tests at reservoir temperature before approval.
+4. **Volumes.** The design has three stages:
+   - Preflush: a volume of brine or light solvent sized to clean the near-wellbore area, typically 1 to 2 bbl per foot of interval.
+   - Main pill: inhibitor in brine at the design concentration, typically 5 to 10 percent active, sized for the radius of treatment, typically 4 to 8 ft.
+   - Overflush: brine or produced water sized to push the pill to the target radius and to displace the tubing, typically 2 to 4 times the main pill volume.
+5. **Pumping limits.** Set the maximum surface treating pressure below the formation fracture pressure, with a margin of at least 10 percent, and below the rated pressure of the weakest wellhead or tubing component.
+6. **Production deferment estimate.** State the expected shut-in time, the oil deferred in bbl and the plan to recover rate.
+7. **Return monitoring targets.** Set the MEC, the expected return curve and the sampling schedule.
+
+For horizontal wells, check that the design provides coverage along the full lateral, using diversion or an extended overflush where needed. For wells with high water cut, use produced water for the overflush only if it has been filtered and checked for compatibility.
+
+The Production Supervisor and HSE Advisor sign the design sheet before the job is scheduled.
 
 ## Pumping sequence and shut-in time
 
-Prerequisites: the approved design is on location, the pumping contractor has completed pre-job checks, the wellhead is isolated from the production flowline, and spill containment is in place.
+### Preparation
 
-1. **Pre-job meeting.** The Field Engineer holds a meeting with the pumping crew, Lead Operator and HSE Advisor representative. Cover roles, chemical hazards, pressure limits, stop-work authority and the emergency plan.
-2. **Shut in the well.** The Lead Operator shuts in the well in the controlled sequence for the lift type. For ESP wells, stop the pump and allow the motor to cool and the system to equalize. For gas lift wells, close lift gas injection and bleed down the annulus as per the well plan. Record the time of shut-in.
-3. **Rig up and pressure test.** Connect temporary lines, then pressure test to 1.2 times the planned maximum treating pressure for 10 minutes with no visible leak and no pressure decay above 2 percent. Retest if any connection is changed.
-4. **Injectivity test.** Pump treated water at stepped rates, record pressure and rate, and compare with the design assumption.
-5. **Preflush.** Pump the designed preflush volume at the approved rate and pressure.
-6. **Main treatment.** Pump the inhibitor solution. Record volume pumped, rate and pressure at 5-minute intervals. Take a sample of the mixed solution to verify concentration.
-7. **Overflush.** Pump the overflush to place the inhibitor at the target radius. Do not over-displace beyond the designed volume without approval from the Production Engineer.
-8. **Stop and record.** At the end of pumping, record the instantaneous shut-in pressure and the pressure falloff for 10 minutes.
-9. **Shut-in soak.** Keep the well shut in for the designed soak time to allow adsorption of inhibitor. The standard soak time is 12 to 24 hours unless the design states otherwise. Do not shorten the soak without written approval from the Production Engineer.
-10. **Stop-work conditions.** Stop pumping and notify the Production Engineer and HSE Advisor if the pressure exceeds the approved maximum, if there is a leak or chemical release, if volumes deviate by more than 5 percent from the design or if injectivity falls sharply.
+1. The Maintenance Planner confirms that the pumping unit, tanks, chemicals, filters and hoses are on location and have valid inspection certificates.
+2. Hold the pre-job meeting. Cover the job safety analysis, chemical handling, the pressure limit, the stop-work authority and emergency routes.
+3. Obtain the work permit and confirm isolation. Barriers must be verified before any rig-up.
+4. Take a final wellhead pressure, flowing rate and sample before shut-in.
+
+### Pumping
+
+1. Shut in the well and bleed pressure in a controlled way. For ESP wells, stop the pump and wait for the motor to cool and the fluid levels to stabilise, normally 30 minutes, before starting to pump.
+2. Rig up the pumping unit to the kill or treatment line. Pressure test lines to 1.25 times the maximum treating pressure and hold for 10 minutes. Accept a loss of no more than 2 percent.
+3. Pump the preflush at a steady rate, and watch pressure and rate continuously. Confirm injectivity before the main pill. If injectivity is lower than the design, stop and call the Production Engineer.
+4. Pump the main pill and then the overflush at the design rate. Do not exceed the maximum treating pressure. If pressure approaches 90 percent of the limit, reduce the rate.
+5. Record rate, volume and pressure every 5 minutes, and take samples of the mixed chemical for the quality record.
+6. After the last barrel, close the well and hold the final shut-in pressure.
+
+### Shut-in time
+
+- The standard shut-in time for the inhibitor to adsorb is 12 to 24 hours. Use 24 hours for carbonate formations or wells at high temperature, and 12 hours for sandstone.
+- The shut-in time is set in the design and must not be shortened without approval from the Production Engineer.
+- During shut-in the Lead Operator checks wellhead pressure every 4 hours and reports any unexpected rise.
+- Keep the well isolated and tagged throughout.
 
 ## Restart and inhibitor return monitoring
 
-1. **Pre-start checks.** Confirm the soak time has elapsed, temporary lines are removed, the wellhead is restored and the well is aligned to the production flowline at CPF-1. The Lead Operator confirms with the Production Engineer before opening the well.
-2. **Restart sequence.**
-   - Natural flow wells: open the well in small choke steps, holding each step until the pressure stabilizes, and return to the target choke over several hours.
-   - Gas lift wells: restore lift gas injection gradually and watch for stable injection pressure.
-   - ESP wells: start at the minimum frequency and increase in steps of 2 Hz or less, watching intake pressure, amperage and motor temperature. Stop the pump if the amperage trips or the motor temperature exceeds the vendor limit.
-3. **Initial flowback.** Expect elevated water and treatment fluid return. Divert fluids as directed so that off-spec fluid does not upset separation at CPF-1. Notify the CPF-1 operator before restart.
-4. **Sampling schedule.** Take produced water samples at the wellhead at the following intervals after restart: 6 hours, 24 hours, 3 days, 7 days, then weekly for the first 4 weeks and every 2 weeks afterward.
-5. **Analysis.** The laboratory measures residual inhibitor in ppm. Plot concentration against cumulative produced water.
-6. **Action levels.**
-   - Above the minimum effective concentration: continue the schedule.
-   - Within 20 percent above the minimum effective concentration: increase sampling to weekly and begin re-treatment planning.
-   - Below the minimum effective concentration: notify the Production Engineer, run a scale risk review and schedule a new treatment.
-7. **Performance review.** Compare the well test taken 14 days after restart with the pre-treatment baseline. Check intake pressure, rate, water cut and sand. A treatment is deemed effective if the rate and pressure indicators stabilize or recover and the inhibitor level stays above the minimum for the planned life.
-8. **Bayda wells.** Add sand monitoring at each sampling point during the first 7 days, since flowback can mobilize fines.
+### Restart
+
+1. The Lead Operator confirms that the shut-in time has been completed and that the Production Engineer has approved restart.
+2. Rig down the pumping unit, remove temporary lines and restore the wellhead to normal configuration. Leak test the connections.
+3. For ESP wells, check insulation and cable readings before starting, and start at a low frequency. Raise frequency in steps to the target over at least 4 hours, watching intake pressure, motor current and temperature.
+4. For gas lift wells, restart the lift gas gradually and monitor injection pressure for unloading problems.
+5. For natural flow wells, open the choke in small steps (for example 4/64 per 30 minutes) until the pre-job choke is reached.
+6. Expect the first returns to contain the overflush brine and some treatment fluid. Route fluid to the test separator or a designated line, and do not send it to CPF-1 without checking with the process team, in case of foaming or emulsion effects.
+7. In Salt Flat Field, watch sand production on the restart and be ready to reduce the choke or frequency if sand rises.
+
+### Inhibitor return monitoring
+
+1. Sample produced water at the wellhead at the following times after restart: 6 hours, 24 hours, 3 days, 7 days, 14 days, then weekly for the first 8 weeks and every 2 weeks after that.
+2. Measure residual inhibitor concentration by the laboratory method stated in the design.
+3. Plot concentration against cumulative produced water volume and compare with the expected curve.
+4. Retreatment is triggered when the residual falls below the MEC, or when the water chemistry shows a scale trend returning.
+5. The Production Engineer reports unusual results, such as very fast return or very slow return, to the Production Supervisor. Fast return suggests poor placement and slow return suggests low injectivity or high retention.
+6. Keep monitoring intake pressure, rate and water cut against the pre-job baseline, and run a well test within 7 days of restart.
 
 ## Records
 
-The Production Engineer keeps a treatment file for each job. It contains:
+The Production Engineer keeps a treatment file for each job. It must include:
 
-1. The scale risk screening, including the indicators and the water chemistry report.
-2. The approved design, the inhibitor product and batch details, and the compatibility test reference.
-3. The signed work permit and pressure test certificate.
-4. The pumping log with volumes, rates and pressures at 5-minute intervals, and the final falloff.
-5. The shut-in and restart times, including the soak time actually achieved.
-6. Residual inhibitor results and the plot against produced water.
-7. Pre- and post-treatment well tests and the deferred oil calculation.
-8. Deviations, stop-work events and lessons learned.
+- The scale risk flags and their supporting data.
+- The signed design sheet, compatibility and stability test results.
+- The permit, job safety analysis and pre-job meeting record.
+- The pumping log with rate, pressure and volume, and any deviation from the design.
+- Actual shut-in time, restart time and the deferred oil in bbl.
+- The inhibitor return data and the plot against MEC.
+- Pre- and post-treatment well test results and the evaluation of the treatment.
+- Lessons learned and the date of the next planned treatment or review.
 
-The Lead Operator records the shut-in, restart and flowback in the shift log. The Production Engineer closes out the file within 30 days of the final scheduled sample and sends a summary to the Production Supervisor. Files are retained for the life of the well, and the treatment history is updated in the well master record for use in future scale reviews.
-
-This procedure is reviewed at least every two years, or sooner after an incident or a significant change in produced water chemistry.
+The Lead Operator records the shut-in and restart in the shift report. The Maintenance Planner records the unit and chemical use. Files are kept for the life of the well and are reviewed at each revision of this procedure.

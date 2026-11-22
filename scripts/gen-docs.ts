@@ -19,6 +19,7 @@ interface Plan {
   title: string;
   words: [number, number];
   facts: Record<string, unknown>;
+  must?: string[];
 }
 
 const { wells, production, events } = generate();
@@ -40,6 +41,24 @@ function avgProd(well_id: string, end: string, days: number) {
   const oil = mean((p) => p!.oil_bbl);
   const gas = mean((p) => p!.gas_mscf);
   return { period_end: end, days: rows.length, oil_bbl_d: oil, gas_mscf_d: gas, water_cut_pct: mean((p) => p!.water_cut * 100), gor_scf_bbl: oil ? Math.round((gas * 1000) / oil) : null };
+}
+
+const PUMPS: Record<string, { serial: string; from: string; to: string | null }[]> = {
+  "W-09": [{ serial: "7Q-0419-027", from: "2025-02-14", to: "2025-10-21" }, { serial: "4D-0733-115", from: "2025-11-02", to: null }],
+  "W-17": [{ serial: "7Q-0419-112", from: "2025-02-03", to: "2026-03-04" }, { serial: "2M-1187-044", from: "2026-03-17", to: null }],
+  "W-27": [{ serial: "7Q-0419-086", from: "2025-09-09", to: "2026-08-18" }, { serial: "5C-0822-019", from: "2026-08-29", to: null }],
+  "W-21": [{ serial: "1H-0956-071", from: "2024-03-12", to: "2026-10-14" }, { serial: "5C-0822-034", from: "2026-10-18", to: null }],
+  "W-25": [{ serial: "3K-1102-058", from: "2025-01-20", to: null }],
+};
+const pumpOn = (well_id: string, d: string) => {
+  const p = PUMPS[well_id]?.find((x) => x.from <= d && (!x.to || d <= x.to));
+  return p ? { vendor: "Varenta", model: "VL-538", serial: p.serial, batch: p.serial.slice(0, 7), installed: p.from } : null;
+};
+
+function fieldWc(field: string, from: string, to: string) {
+  const ids = new Set(wells.filter((w) => w.field === field).map((w) => w.well_id));
+  const rows = production.filter((p) => ids.has(p.well_id) && p.uptime_hours > 0 && p.date >= from && p.date <= to);
+  return rows.length ? r1((rows.reduce((t, p) => t + p.water_cut, 0) / rows.length) * 100) : null;
 }
 
 const PROCEDURES: { id: string; title: string; sections: string[]; date: string }[] = [
@@ -97,7 +116,7 @@ function buildPlan(): Plan[] {
     const date = e.end_date && e.status === "closed" ? e.end_date : e.start_date;
     plan.push({
       doc_id: `IN-${String(i + 1).padStart(3, "0")}`, doc_type: "incident_note", well_id: e.well_id, field: w.field, date,
-      title: `Incident note: ${e.type} on ${e.well_id}`, words: [160, 360],
+      title: `Incident note: ${e.type} on ${e.well_id}`, words: [160, 360], must: e.description.includes("7Q-0419") ? ["7Q-0419"] : undefined,
       facts: {
         note_date: date, incident: eventFacts(e, date), well: wellFacts(w), applicable_procedure: procRef(e.type),
         status_at_note_date: e.end_date && dayIndex(e.end_date) <= dayIndex(date) ? "closed" : "open",
@@ -107,7 +126,7 @@ function buildPlan(): Plan[] {
     });
   });
 
-  const storyWo = new Set(["W-17", "W-08", "W-34", "W-38", "W-21", "W-29", "W-40"]);
+  const storyWo = new Set(["W-09", "W-17", "W-27", "W-08", "W-34", "W-38", "W-21", "W-29", "W-40"]);
   const maint = events.filter((e) => e.category === "maintenance");
   const chosen = [...maint.filter((e) => storyWo.has(e.well_id)), ...maint.filter((e) => !storyWo.has(e.well_id))].slice(0, 60);
   chosen.sort((a, b) => a.start_date.localeCompare(b.start_date));
@@ -117,16 +136,18 @@ function buildPlan(): Plan[] {
     const after = e.end_date && inRange(addDays(e.end_date, 7)) ? avgProd(e.well_id, addDays(e.end_date, 7), 6) : null;
     plan.push({
       doc_id: `WO-${String(i + 1).padStart(3, "0")}`, doc_type: "work_order", well_id: e.well_id, field: w.field, date: inRange(e.start_date) ? e.start_date : raised,
-      title: `Work order: ${e.type}, ${e.well_id}`, words: [140, 320],
+      title: `Work order: ${e.type}, ${e.well_id}`, words: [140, 320], must: e.description.includes("7Q-0419") ? ["7Q-0419"] : undefined,
       facts: {
         work_order_raised: raised, planned_or_actual_start: e.start_date, completion_date: e.end_date, work: eventFacts(e, e.end_date ?? TODAY), well: wellFacts(w),
-        applicable_procedure: procRef(e.type), production_before: avgProd(e.well_id, addDays(e.start_date, -1), 7), production_after_restart: after,
+        applicable_procedure: procRef(e.type), production_before: avgProd(e.well_id, addDays(e.start_date, -1), 14), production_after_restart: after,
         related_events_within_30_days: related(e, e.end_date ?? TODAY), note: e.end_date ? "Write it as a completed work order with close-out remarks." : "Write it as an open work order; work not finished as of today.",
       },
     });
   });
 
   const forcedTests: [string, string][] = [
+    ["W-09", "2025-09-30"], ["W-09", "2025-11-10"], ["W-27", "2026-07-28"], ["W-27", "2026-09-08"],
+    ["W-19", "2026-02-03"], ["W-19", "2026-10-27"], ["W-22", "2026-04-14"], ["W-26", "2026-09-15"], ["W-30", "2026-11-04"],
     ["W-17", "2026-02-10"], ["W-17", "2026-03-23"], ["W-17", "2026-05-12"], ["W-23", "2026-05-20"], ["W-23", "2026-07-15"], ["W-23", "2026-09-02"],
     ["W-34", "2026-08-10"], ["W-34", "2026-11-11"], ["W-08", "2026-09-15"], ["W-08", "2026-10-20"], ["W-38", "2026-08-05"], ["W-21", "2026-09-20"],
     ["W-40", "2026-01-05"], ["W-31", "2025-11-10"],
@@ -147,7 +168,9 @@ function buildPlan(): Plan[] {
       facts: {
         test_date: d, well: wellFacts(w), test_duration_hours: pick([8, 12, 12, 24]), choke_64ths: pick([24, 28, 32, 36, 40, 48]),
         flowing_wellhead_pressure_psi: Math.round(180 + rnd() * 420), measured: measured, previous_test_baseline: avgProd(wid, addDays(d, -60), 7),
-        sand_ppm: w.field === "Bayda" ? Math.round(2 + rnd() * 18) : Math.round(rnd() * 3),
+        installed_esp: pumpOn(wid, d),
+        ...(w.field === "Wadi Field" && { wadi_field_avg_water_cut_pct: { january_2026: fieldWc("Wadi Field", "2026-01-01", "2026-01-31"), last_30_days: fieldWc("Wadi Field", addDays(d, -29), d) } }),
+        sand_ppm: w.field === "Salt Flat Field" ? Math.round(2 + rnd() * 18) : Math.round(rnd() * 3),
         events_last_45_days: events.filter((e) => e.well_id === wid && dayIndex(e.start_date) <= dayIndex(d) && dayIndex(e.start_date) > dayIndex(d) - 45).map((e) => eventFacts(e, d)),
         procedure: "SOP-OPS-004 Well Test Procedure with the Mobile Test Separator",
       },
@@ -155,10 +178,10 @@ function buildPlan(): Plan[] {
   });
 
   const forcedShifts: [string, string][] = [
-    ["Field B", "2026-03-04"], ["Field B", "2026-03-05"], ["Field B", "2026-03-11"], ["Field B", "2026-03-14"], ["Field B", "2026-03-20"], ["Field B", "2026-03-21"],
-    ["Field B", "2026-06-15"], ["Field B", "2026-10-14"], ["Field B", "2026-11-16"], ["Field B", "2026-11-20"],
-    ["Field A", "2026-10-05"], ["Field A", "2026-10-28"], ["Field A", "2026-11-15"], ["Field A", "2026-11-21"],
-    ["Bayda", "2026-07-20"], ["Bayda", "2026-08-12"], ["Bayda", "2026-11-09"], ["Bayda", "2026-11-10"], ["Bayda", "2026-11-18"], ["Bayda", "2026-11-21"],
+    ["Wadi Field", "2026-01-15"], ["Wadi Field", "2026-03-04"], ["Wadi Field", "2026-03-05"], ["Wadi Field", "2026-03-10"], ["Wadi Field", "2026-03-14"], ["Wadi Field", "2026-03-17"], ["Wadi Field", "2026-03-18"],
+    ["Wadi Field", "2026-06-15"], ["Wadi Field", "2026-08-18"], ["Wadi Field", "2026-08-23"], ["Wadi Field", "2026-08-30"], ["Wadi Field", "2026-10-14"], ["Wadi Field", "2026-11-16"], ["Wadi Field", "2026-11-20"],
+    ["Dune Field", "2025-10-21"], ["Dune Field", "2025-10-27"], ["Dune Field", "2025-11-03"], ["Dune Field", "2026-10-05"], ["Dune Field", "2026-10-28"], ["Dune Field", "2026-11-15"], ["Dune Field", "2026-11-21"],
+    ["Salt Flat Field", "2026-07-20"], ["Salt Flat Field", "2026-08-12"], ["Salt Flat Field", "2026-11-09"], ["Salt Flat Field", "2026-11-10"], ["Salt Flat Field", "2026-11-18"], ["Salt Flat Field", "2026-11-21"],
   ];
   const shiftKeys = new Set<string>();
   const shifts: { field: string; date: string; shift: "day" | "night" }[] = [];
@@ -170,7 +193,7 @@ function buildPlan(): Plan[] {
   };
   forcedShifts.forEach(([f, d]) => addShift(f, d, "day"));
   for (const e of events) if (shifts.length < 150 && e.category === "incident") addShift(wellById.get(e.well_id)!.field, e.start_date, rnd() < 0.5 ? "day" : "night");
-  while (shifts.length < 220) addShift(pick(["Field A", "Field B", "Bayda"]), addDays(START, Math.floor(rnd() * (dayIndex(TODAY) + 1))), rnd() < 0.6 ? "day" : "night");
+  while (shifts.length < 220) addShift(pick(["Dune Field", "Wadi Field", "Salt Flat Field"]), addDays(START, Math.floor(rnd() * (dayIndex(TODAY) + 1))), rnd() < 0.6 ? "day" : "night");
   shifts.sort((a, b) => a.date.localeCompare(b.date) || a.field.localeCompare(b.field) || a.shift.localeCompare(b.shift));
   shifts.forEach((s, i) => {
     const fw = wells.filter((w) => w.field === s.field);
@@ -191,6 +214,7 @@ function buildPlan(): Plan[] {
         events_starting_today: starting.map((e) => eventFacts(e, s.date)), events_ongoing: active.filter((e) => e.start_date !== s.date).map((e) => eventFacts(e, s.date)),
         top_producers: [...online].sort((a, b) => b.p.oil_bbl - a.p.oil_bbl).slice(0, 3).map((r) => prodOn(r.w.well_id, s.date)),
         focus_well_today: focus ? prodOn(focus, s.date) : null,
+        ...(s.field === "Wadi Field" && dayIndex(s.date) >= dayIndex("2026-02-01") && { field_avg_water_cut_trend_pct: { january_2026: fieldWc("Wadi Field", "2026-01-01", "2026-01-31"), last_30_days: fieldWc("Wadi Field", addDays(s.date, -29), s.date), note: "Mention this trend in one short line of the production summary." } }),
         routine_activity: pick(["flowline patrol", "chemical injection rate checks", "separator sampling", "fire and gas detector tests", "generator maintenance", "manifold valve greasing", "road inspection after sandstorm"]),
       },
     });
@@ -199,7 +223,7 @@ function buildPlan(): Plan[] {
   PROCEDURES.forEach((p) =>
     plan.push({
       doc_id: p.id, doc_type: "procedure", well_id: null, field: null, date: p.date, title: `${p.id} ${p.title}`, words: [1100, 1800],
-      facts: { procedure_id: p.id, title: p.title, revision_date: p.date, required_sections: p.sections, applies_to: "All three fields: Field A, Field B and Bayda" },
+      facts: { procedure_id: p.id, title: p.title, revision_date: p.date, required_sections: p.sections, applies_to: "All three fields: Dune Field, Wadi Field and Salt Flat Field" },
     }),
   );
   return plan;
@@ -208,8 +232,9 @@ function buildPlan(): Plan[] {
 const SYSTEM = `You write synthetic internal documents for a fictional upstream oil and gas asset. The documents feed a demo of a retrieval system, so they must read like real field paperwork and agree exactly with the data you are given.
 
 Setting:
-- One fictional operating asset in a desert concession with three fields: Field A, Field B and Bayda. Fluids go to one central processing facility, CPF-1.
-- Wells are named W-01 to W-41. Field A has W-01 to W-16, Field B has W-17 to W-30, Bayda has W-31 to W-41. Bayda is sand-prone and has high GOR.
+- One fictional operating asset in a desert concession with three fields: Dune Field, Wadi Field and Salt Flat Field. Fluids go to one central processing facility, CPF-1.
+- Wells are named W-01 to W-41. Dune Field has W-01 to W-16, Wadi Field has W-17 to W-30, Salt Flat Field has W-31 to W-41. Salt Flat Field is sand-prone and has high GOR. Wadi Field is under water flood and its water cut is rising.
+- ESP wells run Varenta VL-538 pumps (Varenta is the fictional ESP vendor). Each pump has a serial whose first part is its manufacturing batch: serial 7Q-0419-112 belongs to batch 7Q-0419.
 - Units: oil in bbl/d (or bbl for a day), gas in Mscf/d, water cut in percent, pressure in psi, sand in ppm, choke in 64ths of an inch.
 - People appear only by role (Production Supervisor, Lead Operator, Night Lead Operator, Production Engineer, Field Engineer, HSE Advisor, Workover Supervisor, Maintenance Planner, Integrity Engineer), optionally with an initial such as "Lead Operator (K.M.)".
 
@@ -218,6 +243,7 @@ Hard rules:
 - Never use em dashes or en dashes. Use commas, colons, parentheses or a plain hyphen.
 - Every number about production, dates, durations, events and well status must come from the facts JSON. Do not contradict it. You may add plausible operational detail (checks done, readings on equipment not covered by the facts, people informed, next steps) as long as it does not contradict the facts.
 - Write the date as YYYY-MM-DD.
+- When the facts give an ESP serial or batch, state it once as a plain equipment detail, for example "pump serial 7Q-0419-112 (batch 7Q-0419)". Never compare it with other wells and never suggest a batch problem: each document only knows its own well.
 - Output only the document in Markdown. Start with a level 1 heading equal to the title you are given. No front matter, no preamble, no closing remarks.
 
 Well register:
@@ -265,6 +291,10 @@ async function write(p: Plan) {
     const body = clean(res.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join(""));
     if (BANNED.test(body)) {
       console.warn(`${p.doc_id}: banned name found, attempt ${attempt}`);
+      continue;
+    }
+    if (p.must?.some((m) => !body.includes(m))) {
+      console.warn(`${p.doc_id}: missing ${p.must.join(", ")}, attempt ${attempt}`);
       continue;
     }
     const front = stringify({ doc_id: p.doc_id, doc_type: p.doc_type, well_id: p.well_id, field: p.field, date: p.date, title: p.title });
