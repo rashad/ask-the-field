@@ -202,8 +202,8 @@ async function Content() {
 
 export default function About() {
   return (
-    <>
-      <div style={{ maxWidth: 680 }}>
+    <div className="page about">
+      <div className="about-head">
         <p className="caption-3 eyebrow">About</p>
         <h1 className="heading-3">Ask the Field</h1>
         <p className="title-2 mute" style={{ marginTop: "var(--sp-100)", fontWeight: 400 }}>Ask an oil field a question in plain English. Get a short answer, the proof behind it, and a clear note on what could not be checked.</p>
@@ -222,6 +222,6 @@ export default function About() {
         </ul>
         <p className="credit-p" style={{ marginTop: "var(--sp-300)" }}><Credit /></p>
       </section>
-    </>
+    </div>
   );
 }
