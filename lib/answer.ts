@@ -2,11 +2,10 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { openrouter } from "@openrouter/ai-sdk-provider";
 import { isStepCount, Output, streamText, type LanguageModelUsage } from "ai";
 import { z } from "zod";
-import { BAR_METRICS, buildChart, type Chart } from "./chart";
-import { sql } from "./db";
+import { BAR_METRICS, buildViz, type FinalViz } from "./chart";
 import { findQuote } from "./quote";
 import { SYSTEM } from "./prompt";
-import { makeTools, type RepeatedResult, type SearchTrace, type ToolRun } from "./tools";
+import { makeTools, type RepeatedResult, type SearchTrace } from "./tools";
 
 export const MODEL = process.env.ASK_MODEL || "claude-sonnet-5-5";
 const MAX_STEPS = 4;
@@ -81,7 +80,6 @@ export interface Usage {
 }
 
 export type FinalSource = Answer["sources"][number] & { quote_verified: boolean | null };
-export type FinalViz = Chart | (Extract<Answer["viz"], { type: "map" }> & { wells: unknown[] }) | { type: "none" };
 
 interface Checks {
   unknown_chunk_ids: string[];
@@ -136,24 +134,6 @@ function routerMeta(steps: { providerMetadata?: unknown }[]) {
   };
 }
 
-async function withWells(viz: Extract<Answer["viz"], { type: "map" }>) {
-  const query = (ids: string[]) => sql<{ well_id: string; field: string; lat: number; lon: number; status: string }[]>`
-    SELECT well_id, field, lat, lon, status FROM wells
-    ${ids.length ? sql`WHERE field IN (SELECT field FROM wells WHERE well_id = ANY(${ids}))` : sql``} ORDER BY well_id`;
-  const ids = viz.well_ids.length ? [...viz.well_ids, ...viz.highlighted] : [];
-  let wells = await query(ids);
-  if (!wells.length) wells = await query([]);
-  const highlighted = new Set(viz.highlighted);
-  return { ...viz, wells: wells.map((w) => ({ ...w, highlighted: highlighted.has(w.well_id) })) };
-}
-
-async function finalViz(viz: Answer["viz"], runs: ToolRun[]): Promise<{ viz: FinalViz; error: string | null }> {
-  if (viz.type === "none") return { viz, error: null };
-  if (viz.type === "map") return { viz: await withWells(viz), error: null };
-  const { chart, error } = buildChart(viz, runs);
-  return { viz: chart ?? { type: "none" }, error };
-}
-
 function verifyQuotes(a: Answer, traces: SearchTrace[]): FinalSource[] {
   const text = new Map(traces.flatMap((t) => t.chunks_sent.map((c) => [c.chunk_id, c.text] as const)));
   return a.sources.map((s) => ({ ...s, quote_verified: s.kind === "chunk" ? !!findQuote(text.get(s.id) ?? "", s.quote) : null }));
@@ -199,7 +179,7 @@ export async function* ask(question: string, signal?: AbortSignal, model = MODEL
   const answer = await result.output;
   const steps = await result.steps;
   const meta = isClaude(model) ? { cost: null, provider: "anthropic" } : routerMeta(steps);
-  const viz = await finalViz(answer.viz, runs);
+  const viz = await buildViz(answer.viz, runs);
   const sources = verifyQuotes(answer, traces);
   yield {
     type: "final",

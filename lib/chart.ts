@@ -1,3 +1,4 @@
+import { sql } from "./db";
 import type { ToolRun } from "./tools";
 
 export const BAR_METRICS = ["value", "change", "change_pct", "lost_oil_bbl", "lost_revenue_usd", "downtime_hours"] as const;
@@ -7,9 +8,16 @@ export type ChartRequest =
   | { type: "line"; title: string; ref: string; metric: "oil" | "gas" | "water_cut"; series: string[] }
   | { type: "bar"; title: string; ref: string; metric: BarMetric; wells: string[]; event_groups: string[][]; direction?: "drops" | "rises" | null };
 
+type MapRequest = { type: "map"; title: string; well_ids: string[]; highlighted: string[] };
+export type VizRequest = ChartRequest | MapRequest | { type: "none" };
+
+export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; highlighted: boolean }
+
 export type Chart =
   | { type: "line"; title: string; unit: string; ref: string; series: { name: string; points: { x: string; y: number }[] }[] }
   | { type: "bar"; title: string; unit: string; ref: string; metric: BarMetric; bars: { label: string; value: number; ids: string[] }[] };
+
+export type FinalViz = Chart | (MapRequest & { wells: MapWell[] }) | { type: "none" };
 
 interface Series { name: string; points: { x: string; y: number }[] }
 interface WellRow { well_id: string; value: number; baseline?: number; change?: number; change_pct?: number | null }
@@ -81,4 +89,22 @@ export function buildChart(req: ChartRequest, runs: ToolRun[]): { chart: Chart |
     if (err instanceof ChartError) return { chart: null, error: err.message };
     throw err;
   }
+}
+
+async function withWells(viz: MapRequest): Promise<FinalViz> {
+  const query = (ids: string[]) => sql<Omit<MapWell, "highlighted">[]>`
+    SELECT well_id, field, lat, lon, status FROM wells
+    ${ids.length ? sql`WHERE field IN (SELECT field FROM wells WHERE well_id = ANY(${ids}))` : sql``} ORDER BY well_id`;
+  const ids = viz.well_ids.length ? [...viz.well_ids, ...viz.highlighted] : [];
+  let wells = await query(ids);
+  if (!wells.length) wells = await query([]);
+  const highlighted = new Set(viz.highlighted);
+  return { ...viz, wells: wells.map((w) => ({ ...w, highlighted: highlighted.has(w.well_id) })) };
+}
+
+export async function buildViz(req: VizRequest, runs: ToolRun[]): Promise<{ viz: FinalViz; error: string | null }> {
+  if (req.type === "none") return { viz: req, error: null };
+  if (req.type === "map") return { viz: await withWells(req), error: null };
+  const { chart, error } = buildChart(req, runs);
+  return { viz: chart ?? { type: "none" }, error };
 }
