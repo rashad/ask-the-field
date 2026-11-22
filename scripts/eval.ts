@@ -188,9 +188,10 @@ const passed = all.filter((ch) => ch.pass).length;
 const failures: Record<string, number> = {};
 for (const ch of all) if (!ch.pass) failures[ch.name] = (failures[ch.name] ?? 0) + 1;
 const costs = done.map((r) => r.cost_usd).filter((x): x is number => typeof x === "number");
+const noTools = done.length > 0 && done.every((r) => r.tool_calls === 0);
 const summary = {
-  status: results.length && !done.length ? "unsupported" : "ok",
-  error: results.length && !done.length ? results[0].error : undefined,
+  status: (results.length && !done.length) || noTools ? "unsupported" : "ok",
+  error: results.length && !done.length ? results[0].error : noTools ? "no tool call in any run: the model returned the structured answer at once, without calling a tool" : undefined,
   checks_passed: passed,
   checks_total: all.length,
   per_question: [...new Set(results.map((r) => r.question))].map((q) => {
