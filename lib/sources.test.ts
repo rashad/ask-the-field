@@ -29,4 +29,5 @@ test("a source covers the events its label names or spans, when the tool returne
   assert.deepEqual(coveredEvents("EV-0179", "Open incident events EV-0179 to EV-0184", rows).map((r) => r.event_id), ["EV-0179", "EV-0180", "EV-0182", "EV-0184"]);
   assert.deepEqual(coveredEvents("EV-0092", "W-17 ESP trip and EV-0094 workover (17,942 bbl)", [ev("EV-0092"), ev("EV-0094"), ev("EV-0095")]).map((r) => r.event_id), ["EV-0092", "EV-0094"]);
   assert.deepEqual(coveredEvents("EV-0092", "W-17 ESP trip and EV-0094 workover", [ev("EV-0092")]).map((r) => r.event_id), ["EV-0092"]);
+  assert.deepEqual(coveredEvents("EV-0092", "Batch EV-01790 note", [ev("EV-0092"), ev("EV-0179")]).map((r) => r.event_id), ["EV-0092"]);
 });

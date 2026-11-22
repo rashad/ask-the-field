@@ -23,7 +23,7 @@ export function loadRuns(dir: string): Run[] {
   for (const f of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
     let run: Run;
     try { run = JSON.parse(readFileSync(path.join(dir, f), "utf8")); } catch { continue; }
-    if (!run?.summary || typeof run.model !== "string") continue;
+    if (!run?.summary || typeof run.model !== "string" || typeof run.date !== "string" || !Array.isArray(run.summary.per_question) || !(run.runs > 0)) continue;
     const seen = latest.get(run.model);
     if (!seen || run.date >= seen.date) latest.set(run.model, run);
   }

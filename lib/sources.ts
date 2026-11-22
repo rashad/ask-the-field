@@ -11,8 +11,8 @@ export function producer<S extends ToolStep>(id: string, steps: S[]): S | undefi
   }
 }
 
-const EV = /EV-(\d{4})/g;
-const RANGE = /EV-(\d{4})\s*(?:to|through|-|–|\.\.)\s*EV-(\d{4})/g;
+const EV = /EV-(\d{4})(?!\d)/g;
+const RANGE = /EV-(\d{4})(?!\d)\s*(?:to|through|-|–|\.\.)\s*EV-(\d{4})(?!\d)/g;
 
 export function coveredEvents<E extends { event_id: string }>(key: string, label: string, rows: E[]): E[] {
   const ids = new Set([key, ...[...label.matchAll(EV)].map((m) => m[0])]);

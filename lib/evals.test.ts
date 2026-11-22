@@ -3,7 +3,7 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { board, checkNames, loadRuns, questionCells, usd, type Run } from "./evals";
+import { board, checkNames, loadRuns, questionCells, secs, usd, type Run } from "./evals";
 
 const summary = (over: Partial<Run["summary"]> = {}): Run["summary"] => ({
   status: "ok", checks_passed: 4, checks_total: 4, per_question: [{ question: 1, passed: 2, total: 2 }, { question: 2, passed: 1, total: 2 }],
@@ -17,11 +17,12 @@ function folder(files: Record<string, unknown>) {
   return dir;
 }
 
-test("a null mean cost loads and prints n/a", () => {
+test("a null mean cost and latency load and print n/a", () => {
   const [r] = loadRuns(folder({ "a.json": run("m", "2026-11-22", { summary: summary({ cost_usd_mean: null, latency_ms_mean: null }) }) }));
   assert.equal(r.summary.cost_usd_mean, null);
   assert.equal(usd(r.summary.cost_usd_mean), "n/a");
   assert.equal(usd(0.02714), "$0.0271");
+  assert.equal(secs(r.summary.latency_ms_mean), "n/a");
 });
 
 test("keeps only the latest run of a model saved on two dates", () => {
@@ -31,6 +32,7 @@ test("keeps only the latest run of a model saved on two dates", () => {
 
 test("skips files that do not parse or have no summary, and a missing folder gives no run", () => {
   assert.deepEqual(loadRuns(folder({ "bad.json": "{", "empty.json": { model: "m" }, "notes.md": "x" })), []);
+  assert.deepEqual(loadRuns(folder({ "a.json": { ...run("a"), summary: { ...summary(), per_question: undefined } }, "b.json": { ...run("b"), date: 20261122 }, "c.json": run("c", "2026-11-22", { runs: 0 }) })), []);
   assert.deepEqual(loadRuns(path.join(tmpdir(), "no-such-evals-folder")), []);
 });
 
