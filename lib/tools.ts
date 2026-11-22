@@ -254,11 +254,12 @@ export function makeTools() {
   const seen: Seen[] = [];
   const runs: ToolRun[] = [];
   const traces: SearchTrace[] = [];
+  const counts: Record<string, number> = {};
   const once = <A extends Record<string, unknown>, R extends object>(name: string, run: (a: A, o: { toolCallId: string }) => Promise<R>) =>
     async (a: A, o: { toolCallId: string }): Promise<RepeatedResult | ({ ref: string } & R)> => {
       const first = earlier(seen, name, a);
       if (first) return { repeated: true, ref: first.ref, note: `Call ${first.ref} already returned this data. Reuse that result (ref ${first.ref}); do not call again.` };
-      const ref = `${PREFIX[name]}${runs.filter((r) => r.name === name).length + 1}`;
+      const ref = `${PREFIX[name]}${(counts[name] = (counts[name] ?? 0) + 1)}`;
       const result = { ref, ...(await run(a, o)) };
       runs.push({ ref, name, output: result });
       seen.push({ name, args: a, ref, complete: !(result as { truncated?: boolean }).truncated });

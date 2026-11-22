@@ -1,6 +1,6 @@
 const WINDOW_MS = 60_000;
 
-export function envInt(name: string, fallback: number) {
+function envInt(name: string, fallback: number) {
   const n = Number(process.env[name]);
   return Number.isInteger(n) && n > 0 ? n : fallback;
 }

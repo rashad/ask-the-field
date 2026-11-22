@@ -29,14 +29,14 @@ export const answerSchema = z.object({
     z.object({
       type: z.literal("line"),
       title: z.string().max(120),
-      ref: z.string().describe("ref of a query_production time series result (group_by day, week, month or quarter), such as P1"),
+      ref: z.string().max(10).describe("ref of a query_production time series result (group_by day, week, month or quarter), such as P1"),
       metric: z.enum(["oil", "gas", "water_cut"]).describe("The metric the chart shows; it must be the metric of that result"),
       series: z.array(z.string().max(60)).max(10).describe("Names of the series to plot; empty for all"),
     }),
     z.object({
       type: z.literal("bar"),
       title: z.string().max(120),
-      ref: z.string().describe("ref of a query_production group_by=well result (P1) or of a list_events result (E1)"),
+      ref: z.string().max(10).describe("ref of a query_production group_by=well result (P1) or of a list_events result (E1)"),
       metric: z.enum(BAR_METRICS).describe("query_production: value, change or change_pct. list_events: lost_oil_bbl, lost_revenue_usd or downtime_hours"),
       wells: z.array(wellId).max(41).describe("query_production: the wells to plot; empty for the top 10"),
       event_groups: z.array(z.array(z.string().max(20)).max(10)).max(20).describe("list_events: one bar per group of event ids, such as a failure and its workover on the same well; empty for one bar per event"),
@@ -48,7 +48,7 @@ export const answerSchema = z.object({
     z.object({
       n: z.number().int(),
       kind: z.enum(["table", "chunk"]),
-      id: z.string().max(120).describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>"),
+      id: z.string().max(120).describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>, one row per source, never a list of ids"),
       label: z.string().max(200),
       quote: z.string().max(400).nullable().describe("chunk: one sentence or one table row copied word for word from that chunk's text, under 200 characters, that supports the claim. table: null"),
     }),

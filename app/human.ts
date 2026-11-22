@@ -12,12 +12,11 @@ export const DOC_COUNT = 400;
 
 
 const list = (xs: string[]) => (xs.length <= 2 ? xs.join(" and ") : xs.length <= 4 ? `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}` : `${xs.length} wells`);
-const month = (d: string) => monthYear(d);
 
 function when(a: Record<string, any>) {
-  if (a.from && a.to) return month(a.from) === month(a.to) ? ` in ${month(a.from)}` : ` from ${month(a.from)} to ${month(a.to)}`;
-  if (a.from) return ` since ${month(a.from)}`;
-  if (a.to) return ` up to ${month(a.to)}`;
+  if (a.from && a.to) return monthYear(a.from) === monthYear(a.to) ? ` in ${monthYear(a.from)}` : ` from ${monthYear(a.from)} to ${monthYear(a.to)}`;
+  if (a.from) return ` since ${monthYear(a.from)}`;
+  if (a.to) return ` up to ${monthYear(a.to)}`;
   return "";
 }
 

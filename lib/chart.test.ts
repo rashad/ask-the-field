@@ -17,6 +17,11 @@ test("event bars sum the grouped rows on the server", () => {
   assert.deepEqual(chart?.type === "bar" && chart.bars, [{ label: "W-09, Oct 2025", value: 150, ids: ["EV-1", "EV-2"] }]);
 });
 
+test("two events on one well in one month get distinct labels", () => {
+  const { chart } = buildChart({ type: "bar", title: "t", ref: "E1", metric: "lost_oil_bbl", wells: [], event_groups: [] }, runs);
+  assert.deepEqual(chart?.type === "bar" && chart.bars.map((b) => b.label), ["W-09, Oct 2025 (EV-1)", "W-09, Oct 2025 (EV-2)"]);
+});
+
 test("line copies the referenced series", () => {
   const { chart } = buildChart({ type: "line", title: "t", ref: "P1", metric: "water_cut", series: [] }, runs);
   assert.equal(chart?.type === "line" && chart.series[0].points[0].y, 0.3);
