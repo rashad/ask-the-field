@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { SUGGESTED } from "@/lib/questions";
 import { Credit, SourceLink } from "./credit";
+import { ThemeControl } from "./theme";
 
 export const ASK_EVENT = "ask-the-field:ask";
 
@@ -129,6 +130,7 @@ export function Shell({ model, children }: { model: string; children: React.Reac
         <Suspense fallback={recentFallback}><Recent /></Suspense>
         <div className="side-foot">
           <div className="snav"><SourceLink label="GitHub" /></div>
+          <ThemeControl />
           <span className="chip"><span className="dot off" aria-hidden />Concept prototype, synthetic data</span>
           <Credit />
         </div>

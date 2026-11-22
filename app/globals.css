@@ -1,28 +1,43 @@
 :root{
-  --bg:#131415;--s1:#191a1c;--s2:#1f2123;--s3:#292b2f;
-  --line:rgba(255,255,255,.075);--line-2:rgba(255,255,255,.12);
-  --text:#e9eaeb;--text-2:#c3c6ca;--muted:#a3a7ac;--faint:#868b91;
-  --accent:#e6c36a;--accent-soft:rgba(230,195,106,.15);--accent-line:rgba(230,195,106,.45);--on-accent:#1a1407;
-  --danger:#f0938a;--danger-soft:rgba(240,147,138,.12);
-  --btn-bg:#e9eaeb;--btn-hover:#ffffff;--btn-ink:#16171a;--btn-kbd-bg:rgba(0,0,0,.08);--btn-kbd-line:rgba(0,0,0,.14);--btn-kbd-ink:#34363a;
-  --sent-on:rgba(255,255,255,.055);--bar:#6d7278;--dot:#7d8288;--scrim:rgba(0,0,0,.5);
-  --r:8px;--r-s:4px;
+  color-scheme:light dark;
+  --bg:light-dark(#f4f5f7,#131415);
+  --s1:light-dark(#ffffff,#191a1c);
+  --s2:light-dark(#edeff2,#1f2123);
+  --s3:light-dark(#e1e4e8,#292b2f);
+  --line:light-dark(rgba(20,23,26,.11),rgba(255,255,255,.075));
+  --line-2:light-dark(rgba(20,23,26,.18),rgba(255,255,255,.12));
+  --text:light-dark(#14171a,#e9eaeb);
+  --text-2:light-dark(#3a4047,#c3c6ca);
+  --muted:light-dark(#464c54,#a3a7ac);
+  --faint:light-dark(#5c636c,#868b91);
+  --accent:light-dark(#845900,#e6c36a);
+  --accent-soft:light-dark(rgba(132,89,0,.14),rgba(230,195,106,.15));
+  --accent-line:light-dark(rgba(132,89,0,.5),rgba(230,195,106,.45));
+  --on-accent:light-dark(#ffffff,#1a1407);
+  --danger:light-dark(#b3261e,#f0938a);
+  --danger-soft:light-dark(rgba(179,38,30,.08),rgba(240,147,138,.12));
+  --btn-bg:light-dark(#14171a,#e9eaeb);
+  --btn-hover:light-dark(#2b2f34,#ffffff);
+  --btn-ink:light-dark(#ffffff,#16171a);
+  --btn-kbd-bg:light-dark(rgba(255,255,255,.14),rgba(0,0,0,.08));
+  --btn-kbd-line:light-dark(rgba(255,255,255,.26),rgba(0,0,0,.14));
+  --btn-kbd-ink:light-dark(#e1e4e8,#34363a);
+  --sent-on:light-dark(rgba(20,23,26,.06),rgba(255,255,255,.055));
+  --bar:light-dark(#7f8690,#6d7278);
+  --dot:light-dark(#7c838c,#7d8288);
+  --scrim:light-dark(rgba(20,23,26,.35),rgba(0,0,0,.5));
+  --r:8px;
+  --r-s:4px;
   --sans:var(--font-sans),-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --mono:var(--font-mono),ui-monospace,"SF Mono",Menlo,monospace;
-  --sp-75:8px;--sp-100:12px;--sp-150:14px;--sp-200:16px;--sp-300:24px;
-  color-scheme:dark light;
+  --sp-75:8px;
+  --sp-100:12px;
+  --sp-150:14px;
+  --sp-200:16px;
+  --sp-300:24px;
 }
-@media (prefers-color-scheme:light){
-  :root{
-    --bg:#f4f5f7;--s1:#ffffff;--s2:#edeff2;--s3:#e1e4e8;
-    --line:rgba(20,23,26,.11);--line-2:rgba(20,23,26,.18);
-    --text:#14171a;--text-2:#3a4047;--muted:#464c54;--faint:#5c636c;
-    --accent:#845900;--accent-soft:rgba(132,89,0,.14);--accent-line:rgba(132,89,0,.5);--on-accent:#ffffff;
-    --danger:#b3261e;--danger-soft:rgba(179,38,30,.08);
-    --btn-bg:#14171a;--btn-hover:#2b2f34;--btn-ink:#ffffff;--btn-kbd-bg:rgba(255,255,255,.14);--btn-kbd-line:rgba(255,255,255,.26);--btn-kbd-ink:#e1e4e8;
-    --sent-on:rgba(20,23,26,.06);--bar:#7f8690;--dot:#7c838c;--scrim:rgba(20,23,26,.35);
-  }
-}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
 
 *{box-sizing:border-box}
 html{background:var(--bg);-webkit-text-size-adjust:100%}
@@ -440,7 +455,7 @@ svg.links circle.draw{animation:pop .2s .3s both}
 .seg a,.seg button{display:flex;align-items:center;gap:8px;height:28px;padding:0 10px;border-radius:var(--r-s);color:var(--muted);transition:background .12s,color .12s}
 .seg svg{width:16px;height:16px}
 .seg a:hover,.seg button:hover{color:var(--text);background:var(--s2)}
-.seg [aria-current="page"],.seg [aria-pressed="true"]{background:var(--s3);color:var(--text)}
+.seg [aria-current="page"],.seg [aria-pressed="true"],.seg [aria-checked="true"]{background:var(--s3);color:var(--text)}
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .sel{position:relative;display:inline-flex;align-items:center}
 .sel select,.tfilter{appearance:none;-webkit-appearance:none;background:var(--s1);border:1px solid var(--line-2);border-radius:var(--r-s);height:32px;padding:0 36px 0 12px;color:var(--text)}
@@ -610,3 +625,5 @@ table.data tbody tr:last-child td{border-bottom:0}
 }
 .credit-p .credit{padding:0}
 .tile dd small .term-b{line-height:16px}
+.theme{display:flex;align-self:stretch;margin:0 8px}
+.theme button{flex:1;justify-content:center;font-size:12px;height:24px}
