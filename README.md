@@ -31,7 +31,7 @@ flowchart TD
 - If Voyage fails for a query, search falls back to full text only and the retrieval trace says so.
 - The model picks the chart and points at a tool call; the server fills it from the database rows that call returned. Every quote is checked word for word against its report before the UI highlights it.
 - The UI shows live steps and a "How this answer was built" drawer with the tool calls and retrieved chunks.
-- The app replays recorded answers for the four suggested questions when keys are missing, the daily cap or the rate limit is reached, the API fails, or a live answer takes more than 20 seconds. The UI labels every replay.
+- The app replays recorded answers for the five suggested questions when keys are missing, the daily cap or the rate limit is reached, the API fails, or a live answer takes more than 20 seconds. The UI labels every replay.
 
 ## Data
 
@@ -52,7 +52,7 @@ pnpm restore   # starts Postgres with pgvector in Docker and loads data/dump.sql
 pnpm dev
 ```
 
-Open http://localhost:3000 and use the suggested questions. Without keys, the app replays the recorded answers for those four questions. Other questions return "Live answers are off".
+Open http://localhost:3000 and use the suggested questions. Without keys, the app replays the recorded answers for those five questions. Other questions return "Live answers are off".
 
 ## Quick start with keys
 
@@ -67,6 +67,8 @@ Copy the names from `.env.example` into a `.env.local` file and set your values.
 | `DATABASE_URL` | Postgres URL. Default: `postgres://opsrag:opsrag@localhost:5442/opsrag` |
 | `RATE_LIMIT_PER_MINUTE` | Questions per IP per minute. Default 6 |
 | `LLM_DAILY_CAP` | Live questions per day. Default 300 |
+| `LLM_DAILY_PER_IP` | Live questions per client IP per day. Default 20 |
+| `TRUST_PROXY` | `1` behind Railway: key the limits on `X-Real-IP`, which Railway's edge sets. Unset, every caller shares one key |
 | `SITE_URL` | Base URL for link previews |
 
 With both API keys set, any question goes live. Rate limit and daily cap are in memory, so they reset on restart.
@@ -91,7 +93,7 @@ pnpm eval --record    # rewrite data/cache for the suggested questions that pass
 pnpm eval --model=openai/gpt-6.2-astra --runs=3 --save   # another model, 3 runs, raw results to evals/
 ```
 
-The script asks the five briefing questions, runs assertions on the answer (chart type, wells found, cited sources, answer length), and prints pass or fail, latency, tool calls and tokens. `pnpm test` runs the unit tests and needs no key.
+The script asks the five briefing questions, runs assertions on the answer (chart type, wells found, cited sources, answer length), and prints pass or fail, latency, tool calls and tokens. `pnpm test` runs the unit tests for the chunker, the chart builder, the quote check and the request guard. It needs no key and no database.
 
 Multi-model run on 2026-11-22, 5 questions, 3 runs each, 108 checks per model. Claude models go direct to Anthropic; the others go through OpenRouter. Details, prices and caching notes: [evals/README.md](evals/README.md).
 
@@ -110,7 +112,8 @@ Multi-model run on 2026-11-22, 5 questions, 3 runs each, 108 checks per model. C
 - Set the environment names above on the app service. Point `DATABASE_URL` at the database.
 - Load the data once: `gunzip -c data/dump.sql.gz | psql "$DATABASE_URL"`. The dump uses `--clean --if-exists`, so it replaces existing tables.
 - `pnpm build` needs no keys and no database. I verified it with all three variables unset.
-- The app has no login. Keep `LLM_DAILY_CAP` and `RATE_LIMIT_PER_MINUTE` set on a public deployment.
+- The app has no login. Keep `LLM_DAILY_CAP`, `LLM_DAILY_PER_IP` and `RATE_LIMIT_PER_MINUTE` set on a public deployment, and set `TRUST_PROXY=1` only behind a proxy that overwrites `X-Real-IP` (Railway does).
+- `/api/ask` rejects cross-site browser calls (`Origin` or `Sec-Fetch-Site`) and bodies over 2 KB. A `?q=` link runs on open only for the five briefing questions; any other question is prefilled and waits for a click.
 
 ## Project layout
 
@@ -130,7 +133,7 @@ data/dump.sql.gz  indexed database
 - The 400 documents were written by an LLM from the structured data. They are consistent with it by construction, which makes retrieval easier than on real documents.
 - No auth, no write access, no memory between questions.
 - Rate limit and daily cap live in process memory. They do not work across several instances.
-- Recorded answers cover only the four suggested questions.
+- Recorded answers cover only the five suggested questions.
 - Eval assertions are specific to this dataset.
 - The system prompt (`lib/prompt.ts`) carries per-question guidance for the five briefing questions (which tools to chain, how many sentences, what goes in each one), and the eval checks those same five questions. The briefing is a scripted demo, so the guidance keeps those answers short and stable for a non-engineer; free questions use only the general rules, and the eval does not measure them.
 
