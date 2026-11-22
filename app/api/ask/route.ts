@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ask, type AskEvent } from "@/lib/answer";
 import { hasRecording, replay } from "@/lib/cache";
-import { clientIp, crossSite, rateLimited, takeDailyCall } from "@/lib/guard";
+import { clientIp, crossSite, rateLimited, readBody, takeDailyCall } from "@/lib/guard";
 
 export const maxDuration = 120;
 
@@ -12,9 +12,8 @@ const BAD_BODY = { error: "Send { question: string } (3 to 300 characters)." };
 
 export async function POST(req: Request) {
   if (crossSite(req.headers)) return Response.json({ error: "Cross-site requests are not allowed." }, { status: 403 });
-  if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) return Response.json(BAD_BODY, { status: 413 });
-  const text = await req.text().catch(() => "");
-  if (new TextEncoder().encode(text).length > MAX_BODY_BYTES) return Response.json(BAD_BODY, { status: 413 });
+  const text = await readBody(req, MAX_BODY_BYTES).catch(() => "");
+  if (text === null) return Response.json(BAD_BODY, { status: 413 });
   let json: unknown = null;
   try {
     json = JSON.parse(text);
