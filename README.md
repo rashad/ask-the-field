@@ -95,7 +95,7 @@ pnpm eval --record    # rewrite data/cache for the suggested questions that pass
 pnpm eval --model=openai/gpt-6.2-astra --runs=3 --save   # another model, 3 runs, raw results to evals/
 ```
 
-The script asks the five briefing questions, runs assertions on the answer (chart type, wells found, cited sources, answer length), and prints pass or fail, latency, tool calls and tokens. `pnpm test` runs the unit tests for the chunker, the chart builder, the quote check and the request guard. It needs no key and no database.
+The script asks the five briefing questions, runs assertions on the answer (chart type, wells found, cited sources, answer length), and prints pass or fail, latency, tool calls and tokens. `pnpm test` runs the unit tests for the chunker, the chart builder, the quote check, the request guard, the eval loader and the source matcher. It needs no key and no database.
 
 Multi-model run on 2026-11-22, 5 questions, 3 runs each, 108 checks per model. Claude models go direct to Anthropic; the others go through OpenRouter. Details, prices and caching notes: [evals/README.md](evals/README.md).
 
