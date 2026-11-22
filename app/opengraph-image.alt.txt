@@ -1,1 +1,1 @@
-Ask the Field: ask an oil field a question in plain English. An answer card with numbered sources and a map of open incidents.
+Ask the Field: you run a fictional oil field and ask it what went wrong. An answer card shows that W-17's pump failure was not a one-off, with numbered sources.

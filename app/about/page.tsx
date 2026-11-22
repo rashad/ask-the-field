@@ -7,6 +7,8 @@ import { Suspense } from "react";
 import { sql } from "@/lib/db";
 import { MODEL } from "@/lib/answer";
 import { EMBEDDING_DIM, EMBEDDING_MODEL } from "@/lib/voyage";
+import { PRICE_NOTE } from "@/lib/money";
+import { SUGGESTED } from "@/lib/questions";
 
 export const metadata: Metadata = { title: "About", description: "What Ask the Field does, why every answer shows its sources, and how it is built." };
 import { shortDate } from "../fmt";
@@ -66,14 +68,14 @@ async function Content() {
         <div className="sec-head"><span className="no caption-3">01</span><h2 id="h-problem" className="heading-5">The problem it solves</h2></div>
         <div className="prose body-3">
           <p>An oil field writes a lot down. Every shift ends with a report. Every incident gets a note. Every repair gets a work order. Next to that, sensors log how much oil, gas and water each well produces, every day.</p>
-          <p>When a manager asks &ldquo;why did this well stop in March?&rdquo;, someone has to dig through folders and spreadsheets to find out. That takes hours, and the answer often depends on who remembers what.</p>
+          <p>When a manager asks &ldquo;why did this well stop in March?&rdquo;, someone has to dig through folders and spreadsheets to find out. That takes hours, and the answer often depends on who remembers what. A problem that repeats across wells, months apart, is often never connected at all.</p>
           <p>Ask the Field does that digging in seconds. You ask in plain English. It finds the few reports and numbers that matter, writes a short answer, and puts the proof next to it.</p>
         </div>
       </section>
 
       <section className="sec" aria-labelledby="h-data">
         <div className="sec-head"><span className="no caption-3">02</span><h2 id="h-data" className="heading-5">What you are looking at</h2></div>
-        <p className="body-3" style={{ maxWidth: 680, marginBottom: "var(--sp-200)" }}>An invented oil field, made up for this demo. No real company, field or well. Every number below is read live from the database.</p>
+        <p className="body-3" style={{ maxWidth: 680, marginBottom: "var(--sp-200)" }}>A fictional oil company in the desert, made up for this demo: three fields named Dune Field, Wadi Field and Salt Flat Field, and the morning of 22 November 2026. No real company, field or well. Every number below is read live from the database.</p>
         <div className="facts">
           <div className="fact"><b>{c.fields}</b><span className="caption-4 mute">oil fields: {c.field_names}</span></div>
           <div className="fact"><b>{c.wells}</b><span className="caption-4 mute">wells</span></div>
@@ -81,6 +83,8 @@ async function Content() {
           <div className="fact"><b>{months}</b><span className="caption-4 mute">months of daily production, {n(c.production_rows)} rows</span></div>
           <div className="fact"><b>{c.events}</b><span className="caption-4 mute">events: {c.incidents} incidents, {c.maintenance} repairs and checks</span></div>
         </div>
+        <p className="body-3" style={{ maxWidth: 680, marginTop: "var(--sp-200)" }}>Five stories run through the tables and the reports: the incidents open this morning, a pump failure on W-17 in March, a repeat failure nobody connected, water rising in Wadi Field, and a sand alarm in Salt Flat Field. The morning briefing on the Ask page asks about each one.</p>
+        <p className="body-3" style={{ maxWidth: 680, marginTop: "var(--sp-100)" }}>Lost oil is the normal rate of the well before an event, times the hours it was offline. Money is {PRICE_NOTE.charAt(0).toLowerCase() + PRICE_NOTE.slice(1)} It is not a real price or a real cost.</p>
         <p className="body-5" style={{ marginTop: "var(--sp-300)" }}>The kinds of reports it reads</p>
         <div className="docs">
           {examples.map((e, i) => (
@@ -126,8 +130,8 @@ async function Content() {
             <rect className="box" x="0" y="55" width="170" height="140" />
             <circle className="num" cx="22" cy="77" r="11" /><text className="numt" x="22" y="81" fontSize="12" textAnchor="middle">1</text>
             <text x="14" y="112" fontSize="16" fontWeight="600">You ask</text>
-            <text className="s" x="14" y="138" fontSize="13">Why did W-17</text>
-            <text className="s" x="14" y="156" fontSize="13">go down in March?</text>
+            <text className="s" x="14" y="138" fontSize="13">Why was W-17</text>
+            <text className="s" x="14" y="156" fontSize="13">down in March?</text>
             <path className="arr" d="M170,125 H206" markerEnd="url(#ah)" />
             <rect className="box" x="210" y="55" width="170" height="140" />
             <circle className="num" cx="232" cy="77" r="11" /><text className="numt" x="232" y="81" fontSize="12" textAnchor="middle">2</text>
@@ -205,7 +209,7 @@ export default function About() {
         <p className="title-2 mute" style={{ marginTop: "var(--sp-100)", fontWeight: 400 }}>Ask an oil field a question in plain English. Get a short answer, the proof behind it, and a clear note on what could not be checked.</p>
         <div className="about-cta">
           <Link className="btn btn-primary button-md" href="/"><ArrowUp weight="bold" aria-hidden />Ask a question</Link>
-          <Link className="btn btn-ghost button-md" href={`/?q=${encodeURIComponent("Why did W-17 go down in March?")}`}><ChatCircleText aria-hidden />See an example</Link>
+          <Link className="btn btn-ghost button-md" href={`/?q=${encodeURIComponent(SUGGESTED[1])}`}><ChatCircleText aria-hidden />See an example</Link>
         </div>
       </div>
       <Suspense fallback={<div className="skel" aria-label="Loading the numbers"><div style={{ height: 120 }} /><div style={{ height: 240 }} /></div>}>

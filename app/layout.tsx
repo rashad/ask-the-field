@@ -9,7 +9,7 @@ const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], 
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono" });
 
 const TITLE = "Ask the Field";
-const DESCRIPTION = "Ask questions about an oil field in plain English. The AI reads 400 field reports and 18 months of production data, and shows where each answer comes from. Concept prototype, synthetic data.";
+const DESCRIPTION = "You run a fictional oil field in the desert: 3 fields, 41 wells, 400 field reports. Ask it what went wrong in plain English; the AI answers in seconds and shows where each answer comes from. Concept prototype, synthetic data.";
 const site = process.env.SITE_URL ?? "https://askthefield.darmina.com";
 
 export const metadata: Metadata = {

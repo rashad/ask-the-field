@@ -11,12 +11,14 @@ Ask the Field. Concept prototype: ask questions of synthetic upstream oil and ga
 - `lib/tools.ts`: the four LLM tools (`query_production`, `list_events`, `search_documents`, `get_wells`) with Zod inputs; `search_documents` records the retrieval trace. A repeated call (same args, or an earlier complete result narrowed by a filter) returns a short note instead of hitting the database, and the next step must answer.
 - `lib/answer.ts`: `ask()` runs `streamText` (AI SDK, `claude-sonnet-5-5`) with the tools and `Output.object` for the final answer, and yields NDJSON events.
 - `app/api/ask/route.ts`: `POST /api/ask { question }`, streams `application/x-ndjson` events: `start`, `tool-call` (with a UI label), `tool-result`, `tool-error`, `fallback`, `final` (answer, viz, sources, confidence, retrieval trace, usage), `error`.
+- `lib/stakes.ts`: the morning snapshot for 22 Nov 2026 (oil yesterday, wells down, open incidents, oil lost this month) and the stakes on the briefing questions, all from the database. Lost oil = normal rate in the 30 days before the event times hours offline. `lib/money.ts`: lost revenue at an assumed $70 a barrel (demo assumption). `lib/questions.ts`: the five briefing questions and the demo pair.
+- `app/scene.tsx`, `app/term.tsx`: the scene above the question bar (role, snapshot, field map), the briefing list and the hover/tap glossary. `/?q=...&demo=1` plays the W-17 question, then the one-off question.
 - `app/page.tsx` + `app/ask.tsx`: Ask page; reads the NDJSON stream, shows live steps, the answer, SVG viz (`app/viz.tsx`) and the "How this answer was built" drawer (`app/drawer.tsx`). `/?q=<question>` asks on load, `&how=1` opens the drawer.
 - `app/human.ts`: plain-English sentences for each live step and its result (the narration and the drawer use them; `label()` in `lib/answer.ts` stays for the eval log). `app/md.tsx`: small Markdown renderer for chunk text (headings, bold, lists, tables), with line highlight for cited passages.
 - Fonts come from `next/font` (IBM Plex, self-hosted) and icons from `@phosphor-icons/react/ssr` (inline SVG). No runtime request to Google Fonts or unpkg.
 - Link preview: `app/opengraph-image.png`, `app/twitter-image.png` (1200x630, rendered with headless Chrome), `app/icon.svg`, `app/apple-icon.png`. `SITE_URL` sets `metadataBase` (default `https://askthefield.darmina.com`).
 - `app/data`, `app/about`, `app/api/data/*`: read-only data browser (documents, chunks with their first vector values, tables) and the About page, all from the database. `/data?chunk=<id>` highlights a chunk.
-- `lib/cache.ts`, `data/cache/*.json`: recorded runs of the 4 suggested questions, replayed when a key is missing, the daily cap or the rate limit is reached, the API fails, or the live answer takes more than 20 s (reason `slow`). The UI labels every replay.
+- `lib/cache.ts`, `data/cache/*.json`: recorded runs of the 5 briefing questions, replayed when a key is missing, the daily cap or the rate limit is reached, the API fails, or the live answer takes more than 20 s (reason `slow`). The UI labels every replay.
 - `lib/guard.ts`: in-memory rate limit per IP (`RATE_LIMIT_PER_MINUTE`, default 6) and daily cap on questions (`LLM_DAILY_CAP`, default 300).
 - `scripts/`: seed, document generation, ingest, search, dump, restore.
 - `data/docs/*.md`: generated documents with YAML front matter. `data/dump.sql.gz`: indexed database.
@@ -32,7 +34,7 @@ Postgres runs in Docker (OrbStack), compose project `opsrag`, container `opsrag-
 - `sec opsrag pnpm ingest`: chunk, embed (voyage-4, 1024 dims) and upsert. Idempotent: only new or changed documents are embedded.
 - `sec opsrag pnpm smoke ["question" ...]`: hybrid search smoke check (defaults to two sample queries).
 - `pnpm db:dump`: write `data/dump.sql.gz` after an ingest.
-- `sec opsrag pnpm eval`: ask the 4 suggested questions plus a Bayda check, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass.
+- `sec opsrag pnpm eval`: ask the 5 briefing questions, print pass/fail, latency, tool calls and tokens. `--only=1,3` runs a subset; `--record` rewrites `data/cache` (answers and query vectors) for the suggested questions that pass.
 - `pnpm test`: chunker test.
 - `pnpm dev`: Next.js app.
 
