@@ -37,12 +37,29 @@ function quotesVerified(f: Final) {
   const text = new Map(f.trace.flatMap((t) => t.chunks_sent.map((c) => [c.chunk_id, c.text] as const)));
   return f.answer.sources.filter((s) => s.kind === "chunk").every((s) => s.quote_verified === true && !!findQuote(text.get(s.id) ?? "", s.quote));
 }
+const markers = (f: Final) => new Set([...f.answer.answer.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])));
+function tableIdsReturned(f: Final, results: AskEvent[]) {
+  const outputs = results.map((r) => (r as { output?: { events?: { event_id: string }[] } }).output);
+  const events = new Set(outputs.flatMap((o) => o?.events ?? []).map((e) => e.event_id));
+  const wells = new Set([...JSON.stringify(outputs).matchAll(/"well_id":"(W-\d{2})"/g)].map((m) => m[1]));
+  return f.answer.sources.filter((s) => s.kind === "table").every((s) => {
+    const [table, id] = s.id.split(":");
+    if (table === "events") return events.has(id);
+    if (table === "wells") return wells.has(id);
+    return table === "production_daily";
+  });
+}
 const COMMON: Check[] = [
   SHORT,
+  ["every [n] marker has a source", (f) => f.checks.refs_without_source.length === 0],
+  ["every source is cited by a marker", (f) => { const m = markers(f); return f.answer.sources.every((s) => m.has(s.n)); }],
+  ["every chunk source was returned by a search", (f) => f.checks.unknown_chunk_ids.length === 0],
+  ["every event and well id in table sources was returned by a tool", (f, _, results) => tableIdsReturned(f, results)],
   ["chart reference is valid", (f) => f.checks.viz_error === null],
   ["every plotted value equals the referenced tool output", (f, _, results) => plottedFromTools(f, results)],
   ["every chunk source has a verified quote", (f) => quotesVerified(f)],
 ];
+const CITES_A_DOCUMENT: Check = ["cites at least one document", (f) => f.answer.sources.some((s) => s.kind === "chunk")];
 
 const docOf = async (well: string, type: string, from: string, to: string) =>
   (await sql<{ doc_id: string }[]>`SELECT doc_id FROM documents WHERE well_id = ${well} AND doc_type = ${type} AND date BETWEEN ${from} AND ${to} ORDER BY date LIMIT 1`)[0]?.doc_id ?? "missing";
@@ -67,6 +84,7 @@ const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[0],
     checks: [
+      CITES_A_DOCUMENT,
       ["viz is a map", (f) => f.answer.viz.type === "map"],
       ["highlights exactly W-05, W-12, W-25, W-34, W-36", (f) => highlighted(f).join(",") === "W-05,W-12,W-25,W-34,W-36"],
       ["cites at least 3 incident notes", (f) => new Set(f.answer.sources.filter((s) => s.kind === "chunk" && s.id.startsWith("IN-")).map((s) => s.id.split("#")[0])).size >= 3],
@@ -75,6 +93,7 @@ const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[1],
     checks: [
+      CITES_A_DOCUMENT,
       [`cites the W-17 incident note (${W17_NOTE})`, (f) => cites(f, W17_NOTE)],
       ["answer dates the outage in March 2026", (f) => /March/.test(f.answer.answer) && /2026/.test(f.answer.answer)],
       ["answer gives the lost revenue in dollars", (f) => /\$\d/.test(f.answer.answer)],
@@ -83,6 +102,7 @@ const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[2],
     checks: [
+      CITES_A_DOCUMENT,
       ["answer names W-09, W-17 and W-27", (f) => BATCH_WELLS.every((w) => f.answer.answer.includes(w))],
       ["answer names batch 7Q-0419", (f) => f.answer.answer.includes("7Q-0419")],
       ["sources cover all 3 batch failures", (f, _, results) => { const w = citedWells(f, results); return BATCH_WELLS.every((x) => w.has(x)); }],
@@ -100,6 +120,7 @@ const CASES: { question: string; checks: Check[] }[] = [
   {
     question: SUGGESTED[4],
     checks: [
+      CITES_A_DOCUMENT,
       ["finds the open W-34 alarm", (f, _, results) => /W-34/.test(f.answer.answer) && /open/i.test(f.answer.answer) && JSON.stringify(results).includes('"status":"open"')],
       [`cites the sand alarm incident note (${SAND_NOTE})`, (f) => cites(f, SAND_NOTE)],
       ["cites the sand procedure (SOP-OPS-002)", (f) => cites(f, "SOP-OPS-002")],
