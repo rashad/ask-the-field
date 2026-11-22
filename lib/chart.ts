@@ -1,6 +1,6 @@
 import { sql } from "./db";
 import { monthYear } from "./domain";
-import type { ToolRun } from "./tools";
+import type { EventRow, ToolRun } from "./tools";
 
 export const BAR_METRICS = ["value", "change", "change_pct", "lost_oil_bbl", "lost_revenue_usd", "downtime_hours"] as const;
 type BarMetric = (typeof BAR_METRICS)[number];
@@ -22,7 +22,6 @@ export type FinalViz = Chart | (MapRequest & { wells: MapWell[] }) | { type: "no
 
 interface Series { name: string; points: { x: string; y: number }[] }
 interface WellRow { well_id: string; value: number; baseline?: number; change?: number; change_pct?: number | null }
-interface EventRow { event_id: string; well_id: string; start_date: string; lost_oil_bbl: number | null; lost_revenue_usd: number | null; downtime_hours: number | null }
 
 const MAX_BARS = 10;
 const EVENT_UNIT = { lost_oil_bbl: "bbl", lost_revenue_usd: "USD", downtime_hours: "hours" } as const;

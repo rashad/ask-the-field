@@ -15,6 +15,23 @@ export const lostOil = () => sql`CASE WHEN e.type = 'Well suspension' THEN NULL 
   (SELECT avg(b.oil_bbl) FROM production_daily b WHERE b.well_id = e.well_id AND b.uptime_hours = 24 AND b.date BETWEEN e.start_date - 30 AND e.start_date - 1)
   * e.downtime_hours / 24)::numeric)::int END`;
 
+export interface EventRow {
+  event_id: string;
+  well_id: string;
+  field: string;
+  category: string;
+  type: string;
+  start_date: string;
+  end_date: string | null;
+  downtime_hours: number | null;
+  lost_oil_bbl: number | null;
+  lost_revenue_usd: number | null;
+  status: string;
+  severity: string | null;
+  description: string;
+  documents: string[] | null;
+}
+
 export interface ToolRun { ref: string; name: string; output: unknown }
 
 export interface SearchTrace {
@@ -137,7 +154,7 @@ const eventsInput = z
 
 async function listEvents(a: z.infer<typeof eventsInput>) {
   const category = a.type === "incident" || a.type === "maintenance" ? a.type : null;
-  const rows = await sql`
+  const rows = await sql<Omit<EventRow, "lost_revenue_usd">[]>`
     SELECT e.event_id, e.well_id, w.field, e.category, e.type, e.start_date::text, e.end_date::text, e.downtime_hours, ${lostOil()} AS lost_oil_bbl, e.status, e.severity, e.description,
       (SELECT array_agg(d.doc_id ORDER BY d.date) FROM documents d
        WHERE d.well_id = e.well_id AND d.doc_type IN ('incident_note', 'work_order') AND strpos(d.body, e.event_id) > 0) AS documents
@@ -150,7 +167,7 @@ async function listEvents(a: z.infer<typeof eventsInput>) {
       ${a.from ? sql`AND (e.end_date IS NULL OR e.end_date >= ${a.from})` : sql``}
       ${a.to ? sql`AND e.start_date <= ${a.to}` : sql``}
     ORDER BY e.start_date DESC LIMIT 51`;
-  const events = rows.slice(0, 50).map((r) => ({ ...r, lost_revenue_usd: r.lost_oil_bbl == null ? null : r.lost_oil_bbl * PRICE_PER_BBL }));
+  const events: EventRow[] = rows.slice(0, 50).map((r) => ({ ...r, lost_revenue_usd: r.lost_oil_bbl == null ? null : r.lost_oil_bbl * PRICE_PER_BBL }));
   return { count: events.length, truncated: rows.length > 50, events };
 }
 

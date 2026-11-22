@@ -2,14 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { monthYear, shortDate } from "@/lib/domain";
 
-export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; highlighted: boolean }
-export interface EventRow { event_id: string; well_id: string; field: string; type: string; start_date: string; status: string; severity: string | null; category: string }
-
-type Viz =
-  | { type: "map"; title: string; wells: MapWell[]; highlighted: string[] }
-  | { type: "line"; title: string; unit: string; series: { name: string; points: { x: string; y: number }[] }[] }
-  | { type: "bar"; title: string; unit: string; bars: { label: string; value: number }[] }
-  | { type: "none" };
+import type { FinalViz as Viz, MapWell } from "@/lib/chart";
+import type { EventRow } from "@/lib/tools";
 
 const STATUS: Record<string, [string, string]> = {
   producing: ["#0B1B3A", "Producing"],

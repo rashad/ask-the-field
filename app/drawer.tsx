@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { findQuote } from "@/lib/quote";
-import type { SearchChunk } from "@/lib/tools";
+import type { EventRow, SearchChunk } from "@/lib/tools";
 import { docTypeLabel, shortDate, TODAY } from "@/lib/domain";
 import { found, say, type Step } from "./human";
 import { Md } from "./md";
-import type { EventRow } from "./viz";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 type Source = Final["answer"]["sources"][number];
@@ -30,7 +29,7 @@ export function sourceHref(s: Source) {
   return `/data?tab=tables&table=${name}${q ? `&q=${encodeURIComponent(q)}` : ""}${name === "production" ? `&months=${monthsBack(id.split(":")[2])}` : ""}`;
 }
 
-function TableSource({ s, events }: { s: Source; events: (EventRow & { description?: string })[] }) {
+function TableSource({ s, events }: { s: Source; events: EventRow[] }) {
   const [table, key] = s.id.split(":");
   const ev = table === "events" ? events.find((e) => e.event_id === key) : undefined;
   const what = table === "events" ? "the event log" : table === "wells" ? "the list of wells" : "the daily production table";

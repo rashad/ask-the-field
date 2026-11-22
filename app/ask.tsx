@@ -10,7 +10,8 @@ import type { Morning } from "@/lib/stakes";
 import { Drawer } from "./drawer";
 import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
 import { Briefing, Scene } from "./scene";
-import { VizCard, type EventRow } from "./viz";
+import type { EventRow } from "@/lib/tools";
+import { VizCard } from "./viz";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 
