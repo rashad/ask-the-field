@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { ask, MODEL, type AskEvent } from "../lib/answer";
+import { ask, DEFAULT_MODEL, MODEL, type AskEvent } from "../lib/answer";
 import { SUGGESTED } from "../lib/questions";
 import { record } from "../lib/cache";
 import { sql } from "../lib/db";
@@ -142,8 +142,12 @@ const save = process.argv.includes("--save");
 const only = arg("only");
 const model = arg("model") ?? MODEL;
 const runCount = Number(arg("runs") ?? 1);
-if (recordCache && model !== MODEL) {
-  console.error(`--record keeps data/cache on the production model (${MODEL}); drop --model or --record.`);
+if (!Number.isInteger(runCount) || runCount < 1) {
+  console.error("--runs takes a positive integer.");
+  process.exit(2);
+}
+if (recordCache && model !== DEFAULT_MODEL) {
+  console.error(`--record keeps data/cache on the production model (${DEFAULT_MODEL}); drop --model or --record, and unset ASK_MODEL.`);
   process.exit(2);
 }
 

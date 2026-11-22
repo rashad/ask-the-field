@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ask, type AskEvent } from "@/lib/answer";
+import { ask, isClaude, MODEL, type AskEvent } from "@/lib/answer";
 import { hasRecording, replay } from "@/lib/cache";
 import { clientIp, crossSite, rateLimited, readBody, takeDailyCall } from "@/lib/guard";
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   const limited = rateLimited(ip);
   if (limited && !cached) return Response.json({ error: "Too many questions. Try again in a minute." }, { status: 429 });
 
-  const blocked = limited ? "rate_limit" : !process.env.ANTHROPIC_API_KEY || !process.env.VOYAGE_API_KEY ? "no_key" : takeDailyCall(ip);
+  const blocked = limited ? "rate_limit" : !process.env[isClaude(MODEL) ? "ANTHROPIC_API_KEY" : "OPENROUTER_API_KEY"] || !process.env.VOYAGE_API_KEY ? "no_key" : takeDailyCall(ip);
   if (blocked && !cached) {
     const error = blocked === "no_key" ? "Live answers are off. Try one of the suggested questions." : blocked === "ip_cap" ? "You reached today's limit of live questions. Try one of the suggested questions." : "The daily limit is reached. Try one of the suggested questions.";
     return Response.json({ error, reason: blocked }, { status: 503 });

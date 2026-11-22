@@ -68,7 +68,7 @@ Copy the names from `.env.example` into a `.env.local` file and set your values.
 | `OPENROUTER_API_KEY` | Only for a non-Claude `ASK_MODEL` or `pnpm eval --model=<openrouter id>` |
 | `DATABASE_URL` | Postgres URL. Default: `postgres://opsrag:opsrag@localhost:5442/opsrag` |
 | `RATE_LIMIT_PER_MINUTE` | Questions per IP per minute. Default 6 |
-| `LLM_DAILY_CAP` | Live questions per day. Default 300 |
+| `LLM_DAILY_CAP` | Live questions per day. Default 300; 0 turns live answers off |
 | `LLM_DAILY_PER_IP` | Live questions per client IP per day. Default 20 |
 | `TRUST_PROXY` | `1` behind Railway: key the limits on `X-Real-IP`, which Railway's edge sets. Unset, every caller shares one key |
 | `SITE_URL` | Base URL for link previews |

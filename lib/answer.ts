@@ -7,13 +7,14 @@ import { findQuote } from "./quote";
 import { SYSTEM } from "./prompt";
 import { makeTools, type RepeatedResult, type SearchTrace } from "./tools";
 
-export const MODEL = process.env.ASK_MODEL || "claude-sonnet-5-5";
+export const DEFAULT_MODEL = "claude-sonnet-5-5";
+export const MODEL = process.env.ASK_MODEL || DEFAULT_MODEL;
 const MAX_STEPS = 4;
 export const CLAUDE_PRICES: Record<string, { input: number; cacheRead: number; cacheWrite: number; output: number }> = {
   "claude-sonnet-5-5": { input: 2, cacheRead: 0.1, cacheWrite: 2.5, output: 10 },
   "claude-haiku-5-5": { input: 0.1, cacheRead: 0.01, cacheWrite: 0.125, output: 0.5 },
 };
-const isClaude = (model: string) => model.startsWith("claude-");
+export const isClaude = (model: string) => model.startsWith("claude-");
 
 const wellId = z.string().max(10).describe("Well id such as W-17");
 

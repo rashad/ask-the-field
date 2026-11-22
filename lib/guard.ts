@@ -1,8 +1,9 @@
 const WINDOW_MS = 60_000;
 
 function envInt(name: string, fallback: number) {
-  const n = Number(process.env[name]);
-  return Number.isInteger(n) && n > 0 ? n : fallback;
+  const raw = process.env[name]?.trim();
+  const n = Number(raw);
+  return raw && Number.isInteger(n) && n >= 0 ? n : fallback;
 }
 
 const PER_IP = envInt("RATE_LIMIT_PER_MINUTE", 6);
