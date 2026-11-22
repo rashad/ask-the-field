@@ -1,5 +1,5 @@
 "use client";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 export const GLOSSARY = {
   well: ["well", "A hole drilled deep into the rock. Oil, gas and water come up through it."],
@@ -20,14 +20,21 @@ export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }
   const ref = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
   const [right, setRight] = useState(false);
+  const wasOpen = useRef(false);
   const show = () => {
     const r = ref.current?.getBoundingClientRect();
     if (r) setRight(r.left > window.innerWidth / 2);
     setOpen(true);
   };
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [open]);
   return (
     <span className="term" ref={ref} onMouseEnter={show} onMouseLeave={() => setOpen(false)}>
-      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onClick={() => (open ? setOpen(false) : show())} onFocus={show} onBlur={() => setOpen(false)}>
+      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onPointerDown={(e) => (wasOpen.current = e.pointerType !== "mouse" && open)} onPointerCancel={() => (wasOpen.current = false)} onClick={() => { if (wasOpen.current) setOpen(false); else show(); wasOpen.current = false; }} onFocus={show} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
         {children ?? GLOSSARY[k][0]}
       </button>
       <span role="tooltip" id={id} className="term-tip caption-4" data-open={open || undefined} data-right={right || undefined}>

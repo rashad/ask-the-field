@@ -1,7 +1,11 @@
 export const DATA_START = "2025-05-23";
 export const TODAY = "2026-11-22";
 
+export const THEME_KEY = "theme";
+export const THEME_BG = { light: "#f4f5f7", dark: "#131415" } as const;
+
 export const RRF_K = 60;
+export const MAX_STEPS = 4;
 
 export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
 export type Field = (typeof FIELDS)[number];
@@ -17,3 +21,5 @@ const month = (d: string, short: boolean) => MONTHS[Number(d.slice(5, 7)) - 1].s
 export const shortDate = (d: string) => `${Number(d.slice(8, 10))} ${month(d, true)} ${d.slice(0, 4)}`;
 export const longDate = (d: string) => `${Number(d.slice(8, 10))} ${month(d, false)} ${d.slice(0, 4)}`;
 export const monthYear = (d: string, short = false) => `${month(d, short)} ${d.slice(0, 4)}`;
+
+export const num = (x: number) => x.toLocaleString("en-US");

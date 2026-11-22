@@ -6,10 +6,19 @@ export interface Step {
   args: Record<string, unknown>;
   state: "running" | "done" | "repeated" | "error";
   output?: Record<string, any>;
+  error?: string;
 }
 
 export const DOC_COUNT = 400;
 
+export const REASON: Record<string, string> = {
+  daily_cap: "the daily limit on live answers is reached",
+  ip_cap: "today's limit of live answers for this visitor is reached",
+  no_key: "live answers are off on this server",
+  api_error: "the live answer failed",
+  slow: "the live answer took more than 20 seconds",
+  rate_limit: "many questions came in a short time",
+};
 
 const list = (xs: string[]) => (xs.length <= 2 ? xs.join(" and ") : xs.length <= 4 ? `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}` : `${xs.length} wells`);
 

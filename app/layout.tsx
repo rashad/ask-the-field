@@ -1,15 +1,16 @@
-import { Flask } from "@phosphor-icons/react/ssr";
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import { Credit } from "./credit";
-import { Nav } from "./nav";
+import { Geist, Geist_Mono } from "next/font/google";
+import { MODEL } from "@/lib/answer";
+import { THEME_BG, THEME_KEY } from "@/lib/domain";
+import { Shell } from "./shell";
 import "./globals.css";
 
-const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
-const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono" });
+const sans = Geist({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
+const mono = Geist_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 const TITLE = "Ask the Field";
 const DESCRIPTION = "You run a fictional oil field in the desert: 3 fields, 41 wells, 400 field reports. Ask it what went wrong in plain English; the AI answers in seconds and shows where each answer comes from. Concept prototype, synthetic data.";
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_KEY)}),c=${JSON.stringify(THEME_BG)};if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.media=m.content===c[t]?"all":"not all"})}}catch(e){}})()`;
 const site = process.env.SITE_URL ?? "https://askthefield.darmina.com";
 
 export const metadata: Metadata = {
@@ -21,20 +22,23 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: `${TITLE}: answers from field reports, with sources`, description: DESCRIPTION },
 };
 
-export const viewport: Viewport = { themeColor: "#FAFAF7" };
+export const viewport: Viewport = {
+  colorScheme: "dark light",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: THEME_BG.dark },
+    { media: "(prefers-color-scheme: light)", color: THEME_BG.light },
+  ],
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <a className="skip button-sm" href="#main">Skip to content</a>
-        <Nav />
-        <main id="main" className="main">
-          <div className="wrap">{children}</div>
-        </main>
-        <footer className="foot">
-          <div className="wrap caption-4"><p className="foot-note"><Flask aria-hidden /><span>Concept prototype, synthetic data. No real company, field or well.</span></p><Credit /></div>
-        </footer>
+        <Shell model={MODEL}>{children}</Shell>
       </body>
     </html>
   );

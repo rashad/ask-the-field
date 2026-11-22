@@ -3,8 +3,10 @@ import { DataView } from "./data-view";
 
 export default function DataPage() {
   return (
-    <Suspense>
-      <DataView />
-    </Suspense>
+    <div className="page">
+      <Suspense>
+        <DataView />
+      </Suspense>
+    </div>
   );
 }
