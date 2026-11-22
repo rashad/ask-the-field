@@ -39,6 +39,9 @@ test("crossSite rejects other sites and keeps same-origin and server callers", (
   assert.equal(h({ origin: "not a url" }), true);
   assert.equal(h({ origin: "https://edge.example", "x-forwarded-host": "edge.example" }), false);
   process.env.SITE_URL = "https://site.example/path";
-  assert.equal(h({ origin: "https://site.example" }), false);
-  delete process.env.SITE_URL;
+  try {
+    assert.equal(h({ origin: "https://site.example" }), false);
+  } finally {
+    delete process.env.SITE_URL;
+  }
 });

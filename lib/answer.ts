@@ -48,7 +48,7 @@ export const answerSchema = z.object({
     z.object({
       n: z.number().int(),
       kind: z.enum(["table", "chunk"]),
-      id: z.string().max(120).describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>, one row per source, never a list of ids"),
+      id: z.string().max(120).describe("chunk: the chunk_id. table: events:<event_id>, wells:<well_id> or production_daily:<scope>:<from>..<to>, one id per source, never a list of ids"),
       label: z.string().max(200),
       quote: z.string().max(400).nullable().describe("chunk: one sentence or one table row copied word for word from that chunk's text, under 200 characters, that supports the claim. table: null"),
     }),
