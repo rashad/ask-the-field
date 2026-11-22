@@ -1,23 +1,19 @@
 "use client";
-import { ArrowClockwise, ArrowRight, ArrowUp, ChartBar, ChartLine, ChatCircleText, CheckCircle, CircleNotch, FileText, Info, Lightbulb, ListMagnifyingGlass, MagnifyingGlass, MapTrifold, Play, Record, SealCheck, WarningCircle, X, XCircle } from "@phosphor-icons/react/ssr";
+import { ArrowClockwise, ArrowRight, ArrowUp, ChatCircleText, CheckCircle, CircleNotch, Info, Lightbulb, ListMagnifyingGlass, MagnifyingGlass, Play, Record, SealCheck, WarningCircle, X, XCircle } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AskEvent } from "@/lib/answer";
+import { usd } from "@/lib/money";
+import { DEMO, SUGGESTED } from "@/lib/questions";
+import type { Morning } from "@/lib/stakes";
 import { Drawer } from "./drawer";
 import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
+import { Briefing, Scene } from "./scene";
 import { VizCard, type EventRow } from "./viz";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 
-const DEMO = "Why did W-17 go down in March?";
-const SUGGESTED = [
-  ["Which wells dropped production last quarter?", ChartBar, "See the biggest drops, ranked in a chart"],
-  ["Where are the open incidents right now?", MapTrifold, "See them on a map, with the report behind each one"],
-  ["How did water cut evolve on Field B this year?", ChartLine, "Follow a trend month by month"],
-  [DEMO, FileText, "Get the cause, read from the incident reports"],
-] as const;
-const SUGGESTED_TEXT: string[] = SUGGESTED.map((s) => s[0]);
 
 const REASON: Record<string, string> = {
   daily_cap: "The daily limit on live answers is reached.",
@@ -102,7 +98,7 @@ function readTipsOff() {
   try { return localStorage.getItem("tips-off") === "1"; } catch { return false; }
 }
 
-export function Ask() {
+export function Ask({ morning }: { morning: Morning | null }) {
   const params = useSearchParams();
   const router = useRouter();
   const [input, setInput] = useState(params.get("q") ?? "");
@@ -119,13 +115,28 @@ export function Ask() {
   const [tips, setTips] = useState(true);
   const abort = useRef<AbortController | null>(null);
 
+  const demo = params.get("demo");
+  const [countdown, setCountdown] = useState<number | null>(null);
+
   useEffect(() => setTips(!readTipsOff()), []);
+  useEffect(() => {
+    if (demo !== "1" || status !== "done") {
+      setCountdown(null);
+      return;
+    }
+    setCountdown(8);
+    const t = setInterval(() => setCountdown((c) => (c ? c - 1 : c)), 1000);
+    return () => clearInterval(t);
+  }, [demo, status]);
+  useEffect(() => {
+    if (countdown === 0) router.push(`/?q=${encodeURIComponent(DEMO[1])}&demo=2`);
+  }, [countdown, router]);
 
   const run = useCallback(async (question: string) => {
     abort.current?.abort();
     const ctrl = new AbortController();
     abort.current = ctrl;
-    const guided = SUGGESTED_TEXT.includes(question);
+    const guided = SUGGESTED.includes(question);
     const dwell = guided ? 1500 : 700;
     setAsked(question);
     setStatus("running");
@@ -235,18 +246,17 @@ export function Ask() {
 
   return (
     <>
-      {status === "idle" && (
+      {status === "idle" && (morning ? <Scene m={morning} /> : (
         <div className="hero">
           <p className="caption-3 eyebrow">Ask the Field</p>
           <h1 className="hero-title heading-2">Ask an oil field a question in plain English.</h1>
-          <p className="hero-sub title-2">The AI reads {DOC_COUNT} field reports and 18 months of production data. It answers in seconds and shows you exactly where each answer comes from.</p>
         </div>
-      )}
+      ))}
       <form className={status === "idle" ? "hero-form" : undefined} noValidate onSubmit={(e) => { e.preventDefault(); submit(input); }}>
         <div className="qbar" data-invalid={invalid ? "true" : undefined}>
           <MagnifyingGlass className="lead" aria-hidden />
           <label className="sr" htmlFor="q">Your question</label>
-          <input id="q" name="q" type="text" className="body-3" value={input} onChange={(e) => setInput(e.target.value)} placeholder="For example: why did W-17 go down in March?" autoComplete="off" maxLength={300} />
+          <input id="q" name="q" type="text" className="body-3" value={input} onChange={(e) => setInput(e.target.value)} placeholder="For example: why was W-17 down in March?" autoComplete="off" maxLength={300} />
           <button className="btn btn-primary button-md" type="submit" disabled={status === "running"}><ArrowUp weight="bold" aria-hidden />Ask</button>
         </div>
         {invalid && <p className="qerr body-6" role="alert"><WarningCircle aria-hidden /><span>{invalid}</span></p>}
@@ -254,23 +264,15 @@ export function Ask() {
 
       {status === "idle" && (
         <>
-          <div className="hero-sug">
-            <div className="sug-head">
-              <p className="body-5">Not sure what to ask? Pick one:</p>
-              <button type="button" className="btn btn-ghost button-sm" onClick={() => { setInput(DEMO); submit(DEMO); }}><Play weight="fill" aria-hidden />Watch a 30 second demo</button>
-            </div>
-            <ul className="sug">
-              {SUGGESTED.map(([text, Icon, hint]) => (
-                <li key={text}>
-                  <a href={`/?q=${encodeURIComponent(text)}`} onClick={(e) => { e.preventDefault(); setInput(text); submit(text); }}>
-                    <span className="ic"><Icon aria-hidden /></span>
-                    <span className="txt"><span className="title-3" style={{ display: "block" }}>{text}</span><span className="caption-4 mute">{hint}</span></span>
-                    <ArrowRight className="go" aria-hidden />
-                  </a>
-                </li>
+          {morning ? (
+            <Briefing m={morning} onPick={(q) => { setInput(q); submit(q); }} onDemo={() => router.push(`/?q=${encodeURIComponent(DEMO[0])}&demo=1`)} />
+          ) : (
+            <ul className="sug hero-sug">
+              {SUGGESTED.map((q) => (
+                <li key={q}><a href={`/?q=${encodeURIComponent(q)}`} onClick={(e) => { e.preventDefault(); setInput(q); submit(q); }}><span className="txt title-3">{q}</span><ArrowRight className="go" aria-hidden /></a></li>
               ))}
             </ul>
-          </div>
+          )}
           <section className="how3" aria-labelledby="how3-t">
             <h2 id="how3-t" className="caption-3 mute how3-k">How it works in 3 steps</h2>
             <ol>
@@ -284,6 +286,16 @@ export function Ask() {
 
       {status !== "idle" && (
         <div className="answer" aria-live="polite">
+          {demo && morning && (
+            <div className="card pad democap">
+              <p className="caption-3 mute">Demo, question {demo === "2" ? "2" : "1"} of 2</p>
+              {demo === "2" ? (
+                <p className="body-4">Second question: was it a one-off?<br /><span className="mute">The AI reads the pump records of every well, not only W-17, and connects notes written months apart.</span></p>
+              ) : (
+                <p className="body-4">W-17, a Wadi Field well, stopped for {morning.stakes.w17_days} days in March: about {usd(morning.stakes.w17_lost_bbl)} in lost revenue at an assumed $70 a barrel (demo assumption).<br /><span className="mute">First the AI finds out why. Then it checks if it can happen again.</span></p>
+              )}
+            </div>
+          )}
           {recorded !== null && (
             <p className="recorded body-6"><span className="badge badge-mute caption-3"><Record weight="bold" aria-hidden />Recorded answer</span>{REASON[recorded] ?? "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</p>
           )}
@@ -336,6 +348,15 @@ export function Ask() {
                 </div>
                 {tips && <button type="button" className="tips-off caption-4" onClick={hideTips}><X aria-hidden />Hide these tips</button>}
               </div>
+              {countdown !== null && (
+                <div className="card pad democap next">
+                  <p className="body-4">Next question in {countdown} s: {DEMO[1]}</p>
+                  <div className="errbtns">
+                    <button className="btn btn-primary button-sm" type="button" onClick={() => setCountdown(0)}><Play weight="fill" aria-hidden />Go now</button>
+                    <button className="btn btn-ghost button-sm" type="button" onClick={() => router.replace(`/?q=${encodeURIComponent(DEMO[0])}`, { scroll: false })}><X aria-hidden />Stop the demo</button>
+                  </div>
+                </div>
+              )}
               <Drawer open={drawer} onClose={() => setDrawer(false)} steps={steps} final={final} events={events} focus={focus} />
             </>
           )}
