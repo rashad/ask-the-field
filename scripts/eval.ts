@@ -40,15 +40,15 @@ function quotesVerified(f: Final) {
   return f.answer.sources.filter((s) => s.kind === "chunk").every((s) => s.quote_verified === true && !!findQuote(text.get(s.id) ?? "", s.quote));
 }
 const markers = (f: Final) => new Set([...f.answer.answer.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])));
-function tableIdsReturned(f: Final, results: AskEvent[]) {
+function unknownTableIds(f: Final, results: AskEvent[]) {
   const outputs = results.map((r) => (r as { output?: { events?: { event_id: string }[] } }).output);
   const events = new Set(outputs.flatMap((o) => o?.events ?? []).map((e) => e.event_id));
   const wells = new Set([...JSON.stringify(outputs).matchAll(/"well_id":"(W-\d{2})"/g)].map((m) => m[1]));
-  return f.answer.sources.filter((s) => s.kind === "table").every((s) => {
-    const [table, id] = s.id.split(":");
-    if (table === "events") return events.has(id);
-    if (table === "wells") return wells.has(id);
-    return table === "production_daily";
+  return f.answer.sources.filter((s) => s.kind === "table").map((s) => s.id).filter((id) => {
+    const [table, key] = id.split(":");
+    if (table === "events") return !events.has(key);
+    if (table === "wells") return !wells.has(key);
+    return table !== "production_daily";
   });
 }
 const COMMON: Check[] = [
@@ -56,7 +56,7 @@ const COMMON: Check[] = [
   ["every [n] marker has a source", (f) => f.checks.refs_without_source.length === 0],
   ["every source is cited by a marker", (f) => { const m = markers(f); return f.answer.sources.every((s) => m.has(s.n)); }],
   ["every chunk source was returned by a search", (f) => f.checks.unknown_chunk_ids.length === 0],
-  ["every event and well id in table sources was returned by a tool", (f, _, results) => tableIdsReturned(f, results)],
+  ["every event and well id in table sources was returned by a tool", (f, _, results) => unknownTableIds(f, results).length === 0],
   ["chart reference is valid", (f) => f.checks.viz_error === null],
   ["every plotted value equals the referenced tool output", (f, _, results) => plottedFromTools(f, results)],
   ["every chunk source has a verified quote", (f) => quotesVerified(f)],
@@ -206,6 +206,8 @@ for (let run = 1; run <= runCount; run++) {
     console.log(`  answer: ${final.answer.answer}`);
     if (final.answer.could_not_verify) console.log(`  not verified: ${final.answer.could_not_verify}`);
     if (final.checks.unknown_chunk_ids.length || final.checks.refs_without_source.length || final.checks.viz_error || final.checks.unverified_quotes.length) console.log(`  grounding: ${JSON.stringify(final.checks)}`);
+    const unknownTables = unknownTableIds(final, toolResults);
+    if (unknownTables.length) console.log(`  table sources no tool returned: ${unknownTables.join(", ")}`);
     for (const s of final.answer.sources.filter((x) => x.quote_verified === false)) console.log(`  quote not found [${s.n}] ${s.id}: ${s.quote}`);
     if (recordCache && checks.every((ch) => ch.pass) && SUGGESTED.includes(c.question)) {
       record(c.question, events);
