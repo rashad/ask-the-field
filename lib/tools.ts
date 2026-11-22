@@ -88,7 +88,8 @@ async function queryProduction(a: z.infer<typeof productionInput>) {
         change_pct: r.baseline ? round(((r.value - r.baseline) / r.baseline) * 100, 1) : null,
       }),
     }));
-    out.sort((x, y) => (a.compare_from ? (x.change_pct ?? 0) - (y.change_pct ?? 0) : y.value - x.value));
+    const pct = (x: { change_pct?: number | null }) => x.change_pct ?? Infinity;
+    out.sort((x, y) => (a.compare_from ? pct(x) - pct(y) || x.well_id.localeCompare(y.well_id) : y.value - x.value));
     return { metric: a.metric, aggregation: "average daily value per well", unit: unit[a.metric], period: [a.from, a.to], baseline_period: a.compare_from ? [a.compare_from, a.compare_to] : null, rows: out };
   }
   const perWell = (a.well_ids?.length ?? 0) > 0 && (a.well_ids?.length ?? 0) <= 6;

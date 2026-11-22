@@ -43,6 +43,7 @@ export const answerSchema = z.object({
       metric: z.enum(BAR_METRICS).describe("query_production: value, change or change_pct. list_events: lost_oil_bbl, lost_revenue_usd or downtime_hours"),
       wells: z.array(wellId).max(41).describe("query_production: the wells to plot; empty for the top 10"),
       event_groups: z.array(z.array(z.string().max(20)).max(10)).max(20).describe("list_events: one bar per group of event ids, such as a failure and its workover on the same well; empty for one bar per event"),
+      direction: z.enum(["drops", "rises"]).nullable().describe("change or change_pct bars: keep the largest drops or the largest rises; null otherwise"),
     }),
     z.object({ type: z.literal("none") }),
   ]),
