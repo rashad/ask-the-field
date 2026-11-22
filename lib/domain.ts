@@ -1,6 +1,8 @@
 export const DATA_START = "2025-05-23";
 export const TODAY = "2026-11-22";
 
+export const RRF_K = 60;
+
 export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
 export type Field = (typeof FIELDS)[number];
 

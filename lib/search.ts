@@ -1,4 +1,5 @@
 import { sql } from "./db";
+import { RRF_K } from "./domain";
 import { embedQuery, toVector } from "./voyage";
 
 export interface Hit {
@@ -22,8 +23,6 @@ export interface Filters {
   to?: string;
 }
 
-const RRF_K = 60;
-
 // Shift reports and procedures carry no well_id, so a well filter also matches chunks that name the well.
 function where(f: Filters) {
   const wells = f.well_ids?.length ? f.well_ids : null;
@@ -37,7 +36,7 @@ function where(f: Filters) {
 }
 
 // Exact scan on a materialized CTE: 484 chunks are cheap, and filters never starve the HNSW candidate list.
-export async function vectorSearch(vec: number[], k = 8, f: Filters = {}): Promise<Hit[]> {
+async function vectorSearch(vec: number[], k = 8, f: Filters = {}): Promise<Hit[]> {
   return sql<Hit[]>`
     WITH s AS MATERIALIZED (
       SELECT c.id, c.document_id, d.title, c.doc_type, c.well_id, c.field, c.date::text, c.section, c.text,
@@ -48,7 +47,7 @@ export async function vectorSearch(vec: number[], k = 8, f: Filters = {}): Promi
 }
 
 // Hyphenated codes like W-17 also index their parts ("w", "17"); drop those so the code itself decides the match.
-export async function fullTextSearch(query: string, k = 8, f: Filters = {}): Promise<Hit[]> {
+async function fullTextSearch(query: string, k = 8, f: Filters = {}): Promise<Hit[]> {
   return sql<Hit[]>`
     WITH q AS (
       SELECT to_tsquery('english', coalesce(
@@ -62,7 +61,7 @@ export async function fullTextSearch(query: string, k = 8, f: Filters = {}): Pro
     WHERE c.tsv @@ q.tq ${where(f)} ORDER BY score DESC LIMIT ${k}`;
 }
 
-export function rrf(...lists: Hit[][]): (Hit & { rrf: number; ranks: (number | null)[] })[] {
+function rrf(...lists: Hit[][]): (Hit & { rrf: number; ranks: (number | null)[] })[] {
   const fused = new Map<string, Hit & { rrf: number; ranks: (number | null)[] }>();
   lists.forEach((list, li) =>
     list.forEach((hit, i) => {

@@ -5,14 +5,14 @@ import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { findQuote } from "@/lib/quote";
 import type { EventRow, SearchChunk } from "@/lib/tools";
-import { docTypeLabel, shortDate, TODAY } from "@/lib/domain";
+import { docTypeLabel, RRF_K, shortDate, TODAY } from "@/lib/domain";
 import { found, say, type Step } from "./human";
 import { Md } from "./md";
 
 type Final = Extract<AskEvent, { type: "final" }>;
 type Source = Final["answer"]["sources"][number];
 
-const MAX_RRF = 2 / 61;
+const MAX_RRF = 2 / (RRF_K + 1);
 function monthsBack(period = "") {
   const from = period.slice(0, 7);
   if (!/^\d{4}-\d{2}$/.test(from)) return 6;
@@ -20,7 +20,7 @@ function monthsBack(period = "") {
   return [6, 12, 18].find((m) => m >= n) ?? 18;
 }
 
-export function sourceHref(s: Source) {
+function sourceHref(s: Source) {
   const { kind, id } = s;
   if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}${s.quote_verified && s.quote ? `&quote=${encodeURIComponent(s.quote)}` : ""}`;
   const [table, scope] = id.split(":");

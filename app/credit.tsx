@@ -1,6 +1,6 @@
 import { GithubLogo } from "@phosphor-icons/react/ssr";
 
-export const REPO_URL = "https://github.com/rashad/ask-the-field";
+const REPO_URL = "https://github.com/rashad/ask-the-field";
 
 export function SourceLink({ className }: { className?: string }) {
   return (
