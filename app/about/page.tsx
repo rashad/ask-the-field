@@ -1,6 +1,6 @@
 import { ArrowUp, ArrowUpRight, ChatCircleText, Database, FileText, LinkSimple, Scissors, SealCheck, ShieldCheck, X } from "@phosphor-icons/react/ssr";
 import type { Metadata } from "next";
-import { Credit } from "../credit";
+import { Credit, SourceLink } from "../credit";
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
@@ -123,6 +123,7 @@ async function Content() {
           <li><b className="body-4">Grounding checks</b><span>Every cited chunk id must come from a search in the same run, and every [n] marker must match a source. The eval script asks the suggested questions and checks charts, wells, cited notes and answer length.</span></li>
           <li><b className="body-4">Reliability</b><span>The suggested questions have recorded runs. If the live call fails or takes more than 20 seconds, the recorded run plays instead and is labelled as such.</span></li>
         </ul>
+        <p className="body-6" style={{ marginTop: "var(--sp-150)" }}><SourceLink className="textlink srclink" /></p>
         <h3 className="body-4" style={{ margin: "var(--sp-300) 0 var(--sp-100)" }}>How a question becomes an answer</h3>
         <div className="card flow">
           <svg viewBox="0 0 1000 270" role="img" aria-label="Five steps: you ask; Claude picks its tools; document search combines Voyage embeddings and Postgres full text, merged by rank; Claude writes the answer; you open the passages it used.">

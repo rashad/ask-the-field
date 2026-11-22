@@ -474,6 +474,9 @@ table.data td.wrapok{min-width:360px}
 .foot .wrap{flex-wrap:wrap}
 .credit{margin-left:auto;color:var(--mute)}
 .credit a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.srclink{display:inline-flex;align-items:center;gap:4px}
+.credit .srclink{margin-left:12px}
+.srclink svg{width:14px;height:14px;flex:none}
 @media (max-width:640px){.credit{margin-left:0;flex-basis:100%}}
 
 .eyebrow{display:inline-flex;align-items:center;gap:var(--sp-75);text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:var(--sp-200)}
