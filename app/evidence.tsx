@@ -10,7 +10,7 @@ import type { Step } from "./human";
 import { Md } from "./md";
 
 export type Final = Extract<AskEvent, { type: "final" }>;
-export type Source = Final["answer"]["sources"][number];
+type Source = Final["answer"]["sources"][number];
 
 const n = (x: number) => x.toLocaleString("en-US");
 
@@ -21,7 +21,7 @@ function monthsBack(period = "") {
   return [6, 12, 18].find((m) => m >= k) ?? 18;
 }
 
-export function sourceHref(s: Source) {
+function sourceHref(s: Source) {
   const { kind, id } = s;
   if (kind === "chunk") return `/data?chunk=${encodeURIComponent(id)}${s.quote_verified && s.quote ? `&quote=${encodeURIComponent(s.quote)}` : ""}`;
   const [table, scope] = id.split(":");

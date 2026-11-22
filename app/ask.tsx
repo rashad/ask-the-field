@@ -34,6 +34,7 @@ const WHY: Record<string, string> = {
 const LEVEL = { high: 3, medium: 2, low: 1 } as const;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const toBuilt = () => document.getElementById("built")?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 const IDS = /\b(W-\d{2}|EV-\d{4}|SOP-[A-Z]+-\d{3}|[A-Z]{2}-\d{3}|7Q-\d{4}(?:-\d{3})?)\b/;
 
 function withIds(text: string) {
@@ -261,7 +262,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
   useEffect(() => {
     if (status === "running") window.scrollTo({ top: 0 });
     if (status !== "done" || !how) return;
-    const t = setTimeout(() => document.getElementById("built")?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }), 50);
+    const t = setTimeout(toBuilt, 50);
     return () => clearTimeout(t);
   }, [status, how]);
 
@@ -298,8 +299,8 @@ export function Ask({ morning }: { morning: Morning | null }) {
   const passages = final ? new Set(final.trace.flatMap((t) => t.chunks_sent.map((c) => c.document_id))).size : 0;
   const tableRows = steps.reduce((n, s) => n + (s.name === "search_documents" ? 0 : (s.output?.count ?? s.output?.rows?.length ?? 0)), 0);
   const labels = new Map(answer?.sources.map((s) => [s.n, s.label]) ?? []);
-  const vizFrom = answer && (answer.viz.type === "line" || answer.viz.type === "bar") ? callLabel(steps.find((s) => s.output?.ref === (answer.viz as { ref: string }).ref && !s.output?.repeated)) : null;
-  const toBuilt = () => document.getElementById("built")?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  const viz = answer?.viz;
+  const vizFrom = viz && (viz.type === "line" || viz.type === "bar") ? callLabel(steps.find((s) => s.output?.ref === viz.ref && !s.output?.repeated)) : null;
 
   return (
     <>

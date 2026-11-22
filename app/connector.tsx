@@ -178,7 +178,7 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
     document.addEventListener("scroll", schedule, { capture: true, passive: true });
     narrow.addEventListener("change", onNarrow);
     let alive = true;
-    document.fonts?.ready.then(() => alive && settle(false));
+    document.fonts.ready.then(() => alive && settle(false));
     settle(true);
 
     return () => {

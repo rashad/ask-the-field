@@ -15,7 +15,7 @@ const LINKS = [
   ["/about", "About", Info],
 ] as const;
 
-export function Mark() {
+function Mark() {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <path className="mk-drop" d="M16 3S6.5 13.6 6.5 19.6a9.5 9.5 0 0 0 19 0C25.5 13.6 16 3 16 3Z" strokeWidth="2.2" strokeLinejoin="round" />
@@ -24,14 +24,14 @@ export function Mark() {
   );
 }
 
-function Recent({ links }: { links?: boolean }) {
+function Recent() {
   const params = useSearchParams();
   const path = usePathname();
   const q = path === "/" ? params.get("q") : null;
   return (
     <nav className="recent" aria-labelledby="recent-l">
       {SUGGESTED.map((s) => (
-        <Link key={s} href={`/?q=${encodeURIComponent(s)}`} title={s} aria-current={links && q === s ? "page" : undefined}>{s}</Link>
+        <Link key={s} href={`/?q=${encodeURIComponent(s)}`} title={s} aria-current={q === s ? "page" : undefined}>{s}</Link>
       ))}
     </nav>
   );
@@ -114,7 +114,7 @@ export function Shell({ model, children }: { model: string; children: React.Reac
           ))}
         </nav>
         <div className="nav-label" id="recent-l">Recent questions</div>
-        <Suspense fallback={recentFallback}><Recent links /></Suspense>
+        <Suspense fallback={recentFallback}><Recent /></Suspense>
         <div className="side-foot">
           <div className="snav"><SourceLink label="GitHub" /></div>
           <span className="chip"><span className="dot off" aria-hidden />Concept prototype, synthetic data</span>
