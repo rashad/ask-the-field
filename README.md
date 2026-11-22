@@ -132,6 +132,7 @@ data/dump.sql.gz  indexed database
 - Rate limit and daily cap live in process memory. They do not work across several instances.
 - Recorded answers cover only the four suggested questions.
 - Eval assertions are specific to this dataset.
+- The system prompt (`lib/prompt.ts`) carries per-question guidance for the five briefing questions (which tools to chain, how many sentences, what goes in each one), and the eval checks those same five questions. The briefing is a scripted demo, so the guidance keeps those answers short and stable for a non-engineer; free questions use only the general rules, and the eval does not measure them.
 
 ## License
 
