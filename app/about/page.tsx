@@ -1,9 +1,15 @@
+import { ArrowUp, ArrowUpRight, ChatCircleText, Database, FileText, LinkSimple, Scissors, SealCheck, ShieldCheck, X } from "@phosphor-icons/react/ssr";
+import type { Metadata } from "next";
+import { Credit } from "../credit";
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { sql } from "@/lib/db";
+import { MODEL } from "@/lib/answer";
 import { EMBEDDING_DIM, EMBEDDING_MODEL } from "@/lib/voyage";
-import { shortDate } from "../viz";
+
+export const metadata: Metadata = { title: "About", description: "What Ask the Field does, why every answer shows its sources, and how it is built." };
+import { shortDate } from "../fmt";
 
 const TYPE_LABEL: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
 const n = (x: number) => x.toLocaleString("en-US");
@@ -56,16 +62,26 @@ async function Content() {
   }
   return (
     <>
-      <section className="sec" aria-labelledby="h-data">
-        <div className="sec-head"><span className="no caption-3">01</span><h2 id="h-data" className="heading-5">The data</h2></div>
-        <p className="body-3" style={{ maxWidth: 680, marginBottom: "var(--sp-200)" }}>A concept prototype on synthetic data. No real company, field or well. Every number on this page is read from the database.</p>
-        <div className="facts">
-          <div className="fact"><b>{c.fields}</b><span className="caption-4 mute">fields: {c.field_names}</span></div>
-          <div className="fact"><b>{c.wells}</b><span className="caption-4 mute">wells</span></div>
-          <div className="fact"><b>{n(c.production_rows)}</b><span className="caption-4 mute">daily production rows, {months} months from {shortDate(c.prod_from)}</span></div>
-          <div className="fact"><b>{c.events}</b><span className="caption-4 mute">events: {c.incidents} incidents, {c.maintenance} maintenance</span></div>
-          <div className="fact"><b>{c.documents}</b><span className="caption-4 mute">field documents, cut into {c.chunks} chunks</span></div>
+      <section className="sec" aria-labelledby="h-problem">
+        <div className="sec-head"><span className="no caption-3">01</span><h2 id="h-problem" className="heading-5">The problem it solves</h2></div>
+        <div className="prose body-3">
+          <p>An oil field writes a lot down. Every shift ends with a report. Every incident gets a note. Every repair gets a work order. Next to that, sensors log how much oil, gas and water each well produces, every day.</p>
+          <p>When a manager asks &ldquo;why did this well stop in March?&rdquo;, someone has to dig through folders and spreadsheets to find out. That takes hours, and the answer often depends on who remembers what.</p>
+          <p>Ask the Field does that digging in seconds. You ask in plain English. It finds the few reports and numbers that matter, writes a short answer, and puts the proof next to it.</p>
         </div>
+      </section>
+
+      <section className="sec" aria-labelledby="h-data">
+        <div className="sec-head"><span className="no caption-3">02</span><h2 id="h-data" className="heading-5">What you are looking at</h2></div>
+        <p className="body-3" style={{ maxWidth: 680, marginBottom: "var(--sp-200)" }}>An invented oil field, made up for this demo. No real company, field or well. Every number below is read live from the database.</p>
+        <div className="facts">
+          <div className="fact"><b>{c.fields}</b><span className="caption-4 mute">oil fields: {c.field_names}</span></div>
+          <div className="fact"><b>{c.wells}</b><span className="caption-4 mute">wells</span></div>
+          <div className="fact"><b>{c.documents}</b><span className="caption-4 mute">field reports and notes</span></div>
+          <div className="fact"><b>{months}</b><span className="caption-4 mute">months of daily production, {n(c.production_rows)} rows</span></div>
+          <div className="fact"><b>{c.events}</b><span className="caption-4 mute">events: {c.incidents} incidents, {c.maintenance} repairs and checks</span></div>
+        </div>
+        <p className="body-5" style={{ marginTop: "var(--sp-300)" }}>The kinds of reports it reads</p>
         <div className="docs">
           {examples.map((e, i) => (
             <article key={e.doc_type} className={`ex${e.doc_type === "incident_note" ? " inc" : ""}`} style={i === examples.length - 1 && examples.length % 2 ? { gridColumn: "1 / -1" } : undefined}>
@@ -75,14 +91,35 @@ async function Content() {
               </div>
               <span className="mono caption-4 ex-id">{e.doc_id}, {[e.well_id, e.field, shortDate(e.date)].filter(Boolean).join(", ")}</span>
               <blockquote className="body-6">{excerpt(e.text)}</blockquote>
-              <Link className="textlink button-sm" href={`/data?doc=${e.doc_id}`}>Open in Data<i className="ph ph-arrow-up-right" aria-hidden="true" /></Link>
+              <Link className="textlink button-sm" href={`/data?doc=${e.doc_id}`}>Read it<ArrowUpRight aria-hidden /></Link>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="sec" aria-labelledby="h-flow">
-        <div className="sec-head"><span className="no caption-3">02</span><h2 id="h-flow" className="heading-5">How a question becomes an answer</h2></div>
+      <section className="sec" aria-labelledby="h-trust">
+        <div className="sec-head"><span className="no caption-3">03</span><h2 id="h-trust" className="heading-5">Why the sources matter</h2></div>
+        <p className="body-3" style={{ maxWidth: 680 }}>An AI that answers without proof is a guess you cannot check. In operations, a wrong guess costs money or puts people at risk. So every answer here comes with three things.</p>
+        <ul className="why3">
+          <li><LinkSimple aria-hidden /><span><b className="body-4">Numbered sources</b><span className="body-6 mute">Each fact carries a small number. Click it and you read the exact passage of the report it came from, highlighted.</span></span></li>
+          <li><SealCheck aria-hidden /><span><b className="body-4">A confidence level</b><span className="body-6 mute">High when the reports and the data tables agree. Lower when only one of them says it, or when they disagree.</span></span></li>
+          <li><ShieldCheck aria-hidden /><span><b className="body-4">What it could not check</b><span className="body-6 mute">When the data cannot confirm something, the answer says so in one line, instead of filling the gap.</span></span></li>
+        </ul>
+        <p className="body-3" style={{ maxWidth: 680, marginTop: "var(--sp-200)" }}>The AI may only cite what it found during this answer. A test suite asks the same questions again after every change and checks the answers against the data.</p>
+      </section>
+
+      <section className="sec eng-sec" aria-labelledby="h-eng">
+        <div className="sec-head"><span className="no caption-3">04</span><h2 id="h-eng" className="heading-5">For engineers</h2></div>
+        <p className="body-3" style={{ maxWidth: 680, marginBottom: "var(--sp-200)" }}>Retrieval-augmented generation with tool use. The model does not hold the data: it calls typed tools against Postgres and cites what they return.</p>
+        <ul className="stack body-6">
+          <li><b className="body-4">Model</b><span><span className="mono">{MODEL}</span> through the Vercel AI SDK, with four typed tools (Zod): <span className="mono">query_production</span>, <span className="mono">list_events</span>, <span className="mono">search_documents</span>, <span className="mono">get_wells</span>. Structured output for the answer, the chart, the sources and the confidence. At most 4 steps, repeated calls are short-circuited.</span></li>
+          <li><b className="body-4">Embeddings</b><span><span className="mono">{EMBEDDING_MODEL}</span>, {n(EMBEDDING_DIM)} dimensions, stored in Postgres with pgvector next to the chunk metadata (well, field, date, type, section).</span></li>
+          <li><b className="body-4">Hybrid search</b><span>Top 20 by cosine similarity plus top 20 by Postgres full text, fused with reciprocal rank fusion (k=60). Filters on well, field, type and dates run in SQL before ranking. Full text catches exact ids such as <span className="mono">EV-0090</span> that vectors miss.</span></li>
+          <li><b className="body-4">Chunking</b><span>Structure-aware: headings, then paragraphs, then sentences, about 500 tokens, no overlap. {c.documents} documents give {c.chunks} chunks of {c.avg_tokens} tokens on average.</span></li>
+          <li><b className="body-4">Grounding checks</b><span>Every cited chunk id must come from a search in the same run, and every [n] marker must match a source. The eval script asks the suggested questions and checks charts, wells, cited notes and answer length.</span></li>
+          <li><b className="body-4">Reliability</b><span>The suggested questions have recorded runs. If the live call fails or takes more than 20 seconds, the recorded run plays instead and is labelled as such.</span></li>
+        </ul>
+        <h3 className="body-4" style={{ margin: "var(--sp-300) 0 var(--sp-100)" }}>How a question becomes an answer</h3>
         <div className="card flow">
           <svg viewBox="0 0 1000 270" role="img" aria-label="Five steps: you ask; Claude picks its tools; document search combines Voyage embeddings and Postgres full text, merged by rank; Claude writes the answer; you open the passages it used.">
             <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path className="tip" d="M0,1 L10,5 L0,9 z" /></marker></defs>
@@ -128,15 +165,12 @@ async function Content() {
             <text className="s" x="884" y="174" fontSize="13">used</text>
           </svg>
         </div>
-      </section>
-
-      <section className="sec" aria-labelledby="h-prep">
-        <div className="sec-head"><span className="no caption-3">03</span><h2 id="h-prep" className="heading-5">How documents are prepared</h2></div>
+        <h3 className="body-4" style={{ margin: "var(--sp-300) 0 var(--sp-100)" }}>How a document is cut into chunks</h3>
         <div className="two">
           <ul className="rules body-3">
-            <li><i className="ph ph-scissors" aria-hidden="true" /><span>Each document is cut along its structure: headings first, then paragraphs, then sentences. A piece is cut again only while it is over about 500 tokens. A cut never falls inside a sentence.</span></li>
-            <li><i className="ph ph-file-text" aria-hidden="true" /><span>A short report stays one chunk. A procedure splits by section. The {c.documents} documents give {c.chunks} chunks of {c.avg_tokens} tokens on average.</span></li>
-            <li><i className="ph ph-database" aria-hidden="true" /><span>Each chunk gets a vector of {n(EMBEDDING_DIM)} numbers from <span className="mono">{EMBEDDING_MODEL}</span>. It is stored in Postgres with pgvector, next to its metadata: well, field, date, type and section.</span></li>
+            <li><Scissors aria-hidden /><span>Each document is cut along its structure: headings first, then paragraphs, then sentences. A piece is cut again only while it is over about 500 tokens. A cut never falls inside a sentence.</span></li>
+            <li><FileText aria-hidden /><span>A short report stays one chunk. A procedure splits by section. The {c.documents} documents give {c.chunks} chunks of {c.avg_tokens} tokens on average.</span></li>
+            <li><Database aria-hidden /><span>Each chunk gets a vector of {n(EMBEDDING_DIM)} numbers from <span className="mono">{EMBEDDING_MODEL}</span>. It is stored in Postgres with pgvector, next to its metadata: well, field, date, type and section.</span></li>
           </ul>
           <div className="card sop">
             <div className="sop-head">
@@ -154,7 +188,7 @@ async function Content() {
               ))}
             </div>
             <div className="store caption-4"><span className="vecpill mono">vector({EMBEDDING_DIM})</span><span className="mono">well</span><span className="mono">field</span><span className="mono">date</span><span className="mono">type</span><span className="mono">section</span></div>
-            <Link className="textlink button-sm" style={{ marginTop: "var(--sp-200)" }} href={`/data?doc=${proc.doc_id}`}>See the chunks in Data<i className="ph ph-arrow-up-right" aria-hidden="true" /></Link>
+            <Link className="textlink button-sm" style={{ marginTop: "var(--sp-200)" }} href={`/data?doc=${proc.doc_id}`}>See the chunks in Data<ArrowUpRight aria-hidden /></Link>
           </div>
         </div>
       </section>
@@ -166,34 +200,23 @@ export default function About() {
   return (
     <>
       <div style={{ maxWidth: 680 }}>
-        <h1 className="heading-3">About this prototype</h1>
-        <p className="title-2 mute" style={{ marginTop: "var(--sp-100)", fontWeight: 400 }}>Ask a question about oil and gas wells. Get the answer, the proof, and a clear note on what could not be checked.</p>
-        <Link className="btn btn-primary button-md" href="/" style={{ marginTop: "var(--sp-200)" }}><i className="ph-bold ph-arrow-up" aria-hidden="true" />Ask a question</Link>
+        <p className="caption-3 eyebrow">About</p>
+        <h1 className="heading-3">Ask the Field</h1>
+        <p className="title-2 mute" style={{ marginTop: "var(--sp-100)", fontWeight: 400 }}>Ask an oil field a question in plain English. Get a short answer, the proof behind it, and a clear note on what could not be checked.</p>
+        <div className="about-cta">
+          <Link className="btn btn-primary button-md" href="/"><ArrowUp weight="bold" aria-hidden />Ask a question</Link>
+          <Link className="btn btn-ghost button-md" href={`/?q=${encodeURIComponent("Why did W-17 go down in March?")}`}><ChatCircleText aria-hidden />See an example</Link>
+        </div>
       </div>
       <Suspense fallback={<div className="skel" aria-label="Loading the numbers"><div style={{ height: 120 }} /><div style={{ height: 240 }} /></div>}>
         <Content />
       </Suspense>
-      <section className="sec" aria-labelledby="h-screens">
-        <div className="sec-head"><span className="no caption-3">04</span><h2 id="h-screens" className="heading-5">What each screen shows</h2></div>
-        <div className="idx" style={{ marginTop: 0 }}>
-          {[
-            ["/", "ph-chat-circle-text", "Ask", "Type a question. Get the answer with a map or a chart."],
-            ["/?q=Why%20did%20W-17%20go%20down%20in%20March%3F&how=1", "ph-list-magnifying-glass", "How this answer was built", "The steps the model took and the passages behind the answer, with their scores."],
-            ["/data", "ph-database", "Data", "Every document and table, and the chunks cut from them."],
-          ].map(([href, icon, title, text]) => (
-            <Link key={title} href={href}>
-              <span className="ic"><i className={`ph ${icon}`} aria-hidden="true" /></span>
-              <span style={{ flex: 1, minWidth: 0 }}><span className="title-3" style={{ display: "block" }}>{title}</span><span className="body-6 mute">{text}</span></span>
-              <i className="ph ph-arrow-right" aria-hidden="true" />
-            </Link>
-          ))}
-        </div>
-      </section>
       <section className="sec" aria-labelledby="h-not">
         <div className="sec-head"><span className="no caption-3">05</span><h2 id="h-not" className="heading-5">What this prototype is not</h2></div>
         <ul className="not body-3">
-          {["No real data", "No login", "No memory between questions"].map((t) => <li key={t}><i className="ph ph-x" aria-hidden="true" />{t}</li>)}
+          {["No real data: the field, the wells and the reports are invented", "No login and no memory between questions", "Not connected to any live system"].map((t) => <li key={t}><X aria-hidden />{t}</li>)}
         </ul>
+        <p className="credit-p" style={{ marginTop: "var(--sp-300)" }}><Credit /></p>
       </section>
     </>
   );
