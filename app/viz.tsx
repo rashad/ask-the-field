@@ -39,7 +39,7 @@ export function VizCard({ viz, events, from }: { viz: Viz; events: EventRow[]; f
   return (
     <section className="chart" aria-labelledby="vt">
       {viz.type === "map" ? <MapViz viz={viz} events={events} /> : viz.type === "bar" ? <BarViz viz={viz} /> : <LineViz viz={viz} />}
-      <p className="chart-f">The model picks the chart. {viz.type === "map" ? "The server reads the well coordinates from the database." : `The server fills the values from the rows that tool call ${viz.ref}${from ? ` (${from})` : ""} returned.`}</p>
+      <p className="chart-f">The model picks the chart. {viz.type === "map" ? "The server reads the well coordinates from the database." : `The server fills the values from the rows that tool call ${from ?? viz.ref} returned.`}</p>
     </section>
   );
 }
@@ -171,7 +171,7 @@ function BarViz({ viz: raw }: { viz: Extract<Viz, { type: "bar" }> }) {
       <div className="chart-h"><h2 id="vt">{viz.title}</h2><span className="unit">{viz.unit}</span></div>
       <ol className="bars">
         {viz.bars.map((b, i) => (
-          <li key={b.label + i} className={`bar${i === 0 ? " hl" : ""}`}>
+          <li key={b.label + i} className="bar">
             <span className="lab" title={b.label}>{b.label}</span>
             <span className="track" role="img" aria-label={`${b.label} ${fmt(b.value)} ${viz.unit}`}><i style={{ width: `${(100 * Math.abs(b.value)) / max}%` }} /></span>
             <span className="val">{b.value > 0 && /change/i.test(viz.unit) ? "+" : ""}{fraction ? b.value.toFixed(1) : fmt(b.value)}</span>

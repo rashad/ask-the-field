@@ -1,5 +1,5 @@
 "use client";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 export const GLOSSARY = {
   well: ["well", "A hole drilled deep into the rock. Oil, gas and water come up through it."],
@@ -25,9 +25,15 @@ export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }
     if (r) setRight(r.left > window.innerWidth / 2);
     setOpen(true);
   };
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [open]);
   return (
     <span className="term" ref={ref} onMouseEnter={show} onMouseLeave={() => setOpen(false)}>
-      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onClick={() => (open ? setOpen(false) : show())} onFocus={show} onBlur={() => setOpen(false)}>
+      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onClick={show} onFocus={show} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
         {children ?? GLOSSARY[k][0]}
       </button>
       <span role="tooltip" id={id} className="term-tip caption-4" data-open={open || undefined} data-right={right || undefined}>

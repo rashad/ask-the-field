@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { findQuote } from "@/lib/quote";
 import { Md } from "../md";
-import { DOC_TYPES, docTypeLabel, shortDate } from "@/lib/domain";
+import { DOC_TYPES, docTypeLabel, FIELDS, num, shortDate } from "@/lib/domain";
 
 interface Doc { doc_id: string; doc_type: string; well_id: string | null; field: string | null; date: string; title: string; chunks: number }
 interface Chunk { id: string; ordinal: number; section: string | null; text: string; tokens: number; well_id: string | null; field: string | null; date: string | null; doc_type: string; embedding_model: string; vector_head: number[]; dims: number }
@@ -42,10 +42,10 @@ function Documents() {
   const router = useRouter();
   const chunkParam = params.get("chunk");
   const quote = params.get("quote");
-  const selected = params.get("doc") ?? chunkParam?.split("#")[0] ?? null;
+  const [docs, setDocs] = useState<Doc[] | null>(null);
+  const selected = params.get("doc") ?? chunkParam?.split("#")[0] ?? docs?.[0]?.doc_id ?? null;
   const [type, setType] = useState("");
   const [well, setWell] = useState("");
-  const [docs, setDocs] = useState<Doc[] | null>(null);
   const [detail, setDetail] = useState<{ document: Doc; chunks: Chunk[] } | null>(null);
   const [error, setError] = useState("");
 
@@ -126,7 +126,7 @@ function Documents() {
                     <span className="caption-4 mute">Chunk {c.ordinal + 1} of {detail.chunks.length}{c.section ? `, ${c.section}` : ""}</span>
                     <span className="caption-4 mute mono">{c.tokens} tokens</span>
                   </div>
-                  {c.id === chunkParam && <span className="badge badge-mint caption-3" style={{ marginBottom: "var(--sp-75)" }}><Check weight="bold" aria-hidden />Opened from an answer{c.id === chunkParam && findQuote(c.text, quote) ? ", quote highlighted" : ""}</span>}
+                  {c.id === chunkParam && <span className="badge badge-accent caption-3" style={{ marginBottom: "var(--sp-75)" }}><Check weight="bold" aria-hidden />Opened from an answer{c.id === chunkParam && findQuote(c.text, quote) ? ", quote highlighted" : ""}</span>}
                   <Md text={c.text} span={c.id === chunkParam ? findQuote(c.text, quote) : null} />
                   <details open={c.id === chunkParam}>
                     <summary className="caption-4"><CaretDown aria-hidden />Metadata and vector</summary>
@@ -137,7 +137,7 @@ function Documents() {
                       <dt>Well, field</dt><dd className="mono">{c.well_id ?? "none"}, {c.field ?? "none"}</dd>
                       <dt>Date, type</dt><dd className="mono">{c.date ?? "none"}, {c.doc_type}</dd>
                       <dt>Model</dt><dd className="mono">{c.embedding_model}</dd>
-                      <dt>First 8 of {c.dims.toLocaleString("en-US")}</dt>
+                      <dt>First 8 of {num(c.dims)}</dt>
                       <dd><span className="vec mono caption-4">{c.vector_head.map((v, i) => <span key={i}>{v.toFixed(4)}</span>)}</span></dd>
                     </dl>
                   </details>
@@ -153,11 +153,15 @@ function Documents() {
   );
 }
 
-type Col = [key: string, label: string, numeric?: boolean];
+type Fmt = (v: number) => string;
+const int: Fmt = (v) => num(v);
+const dec = (d: number): Fmt => (v) => v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct: Fmt = (v) => `${(v * 100).toFixed(1)}%`;
+type Col = [key: string, label: string, fmt?: Fmt];
 const COLS: Record<string, Col[]> = {
-  production: [["month", "Month"], ["well_id", "Well"], ["field", "Field"], ["oil_bbl_d", "Oil bbl/d", true], ["gas_mscf_d", "Gas mscf/d", true], ["water_cut", "Water cut", true], ["uptime_h", "Uptime h/d", true], ["days", "Days", true]],
-  events: [["event_id", "Event"], ["well_id", "Well"], ["field", "Field"], ["category", "Category"], ["type", "Type"], ["start_date", "Start"], ["end_date", "End"], ["status", "Status"], ["severity", "Severity"], ["downtime_hours", "Downtime h", true], ["description", "Description"]],
-  wells: [["well_id", "Well"], ["field", "Field"], ["status", "Status"], ["well_type", "Type"], ["lift_type", "Lift"], ["spud_date", "Spud date"], ["lat", "Lat", true], ["lon", "Lon", true], ["open_events", "Open events", true]],
+  production: [["month", "Month"], ["well_id", "Well"], ["field", "Field"], ["oil_bbl_d", "Oil bbl/d", int], ["gas_mscf_d", "Gas mscf/d", int], ["water_cut", "Water cut", pct], ["uptime_h", "Uptime h/d", dec(1)], ["days", "Days", int]],
+  events: [["event_id", "Event"], ["well_id", "Well"], ["field", "Field"], ["category", "Category"], ["type", "Type"], ["start_date", "Start"], ["end_date", "End"], ["status", "Status"], ["severity", "Severity"], ["downtime_hours", "Downtime h", int], ["description", "Description"]],
+  wells: [["well_id", "Well"], ["field", "Field"], ["status", "Status"], ["well_type", "Type"], ["lift_type", "Lift"], ["spud_date", "Spud date"], ["lat", "Lat", dec(4)], ["lon", "Lon", dec(4)], ["open_events", "Open events", int]],
 };
 const NOTE: Record<string, string> = {
   production: "Monthly averages per well, from the daily production table.",
@@ -209,7 +213,7 @@ function Tables() {
           <label className="sel"><span className="sr">Field</span>
             <select className="body-6" value={field} onChange={(e) => setField(e.target.value)}>
               <option value="">All fields</option>
-              {["Dune Field", "Wadi Field", "Salt Flat Field"].map((f) => <option key={f}>{f}</option>)}
+              {FIELDS.map((f) => <option key={f}>{f}</option>)}
             </select><CaretDown aria-hidden />
           </label>
           {table === "production" && (
@@ -227,9 +231,9 @@ function Tables() {
           <table className="data">
             <thead>
               <tr>
-                {COLS[table].map(([key, label, num]) => (
-                  <th key={key} scope="col" className={num ? "r" : undefined} aria-sort={sort?.[0] === key ? (sort[1] === 1 ? "ascending" : "descending") : "none"}>
-                    <button type="button" className="caption-3" onClick={() => setSort(sort?.[0] === key ? [key, sort[1] === 1 ? -1 : 1] : [key, num ? -1 : 1])}>
+                {COLS[table].map(([key, label, fmt]) => (
+                  <th key={key} scope="col" className={fmt ? "r" : undefined} aria-sort={sort?.[0] === key ? (sort[1] === 1 ? "ascending" : "descending") : "none"}>
+                    <button type="button" className="caption-3" onClick={() => setSort(sort?.[0] === key ? [key, sort[1] === 1 ? -1 : 1] : [key, fmt ? -1 : 1])}>
                       {label}<CaretUpDown aria-hidden />
                     </button>
                   </th>
@@ -239,8 +243,8 @@ function Tables() {
             <tbody className="body-6">
               {shown.map((r, i) => (
                 <tr key={i}>
-                  {COLS[table].map(([key, , num]) => (
-                    <td key={key} className={`${num ? "r mono" : ""}${key === "description" ? " wrapok" : ""}${key === "status" && r[key] === "open" && r.category === "incident" ? " neg" : ""}`}>{r[key] ?? ""}</td>
+                  {COLS[table].map(([key, , fmt]) => (
+                    <td key={key} className={`${fmt ? "r mono" : ""}${key === "description" ? " wrapok" : ""}${key === "status" && r[key] === "open" && r.category === "incident" ? " neg" : ""}`}>{fmt && typeof r[key] === "number" ? fmt(r[key]) : r[key] ?? ""}</td>
                   ))}
                 </tr>
               ))}

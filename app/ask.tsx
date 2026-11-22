@@ -12,24 +12,15 @@ import type { EventRow } from "@/lib/tools";
 import { Built } from "./built";
 import { useConnector } from "./connector";
 import { callLabel, Evidence, type Final } from "./evidence";
-import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
+import { DOC_COUNT, docSlot, found, REASON, say, type Step } from "./human";
 import { Briefing, HowItWorks, Intro, Snapshot } from "./scene";
 import { ASK_EVENT } from "./shell";
 import { VizCard } from "./viz";
 
-const REASON: Record<string, string> = {
-  daily_cap: "The daily limit on live answers is reached.",
-  ip_cap: "You reached today's limit of live answers.",
-  no_key: "Live answers are off on this server.",
-  api_error: "The live answer failed.",
-  slow: "The live answer took more than 20 seconds.",
-  rate_limit: "Many questions came in a short time.",
-};
-
 const WHY: Record<string, string> = {
-  high: "The field reports and the data tables say the same thing.",
-  medium: "Only one kind of evidence was found, reports or tables, not both.",
-  low: "The evidence is thin or does not agree.",
+  high: "High means the field reports and the data tables say the same thing.",
+  medium: "Medium means only one kind of evidence was found, reports or tables, not both.",
+  low: "Low means the evidence is thin or does not agree.",
 };
 const LEVEL = { high: 3, medium: 2, low: 1 } as const;
 
@@ -220,7 +211,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
       }
     } catch (err) {
       if (ctrl.signal.aborted) return;
-      setError(`The request failed (${(err as Error).message}). Check the connection and try again.`);
+      setError("The request failed. Check the connection and try again.");
       setStatus("error");
     }
   }, []);
@@ -306,14 +297,14 @@ export function Ask({ morning }: { morning: Morning | null }) {
     <>
       <div className="stage" ref={stage}>
         <svg className="links" aria-hidden="true" data-links />
-        <div className="col-main" data-col aria-live="polite" aria-busy={status === "running"}>
+        <div className="col-main" data-col>
           <p className="eyebrow">{status === "running" ? "Answering" : status === "error" ? "No answer" : recorded !== null ? "Recorded answer" : "Answer"}</p>
           <h1 className="h1">{asked}</h1>
           {final && (
             <p className="runline">
               <span>{shortDate(TODAY)}</span>
               <span>{(final.latency_ms / 1000).toFixed(1)} s</span>
-              {passages > 0 && <span>{passages} {passages === 1 ? "report" : "reports"}</span>}
+              {passages > 0 && <span>{passages} {passages === 1 ? "report" : "reports"} read</span>}
               {tableRows > 0 && <span>{tableRows} rows of data</span>}
               <span><button type="button" onClick={toBuilt}>How this answer was built</button></span>
             </p>
@@ -330,7 +321,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
             </div>
           )}
           {recorded !== null && (
-            <div className="notice"><Record weight="bold" aria-hidden /><div><b>Recorded answer. </b>{REASON[recorded] ?? "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</div></div>
+            <div className="notice"><Record weight="bold" aria-hidden /><div><b>Recorded answer. </b>{REASON[recorded] ? `${REASON[recorded][0].toUpperCase()}${REASON[recorded].slice(1)}.` : "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</div></div>
           )}
           {status === "running" && <Narration steps={steps} writing={steps.length > 0 && steps.every((s) => s.state !== "running")} />}
           {status === "error" && (

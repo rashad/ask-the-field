@@ -1,12 +1,11 @@
 "use client";
 import { ArrowRight, ChatCircleText, ListMagnifyingGlass, Play, SealCheck } from "@phosphor-icons/react/ssr";
 import { PRICE_NOTE, PRICE_PER_BBL, round100, usd } from "@/lib/money";
-import { longDate } from "@/lib/domain";
+import { longDate, num as n } from "@/lib/domain";
 import { SUGGESTED } from "@/lib/questions";
 import type { Morning, SnapshotWell } from "@/lib/morning";
 import { Term, GLOSSARY, type TermKey } from "./term";
 
-const n = (x: number) => x.toLocaleString("en-US");
 const WEEKDAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const weekday = (d: string) => WEEKDAY[new Date(`${d}T00:00:00Z`).getUTCDay()];
 
@@ -75,12 +74,10 @@ export function Snapshot({ m }: { m: Morning }) {
       <div className="sec-h"><h2 id="snap-t">Your field this morning, {longDate(m.today)}</h2><span>{fields.join(", ")}</span></div>
       <div className="snap">
         <dl className="tiles">
-          <div className="tile"><dt>Wells</dt><dd>{m.wells_total}</dd></div>
-          <div className="tile"><dt>Producing</dt><dd>{m.wells_producing}</dd></div>
-          <div className="tile"><dt>Down</dt><dd>{m.wells_down}</dd></div>
+          <div className="tile"><dt>Wells producing</dt><dd>{m.wells_producing}<small>of {m.wells_total}</small></dd><span className="sub">{m.wells_down} down</span></div>
           <div className="tile"><dt>Open incidents</dt><dd>{m.open_incidents}</dd><span className="sub">{m.shut_in_by_incident} wells <Term k="shutin" /></span></div>
-          <div className="tile span2"><dt>Produced yesterday</dt><dd>{n(m.oil_yesterday)}<small><Term k="bbl">barrels</Term></small></dd></div>
-          <div className="tile span2"><dt>Lost this month to downtime</dt><dd>{round100(m.lost_month_bbl)}<small>barrels</small></dd><span className="sub">About {usd(m.lost_month_bbl)} at an assumed ${PRICE_PER_BBL} a barrel</span></div>
+          <div className="tile"><dt>Produced yesterday</dt><dd>{n(m.oil_yesterday)}<small><Term k="bbl">barrels</Term></small></dd></div>
+          <div className="tile"><dt>Lost this month to downtime</dt><dd>{round100(m.lost_month_bbl)}<small>barrels</small></dd><span className="sub">About {usd(m.lost_month_bbl)} at an assumed ${PRICE_PER_BBL} a barrel</span></div>
         </dl>
         <FieldMap wells={m.wells} />
       </div>

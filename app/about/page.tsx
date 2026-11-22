@@ -11,9 +11,7 @@ import { PRICE_NOTE } from "@/lib/money";
 import { SUGGESTED } from "@/lib/questions";
 
 export const metadata: Metadata = { title: "About", description: "What Ask the Field does, why every answer shows its sources, and how it is built." };
-import { docTypeLabel, shortDate } from "@/lib/domain";
-
-const n = (x: number) => x.toLocaleString("en-US");
+import { docTypeLabel, MAX_STEPS, num as n, shortDate } from "@/lib/domain";
 
 async function stats() {
   await connection();
@@ -87,7 +85,7 @@ async function Content() {
         <p className="body-5" style={{ marginTop: "var(--sp-300)" }}>The kinds of reports it reads</p>
         <div className="docs">
           {examples.map((e, i) => (
-            <article key={e.doc_type} className={`ex${e.doc_type === "incident_note" ? " inc" : ""}`} style={i === examples.length - 1 && examples.length % 2 ? { gridColumn: "1 / -1" } : undefined}>
+            <article key={e.doc_type} className="ex" style={i === examples.length - 1 && examples.length % 2 ? { gridColumn: "1 / -1" } : undefined}>
               <div className="ex-top">
                 <span className={`badge caption-3 ${e.doc_type === "incident_note" ? "badge-bad" : "badge-mute"}`}>{docTypeLabel(e.doc_type)}</span>
                 <span className="caption-4 mute">{docsOf(e.doc_type)} documents</span>
@@ -115,7 +113,7 @@ async function Content() {
         <div className="sec-head"><span className="no caption-3">04</span><h2 id="h-eng" className="heading-5">For engineers</h2></div>
         <p className="body-3" style={{ maxWidth: 680, marginBottom: "var(--sp-200)" }}>Retrieval-augmented generation with tool use. The model does not hold the data: it calls typed tools against Postgres and cites what they return.</p>
         <ul className="stack body-6">
-          <li><b className="body-4">Model</b><span><span className="mono">{MODEL}</span> through the Vercel AI SDK, with four typed tools (Zod): <span className="mono">query_production</span>, <span className="mono">list_events</span>, <span className="mono">search_documents</span>, <span className="mono">get_wells</span>. Structured output for the answer, the chart, the sources and the confidence. At most 4 steps, repeated calls are short-circuited.</span></li>
+          <li><b className="body-4">Model</b><span><span className="mono">{MODEL}</span> through the Vercel AI SDK, with four typed tools (Zod): <span className="mono">query_production</span>, <span className="mono">list_events</span>, <span className="mono">search_documents</span>, <span className="mono">get_wells</span>. Structured output for the answer, the chart, the sources and the confidence. At most {MAX_STEPS} steps, repeated calls are short-circuited.</span></li>
           <li><b className="body-4">Embeddings</b><span><span className="mono">{EMBEDDING_MODEL}</span>, {n(EMBEDDING_DIM)} dimensions, stored in Postgres with pgvector next to the chunk metadata (well, field, date, type, section).</span></li>
           <li><b className="body-4">Hybrid search</b><span>Top 20 by cosine similarity plus top 20 by Postgres full text, fused with reciprocal rank fusion (k=60). Filters on well, field, type and dates run in SQL before ranking. Full text catches exact ids such as <span className="mono">EV-0090</span> that vectors miss.</span></li>
           <li><b className="body-4">Chunking</b><span>Structure-aware: headings, then paragraphs, then sentences, about 500 tokens, no overlap. {c.documents} documents give {c.chunks} chunks of {c.avg_tokens} tokens on average.</span></li>

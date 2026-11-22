@@ -1,20 +1,10 @@
 "use client";
 import { CaretRight } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
-import { RRF_K } from "@/lib/domain";
+import { MAX_STEPS, num as n, RRF_K } from "@/lib/domain";
 import { callLabel, chunkIndex, type Final } from "./evidence";
-import { found, say, type Step } from "./human";
+import { found, REASON, say, type Step } from "./human";
 
-const REASON: Record<string, string> = {
-  daily_cap: "the daily limit on live answers is reached",
-  ip_cap: "the limit of live answers for this visitor is reached",
-  no_key: "live answers are off on this server",
-  api_error: "the live answer failed",
-  slow: "the live answer took more than 20 seconds",
-  rate_limit: "many questions came in a short time",
-};
-
-const n = (x: number) => x.toLocaleString("en-US");
 const term = (rank: number | null) => (rank ? 1 / (RRF_K + rank) : 0);
 
 function Stage({ k, title, hint, open, children }: { k: number; title: string; hint: string; open: boolean; children: React.ReactNode }) {
@@ -48,7 +38,7 @@ export function Built({ question, final, steps, recorded, all }: { question: str
           <p>&ldquo;{question}&rdquo; goes to <code>POST /api/ask</code>, which streams NDJSON events back to this page.</p>
           <p>{recorded !== null ? `This is a recorded run of the same question, replayed step by step because ${REASON[recorded] ?? "the live answer was not available"}.` : `Live run with ${final.model}.`}</p>
         </Stage>
-        <Stage k={2} title="Tool calls chosen by the model" hint={`${steps.length} ${steps.length === 1 ? "call" : "calls"} in ${u.steps} model ${u.steps === 1 ? "step" : "steps"}, at most 4`} open={open(2)}>
+        <Stage k={2} title="Tool calls chosen by the model" hint={`${steps.length} ${steps.length === 1 ? "call" : "calls"} in ${u.steps} model ${u.steps === 1 ? "step" : "steps"}, at most ${MAX_STEPS}`} open={open(2)}>
           <p>The model can call <code>query_production</code>, <code>list_events</code>, <code>get_wells</code> and <code>search_documents</code>. Each result gets a ref (P1, E1, S1, W1) that the chart and the sources point at.</p>
           {steps.length === 0 ? <p>The model answered without a tool call.</p> : (
             <ol className="calls">
@@ -123,7 +113,7 @@ export function Built({ question, final, steps, recorded, all }: { question: str
         <Stage k={5} title="Server-built chart" hint="Values come from tool results" open={open(5)}>
           {viz.type === "none" ? <p>No chart for this answer: the model asked for none, or its chart request did not hold.</p>
             : viz.type === "map" ? <p>The model asked for a map titled &ldquo;{viz.title}&rdquo; with {viz.highlighted.length} highlighted {viz.highlighted.length === 1 ? "well" : "wells"} ({viz.highlighted.join(", ")}). The server read the coordinates and status of {viz.wells.length} wells from the database.</p>
-            : <p>The model asked for a {viz.type} chart titled &ldquo;{viz.title}&rdquo; and pointed at tool call <code>{viz.ref}</code>{vizStep ? <> (<code>{callLabel(vizStep)}</code>)</> : null}. <code>lib/chart.ts</code> filled {viz.type === "bar" ? `${viz.bars.length} bars` : `${viz.series.reduce((a, s) => a + s.points.length, 0)} points in ${viz.series.length} series`} ({viz.unit}) from the rows that call returned. The model writes no chart value.</p>}
+            : <p>The model asked for a {viz.type} chart titled &ldquo;{viz.title}&rdquo; and pointed at tool call <code>{vizStep ? callLabel(vizStep) : viz.ref}</code>. <code>lib/chart.ts</code> filled {viz.type === "bar" ? `${viz.bars.length} bars` : `${viz.series.reduce((a, s) => a + s.points.length, 0)} points in ${viz.series.length} series`} ({viz.unit}) from the rows that call returned. The model writes no chart value.</p>}
           {checks.viz_error && <p className="neg">Chart request rejected: {checks.viz_error}</p>}
         </Stage>
         <Stage k={6} title="Quote check" hint="Word for word against the report" open={open(6)}>
