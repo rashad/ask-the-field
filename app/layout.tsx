@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="wrap">{children}</div>
         </main>
         <footer className="foot">
-          <div className="wrap caption-4"><Flask aria-hidden /><span>Concept prototype, synthetic data. No real company, field or well.</span><Credit /></div>
+          <div className="wrap caption-4"><p className="foot-note"><Flask aria-hidden /><span>Concept prototype, synthetic data. No real company, field or well.</span></p><Credit /></div>
         </footer>
       </body>
     </html>

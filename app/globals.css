@@ -181,7 +181,7 @@ a.chip:active{transform:scale(.98)}
 .incs .num{width:24px;height:24px;border-radius:var(--r-pill);background:var(--bad);color:var(--mk-ink);display:grid;place-items:center;flex:none}
 
 .bars{display:flex;flex-direction:column;gap:var(--sp-100)}
-.bar-row{display:grid;grid-template-columns:72px minmax(0,1fr) 232px;align-items:center;gap:var(--sp-200)}
+.bar-row{display:grid;grid-template-columns:128px minmax(0,1fr) 200px;align-items:center;gap:var(--sp-200)}
 .bar-row svg{display:block;width:100%;height:24px;overflow:visible}
 .bar-row .val{display:flex;justify-content:space-between;gap:var(--sp-75);align-items:baseline}
 
@@ -287,8 +287,8 @@ table.data tbody tr:last-child td{border-bottom:0}
   .trust-src{flex-basis:100%}
   .trust-main .btn{width:100%}
   .answer-text{font-size:16px;line-height:24px}
-  .bar-row{grid-template-columns:56px minmax(0,1fr);row-gap:var(--sp-50)}
-  .bar-row .val{grid-column:1 / -1;padding-left:72px}
+  .bar-row{grid-template-columns:minmax(0,1fr) 8.5em;row-gap:var(--sp-50);column-gap:var(--sp-100)}
+  .bar-row > p{grid-column:1 / -1}
   .kv{grid-template-columns:minmax(0,1fr)}
   .kv dt{margin-top:var(--sp-75)}
   .drawer{top:var(--sp-75);right:var(--sp-75);bottom:var(--sp-75);width:calc(100vw - 16px)}
@@ -472,10 +472,11 @@ table.data td.wrapok{min-width:360px}
 .md-table tr.hl td{background:rgba(11,27,58,.10)}
 @media (max-width:880px){.doclist{position:static;max-height:320px}}
 .foot .wrap{flex-wrap:wrap}
-.credit{margin-left:auto;color:var(--mute)}
+.foot-note{display:flex;align-items:baseline;gap:var(--sp-75);margin:0}
+.foot-note svg{flex:none;align-self:flex-start;margin-top:.15em}
+.credit{margin-left:auto;color:var(--mute);display:inline-flex;flex-wrap:wrap;align-items:center;column-gap:12px;row-gap:4px}
 .credit a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .srclink{display:inline-flex;align-items:center;gap:4px}
-.credit .srclink{margin-left:12px}
 .srclink svg{width:14px;height:14px;flex:none}
 .quote-ok{color:var(--mute);display:inline-flex;align-items:center;gap:4px}
 .quote-miss{color:#B3261E;display:inline-flex;align-items:center;gap:4px}
@@ -522,7 +523,7 @@ table.data td.wrapok{min-width:360px}
 button.ref{cursor:pointer;border:0;transition:background-color .3s var(--ease),transform .3s var(--ease)}
 button.ref:hover{background:#F04E0E;color:var(--ink)}
 button.ref:active{transform:scale(.94)}
-button.chip{cursor:pointer}
+button.chip{cursor:pointer;text-align:left}
 button.chip:hover{background:var(--s3)}
 
 .pass{scroll-margin-top:var(--sp-100)}
