@@ -1,10 +1,6 @@
 import { sql } from "./db";
 import { TODAY } from "./synth";
-
-// Normal rate = average oil on full days in the 30 days before the event; a suspension is a decision, not a loss.
-export const lostOil = () => sql`CASE WHEN e.type = 'Well suspension' THEN NULL ELSE round((
-  (SELECT avg(b.oil_bbl) FROM production_daily b WHERE b.well_id = e.well_id AND b.uptime_hours = 24 AND b.date BETWEEN e.start_date - 30 AND e.start_date - 1)
-  * e.downtime_hours / 24)::numeric)::int END`;
+import { lostOil } from "./tools";
 
 export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; open_incident: boolean }
 

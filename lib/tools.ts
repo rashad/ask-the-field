@@ -3,8 +3,6 @@ import { z } from "zod";
 import { sql } from "./db";
 import { PRICE_PER_BBL } from "./money";
 import { hybridSearch } from "./search";
-import type { ToolRun } from "./chart";
-import { lostOil } from "./stakes";
 
 export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
 export const DOC_TYPES = ["shift_report", "incident_note", "work_order", "well_test", "procedure"] as const;
@@ -14,6 +12,13 @@ export const TODAY = "2026-11-22";
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD").refine((d) => !Number.isNaN(Date.parse(d)), "invalid date");
 const wellIds = z.array(z.string().regex(/^W-\d{2}$/, "well ids look like W-17")).min(1).max(41);
 const field = z.enum(FIELDS);
+
+// Normal rate = average oil on full days in the 30 days before the event; a suspension is a decision, not a loss.
+export const lostOil = () => sql`CASE WHEN e.type = 'Well suspension' THEN NULL ELSE round((
+  (SELECT avg(b.oil_bbl) FROM production_daily b WHERE b.well_id = e.well_id AND b.uptime_hours = 24 AND b.date BETWEEN e.start_date - 30 AND e.start_date - 1)
+  * e.downtime_hours / 24)::numeric)::int END`;
+
+export interface ToolRun { ref: string; name: string; output: unknown }
 
 export interface SearchTrace {
   call_id: string;

@@ -1,4 +1,4 @@
-export interface ToolRun { ref: string; name: string; output: unknown }
+import type { ToolRun } from "./tools";
 
 export const BAR_METRICS = ["value", "change", "change_pct", "lost_oil_bbl", "lost_revenue_usd", "downtime_hours"] as const;
 type BarMetric = (typeof BAR_METRICS)[number];

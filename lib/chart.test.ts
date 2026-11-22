@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildChart, type ToolRun } from "./chart";
+import { buildChart } from "./chart";
+import type { ToolRun } from "./tools";
 
 const runs: ToolRun[] = [
   { ref: "E1", name: "list_events", output: { events: [

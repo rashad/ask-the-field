@@ -2,11 +2,11 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { openrouter } from "@openrouter/ai-sdk-provider";
 import { isStepCount, Output, streamText, type LanguageModelUsage } from "ai";
 import { z } from "zod";
-import { BAR_METRICS, buildChart, type Chart, type ToolRun } from "./chart";
+import { BAR_METRICS, buildChart, type Chart } from "./chart";
 import { sql } from "./db";
 import { findQuote } from "./quote";
 import { SYSTEM } from "./prompt";
-import { makeTools, type SearchTrace } from "./tools";
+import { makeTools, type SearchTrace, type ToolRun } from "./tools";
 
 export const MODEL = process.env.ASK_MODEL || "claude-sonnet-5-5";
 const MAX_STEPS = 4;
