@@ -1,8 +1,10 @@
 "use client";
+import { CaretDown, CaretUpDown, Check, CursorClick, FileText, Table, WarningCircle } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { shortDate } from "../viz";
+import { Md } from "../md";
+import { shortDate } from "../fmt";
 
 interface Doc { doc_id: string; doc_type: string; well_id: string | null; field: string | null; date: string; title: string; chunks: number }
 interface Chunk { id: string; ordinal: number; section: string | null; text: string; tokens: number; well_id: string | null; field: string | null; date: string | null; doc_type: string; embedding_model: string; vector_head: number[]; dims: number }
@@ -27,8 +29,8 @@ export function DataView() {
       <div className="page-head">
         <div><h1 className="heading-4">Data</h1><p className="body-6 mute">The raw documents and tables behind every answer.</p></div>
         <nav className="seg" aria-label="Data views">
-          <Link className="button-sm" href="/data" aria-current={tab === "documents" ? "page" : undefined}><i className="ph ph-file-text" aria-hidden="true" />Documents</Link>
-          <Link className="button-sm" href="/data?tab=tables" aria-current={tab === "tables" ? "page" : undefined}><i className="ph ph-table" aria-hidden="true" />Tables</Link>
+          <Link className="button-sm" href="/data" aria-current={tab === "documents" ? "page" : undefined}><FileText aria-hidden />Documents</Link>
+          <Link className="button-sm" href="/data?tab=tables" aria-current={tab === "tables" ? "page" : undefined}><Table aria-hidden />Tables</Link>
         </nav>
       </div>
       {tab === "documents" ? <Documents /> : <Tables />}
@@ -59,7 +61,7 @@ function Documents() {
 
   useEffect(() => {
     if (!chunkParam || !detail) return;
-    document.getElementById(`chunk-${chunkParam}`)?.scrollIntoView({ block: "nearest" });
+    document.getElementById(detail.chunks.length === 1 ? "docview" : `chunk-${chunkParam}`)?.scrollIntoView({ block: "start" });
   }, [chunkParam, detail]);
 
   useEffect(() => {
@@ -76,17 +78,17 @@ function Documents() {
           <select className="body-6" value={type} onChange={(e) => setType(e.target.value)}>
             <option value="">All types</option>
             {TYPES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-          </select><i className="ph ph-caret-down" aria-hidden="true" />
+          </select><CaretDown aria-hidden />
         </label>
         <label className="sel"><span className="sr">Well</span>
           <select className="body-6" value={well} onChange={(e) => setWell(e.target.value)}>
             <option value="">All wells</option>
             {WELLS.map((w) => <option key={w}>{w}</option>)}
-          </select><i className="ph ph-caret-down" aria-hidden="true" />
+          </select><CaretDown aria-hidden />
         </label>
         <span className="caption-4 mute" style={{ alignSelf: "center" }}>{docs ? `${docs.length} documents` : "Loading..."}</span>
       </div>
-      {error && <p className="qerr body-6" role="alert"><i className="ph ph-warning-circle" aria-hidden="true" />{error}</p>}
+      {error && <p className="qerr body-6" role="alert"><WarningCircle aria-hidden />{error}</p>}
       <div className="docgrid">
         <div className="doclist">
           {docs?.length === 0 && <div className="empty body-6">No document matches these filters.</div>}
@@ -98,7 +100,7 @@ function Documents() {
           ))}
         </div>
         {detail ? (
-          <article className="card docview">
+          <article id="docview" className="card docview">
             <div className="docview-head">
               <div>
                 <h2 className="heading-6">{detail.document.title}</h2>
@@ -118,10 +120,10 @@ function Documents() {
                     <span className="caption-4 mute">Chunk {c.ordinal + 1} of {detail.chunks.length}{c.section ? `, ${c.section}` : ""}</span>
                     <span className="caption-4 mute mono">{c.tokens} tokens</span>
                   </div>
-                  {c.id === chunkParam && <span className="badge badge-mint caption-3" style={{ marginBottom: "var(--sp-75)" }}><i className="ph-bold ph-check" aria-hidden="true" />Opened from an answer</span>}
-                  <p className="body-6 pre">{c.text}</p>
+                  {c.id === chunkParam && <span className="badge badge-mint caption-3" style={{ marginBottom: "var(--sp-75)" }}><Check weight="bold" aria-hidden />Opened from an answer</span>}
+                  <Md text={c.text} />
                   <details open={c.id === chunkParam}>
-                    <summary className="caption-4"><i className="ph ph-caret-down" aria-hidden="true" />Metadata and vector</summary>
+                    <summary className="caption-4"><CaretDown aria-hidden />Metadata and vector</summary>
                     <dl className="kv body-6">
                       <dt>Chunk id</dt><dd className="mono">{c.id}</dd>
                       <dt>Section</dt><dd>{c.section ?? "none"}</dd>
@@ -138,7 +140,7 @@ function Documents() {
             </div>
           </article>
         ) : (
-          <div className="empty body-6"><i className="ph ph-cursor-click" aria-hidden="true" />Select a document to see its chunks.</div>
+          <div className="empty body-6"><CursorClick aria-hidden />Select a document to see its chunks.</div>
         )}
       </div>
     </>
@@ -199,18 +201,18 @@ function Tables() {
             <select className="body-6" value={field} onChange={(e) => setField(e.target.value)}>
               <option value="">All fields</option>
               {["Field A", "Field B", "Bayda"].map((f) => <option key={f}>{f}</option>)}
-            </select><i className="ph ph-caret-down" aria-hidden="true" />
+            </select><CaretDown aria-hidden />
           </label>
           {table === "production" && (
             <label className="sel"><span className="sr">Window</span>
               <select className="body-6" value={months} onChange={(e) => setMonths(Number(e.target.value))}>
                 {[6, 12, 18].map((m) => <option key={m} value={m}>Last {m} months</option>)}
-              </select><i className="ph ph-caret-down" aria-hidden="true" />
+              </select><CaretDown aria-hidden />
             </label>
           )}
         </div>
       </div>
-      {error && <p className="qerr body-6" role="alert"><i className="ph ph-warning-circle" aria-hidden="true" />{error}</p>}
+      {error && <p className="qerr body-6" role="alert"><WarningCircle aria-hidden />{error}</p>}
       <div className="card tbl-card">
         <div className="tscroll">
           <table className="data">
@@ -219,7 +221,7 @@ function Tables() {
                 {COLS[table].map(([key, label, num]) => (
                   <th key={key} scope="col" className={num ? "r" : undefined} aria-sort={sort?.[0] === key ? (sort[1] === 1 ? "ascending" : "descending") : "none"}>
                     <button type="button" className="caption-3" onClick={() => setSort(sort?.[0] === key ? [key, sort[1] === 1 ? -1 : 1] : [key, num ? -1 : 1])}>
-                      {label}<i className="ph ph-caret-up-down" aria-hidden="true" />
+                      {label}<CaretUpDown aria-hidden />
                     </button>
                   </th>
                 ))}
