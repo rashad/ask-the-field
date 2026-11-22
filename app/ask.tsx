@@ -1,20 +1,21 @@
 "use client";
-import { ArrowClockwise, ArrowRight, ArrowUp, ChatCircleText, CheckCircle, CircleNotch, Info, Lightbulb, ListMagnifyingGlass, MagnifyingGlass, Play, Record, SealCheck, WarningCircle, X, XCircle } from "@phosphor-icons/react/ssr";
+import { ArrowClockwise, CheckCircle, CircleNotch, Info, Lightbulb, Play, Record, Rows, WarningCircle, X, XCircle } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import type { AskEvent } from "@/lib/answer";
+import { shortDate, TODAY } from "@/lib/domain";
 import { usd } from "@/lib/money";
 import { DEMO, SUGGESTED } from "@/lib/questions";
 import type { Morning } from "@/lib/morning";
-import { Drawer } from "./drawer";
-import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
-import { Briefing, Scene } from "./scene";
 import type { EventRow } from "@/lib/tools";
+import { Built } from "./built";
+import { useConnector } from "./connector";
+import { callLabel, Evidence, type Final } from "./evidence";
+import { DOC_COUNT, docSlot, found, say, type Step } from "./human";
+import { Briefing, HowItWorks, Intro, Snapshot } from "./scene";
+import { ASK_EVENT } from "./shell";
 import { VizCard } from "./viz";
-
-type Final = Extract<AskEvent, { type: "final" }>;
-
 
 const REASON: Record<string, string> = {
   daily_cap: "The daily limit on live answers is reached.",
@@ -26,22 +27,40 @@ const REASON: Record<string, string> = {
 };
 
 const WHY: Record<string, string> = {
-  high: "High means the field reports and the data tables say the same thing.",
-  medium: "Medium means only one kind of evidence was found, reports or tables, not both.",
-  low: "Low means the evidence is thin or does not agree.",
+  high: "The field reports and the data tables say the same thing.",
+  medium: "Only one kind of evidence was found, reports or tables, not both.",
+  low: "The evidence is thin or does not agree.",
 };
+const LEVEL = { high: 3, medium: 2, low: 1 } as const;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const IDS = /\b(W-\d{2}|EV-\d{4}|SOP-[A-Z]+-\d{3}|[A-Z]{2}-\d{3}|7Q-\d{4}(?:-\d{3})?)\b/;
 
-function AnswerText({ text, onRef }: { text: string; onRef: (n: number) => void }) {
+function withIds(text: string) {
+  return text.split(IDS).map((p, i) => (i % 2 ? <span key={i} className="id">{p}</span> : p));
+}
+
+function AnswerText({ text, labels }: { text: string; labels: Map<number, string> }) {
   const tidy = text.replace(/([.!?])((?:\s*\[\d+\])+)/g, "$2$1");
+  const sentences = tidy.split(/(?<=[.!?])\s+/).filter(Boolean);
   return (
-    <p className="answer-text title-2">
-      {tidy.split(/(\[\d+\])/).map((part, i) => {
-        const m = part.match(/^\[(\d+)\]$/);
-        return m ? (
-          <button key={i} type="button" className="ref mono" onClick={() => onRef(Number(m[1]))} aria-label={`Source ${m[1]}: open the passage`}>{m[1]}</button>
-        ) : part;
+    <p className="ans" id="answer">
+      {sentences.map((s, i) => {
+        const parts = s.split(/(\[\d+\])/);
+        const refs = [...new Set(parts.map((p) => p.match(/^\[(\d+)\]$/)?.[1]).filter(Boolean))];
+        return (
+          <Fragment key={i}>
+            {i > 0 && " "}
+            <span className="sent" data-refs={refs.join(" ")}>
+              {parts.map((p, j) => {
+                const m = p.match(/^\[(\d+)\]$/);
+                if (!m) return <Fragment key={j}>{withIds(p)}</Fragment>;
+                const label = labels.get(Number(m[1]));
+                return <button key={j} type="button" className="cite" data-ref={m[1]} aria-controls={label ? `src-${m[1]}` : undefined} aria-label={label ? `Source ${m[1]}: ${label}` : `Source ${m[1]}, missing`}>{m[1]}</button>;
+              })}
+            </span>
+          </Fragment>
+        );
       })}
     </p>
   );
@@ -49,7 +68,7 @@ function AnswerText({ text, onRef }: { text: string; onRef: (n: number) => void 
 
 function Tip({ children, show }: { children: React.ReactNode; show: boolean }) {
   if (!show) return null;
-  return <p className="tip caption-2"><Lightbulb weight="fill" aria-hidden /><span>{children}</span></p>;
+  return <p className="tip"><Lightbulb weight="fill" aria-hidden /><span>{children}</span></p>;
 }
 
 function DocGrid({ steps }: { steps: Step[] }) {
@@ -64,11 +83,11 @@ function DocGrid({ steps }: { steps: Step[] }) {
     <div className="dg" data-phase={phase}>
       <svg viewBox={`0 0 ${COLS * 12} ${(DOC_COUNT / COLS) * 12}`} role="img" aria-label={docs.length ? `${docs.length} of ${DOC_COUNT} reports picked` : `${DOC_COUNT} field reports`}>
         {Array.from({ length: DOC_COUNT }, (_, i) => (
-          <rect key={i} x={(i % COLS) * 12 + 1} y={Math.floor(i / COLS) * 12 + 1} width="9" height="10" className={slots.has(i) ? "hit" : undefined} style={{ animationDelay: `${(i % COLS) * 40 + Math.floor(i / COLS) * 15}ms` }} />
+          <rect key={i} x={(i % COLS) * 12 + 1} y={Math.floor(i / COLS) * 12 + 1} width="9" height="10" rx="1" className={slots.has(i) ? "hit" : undefined} style={{ animationDelay: `${(i % COLS) * 40 + Math.floor(i / COLS) * 15}ms` }} />
         ))}
       </svg>
-      <p className="caption-4 mute">{docs.length ? `${docs.length} of ${DOC_COUNT} reports kept` : running ? `Reading ${DOC_COUNT} reports...` : `${DOC_COUNT} field reports`}</p>
-      {docs.length > 0 && <ul className="dg-ids">{docs.map((d, i) => <li key={d} className="mono caption-4" style={{ animationDelay: `${i * 90}ms` }}>{d}</li>)}</ul>}
+      <p>{docs.length ? `${docs.length} of ${DOC_COUNT} reports kept` : running ? `Reading ${DOC_COUNT} reports...` : `${DOC_COUNT} field reports`}</p>
+      {docs.length > 0 && <ul className="dg-ids">{docs.map((d, i) => <li key={d} style={{ animationDelay: `${i * 90}ms` }}>{d}</li>)}</ul>}
     </div>
   );
 }
@@ -77,21 +96,18 @@ function Narration({ steps, writing }: { steps: Step[]; writing: boolean }) {
   const current = steps.filter((s) => s.state === "running").sort((a, b) => Number(b.name === "search_documents") - Number(a.name === "search_documents"));
   const caption = writing ? "Writing the answer and linking each fact to its source..." : current.length ? say(current[0].name, current[0].args) : steps.length ? "Deciding what to check next..." : "Reading your question and deciding where to look...";
   return (
-    <section className="card narr" aria-label="What the AI is doing now">
-      <div className="narr-main">
-        <p className="caption-3 mute narr-k">Live, step by step</p>
-        <p className="title-1 narr-cap" key={caption} aria-live="polite"><CircleNotch className="spin" aria-hidden />{caption}</p>
-        {current.length > 1 && <p className="body-6 mute">At the same time: {current.slice(1).map((s) => say(s.name, s.args).replace(/\.\.\.$/, "").replace(/^./, (c) => c.toLowerCase())).join("; ")}.</p>}
-        <ol className="narr-done">
-          {steps.filter((s) => s.state !== "running").map((s) => (
-            <li key={s.id} className="body-6">
-              {s.state === "error" ? <XCircle className="neg" aria-hidden /> : <CheckCircle weight="fill" aria-hidden />}
-              <span><span className="mute">{say(s.name, s.args).replace(/\.\.\.$/, "")}.</span> <b className="body-5">{found(s)}</b></span>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <DocGrid steps={steps} />
+    <section className="narr" aria-label="What the AI is doing now">
+      <p className="narr-k">Live, step by step</p>
+      <p className="narr-cap" key={caption} aria-live="polite"><CircleNotch className="spin" aria-hidden />{caption}</p>
+      {current.length > 1 && <p className="narr-also">At the same time: {current.slice(1).map((s) => say(s.name, s.args).replace(/\.\.\.$/, "").replace(/^./, (c) => c.toLowerCase())).join("; ")}.</p>}
+      <ol className="narr-done">
+        {steps.filter((s) => s.state !== "running").map((s) => (
+          <li key={s.id}>
+            {s.state === "error" ? <XCircle className="neg" aria-hidden /> : <CheckCircle weight="fill" aria-hidden />}
+            <span>{say(s.name, s.args).replace(/\.\.\.$/, "")}. <b>{found(s)}</b></span>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
@@ -112,13 +128,13 @@ export function Ask({ morning }: { morning: Morning | null }) {
   const [recorded, setRecorded] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [invalid, setInvalid] = useState("");
-  const [drawer, setDrawer] = useState(false);
-  const [focus, setFocus] = useState<number | null>(null);
   const [tips, setTips] = useState(true);
   const abort = useRef<AbortController | null>(null);
   const typed = useRef<string | null>(null);
+  const stage = useRef<HTMLDivElement>(null);
 
   const demo = params.get("demo");
+  const how = params.get("how") === "1";
   const [countdown, setCountdown] = useState<number | null>(null);
 
   useEffect(() => setTips(!readTipsOff()), []);
@@ -148,8 +164,6 @@ export function Ask({ morning }: { morning: Morning | null }) {
     setFinal(null);
     setRecorded(null);
     setError("");
-    setDrawer(false);
-    setFocus(null);
     let nextAt = Date.now() + (guided ? 1200 : 0);
     const pace = async () => {
       const wait = nextAt - Date.now();
@@ -187,7 +201,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
             const out = e.output as Record<string, any>;
             setSteps((s) => s.map((x) => (x.id === e.id ? { ...x, state: out?.repeated ? "repeated" : "done", output: out } : x)));
             if (out?.events) setEvents((ev) => [...ev, ...out.events]);
-          } else if (e.type === "tool-error") setSteps((s) => s.map((x) => (x.id === e.id ? { ...x, state: "error" } : x)));
+          } else if (e.type === "tool-error") setSteps((s) => s.map((x) => (x.id === e.id ? { ...x, state: "error", error: e.error } : x)));
           else if (e.type === "final") {
             ended = true;
             setFinal(e);
@@ -221,11 +235,9 @@ export function Ask({ morning }: { morning: Morning | null }) {
     abort.current?.abort();
     setStatus("idle");
   }, [q, run]);
-  useEffect(() => {
-    if (status === "done" && params.get("how") === "1") setDrawer(true);
-  }, [status, params]);
+  useEffect(() => () => abort.current?.abort(), []);
 
-  const submit = (question: string) => {
+  const submit = useCallback((question: string) => {
     const text = question.trim();
     if (text.length < 3) return setInvalid("Type a question of at least 3 characters.");
     if (text.length > 300) return setInvalid("Keep the question under 300 characters.");
@@ -235,140 +247,147 @@ export function Ask({ morning }: { morning: Morning | null }) {
       typed.current = text;
       router.push(`/?q=${encodeURIComponent(text)}`, { scroll: false });
     }
-  };
+  }, [q, run, router]);
 
-  const openSource = (n: number | null) => {
-    setFocus(n);
-    setDrawer(true);
-  };
+  useEffect(() => {
+    const onAsk = (e: Event) => {
+      e.preventDefault();
+      submit((e as CustomEvent<string>).detail);
+    };
+    window.addEventListener(ASK_EVENT, onAsk);
+    return () => window.removeEventListener(ASK_EVENT, onAsk);
+  }, [submit]);
+
+  useEffect(() => {
+    if (status === "running") window.scrollTo({ top: 0 });
+    if (status !== "done" || !how) return;
+    const t = setTimeout(() => document.getElementById("built")?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }), 50);
+    return () => clearTimeout(t);
+  }, [status, how]);
+
+  useConnector(stage, status === "done" && !!final);
+
   const hideTips = () => {
     setTips(false);
     try { localStorage.setItem("tips-off", "1"); } catch {}
   };
 
+  if (status === "idle") {
+    return (
+      <div className="page">
+        <Intro m={morning} />
+        <form className="composer" data-invalid={invalid ? "" : undefined} noValidate onSubmit={(e) => { e.preventDefault(); submit(input); }}>
+          <label className="sr" htmlFor="q">Your question</label>
+          <textarea id="q" name="q" rows={2} value={input} maxLength={300} placeholder="Ask about wells, incidents, production or procedures" aria-invalid={invalid ? true : undefined} aria-describedby={invalid ? "q-err" : undefined}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); submit(input); } }} />
+          <div className="composer-b">
+            <span className="hint"><Rows aria-hidden />Reports and data tables</span>
+            <button className="btn btn-primary" type="submit">Ask<kbd aria-hidden>Enter</kbd></button>
+          </div>
+        </form>
+        {invalid && <p className="qerr" id="q-err" role="alert"><WarningCircle aria-hidden /><span>{invalid}</span></p>}
+        {morning && <Snapshot m={morning} />}
+        <Briefing m={morning} onPick={(x) => { setInput(x); submit(x); }} onDemo={() => router.push(`/?q=${encodeURIComponent(DEMO[0])}&demo=1`)} />
+        <HowItWorks />
+      </div>
+    );
+  }
+
   const answer = final?.answer;
   const passages = final ? new Set(final.trace.flatMap((t) => t.chunks_sent.map((c) => c.document_id))).size : 0;
   const tableRows = steps.reduce((n, s) => n + (s.name === "search_documents" ? 0 : (s.output?.count ?? s.output?.rows?.length ?? 0)), 0);
+  const labels = new Map(answer?.sources.map((s) => [s.n, s.label]) ?? []);
+  const vizFrom = answer && (answer.viz.type === "line" || answer.viz.type === "bar") ? callLabel(steps.find((s) => s.output?.ref === (answer.viz as { ref: string }).ref && !s.output?.repeated)) : null;
+  const toBuilt = () => document.getElementById("built")?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 
   return (
     <>
-      {status === "idle" && (morning ? <Scene m={morning} /> : (
-        <div className="hero">
-          <p className="caption-3 eyebrow">Ask the Field</p>
-          <h1 className="hero-title heading-2">Ask an oil field a question in plain English.</h1>
-        </div>
-      ))}
-      <form className={status === "idle" ? "hero-form" : undefined} noValidate onSubmit={(e) => { e.preventDefault(); submit(input); }}>
-        <div className="qbar" data-invalid={invalid ? "true" : undefined}>
-          <MagnifyingGlass className="lead" aria-hidden />
-          <label className="sr" htmlFor="q">Your question</label>
-          <input id="q" name="q" type="text" className="body-3" value={input} onChange={(e) => setInput(e.target.value)} placeholder="For example: why was W-17 down in March?" autoComplete="off" maxLength={300} />
-          <button className="btn btn-primary button-md" type="submit" disabled={status === "running"}><ArrowUp weight="bold" aria-hidden />Ask</button>
-        </div>
-        {invalid && <p className="qerr body-6" role="alert"><WarningCircle aria-hidden /><span>{invalid}</span></p>}
-      </form>
-
-      {status === "idle" && (
-        <>
-          {morning ? (
-            <Briefing m={morning} onPick={(q) => { setInput(q); submit(q); }} onDemo={() => router.push(`/?q=${encodeURIComponent(DEMO[0])}&demo=1`)} />
-          ) : (
-            <ul className="sug hero-sug">
-              {SUGGESTED.map((q) => (
-                <li key={q}><a href={`/?q=${encodeURIComponent(q)}`} onClick={(e) => { e.preventDefault(); setInput(q); submit(q); }}><span className="txt title-3">{q}</span><ArrowRight className="go" aria-hidden /></a></li>
-              ))}
-            </ul>
+      <div className="stage" ref={stage}>
+        <svg className="links" aria-hidden="true" data-links />
+        <div className="col-main" data-col aria-live="polite" aria-busy={status === "running"}>
+          <p className="eyebrow">{status === "running" ? "Answering" : status === "error" ? "No answer" : recorded !== null ? "Recorded answer" : "Answer"}</p>
+          <h1 className="h1">{asked}</h1>
+          {final && (
+            <p className="runline">
+              <span>{shortDate(TODAY)}</span>
+              <span>{(final.latency_ms / 1000).toFixed(1)} s</span>
+              {passages > 0 && <span>{passages} {passages === 1 ? "report" : "reports"}</span>}
+              {tableRows > 0 && <span>{tableRows} rows of data</span>}
+              <span><button type="button" onClick={toBuilt}>How this answer was built</button></span>
+            </p>
           )}
-          <section className="how3" aria-labelledby="how3-t">
-            <h2 id="how3-t" className="caption-3 mute how3-k">How it works in 3 steps</h2>
-            <ol>
-              <li><span className="ic"><ChatCircleText aria-hidden /></span><span><b className="body-4">1. You ask</b><span className="body-6 mute">A question in your own words, like you would ask a colleague.</span></span></li>
-              <li><span className="ic"><ListMagnifyingGlass aria-hidden /></span><span><b className="body-4">2. It looks through the reports and the data</b><span className="body-6 mute">It picks the few passages and numbers that matter out of thousands.</span></span></li>
-              <li><span className="ic"><SealCheck aria-hidden /></span><span><b className="body-4">3. It answers and shows its sources</b><span className="body-6 mute">Every fact links to the report it came from, so you can check it.</span></span></li>
-            </ol>
-          </section>
-        </>
-      )}
-
-      {status !== "idle" && (
-        <div className="answer" aria-live="polite">
+          {invalid && <p className="qerr" role="alert"><WarningCircle aria-hidden /><span>{invalid}</span></p>}
           {demo && morning && (
-            <div className="card pad democap">
-              <p className="caption-3 mute">Demo, question {demo === "2" ? "2" : "1"} of 2</p>
-              {demo === "2" ? (
-                <p className="body-4">Second question: was it a one-off?<br /><span className="mute">The AI reads the pump records of every well, not only W-17, and connects notes written months apart.</span></p>
-              ) : (
-                <p className="body-4">W-17, a Wadi Field well, stopped for {morning.stakes.w17_days} days in March: about {usd(morning.stakes.w17_lost_bbl)} in lost revenue at an assumed $70 a barrel (demo assumption).<br /><span className="mute">First the AI finds out why. Then it checks if it can happen again.</span></p>
-              )}
+            <div className="notice">
+              <Play weight="fill" aria-hidden />
+              <div>
+                <b>Demo, question {demo === "2" ? "2" : "1"} of 2. </b>
+                {demo === "2" ? "Second question: was it a one-off? The AI reads the pump records of every well, not only W-17, and connects notes written months apart."
+                  : `W-17, a Wadi Field well, stopped for ${morning.stakes.w17_days} days in March: about ${usd(morning.stakes.w17_lost_bbl)} in lost revenue at an assumed $70 a barrel (demo assumption). First the AI finds out why. Then it checks if it can happen again.`}
+              </div>
             </div>
           )}
           {recorded !== null && (
-            <p className="recorded body-6"><span className="badge badge-mute caption-3"><Record weight="bold" aria-hidden />Recorded answer</span>{REASON[recorded] ?? "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</p>
+            <div className="notice"><Record weight="bold" aria-hidden /><div><b>Recorded answer. </b>{REASON[recorded] ?? "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</div></div>
           )}
           {status === "running" && <Narration steps={steps} writing={steps.length > 0 && steps.every((s) => s.state !== "running")} />}
           {status === "error" && (
-            <div className="card pad errbox" role="alert">
-              <p className="body-4"><WarningCircle weight="fill" aria-hidden />No answer for &ldquo;{asked}&rdquo;</p>
-              <p className="body-6 mute">{error}</p>
-              <div className="errbtns">
-                <button className="btn btn-ghost button-sm" type="button" onClick={() => run(asked)}><ArrowClockwise aria-hidden />Try again</button>
-                <Link className="btn btn-ghost button-sm" href="/">Pick a suggested question</Link>
+            <div className="notice bad" role="alert">
+              <WarningCircle weight="fill" aria-hidden />
+              <div>
+                <b>No answer for &ldquo;{asked}&rdquo;</b>
+                <p>{error}</p>
+                <div className="acts">
+                  <button className="btn btn-ghost" type="button" onClick={() => run(asked)}><ArrowClockwise aria-hidden />Try again</button>
+                  <Link className="btn btn-ghost" href="/">Pick a suggested question</Link>
+                </div>
               </div>
             </div>
           )}
           {status === "done" && answer && final && (
             <>
-              <p className="caption-3 mute">The answer</p>
-              <AnswerText text={answer.answer} onRef={openSource} />
-              <Tip show={tips}>Each small number points to the report or table it came from. Click one to read the exact passage.</Tip>
-              <VizCard viz={answer.viz as Parameters<typeof VizCard>[0]["viz"]} events={events} />
-              <div className="card pad trust">
-                <div className="trust-main">
-                  <span className={`badge caption-3 ${answer.confidence === "high" ? "badge-mint" : answer.confidence === "medium" ? "badge-warn" : "badge-bad"}`}>
-                    <SealCheck weight="bold" aria-hidden />{answer.confidence[0].toUpperCase() + answer.confidence.slice(1)} confidence
-                  </span>
-                  <div className="trust-src">
-                    <span className="caption-4 mute">Sources</span>
-                    {answer.sources.map((s) => (
-                      <button key={s.n + s.id} type="button" className="chip caption-4" onClick={() => openSource(s.n)} title={s.id}>
-                        <span className="n mono caption-3">{s.n}</span>{s.label}
-                        {s.quote_verified === false && <span className="qmiss caption-4">quote not found</span>}
-                      </button>
-                    ))}
-                  </div>
+              <AnswerText text={answer.answer} labels={labels} />
+              <Tip show={tips}>Each small number points to the report or table it came from. Hover, focus or click one to see the exact passage.</Tip>
+              <VizCard viz={answer.viz} events={events} from={vizFrom} />
+              <section className="verdict" aria-label="How sure the answer is">
+                <div>
+                  <h3>Confidence</h3>
+                  <p className="lvl"><span className="meter" aria-hidden>{[1, 2, 3].map((i) => <i key={i} data-on={i <= LEVEL[answer.confidence] ? "" : undefined} />)}</span>{answer.confidence[0].toUpperCase() + answer.confidence.slice(1)}</p>
+                  <p>{WHY[answer.confidence]}</p>
                 </div>
-                <Tip show={tips}>The badge says how sure the AI is, and why. {WHY[answer.confidence]}</Tip>
-                {answer.could_not_verify && (
-                  <>
-                    <p className="unv body-6"><Info weight="fill" aria-hidden /><span><span className="body-5" style={{ color: "var(--ink)" }}>Could not verify.</span> {answer.could_not_verify}</span></p>
-                    <Tip show={tips}>The AI says what it could not check, instead of guessing.</Tip>
-                  </>
-                )}
-                {final.trace.some((t) => t.full_text_only) && (
-                  <p className="unv body-6"><Info weight="fill" aria-hidden /><span>The search ran on exact words only this time: the meaning search service did not answer.</span></p>
-                )}
-                <div className="trust-foot">
-                  <p className="body-6 mute">Answered in {(final.latency_ms / 1000).toFixed(1)} s{passages ? ` from ${passages} ${passages === 1 ? "report" : "reports"}` : ""}{tableRows ? `${passages ? " and" : " from"} ${tableRows} rows of data` : ""}.</p>
-                  <button className="btn btn-ghost button-sm" type="button" onClick={() => openSource(null)} aria-controls="drawer">
-                    <ListMagnifyingGlass aria-hidden />How this answer was built
-                  </button>
+                <div>
+                  <h3>Could not verify</h3>
+                  <p>{answer.could_not_verify ?? "Nothing: the answer reports no gap in the data."}</p>
                 </div>
-                {tips && <button type="button" className="tips-off caption-4" onClick={hideTips}><X aria-hidden />Hide these tips</button>}
-              </div>
+              </section>
+              <Tip show={tips}>The confidence says how sure the AI is, and why. Could not verify says what it could not check, instead of guessing.</Tip>
+              {final.trace.some((t) => t.full_text_only) && (
+                <div className="notice"><Info weight="fill" aria-hidden /><div>The search ran on exact words only this time: the meaning search service did not answer.</div></div>
+              )}
+              {tips && <button type="button" className="tips-off" onClick={hideTips}><X aria-hidden />Hide these tips</button>}
               {countdown !== null && (
-                <div className="card pad democap next">
-                  <p className="body-4">Next question in {countdown} s: {DEMO[1]}</p>
-                  <div className="errbtns">
-                    <button className="btn btn-primary button-sm" type="button" onClick={() => setCountdown(0)}><Play weight="fill" aria-hidden />Go now</button>
-                    <button className="btn btn-ghost button-sm" type="button" onClick={() => router.replace(`/?q=${encodeURIComponent(DEMO[0])}`, { scroll: false })}><X aria-hidden />Stop the demo</button>
+                <div className="notice">
+                  <Play weight="fill" aria-hidden />
+                  <div>
+                    <b>Next question in {countdown} s: </b>{DEMO[1]}
+                    <div className="acts">
+                      <button className="btn btn-primary" type="button" onClick={() => setCountdown(0)}><Play weight="fill" aria-hidden />Go now</button>
+                      <button className="btn btn-ghost" type="button" onClick={() => router.replace(`/?q=${encodeURIComponent(DEMO[0])}`, { scroll: false })}><X aria-hidden />Stop the demo</button>
+                    </div>
                   </div>
                 </div>
               )}
-              <Drawer open={drawer} onClose={() => setDrawer(false)} steps={steps} final={final} events={events} focus={focus} />
             </>
           )}
         </div>
-      )}
+        <aside className="col-side" aria-label="Evidence">
+          {status === "done" && final ? <Evidence final={final} steps={steps} events={events} />
+            : status === "running" ? <><div className="side-h"><h2>Reports</h2></div><DocGrid steps={steps} /></>
+            : null}
+        </aside>
+      </div>
+      {status === "done" && final && <Built question={asked} final={final} steps={steps} recorded={recorded} all={how} />}
     </>
   );
 }
