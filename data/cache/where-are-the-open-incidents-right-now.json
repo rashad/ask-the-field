@@ -1,0 +1,525 @@
+{
+ "question": "Where are the open incidents right now?",
+ "recorded_at": "2026-11-22T12:11:22.936Z",
+ "events": [
+  {
+   "t": 1,
+   "event": {
+    "type": "start",
+    "question": "Where are the open incidents right now?",
+    "mode": "live"
+   }
+  },
+  {
+   "t": 2037,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_01CmAhL67iM1BwkoTQSXMtjF",
+    "name": "list_events",
+    "args": {
+     "type": "incident",
+     "status": "open"
+    },
+    "label": "Listing open incident..."
+   }
+  },
+  {
+   "t": 2044,
+   "event": {
+    "type": "tool-result",
+    "id": "toolu_01CmAhL67iM1BwkoTQSXMtjF",
+    "name": "list_events",
+    "output": {
+     "count": 5,
+     "truncated": false,
+     "events": [
+      {
+       "event_id": "EV-0184",
+       "well_id": "W-25",
+       "field": "Field B",
+       "category": "incident",
+       "type": "ESP high vibration",
+       "start_date": "2026-11-20",
+       "end_date": null,
+       "downtime_hours": 6,
+       "status": "open",
+       "severity": "medium",
+       "description": "ESP vibration rising above alarm level on the downhole sensor. Frequency reduced from 55 to 50 Hz, trend under review."
+      },
+      {
+       "event_id": "EV-0183",
+       "well_id": "W-36",
+       "field": "Bayda",
+       "category": "incident",
+       "type": "Flowline leak",
+       "start_date": "2026-11-18",
+       "end_date": null,
+       "downtime_hours": 120,
+       "status": "open",
+       "severity": "high",
+       "description": "Pinhole leak found on flowline near the manifold during patrol. Well shut in, area isolated, clamp repair pending."
+      },
+      {
+       "event_id": "EV-0181",
+       "well_id": "W-05",
+       "field": "Field A",
+       "category": "incident",
+       "type": "Wellhead pressure anomaly",
+       "start_date": "2026-11-15",
+       "end_date": null,
+       "downtime_hours": 24,
+       "status": "open",
+       "severity": "medium",
+       "description": "Flowing wellhead pressure swings of plus or minus 60 psi with no choke change. Gauge checked; suspected partial choke plugging. Monitoring."
+      },
+      {
+       "event_id": "EV-0180",
+       "well_id": "W-34",
+       "field": "Bayda",
+       "category": "incident",
+       "type": "Sand production alarm",
+       "start_date": "2026-11-09",
+       "end_date": null,
+       "downtime_hours": 28,
+       "status": "open",
+       "severity": "high",
+       "description": "Acoustic sand monitor alarm above threshold; erosion probe on flowline shows metal loss. Choke reduced again to 24/64, sand sampling every shift. Investigation open."
+      },
+      {
+       "event_id": "EV-0179",
+       "well_id": "W-12",
+       "field": "Field A",
+       "category": "incident",
+       "type": "Sustained casing annulus pressure",
+       "start_date": "2026-10-28",
+       "end_date": null,
+       "downtime_hours": 624,
+       "status": "open",
+       "severity": "high",
+       "description": "B-annulus pressure built up above the allowed limit and did not bleed off. Well shut in pending integrity diagnostics."
+      }
+     ]
+    }
+   }
+  },
+  {
+   "t": 3041,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_01R17BnxzTnrgg4ZokYVgx77",
+    "name": "list_events",
+    "args": {},
+    "label": "Listing events..."
+   }
+  },
+  {
+   "t": 3041,
+   "event": {
+    "type": "tool-error",
+    "id": "toolu_01R17BnxzTnrgg4ZokYVgx77",
+    "name": "list_events",
+    "error": "AI_InvalidToolInputError: Invalid input for tool list_events: AI_TypeValidationError: Type validation failed: Value: {}.\nError message: [\n  {\n    \"code\": \"custom\",\n    \"path\": [],\n    \"message\": \"set at least one filter\"\n  }\n]"
+   }
+  },
+  {
+   "t": 6366,
+   "event": {
+    "type": "final",
+    "answer": {
+     "answer": "Five incidents are open. Two are in Field A: W-12 has sustained casing annulus pressure and is shut in (high severity) [5], and W-05 has a wellhead pressure anomaly [3]. One is in Field B: W-25 has ESP high vibration [1]. Two are in Bayda: W-36 has a flowline leak and is shut in (high severity) [2], and W-34 has a sand production alarm (high severity) [4].",
+     "viz": {
+      "type": "map",
+      "title": "Wells with open incidents",
+      "well_ids": [],
+      "highlighted": [
+       "W-12",
+       "W-05",
+       "W-25",
+       "W-36",
+       "W-34"
+      ],
+      "wells": [
+       {
+        "well_id": "W-01",
+        "field": "Field A",
+        "lat": 20.11424,
+        "lon": 48.2418,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-02",
+        "field": "Field A",
+        "lat": 20.09753,
+        "lon": 48.36881,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-03",
+        "field": "Field A",
+        "lat": 20.14124,
+        "lon": 48.28396,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-04",
+        "field": "Field A",
+        "lat": 20.15623,
+        "lon": 48.20315,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-05",
+        "field": "Field A",
+        "lat": 20.223,
+        "lon": 48.26931,
+        "status": "producing",
+        "highlighted": true
+       },
+       {
+        "well_id": "W-06",
+        "field": "Field A",
+        "lat": 20.13831,
+        "lon": 48.3288,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-07",
+        "field": "Field A",
+        "lat": 20.13521,
+        "lon": 48.32429,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-08",
+        "field": "Field A",
+        "lat": 20.11688,
+        "lon": 48.20457,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-09",
+        "field": "Field A",
+        "lat": 20.08745,
+        "lon": 48.34973,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-10",
+        "field": "Field A",
+        "lat": 20.13449,
+        "lon": 48.32731,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-11",
+        "field": "Field A",
+        "lat": 20.21231,
+        "lon": 48.34522,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-12",
+        "field": "Field A",
+        "lat": 20.15641,
+        "lon": 48.2928,
+        "status": "shut_in",
+        "highlighted": true
+       },
+       {
+        "well_id": "W-13",
+        "field": "Field A",
+        "lat": 20.07719,
+        "lon": 48.27494,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-14",
+        "field": "Field A",
+        "lat": 20.18188,
+        "lon": 48.323,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-15",
+        "field": "Field A",
+        "lat": 20.20601,
+        "lon": 48.26451,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-16",
+        "field": "Field A",
+        "lat": 20.21559,
+        "lon": 48.34372,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-17",
+        "field": "Field B",
+        "lat": 20.37769,
+        "lon": 48.863,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-18",
+        "field": "Field B",
+        "lat": 20.3651,
+        "lon": 48.70873,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-19",
+        "field": "Field B",
+        "lat": 20.42782,
+        "lon": 48.80684,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-20",
+        "field": "Field B",
+        "lat": 20.3644,
+        "lon": 48.8304,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-21",
+        "field": "Field B",
+        "lat": 20.46435,
+        "lon": 48.81786,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-22",
+        "field": "Field B",
+        "lat": 20.38693,
+        "lon": 48.76914,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-23",
+        "field": "Field B",
+        "lat": 20.38111,
+        "lon": 48.79037,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-24",
+        "field": "Field B",
+        "lat": 20.41866,
+        "lon": 48.72418,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-25",
+        "field": "Field B",
+        "lat": 20.37713,
+        "lon": 48.82871,
+        "status": "producing",
+        "highlighted": true
+       },
+       {
+        "well_id": "W-26",
+        "field": "Field B",
+        "lat": 20.46955,
+        "lon": 48.86795,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-27",
+        "field": "Field B",
+        "lat": 20.43687,
+        "lon": 48.83153,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-28",
+        "field": "Field B",
+        "lat": 20.41069,
+        "lon": 48.7324,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-29",
+        "field": "Field B",
+        "lat": 20.47852,
+        "lon": 48.75118,
+        "status": "workover",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-30",
+        "field": "Field B",
+        "lat": 20.36589,
+        "lon": 48.72021,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-31",
+        "field": "Bayda",
+        "lat": 19.80344,
+        "lon": 48.89574,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-32",
+        "field": "Bayda",
+        "lat": 19.82214,
+        "lon": 48.95979,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-33",
+        "field": "Bayda",
+        "lat": 19.88485,
+        "lon": 48.89066,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-34",
+        "field": "Bayda",
+        "lat": 19.83606,
+        "lon": 48.95721,
+        "status": "producing",
+        "highlighted": true
+       },
+       {
+        "well_id": "W-35",
+        "field": "Bayda",
+        "lat": 19.82583,
+        "lon": 49.01841,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-36",
+        "field": "Bayda",
+        "lat": 19.86517,
+        "lon": 48.88714,
+        "status": "shut_in",
+        "highlighted": true
+       },
+       {
+        "well_id": "W-37",
+        "field": "Bayda",
+        "lat": 19.90307,
+        "lon": 48.9732,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-38",
+        "field": "Bayda",
+        "lat": 19.93652,
+        "lon": 48.99703,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-39",
+        "field": "Bayda",
+        "lat": 19.84871,
+        "lon": 49.01316,
+        "status": "producing",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-40",
+        "field": "Bayda",
+        "lat": 19.81963,
+        "lon": 48.90572,
+        "status": "suspended",
+        "highlighted": false
+       },
+       {
+        "well_id": "W-41",
+        "field": "Bayda",
+        "lat": 19.87498,
+        "lon": 49.02901,
+        "status": "producing",
+        "highlighted": false
+       }
+      ]
+     },
+     "sources": [
+      {
+       "n": 1,
+       "kind": "table",
+       "id": "events:EV-0184",
+       "label": "EV-0184 W-25 ESP high vibration"
+      },
+      {
+       "n": 2,
+       "kind": "table",
+       "id": "events:EV-0183",
+       "label": "EV-0183 W-36 Flowline leak"
+      },
+      {
+       "n": 3,
+       "kind": "table",
+       "id": "events:EV-0181",
+       "label": "EV-0181 W-05 Wellhead pressure anomaly"
+      },
+      {
+       "n": 4,
+       "kind": "table",
+       "id": "events:EV-0180",
+       "label": "EV-0180 W-34 Sand production alarm"
+      },
+      {
+       "n": 5,
+       "kind": "table",
+       "id": "events:EV-0179",
+       "label": "EV-0179 W-12 Sustained casing annulus pressure"
+      }
+     ],
+     "confidence": "high",
+     "could_not_verify": null
+    },
+    "trace": [],
+    "checks": {
+     "unknown_chunk_ids": [],
+     "refs_without_source": []
+    },
+    "usage": {
+     "input_tokens": 8,
+     "cache_read_tokens": 14537,
+     "cache_write_tokens": 129,
+     "output_tokens": 568,
+     "steps": 3,
+     "cost_usd": 0.0075
+    },
+    "latency_ms": 6366,
+    "model": "claude-sonnet-5-5"
+   }
+  }
+ ]
+}
