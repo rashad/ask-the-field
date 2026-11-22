@@ -1,9 +1,9 @@
 {
  "question": "Was W-17's pump failure a one-off?",
- "recorded_at": "2026-11-22T15:35:10.055Z",
+ "recorded_at": "2026-11-22T15:37:59.197Z",
  "events": [
   {
-   "t": 0,
+   "t": 3,
    "event": {
     "type": "start",
     "question": "Was W-17's pump failure a one-off?",
@@ -11,10 +11,10 @@
    }
   },
   {
-   "t": 1285,
+   "t": 1530,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01SYXaUBYLr4MEEqGsspGGpS",
+    "id": "toolu_01RPx6gwHfgtm3zQbgKGsQ2d",
     "name": "list_events",
     "args": {
      "type": "ESP"
@@ -23,10 +23,10 @@
    }
   },
   {
-   "t": 1985,
+   "t": 2159,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01LpuoPRtxRKiWj7PSuGKq4s",
+    "id": "toolu_01X7i5APjCFbobe7bTLsjr4r",
     "name": "search_documents",
     "args": {
      "query": "W-17 ESP pump failure serial batch",
@@ -39,10 +39,10 @@
    }
   },
   {
-   "t": 1994,
+   "t": 2188,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01SYXaUBYLr4MEEqGsspGGpS",
+    "id": "toolu_01RPx6gwHfgtm3zQbgKGsQ2d",
     "name": "list_events",
     "output": {
      "count": 26,
@@ -529,10 +529,10 @@
    }
   },
   {
-   "t": 2787,
+   "t": 2204,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01LpuoPRtxRKiWj7PSuGKq4s",
+    "id": "toolu_01X7i5APjCFbobe7bTLsjr4r",
     "name": "search_documents",
     "output": {
      "count": 6,
@@ -596,10 +596,10 @@
    }
   },
   {
-   "t": 4330,
+   "t": 3971,
    "event": {
     "type": "tool-call",
-    "id": "toolu_019cXmjhio7bEeJ4T1H78VKK",
+    "id": "toolu_01TKzEL36MiJZXN3WuBkmf8H",
     "name": "search_documents",
     "args": {
      "query": "ESP pump batch 7Q-0419 serial motor failure",
@@ -609,10 +609,10 @@
    }
   },
   {
-   "t": 5053,
+   "t": 4068,
    "event": {
     "type": "tool-result",
-    "id": "toolu_019cXmjhio7bEeJ4T1H78VKK",
+    "id": "toolu_01TKzEL36MiJZXN3WuBkmf8H",
     "name": "search_documents",
     "output": {
      "count": 8,
@@ -694,14 +694,51 @@
    }
   },
   {
-   "t": 10308,
+   "t": 6916,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_01CupAjQHYyDqyeshyCUzo16",
+    "name": "search_documents",
+    "args": {
+     "query": "W-17 W-09 W-27 batch 7Q-0419 motor winding insulation",
+     "k": 1,
+     "from": "2026-03-01",
+     "to": "2026-03-02"
+    },
+    "label": "Searching documents (March 2026)..."
+   }
+  },
+  {
+   "t": 8193,
+   "event": {
+    "type": "tool-result",
+    "id": "toolu_01CupAjQHYyDqyeshyCUzo16",
+    "name": "search_documents",
+    "output": {
+     "count": 1,
+     "chunks": [
+      {
+       "chunk_id": "SR-098#0",
+       "document_id": "SR-098",
+       "doc_type": "shift_report",
+       "well_id": null,
+       "date": "2026-03-02",
+       "section": null,
+       "text": "# Shift report: Dune Field, 2026-03-02, day shift\n\n**Document ID:** SR-098\n**Field:** Dune Field\n**Date:** 2026-03-02\n**Shift:** Day\n**Prepared by:** Lead Operator\n\n## Production summary\n\n- Wells online: 16 of 16\n- Field oil: 16,664.3 bbl/d\n- Field gas: 12,541.5 Mscf/d\n- Field average water cut: 20.3 %\n- Fluids routed to CPF-1 without issues during the shift.\n\n### Top producers\n\n| Well | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | Uptime (h) |\n|------|-------------|--------------|---------------|------------|\n| W-03 | 1,783.9 | 1,799.3 | 8.5 | 24 |\n| W-02 | 1,418.0 | 674.5 | 21.6 | 24 |\n| W-09 | 1,357.5 | 858.6 | 9.7 | 24 |\n\n## Wells offline or restricted\n\n- None. All wells ran at full uptime with no restrictions.\n\n## Events\n\n- No events started during the shift.\n- No ongoing events carried over from previous shifts.\n\n## Routine work\n\n- Chemical injection rate checks completed across the field. Pump stroke settings and tank levels were checked against targets, and no adjustments were needed beyond normal trimming.\n- Routine wellhead rounds completed, with no leaks or abnormal readings observed.\n\n## Handover notes\n\n- Stable shift with no safety observations or process upsets.\n- No focus well for the incoming shift.\n- Night shift to continue standard rounds and log chemical tank levels at the start of the shift.\n\n**Lead Operator**"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "t": 12890,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "It was not a one-off: W-09 (Dune Field, October 2025) [1][2] and W-27 (Wadi Field, August 2026) [3][4] had the same failure on pumps from batch 7Q-0419, the batch W-17 had in March 2026 [5]. All three teardowns found motor winding insulation breakdown, costing about 43,900 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [6][7]. Other pumps from batch 7Q-0419 are at risk.",
+     "answer": "It was not a one-off: W-17 (Wadi Field) failed in March 2026 with a pump from batch 7Q-0419, the same batch as W-09 (Dune Field, October 2025) and W-27 (Wadi Field, August 2026) [1][2][3]. Each teardown found the motor winding insulation had broken down, and the three failures plus their workovers cost about 43,850 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [4][5][6]. Other pumps from batch 7Q-0419 are at risk of the same motor failure.",
      "viz": {
       "type": "bar",
-      "title": "Lost oil per failure (incident plus workover)",
+      "title": "Lost oil per failure, batch 7Q-0419 (failure plus workover)",
       "unit": "bbl",
       "bars": [
        {
@@ -722,52 +759,46 @@
       {
        "n": 1,
        "kind": "chunk",
-       "id": "IN-010#0",
-       "label": "IN-010 W-09 ESP failure note"
+       "id": "IN-032#0",
+       "label": "IN-032 W-17 ESP trip, batch 7Q-0419"
       },
       {
        "n": 2,
        "kind": "chunk",
-       "id": "WO-035#0",
-       "label": "WO-035 W-09 workover"
+       "id": "IN-010#0",
+       "label": "IN-010 W-09 ESP failure, batch 7Q-0419"
       },
       {
        "n": 3,
        "kind": "chunk",
        "id": "IN-057#0",
-       "label": "IN-057 W-27 ESP failure note"
+       "label": "IN-057 W-27 ESP failure, batch 7Q-0419"
       },
       {
        "n": 4,
-       "kind": "chunk",
-       "id": "WO-054#0",
-       "label": "WO-054 W-27 workover"
+       "kind": "table",
+       "id": "events:EV-0092",
+       "label": "W-17 ESP trip and workover (EV-0092, EV-0094)"
       },
       {
        "n": 5,
-       "kind": "chunk",
-       "id": "WO-048#0",
-       "label": "WO-048 W-17 workover"
+       "kind": "table",
+       "id": "events:EV-0042",
+       "label": "W-09 ESP failure and workover (EV-0042, EV-0046)"
       },
       {
        "n": 6,
        "kind": "table",
-       "id": "events:EV-0092",
-       "label": "W-17 incident and workover EV-0092/EV-0094"
-      },
-      {
-       "n": 7,
-       "kind": "table",
-       "id": "events:EV-0042",
-       "label": "W-09 EV-0042/EV-0046 and W-27 EV-0150/EV-0156"
+       "id": "events:EV-0150",
+       "label": "W-27 ESP failure and workover (EV-0150, EV-0156)"
       }
      ],
      "confidence": "high",
-     "could_not_verify": "The data does not show how many other pumps from batch 7Q-0419 are still running."
+     "could_not_verify": "The data does not say whether other pumps from batch 7Q-0419 are still installed in wells, or why that batch's motors fail."
     },
     "trace": [
      {
-      "call_id": "toolu_01LpuoPRtxRKiWj7PSuGKq4s",
+      "call_id": "toolu_01X7i5APjCFbobe7bTLsjr4r",
       "args": {
        "query": "W-17 ESP pump failure serial batch",
        "k": 6,
@@ -1241,7 +1272,7 @@
       "full_text_only": false
      },
      {
-      "call_id": "toolu_019cXmjhio7bEeJ4T1H78VKK",
+      "call_id": "toolu_01TKzEL36MiJZXN3WuBkmf8H",
       "args": {
        "query": "ESP pump batch 7Q-0419 serial motor failure",
        "k": 8
@@ -1830,6 +1861,59 @@
        }
       ],
       "full_text_only": false
+     },
+     {
+      "call_id": "toolu_01CupAjQHYyDqyeshyCUzo16",
+      "args": {
+       "query": "W-17 W-09 W-27 batch 7Q-0419 motor winding insulation",
+       "k": 1,
+       "from": "2026-03-01",
+       "to": "2026-03-02"
+      },
+      "vector": [
+       {
+        "chunk_id": "SR-098#0",
+        "rank": 1,
+        "similarity": 0.1579
+       }
+      ],
+      "full_text": [
+       {
+        "chunk_id": "SR-098#0",
+        "rank": 1,
+        "ts_rank": 0.1
+       }
+      ],
+      "fused": [
+       {
+        "chunk_id": "SR-098#0",
+        "rank": 1,
+        "rrf": 0.03279,
+        "vector_rank": 1,
+        "full_text_rank": 1
+       }
+      ],
+      "chunks_sent": [
+       {
+        "chunk_id": "SR-098#0",
+        "document_id": "SR-098",
+        "title": "Shift report: Dune Field, 2026-03-02, day shift",
+        "doc_type": "shift_report",
+        "well_id": null,
+        "field": "Dune Field",
+        "date": "2026-03-02",
+        "section": null,
+        "text": "# Shift report: Dune Field, 2026-03-02, day shift\n\n**Document ID:** SR-098\n**Field:** Dune Field\n**Date:** 2026-03-02\n**Shift:** Day\n**Prepared by:** Lead Operator\n\n## Production summary\n\n- Wells online: 16 of 16\n- Field oil: 16,664.3 bbl/d\n- Field gas: 12,541.5 Mscf/d\n- Field average water cut: 20.3 %\n- Fluids routed to CPF-1 without issues during the shift.\n\n### Top producers\n\n| Well | Oil (bbl/d) | Gas (Mscf/d) | Water cut (%) | Uptime (h) |\n|------|-------------|--------------|---------------|------------|\n| W-03 | 1,783.9 | 1,799.3 | 8.5 | 24 |\n| W-02 | 1,418.0 | 674.5 | 21.6 | 24 |\n| W-09 | 1,357.5 | 858.6 | 9.7 | 24 |\n\n## Wells offline or restricted\n\n- None. All wells ran at full uptime with no restrictions.\n\n## Events\n\n- No events started during the shift.\n- No ongoing events carried over from previous shifts.\n\n## Routine work\n\n- Chemical injection rate checks completed across the field. Pump stroke settings and tank levels were checked against targets, and no adjustments were needed beyond normal trimming.\n- Routine wellhead rounds completed, with no leaks or abnormal readings observed.\n\n## Handover notes\n\n- Stable shift with no safety observations or process upsets.\n- No focus well for the incoming shift.\n- Night shift to continue standard rounds and log chemical tank levels at the start of the shift.\n\n**Lead Operator**",
+        "scores": {
+         "vector_similarity": 0.1579,
+         "vector_rank": 1,
+         "full_text_rank": 1,
+         "full_text_score": 0.1,
+         "rrf": 0.03279
+        }
+       }
+      ],
+      "full_text_only": false
      }
     ],
     "checks": {
@@ -1837,14 +1921,14 @@
      "refs_without_source": []
     },
     "usage": {
-     "input_tokens": 8,
-     "cache_read_tokens": 38125,
-     "cache_write_tokens": 6737,
-     "output_tokens": 1121,
-     "steps": 3,
-     "cost_usd": 0.0319
+     "input_tokens": 10,
+     "cache_read_tokens": 61104,
+     "cache_write_tokens": 7766,
+     "output_tokens": 1327,
+     "steps": 4,
+     "cost_usd": 0.0388
     },
-    "latency_ms": 10308,
+    "latency_ms": 12890,
     "model": "claude-sonnet-5-5"
    }
   }

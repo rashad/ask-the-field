@@ -1,9 +1,9 @@
 {
  "question": "Why was W-17 down for two weeks in March?",
- "recorded_at": "2026-11-22T15:34:59.742Z",
+ "recorded_at": "2026-11-22T15:37:46.305Z",
  "events": [
   {
-   "t": 0,
+   "t": 1,
    "event": {
     "type": "start",
     "question": "Why was W-17 down for two weeks in March?",
@@ -11,26 +11,26 @@
    }
   },
   {
-   "t": 1826,
+   "t": 1747,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01CMYdiRhi6JrUb2ZVnTWWHR",
+    "id": "toolu_01JxAGv9KMFjUatSUtWfpaH4",
     "name": "list_events",
     "args": {
      "well_ids": [
       "W-17"
      ],
-     "from": "2026-02-15",
+     "from": "2026-02-20",
      "to": "2026-04-15"
     },
     "label": "Listing events (W-17, February 2026 to April 2026)..."
    }
   },
   {
-   "t": 2773,
+   "t": 2606,
    "event": {
     "type": "tool-call",
-    "id": "toolu_018H2ZK25vWP8bD2cr4HfKwQ",
+    "id": "toolu_01FBxvSrDJdZq6Fg2rjfmgHk",
     "name": "search_documents",
     "args": {
      "query": "W-17 shutdown March cause findings",
@@ -45,10 +45,10 @@
    }
   },
   {
-   "t": 2775,
+   "t": 2610,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01CMYdiRhi6JrUb2ZVnTWWHR",
+    "id": "toolu_01JxAGv9KMFjUatSUtWfpaH4",
     "name": "list_events",
     "output": {
      "count": 2,
@@ -97,10 +97,10 @@
    }
   },
   {
-   "t": 3686,
+   "t": 2616,
    "event": {
     "type": "tool-result",
-    "id": "toolu_018H2ZK25vWP8bD2cr4HfKwQ",
+    "id": "toolu_01FBxvSrDJdZq6Fg2rjfmgHk",
     "name": "search_documents",
     "output": {
      "count": 6,
@@ -164,46 +164,46 @@
    }
   },
   {
-   "t": 7100,
+   "t": 6310,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "W-17, a Wadi Field well, was down from 4 to 17 March 2026 because its electric pump (ESP) motor failed. The pump tripped on overload on 4 March, and a test showed the motor's insulation had broken down [1][2]. The well stayed shut in until a workover (a repair job with a rig) from 10 to 17 March replaced the pump, and it restarted on 18 March [3][4]. The outage lost about 17,940 barrels, about $1.26 million in lost revenue at an assumed $70 a barrel [3][4].",
+     "answer": "W-17, a Wadi Field well, was down from 4 to 17 March 2026 because its electric pump (ESP) motor failed. The pump tripped on overload and failed its insulation test on 4 March [1][3]. A workover (a repair job with a rig) from 10 to 17 March found the motor windings had broken down, with light scale on the pump [2][4]. The outage cost about 17,940 barrels, or about $1.26 million at an assumed $70 a barrel [1][2].",
      "viz": {
       "type": "none"
      },
      "sources": [
       {
        "n": 1,
-       "kind": "chunk",
-       "id": "IN-032#0",
-       "label": "Incident note IN-032, W-17 ESP trip"
+       "kind": "table",
+       "id": "events:EV-0092",
+       "label": "ESP trip, W-17, 4 to 9 March 2026"
       },
       {
        "n": 2,
        "kind": "table",
-       "id": "events:EV-0092",
-       "label": "EV-0092 ESP trip, 4 to 9 March 2026"
+       "id": "events:EV-0094",
+       "label": "Workover ESP replacement, W-17, 10 to 17 March 2026"
       },
       {
        "n": 3,
        "kind": "chunk",
-       "id": "WO-048#0",
-       "label": "Work order WO-048, ESP replacement"
+       "id": "IN-032#0",
+       "label": "Incident note IN-032"
       },
       {
        "n": 4,
-       "kind": "table",
-       "id": "events:EV-0094",
-       "label": "EV-0094 workover, 10 to 17 March 2026"
+       "kind": "chunk",
+       "id": "WO-048#0",
+       "label": "Work order WO-048"
       }
      ],
      "confidence": "high",
-     "could_not_verify": null
+     "could_not_verify": "The documents do not say why the motor insulation broke down. It could be age, since the pump had run 13 months, or something else."
     },
     "trace": [
      {
-      "call_id": "toolu_018H2ZK25vWP8bD2cr4HfKwQ",
+      "call_id": "toolu_01FBxvSrDJdZq6Fg2rjfmgHk",
       "args": {
        "query": "W-17 shutdown March cause findings",
        "k": 6,
@@ -525,13 +525,13 @@
     },
     "usage": {
      "input_tokens": 6,
-     "cache_read_tokens": 5890,
-     "cache_write_tokens": 11887,
-     "output_tokens": 682,
+     "cache_read_tokens": 11836,
+     "cache_write_tokens": 5997,
+     "output_tokens": 684,
      "steps": 2,
-     "cost_usd": 0.0371
+     "cost_usd": 0.023
     },
-    "latency_ms": 7100,
+    "latency_ms": 6310,
     "model": "claude-sonnet-5-5"
    }
   }

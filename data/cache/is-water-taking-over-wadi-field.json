@@ -1,6 +1,6 @@
 {
  "question": "Is water taking over Wadi Field?",
- "recorded_at": "2026-11-22T15:35:18.147Z",
+ "recorded_at": "2026-11-22T15:38:08.325Z",
  "events": [
   {
    "t": 1,
@@ -11,10 +11,10 @@
    }
   },
   {
-   "t": 1758,
+   "t": 1973,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01BPPVoFxWtb1RAYkkk9F6mf",
+    "id": "toolu_014gxUsik3ue2V2wsKPNPQ5Z",
     "name": "query_production",
     "args": {
      "field": "Wadi Field",
@@ -27,26 +27,10 @@
    }
   },
   {
-   "t": 2598,
-   "event": {
-    "type": "tool-call",
-    "id": "toolu_01MoeTDEQbzwF3vkDTsC8aof",
-    "name": "query_production",
-    "args": {
-     "field": "Wadi Field",
-     "metric": "oil",
-     "from": "2026-01-01",
-     "to": "2026-11-22",
-     "group_by": "month"
-    },
-    "label": "Querying oil production by month (Wadi Field, January 2026 to November 2026)..."
-   }
-  },
-  {
-   "t": 2604,
+   "t": 2018,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01BPPVoFxWtb1RAYkkk9F6mf",
+    "id": "toolu_014gxUsik3ue2V2wsKPNPQ5Z",
     "name": "query_production",
     "output": {
      "metric": "water_cut",
@@ -108,111 +92,74 @@
    }
   },
   {
-   "t": 2607,
+   "t": 4183,
+   "event": {
+    "type": "tool-call",
+    "id": "toolu_01NYFEfDzSRkU5kUHJ3avCzq",
+    "name": "search_documents",
+    "args": {
+     "query": "Wadi Field water breakthrough water cut rising waterflood",
+     "k": 3,
+     "field": "Wadi Field",
+     "from": "2026-06-01",
+     "to": "2026-11-22"
+    },
+    "label": "Searching documents (Wadi Field, June 2026 to November 2026)..."
+   }
+  },
+  {
+   "t": 4896,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01MoeTDEQbzwF3vkDTsC8aof",
-    "name": "query_production",
+    "id": "toolu_01NYFEfDzSRkU5kUHJ3avCzq",
+    "name": "search_documents",
     "output": {
-     "metric": "oil",
-     "unit": "bbl/d",
-     "aggregation": "average daily total rate across wells",
-     "bucket": "month",
-     "series": [
+     "count": 3,
+     "chunks": [
       {
-       "name": "Wadi Field",
-       "points": [
-        {
-         "x": "2026-01-01",
-         "y": 12706
-        },
-        {
-         "x": "2026-02-01",
-         "y": 12179
-        },
-        {
-         "x": "2026-03-01",
-         "y": 11269
-        },
-        {
-         "x": "2026-04-01",
-         "y": 11435
-        },
-        {
-         "x": "2026-05-01",
-         "y": 11152
-        },
-        {
-         "x": "2026-06-01",
-         "y": 10788
-        },
-        {
-         "x": "2026-07-01",
-         "y": 10163
-        },
-        {
-         "x": "2026-08-01",
-         "y": 9497
-        },
-        {
-         "x": "2026-09-01",
-         "y": 9306
-        },
-        {
-         "x": "2026-10-01",
-         "y": 9001
-        },
-        {
-         "x": "2026-11-01",
-         "y": 8629
-        }
-       ]
+       "chunk_id": "SR-151#0",
+       "document_id": "SR-151",
+       "doc_type": "shift_report",
+       "well_id": "W-23",
+       "date": "2026-06-15",
+       "section": null,
+       "text": "# Shift report: Wadi Field, 2026-06-15, day shift\n\n**Document id:** SR-151\n**Prepared by:** Lead Operator (K.M.)\n\n## Production summary\n- Field oil: 10598.4 bbl/d\n- Field gas: 8352.4 Mscf/d\n- Field average water cut: 37.6 percent\n- Wells online: 14 of 14\n- Water cut trend: field average was 32.5 percent in January 2026 and 36.9 percent over the last 30 days, so it is still rising.\n\n## Top producers\n| Well | Oil (bbl) | Gas (Mscf/d) | Water cut (%) | Uptime (h) |\n|---|---|---|---|---|\n| W-17 | 1160.3 | 843 | 35.3 | 24 |\n| W-24 | 1129.3 | 620.5 | 30.2 | 24 |\n| W-20 | 1121.2 | 974.8 | 37.3 | 24 |\n\n## Wells offline or restricted\n- W-23: 20 hours uptime, 698.8 bbl oil, 489.4 Mscf/d gas, water cut 38.2 percent. The lost hours relate to the event below.\n\n## Events\n- No new events started today.\n- EV-0128, W-23, water breakthrough (incident, medium severity). Started 2026-06-14 and closed 2026-06-15. Downtime as of today is 8 hours. The event summary records a sharp rise in water cut from about 30 percent to over 55 percent within weeks, consistent with injector water breakthrough from the north flank. The well is back online and the Production Engineer has been informed.\n\n## Routine work\n- Flowline patrol completed. No leaks or abnormal findings observed.\n\n## Handover notes\n- Keep watching W-23 water cut and rate on the next shift, and log readings at each round.\n- Report any change in field water cut to the Production Engineer.\n- All other wells are stable at full uptime."
+      },
+      {
+       "chunk_id": "SR-149#0",
+       "document_id": "SR-149",
+       "doc_type": "shift_report",
+       "well_id": "W-21",
+       "date": "2026-06-14",
+       "section": null,
+       "text": "# Shift report: Wadi Field, 2026-06-14, day shift\n\n**Document ID:** SR-149\n**Prepared by:** Lead Operator (K.M.)\n\n## Production summary\n- Wells online: 14 of 14\n- Field oil: 10199.7 bbl/d\n- Field gas: 8042.1 Mscf/d\n- Field average water cut: 37.8 percent\n- Water cut trend: 32.5 percent in January 2026, 36.9 percent over the last 30 days, so still rising.\n- Top producers: W-20 with 1229.4 bbl oil, 1100.7 Mscf gas, 35.4 percent water cut, 24 h uptime; W-24 with 1171 bbl oil, 656.6 Mscf gas, 30.6 percent, 24 h; W-17 with 1141.4 bbl oil, 911.1 Mscf gas, 35.2 percent, 24 h.\n\n## Wells offline or restricted\n- W-21: 3 h uptime, 47.8 bbl oil, 49 Mscf gas, 40.9 percent water cut. Lost production from the ESP trip (see events).\n- W-23: 20 h uptime, 751.3 bbl oil. Restricted while the water breakthrough is assessed.\n\n## Events\n- **EV-0127, W-21, ESP trip (low severity, closed):** ESP tripped on underload. Restarted after checks. Downtime 21 h as of this report. Motor current and intake readings checked before restart, and the well was monitored after start-up.\n- **EV-0128, W-23, water breakthrough (medium severity, open):** Sharp rise in water cut from about 30 percent to over 55 percent within weeks, consistent with injector water breakthrough from the north flank. Downtime 4 h so far. The Production Engineer has been informed.\n\n## Routine work\n- Road inspection after sandstorm completed. Access roads in the field are passable.\n\n## Handover notes\n- Night shift to keep W-21 under close watch for any repeat underload trip.\n- W-23 remains open under EV-0128. Record water cut and rates at each round and pass the readings to the Production Engineer."
+      },
+      {
+       "chunk_id": "SR-150#0",
+       "document_id": "SR-150",
+       "doc_type": "shift_report",
+       "well_id": "W-21",
+       "date": "2026-06-14",
+       "section": null,
+       "text": "# Shift report: Wadi Field, 2026-06-14, night shift\n\n**Document id:** SR-150\n**Author:** Lead Operator (K.M.)\n**Field:** Wadi Field\n\n## Production summary\n- Wells online: 14 of 14\n- Field oil: 10199.7 bbl/d\n- Field gas: 8042.1 Mscf/d\n- Field average water cut: 37.8 percent\n- Water cut trend: 32.5 percent in January 2026, 36.9 percent over the last 30 days, 37.8 percent today.\n- Top producers: W-20 with 1229.4 bbl, 1100.7 Mscf, 35.4 percent water cut, 24 h uptime. W-24 with 1171 bbl, 656.6 Mscf, 30.6 percent, 24 h. W-17 with 1141.4 bbl, 911.1 Mscf, 35.2 percent, 24 h.\n\n## Wells offline or restricted\n- W-21: 3 h uptime, 47.8 bbl oil, 49 Mscf gas, water cut 40.9 percent. ESP tripped on underload (EV-0127).\n- W-23: 20 h uptime, 751.3 bbl oil. Restricted by water breakthrough (EV-0128).\n\n## Events\n- **EV-0127, W-21, ESP trip (incident, low severity):** The ESP tripped on underload. Checks were completed and the pump was restarted. Downtime was 21 h. Event closed 2026-06-14.\n- **EV-0128, W-23, water breakthrough (incident, medium severity):** Water cut rose sharply from about 30 percent to over 55 percent within weeks, consistent with injector water breakthrough from the north flank. Downtime so far is 4 h. Event is open.\n\n## Routine work\n- Flowline patrol completed with no leaks or abnormal findings noted.\n\n## Handover notes\n- W-21: monitor the motor amps and intake pressure closely after the restart, and report any further underload trips to the Production Engineer.\n- W-23: event EV-0128 remains open. Keep sampling water cut each shift and pass the results to the Production Engineer for review of injection support on the north flank.\n- All other wells are stable at the shift change."
       }
      ]
     }
    }
   },
   {
-   "t": 4403,
-   "event": {
-    "type": "tool-call",
-    "id": "toolu_01HzCgUq46buD4TteARACB6s",
-    "name": "query_production",
-    "args": {
-     "field": "Wadi Field",
-     "metric": "water_cut",
-     "from": "2026-01-01",
-     "to": "2026-11-22",
-     "group_by": "month"
-    },
-    "label": "Querying water cut by month (Wadi Field, January 2026 to November 2026)..."
-   }
-  },
-  {
-   "t": 4408,
-   "event": {
-    "type": "tool-result",
-    "id": "toolu_01HzCgUq46buD4TteARACB6s",
-    "name": "query_production",
-    "output": {
-     "repeated": true,
-     "note": "Call toolu_01BPPVoFxWtb1RAYkkk9F6mf already returned this data. Reuse that result; do not call again."
-    }
-   }
-  },
-  {
-   "t": 8090,
+   "t": 9125,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "Water is steadily rising in Wadi Field, though it is not yet dominant. Average water cut (the share of water in what wells bring up) climbed from about 33% in January 2026 to about 44% in November [1]. Over the same period, field oil output fell from about 12,700 to about 8,600 barrels a day [2].",
+     "answer": "Water cut (the share of water in what the wells bring up) is climbing steadily across Wadi Field, but it is not yet taking over. The field average rose from about 32.5% in January 2026 to about 44% in November [1]. One clear case is W-23, where water cut jumped from about 30% to over 55% in June 2026, consistent with injector water breaking through from the north flank [2].",
      "viz": {
       "type": "line",
       "title": "Wadi Field average water cut, 2026",
       "unit": "fraction",
       "series": [
        {
-        "name": "Water cut",
+        "name": "Wadi Field",
         "points": [
          {
           "x": "2026-01",
@@ -271,28 +218,484 @@
       },
       {
        "n": 2,
-       "kind": "table",
-       "id": "production_daily:Wadi Field oil:2026-01-01..2026-11-22",
-       "label": "Wadi Field monthly oil rate"
+       "kind": "chunk",
+       "id": "SR-151#0",
+       "label": "Shift report 15 June 2026, W-23 water breakthrough"
       }
      ],
-     "confidence": "medium",
-     "could_not_verify": "I did not check which individual wells drive the rise, or whether the water flood is the cause."
+     "confidence": "high",
+     "could_not_verify": "I did not check each well's water cut or whether the rise is slowing."
     },
-    "trace": [],
+    "trace": [
+     {
+      "call_id": "toolu_01NYFEfDzSRkU5kUHJ3avCzq",
+      "args": {
+       "query": "Wadi Field water breakthrough water cut rising waterflood",
+       "k": 3,
+       "field": "Wadi Field",
+       "from": "2026-06-01",
+       "to": "2026-11-22"
+      },
+      "vector": [
+       {
+        "chunk_id": "IN-050#0",
+        "rank": 1,
+        "similarity": 0.5835
+       },
+       {
+        "chunk_id": "SR-151#0",
+        "rank": 2,
+        "similarity": 0.5397
+       },
+       {
+        "chunk_id": "SR-149#0",
+        "rank": 3,
+        "similarity": 0.5286
+       },
+       {
+        "chunk_id": "SR-150#0",
+        "rank": 4,
+        "similarity": 0.527
+       },
+       {
+        "chunk_id": "SR-205#0",
+        "rank": 5,
+        "similarity": 0.5072
+       },
+       {
+        "chunk_id": "WT-023#0",
+        "rank": 6,
+        "similarity": 0.5047
+       },
+       {
+        "chunk_id": "SR-215#0",
+        "rank": 7,
+        "similarity": 0.5034
+       },
+       {
+        "chunk_id": "SR-153#0",
+        "rank": 8,
+        "similarity": 0.5017
+       },
+       {
+        "chunk_id": "SR-167#0",
+        "rank": 9,
+        "similarity": 0.5006
+       },
+       {
+        "chunk_id": "SR-177#0",
+        "rank": 10,
+        "similarity": 0.5001
+       },
+       {
+        "chunk_id": "SR-179#0",
+        "rank": 11,
+        "similarity": 0.4996
+       },
+       {
+        "chunk_id": "SR-180#0",
+        "rank": 12,
+        "similarity": 0.4939
+       },
+       {
+        "chunk_id": "SR-192#0",
+        "rank": 13,
+        "similarity": 0.4939
+       },
+       {
+        "chunk_id": "SR-165#0",
+        "rank": 14,
+        "similarity": 0.4913
+       },
+       {
+        "chunk_id": "SR-154#0",
+        "rank": 15,
+        "similarity": 0.4906
+       },
+       {
+        "chunk_id": "SR-147#0",
+        "rank": 16,
+        "similarity": 0.4884
+       },
+       {
+        "chunk_id": "SR-163#0",
+        "rank": 17,
+        "similarity": 0.4873
+       },
+       {
+        "chunk_id": "WT-022#0",
+        "rank": 18,
+        "similarity": 0.4861
+       },
+       {
+        "chunk_id": "WT-031#0",
+        "rank": 19,
+        "similarity": 0.4852
+       },
+       {
+        "chunk_id": "SR-213#0",
+        "rank": 20,
+        "similarity": 0.4852
+       }
+      ],
+      "full_text": [
+       {
+        "chunk_id": "SR-151#0",
+        "rank": 1,
+        "ts_rank": 2.7
+       },
+       {
+        "chunk_id": "SR-149#0",
+        "rank": 2,
+        "ts_rank": 2.6
+       },
+       {
+        "chunk_id": "SR-150#0",
+        "rank": 3,
+        "ts_rank": 2.6
+       },
+       {
+        "chunk_id": "WT-022#0",
+        "rank": 4,
+        "ts_rank": 2.5
+       },
+       {
+        "chunk_id": "WT-023#0",
+        "rank": 5,
+        "ts_rank": 2.3
+       },
+       {
+        "chunk_id": "SR-197#0",
+        "rank": 6,
+        "ts_rank": 2.3
+       },
+       {
+        "chunk_id": "SR-153#0",
+        "rank": 7,
+        "ts_rank": 2.2
+       },
+       {
+        "chunk_id": "SR-206#0",
+        "rank": 8,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "SR-192#0",
+        "rank": 9,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "SR-167#0",
+        "rank": 10,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "SR-215#0",
+        "rank": 11,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "WT-024#0",
+        "rank": 12,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "SR-154#0",
+        "rank": 13,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "IN-050#0",
+        "rank": 14,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "SR-180#0",
+        "rank": 15,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "SR-205#0",
+        "rank": 16,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "WT-038#0",
+        "rank": 17,
+        "ts_rank": 2.1
+       },
+       {
+        "chunk_id": "WT-028#0",
+        "rank": 18,
+        "ts_rank": 2
+       },
+       {
+        "chunk_id": "SR-191#0",
+        "rank": 19,
+        "ts_rank": 2
+       },
+       {
+        "chunk_id": "SR-163#0",
+        "rank": 20,
+        "ts_rank": 2
+       }
+      ],
+      "fused": [
+       {
+        "chunk_id": "SR-151#0",
+        "rank": 1,
+        "rrf": 0.03252,
+        "vector_rank": 2,
+        "full_text_rank": 1
+       },
+       {
+        "chunk_id": "SR-149#0",
+        "rank": 2,
+        "rrf": 0.032,
+        "vector_rank": 3,
+        "full_text_rank": 2
+       },
+       {
+        "chunk_id": "SR-150#0",
+        "rank": 3,
+        "rrf": 0.0315,
+        "vector_rank": 4,
+        "full_text_rank": 3
+       },
+       {
+        "chunk_id": "WT-023#0",
+        "rank": 4,
+        "rrf": 0.03054,
+        "vector_rank": 6,
+        "full_text_rank": 5
+       },
+       {
+        "chunk_id": "IN-050#0",
+        "rank": 5,
+        "rrf": 0.02991,
+        "vector_rank": 1,
+        "full_text_rank": 14
+       },
+       {
+        "chunk_id": "SR-153#0",
+        "rank": 6,
+        "rrf": 0.02963,
+        "vector_rank": 8,
+        "full_text_rank": 7
+       },
+       {
+        "chunk_id": "SR-215#0",
+        "rank": 7,
+        "rrf": 0.02901,
+        "vector_rank": 7,
+        "full_text_rank": 11
+       },
+       {
+        "chunk_id": "SR-167#0",
+        "rank": 8,
+        "rrf": 0.02878,
+        "vector_rank": 9,
+        "full_text_rank": 10
+       },
+       {
+        "chunk_id": "SR-205#0",
+        "rank": 9,
+        "rrf": 0.02854,
+        "vector_rank": 5,
+        "full_text_rank": 16
+       },
+       {
+        "chunk_id": "WT-022#0",
+        "rank": 10,
+        "rrf": 0.02845,
+        "vector_rank": 18,
+        "full_text_rank": 4
+       },
+       {
+        "chunk_id": "SR-192#0",
+        "rank": 11,
+        "rrf": 0.02819,
+        "vector_rank": 13,
+        "full_text_rank": 9
+       },
+       {
+        "chunk_id": "SR-180#0",
+        "rank": 12,
+        "rrf": 0.02722,
+        "vector_rank": 12,
+        "full_text_rank": 15
+       },
+       {
+        "chunk_id": "SR-154#0",
+        "rank": 13,
+        "rrf": 0.02703,
+        "vector_rank": 15,
+        "full_text_rank": 13
+       },
+       {
+        "chunk_id": "SR-163#0",
+        "rank": 14,
+        "rrf": 0.02549,
+        "vector_rank": 17,
+        "full_text_rank": 20
+       },
+       {
+        "chunk_id": "SR-197#0",
+        "rank": 15,
+        "rrf": 0.01515,
+        "vector_rank": null,
+        "full_text_rank": 6
+       },
+       {
+        "chunk_id": "SR-206#0",
+        "rank": 16,
+        "rrf": 0.01471,
+        "vector_rank": null,
+        "full_text_rank": 8
+       },
+       {
+        "chunk_id": "SR-177#0",
+        "rank": 17,
+        "rrf": 0.01429,
+        "vector_rank": 10,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-179#0",
+        "rank": 18,
+        "rrf": 0.01408,
+        "vector_rank": 11,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "WT-024#0",
+        "rank": 19,
+        "rrf": 0.01389,
+        "vector_rank": null,
+        "full_text_rank": 12
+       },
+       {
+        "chunk_id": "SR-165#0",
+        "rank": 20,
+        "rrf": 0.01351,
+        "vector_rank": 14,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-147#0",
+        "rank": 21,
+        "rrf": 0.01316,
+        "vector_rank": 16,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "WT-038#0",
+        "rank": 22,
+        "rrf": 0.01299,
+        "vector_rank": null,
+        "full_text_rank": 17
+       },
+       {
+        "chunk_id": "WT-028#0",
+        "rank": 23,
+        "rrf": 0.01282,
+        "vector_rank": null,
+        "full_text_rank": 18
+       },
+       {
+        "chunk_id": "WT-031#0",
+        "rank": 24,
+        "rrf": 0.01266,
+        "vector_rank": 19,
+        "full_text_rank": null
+       },
+       {
+        "chunk_id": "SR-191#0",
+        "rank": 25,
+        "rrf": 0.01266,
+        "vector_rank": null,
+        "full_text_rank": 19
+       },
+       {
+        "chunk_id": "SR-213#0",
+        "rank": 26,
+        "rrf": 0.0125,
+        "vector_rank": 20,
+        "full_text_rank": null
+       }
+      ],
+      "chunks_sent": [
+       {
+        "chunk_id": "SR-151#0",
+        "document_id": "SR-151",
+        "title": "Shift report: Wadi Field, 2026-06-15, day shift",
+        "doc_type": "shift_report",
+        "well_id": "W-23",
+        "field": "Wadi Field",
+        "date": "2026-06-15",
+        "section": null,
+        "text": "# Shift report: Wadi Field, 2026-06-15, day shift\n\n**Document id:** SR-151\n**Prepared by:** Lead Operator (K.M.)\n\n## Production summary\n- Field oil: 10598.4 bbl/d\n- Field gas: 8352.4 Mscf/d\n- Field average water cut: 37.6 percent\n- Wells online: 14 of 14\n- Water cut trend: field average was 32.5 percent in January 2026 and 36.9 percent over the last 30 days, so it is still rising.\n\n## Top producers\n| Well | Oil (bbl) | Gas (Mscf/d) | Water cut (%) | Uptime (h) |\n|---|---|---|---|---|\n| W-17 | 1160.3 | 843 | 35.3 | 24 |\n| W-24 | 1129.3 | 620.5 | 30.2 | 24 |\n| W-20 | 1121.2 | 974.8 | 37.3 | 24 |\n\n## Wells offline or restricted\n- W-23: 20 hours uptime, 698.8 bbl oil, 489.4 Mscf/d gas, water cut 38.2 percent. The lost hours relate to the event below.\n\n## Events\n- No new events started today.\n- EV-0128, W-23, water breakthrough (incident, medium severity). Started 2026-06-14 and closed 2026-06-15. Downtime as of today is 8 hours. The event summary records a sharp rise in water cut from about 30 percent to over 55 percent within weeks, consistent with injector water breakthrough from the north flank. The well is back online and the Production Engineer has been informed.\n\n## Routine work\n- Flowline patrol completed. No leaks or abnormal findings observed.\n\n## Handover notes\n- Keep watching W-23 water cut and rate on the next shift, and log readings at each round.\n- Report any change in field water cut to the Production Engineer.\n- All other wells are stable at full uptime.",
+        "scores": {
+         "vector_similarity": 0.5397,
+         "vector_rank": 2,
+         "full_text_rank": 1,
+         "full_text_score": 2.7,
+         "rrf": 0.03252
+        }
+       },
+       {
+        "chunk_id": "SR-149#0",
+        "document_id": "SR-149",
+        "title": "Shift report: Wadi Field, 2026-06-14, day shift",
+        "doc_type": "shift_report",
+        "well_id": "W-21",
+        "field": "Wadi Field",
+        "date": "2026-06-14",
+        "section": null,
+        "text": "# Shift report: Wadi Field, 2026-06-14, day shift\n\n**Document ID:** SR-149\n**Prepared by:** Lead Operator (K.M.)\n\n## Production summary\n- Wells online: 14 of 14\n- Field oil: 10199.7 bbl/d\n- Field gas: 8042.1 Mscf/d\n- Field average water cut: 37.8 percent\n- Water cut trend: 32.5 percent in January 2026, 36.9 percent over the last 30 days, so still rising.\n- Top producers: W-20 with 1229.4 bbl oil, 1100.7 Mscf gas, 35.4 percent water cut, 24 h uptime; W-24 with 1171 bbl oil, 656.6 Mscf gas, 30.6 percent, 24 h; W-17 with 1141.4 bbl oil, 911.1 Mscf gas, 35.2 percent, 24 h.\n\n## Wells offline or restricted\n- W-21: 3 h uptime, 47.8 bbl oil, 49 Mscf gas, 40.9 percent water cut. Lost production from the ESP trip (see events).\n- W-23: 20 h uptime, 751.3 bbl oil. Restricted while the water breakthrough is assessed.\n\n## Events\n- **EV-0127, W-21, ESP trip (low severity, closed):** ESP tripped on underload. Restarted after checks. Downtime 21 h as of this report. Motor current and intake readings checked before restart, and the well was monitored after start-up.\n- **EV-0128, W-23, water breakthrough (medium severity, open):** Sharp rise in water cut from about 30 percent to over 55 percent within weeks, consistent with injector water breakthrough from the north flank. Downtime 4 h so far. The Production Engineer has been informed.\n\n## Routine work\n- Road inspection after sandstorm completed. Access roads in the field are passable.\n\n## Handover notes\n- Night shift to keep W-21 under close watch for any repeat underload trip.\n- W-23 remains open under EV-0128. Record water cut and rates at each round and pass the readings to the Production Engineer.",
+        "scores": {
+         "vector_similarity": 0.5286,
+         "vector_rank": 3,
+         "full_text_rank": 2,
+         "full_text_score": 2.6,
+         "rrf": 0.032
+        }
+       },
+       {
+        "chunk_id": "SR-150#0",
+        "document_id": "SR-150",
+        "title": "Shift report: Wadi Field, 2026-06-14, night shift",
+        "doc_type": "shift_report",
+        "well_id": "W-21",
+        "field": "Wadi Field",
+        "date": "2026-06-14",
+        "section": null,
+        "text": "# Shift report: Wadi Field, 2026-06-14, night shift\n\n**Document id:** SR-150\n**Author:** Lead Operator (K.M.)\n**Field:** Wadi Field\n\n## Production summary\n- Wells online: 14 of 14\n- Field oil: 10199.7 bbl/d\n- Field gas: 8042.1 Mscf/d\n- Field average water cut: 37.8 percent\n- Water cut trend: 32.5 percent in January 2026, 36.9 percent over the last 30 days, 37.8 percent today.\n- Top producers: W-20 with 1229.4 bbl, 1100.7 Mscf, 35.4 percent water cut, 24 h uptime. W-24 with 1171 bbl, 656.6 Mscf, 30.6 percent, 24 h. W-17 with 1141.4 bbl, 911.1 Mscf, 35.2 percent, 24 h.\n\n## Wells offline or restricted\n- W-21: 3 h uptime, 47.8 bbl oil, 49 Mscf gas, water cut 40.9 percent. ESP tripped on underload (EV-0127).\n- W-23: 20 h uptime, 751.3 bbl oil. Restricted by water breakthrough (EV-0128).\n\n## Events\n- **EV-0127, W-21, ESP trip (incident, low severity):** The ESP tripped on underload. Checks were completed and the pump was restarted. Downtime was 21 h. Event closed 2026-06-14.\n- **EV-0128, W-23, water breakthrough (incident, medium severity):** Water cut rose sharply from about 30 percent to over 55 percent within weeks, consistent with injector water breakthrough from the north flank. Downtime so far is 4 h. Event is open.\n\n## Routine work\n- Flowline patrol completed with no leaks or abnormal findings noted.\n\n## Handover notes\n- W-21: monitor the motor amps and intake pressure closely after the restart, and report any further underload trips to the Production Engineer.\n- W-23: event EV-0128 remains open. Keep sampling water cut each shift and pass the results to the Production Engineer for review of injection support on the north flank.\n- All other wells are stable at the shift change.",
+        "scores": {
+         "vector_similarity": 0.527,
+         "vector_rank": 4,
+         "full_text_rank": 3,
+         "full_text_score": 2.6,
+         "rrf": 0.0315
+        }
+       }
+      ],
+      "full_text_only": false
+     }
+    ],
     "checks": {
      "unknown_chunk_ids": [],
      "refs_without_source": []
     },
     "usage": {
      "input_tokens": 8,
-     "cache_read_tokens": 12642,
-     "cache_write_tokens": 6972,
-     "output_tokens": 967,
+     "cache_read_tokens": 12249,
+     "cache_write_tokens": 8934,
+     "output_tokens": 840,
      "steps": 3,
-     "cost_usd": 0.0284
+     "cost_usd": 0.032
     },
-    "latency_ms": 8090,
+    "latency_ms": 9125,
     "model": "claude-sonnet-5-5"
    }
   }
