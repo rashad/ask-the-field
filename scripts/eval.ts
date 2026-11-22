@@ -27,6 +27,7 @@ const CASES: { question: string; checks: Check[] }[] = [
     checks: [
       ["viz is a map", (f) => f.answer.viz.type === "map"],
       ["highlights exactly W-05, W-12, W-25, W-34, W-36", (f) => highlighted(f).join(",") === "W-05,W-12,W-25,W-34,W-36"],
+      ["cites at least 3 incident notes", (f) => new Set(f.answer.sources.filter((s) => s.kind === "chunk" && s.id.startsWith("IN-")).map((s) => s.id.split("#")[0])).size >= 3],
     ],
   },
   {

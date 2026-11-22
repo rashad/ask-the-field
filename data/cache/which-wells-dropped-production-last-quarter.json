@@ -1,6 +1,6 @@
 {
  "question": "Which wells dropped production last quarter?",
- "recorded_at": "2026-11-22T13:25:17.026Z",
+ "recorded_at": "2026-11-22T14:58:48.450Z",
  "events": [
   {
    "t": 3,
@@ -11,10 +11,10 @@
    }
   },
   {
-   "t": 2604,
+   "t": 2832,
    "event": {
     "type": "tool-call",
-    "id": "toolu_01PB7Gu1pDoQDMKikR1vKew6",
+    "id": "toolu_01E55y4obnnLSq85GLx8wkyR",
     "name": "query_production",
     "args": {
      "metric": "oil",
@@ -28,10 +28,10 @@
    }
   },
   {
-   "t": 2645,
+   "t": 2850,
    "event": {
     "type": "tool-result",
-    "id": "toolu_01PB7Gu1pDoQDMKikR1vKew6",
+    "id": "toolu_01E55y4obnnLSq85GLx8wkyR",
     "name": "query_production",
     "output": {
      "metric": "oil",
@@ -379,14 +379,14 @@
    }
   },
   {
-   "t": 5649,
+   "t": 5714,
    "event": {
     "type": "final",
     "answer": {
-     "answer": "Nearly every well declined last quarter compared with Q2, but five fell sharply: W-38 (Bayda) by 533 bbl/d (40.8%), W-23 by 364 (39.5%), W-08 by 310 (26.6%), W-34 by 301 (23.7%) and W-21 by 220 (25.4%) [1]. Most other wells fell only 2 to 12%, and W-40 produced nothing in either period [1].",
+     "answer": "Nearly every well declined last quarter (July to September 2026) compared with April to June, but five dropped sharply. W-38 fell about 533 barrels a day (41%), W-23 about 364 (40%), W-08 about 310 (27%), W-34 about 301 (24%) and W-21 about 220 (25%) [1]. Most other wells slipped 2 to 12%.",
      "viz": {
       "type": "bar",
-      "title": "Largest oil drops, Q3 vs Q2 2026",
+      "title": "Biggest oil drops, Q3 vs Q2 2026",
       "unit": "bbl/d",
       "bars": [
        {
@@ -416,11 +416,11 @@
        "n": 1,
        "kind": "table",
        "id": "production_daily:all:2026-07-01..2026-09-30",
-       "label": "Oil per well, Q3 vs Q2 2026"
+       "label": "Oil production by well, Q3 vs Q2 2026"
       }
      ],
      "confidence": "medium",
-     "could_not_verify": "I did not check the causes of the drops in events or documents."
+     "could_not_verify": "I did not check causes of the drops in events or documents."
     },
     "trace": [],
     "checks": {
@@ -429,13 +429,13 @@
     },
     "usage": {
      "input_tokens": 6,
-     "cache_read_tokens": 11415,
-     "cache_write_tokens": 0,
-     "output_tokens": 558,
+     "cache_read_tokens": 4953,
+     "cache_write_tokens": 7136,
+     "output_tokens": 538,
      "steps": 2,
-     "cost_usd": 0.0067
+     "cost_usd": 0.0237
     },
-    "latency_ms": 5649,
+    "latency_ms": 5714,
     "model": "claude-sonnet-5-5"
    }
   }
