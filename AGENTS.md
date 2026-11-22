@@ -1,6 +1,6 @@
 # ops-rag-demo
 
-Concept prototype: ask questions of synthetic upstream oil and gas operations data (Next.js, Postgres + pgvector, Claude, Voyage embeddings). Stage 1 holds the data pipeline, stage 2 the ask API; the UI comes later.
+Concept prototype: ask questions of synthetic upstream oil and gas operations data (Next.js, Postgres + pgvector, Claude, Voyage embeddings). Stage 1 holds the data pipeline, stage 2 the ask API, stage 3 the UI (Ask, Data, About).
 
 ## Layout
 
@@ -11,6 +11,8 @@ Concept prototype: ask questions of synthetic upstream oil and gas operations da
 - `lib/tools.ts`: the four LLM tools (`query_production`, `list_events`, `search_documents`, `get_wells`) with Zod inputs; `search_documents` records the retrieval trace. A repeated call (same args, or an earlier complete result narrowed by a filter) returns a short note instead of hitting the database, and the next step must answer.
 - `lib/answer.ts`: `ask()` runs `streamText` (AI SDK, `claude-sonnet-5-5`) with the tools and `Output.object` for the final answer, and yields NDJSON events.
 - `app/api/ask/route.ts`: `POST /api/ask { question }`, streams `application/x-ndjson` events: `start`, `tool-call` (with a UI label), `tool-result`, `tool-error`, `fallback`, `final` (answer, viz, sources, confidence, retrieval trace, usage), `error`.
+- `app/page.tsx` + `app/ask.tsx`: Ask page; reads the NDJSON stream, shows live steps, the answer, SVG viz (`app/viz.tsx`) and the "How this answer was built" drawer (`app/drawer.tsx`). `/?q=<question>` asks on load, `&how=1` opens the drawer.
+- `app/data`, `app/about`, `app/api/data/*`: read-only data browser (documents, chunks with their first vector values, tables) and the About page, all from the database. `/data?chunk=<id>` highlights a chunk.
 - `lib/cache.ts`, `data/cache/*.json`: recorded runs of the 4 suggested questions, replayed when a key is missing, the daily cap is reached, or the API fails.
 - `lib/guard.ts`: in-memory rate limit per IP (`RATE_LIMIT_PER_MINUTE`, default 6) and daily cap on questions (`LLM_DAILY_CAP`, default 300).
 - `scripts/`: seed, document generation, ingest, search, dump, restore.
