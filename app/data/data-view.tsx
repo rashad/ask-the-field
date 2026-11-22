@@ -5,15 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { findQuote } from "@/lib/quote";
 import { Md } from "../md";
-import { shortDate } from "../fmt";
+import { DOC_TYPES, docTypeLabel, shortDate } from "@/lib/domain";
 
 interface Doc { doc_id: string; doc_type: string; well_id: string | null; field: string | null; date: string; title: string; chunks: number }
 interface Chunk { id: string; ordinal: number; section: string | null; text: string; tokens: number; well_id: string | null; field: string | null; date: string | null; doc_type: string; embedding_model: string; vector_head: number[]; dims: number }
 type Row = Record<string, string | number | null>;
 
-const TYPES = [["shift_report", "Shift reports"], ["incident_note", "Incident notes"], ["work_order", "Work orders"], ["well_test", "Well tests"], ["procedure", "Procedures"]] as const;
 const WELLS = Array.from({ length: 41 }, (_, i) => `W-${String(i + 1).padStart(2, "0")}`);
-const typeName = (t: string) => t.replace("_", " ").replace(/^./, (c) => c.toUpperCase());
 
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url);
@@ -85,7 +83,7 @@ function Documents() {
         <label className="sel"><span className="sr">Document type</span>
           <select className="body-6" value={type} onChange={(e) => setType(e.target.value)}>
             <option value="">All types</option>
-            {TYPES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            {DOC_TYPES.map((v) => <option key={v} value={v}>{docTypeLabel(v)}s</option>)}
           </select><CaretDown aria-hidden />
         </label>
         <label className="sel"><span className="sr">Well</span>
@@ -113,7 +111,7 @@ function Documents() {
               <div>
                 <h2 className="heading-6">{detail.document.title}</h2>
                 <div className="meta caption-4">
-                  <span>{typeName(detail.document.doc_type)}</span><span>{shortDate(detail.document.date)}</span>
+                  <span>{docTypeLabel(detail.document.doc_type)}</span><span>{shortDate(detail.document.date)}</span>
                   <span className="mono">{detail.document.doc_id}</span>
                   {detail.document.well_id && <span className="mono">{detail.document.well_id}</span>}
                   {detail.document.field && <span>{detail.document.field}</span>}

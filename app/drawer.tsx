@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { AskEvent } from "@/lib/answer";
 import { findQuote } from "@/lib/quote";
-import { TODAY } from "@/lib/synth";
 import type { SearchChunk } from "@/lib/tools";
-import { shortDate } from "./fmt";
+import { docTypeLabel, shortDate, TODAY } from "@/lib/domain";
 import { found, say, type Step } from "./human";
 import { Md } from "./md";
 import type { EventRow } from "./viz";
@@ -15,7 +14,6 @@ type Final = Extract<AskEvent, { type: "final" }>;
 type Source = Final["answer"]["sources"][number];
 
 const MAX_RRF = 2 / 61;
-const TYPE: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
 function monthsBack(period = "") {
   const from = period.slice(0, 7);
   if (!/^\d{4}-\d{2}$/.test(from)) return 6;
@@ -118,7 +116,7 @@ export function Drawer({ open, onClose, steps, final, events, focus }: { open: b
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <h4 className="body-4">{c ? c.title : s.label}</h4>
                       <p className="caption-4 mute">
-                        {c ? <>{c.doc_type === "incident_note" ? <span className="inc-tag">{TYPE[c.doc_type]}</span> : TYPE[c.doc_type] ?? "Report"}, <span className="mono">{c.document_id}</span>{c.well_id ? `, ${c.well_id}` : ""}, {shortDate(c.date)}</> : <><Database aria-hidden /> Data table, <span className="mono">{s.id}</span></>}
+                        {c ? <>{c.doc_type === "incident_note" ? <span className="inc-tag">{docTypeLabel(c.doc_type)}</span> : docTypeLabel(c.doc_type)}, <span className="mono">{c.document_id}</span>{c.well_id ? `, ${c.well_id}` : ""}, {shortDate(c.date)}</> : <><Database aria-hidden /> Data table, <span className="mono">{s.id}</span></>}
                       </p>
                     </div>
                   </div>

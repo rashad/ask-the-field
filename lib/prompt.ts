@@ -1,4 +1,4 @@
-import { DATA_START, TODAY } from "./tools";
+import { DATA_START, TODAY } from "./domain";
 
 export const SYSTEM = `You answer questions about a synthetic upstream oil and gas dataset. Today is ${TODAY}. The reader is often a manager who is not an engineer.
 

@@ -15,8 +15,6 @@ export const CLAUDE_PRICES: Record<string, { input: number; cacheRead: number; c
 };
 const isClaude = (model: string) => model.startsWith("claude-");
 
-export { SUGGESTED } from "./questions";
-
 const wellId = z.string().max(10).describe("Well id such as W-17");
 
 export const answerSchema = z.object({
@@ -63,7 +61,7 @@ export type Answer = z.infer<typeof answerSchema>;
 
 export type AskEvent =
   | { type: "start"; question: string; mode: "live" | "cache"; reason?: string }
-  | { type: "tool-call"; id: string; name: string; args: unknown; label: string }
+  | { type: "tool-call"; id: string; name: string; args: unknown }
   | { type: "tool-result"; id: string; name: string; output: unknown }
   | { type: "tool-error"; id: string; name: string; error: string }
   | { type: "final"; answer: Omit<Answer, "viz" | "sources"> & { viz: FinalViz; sources: FinalSource[] }; trace: SearchTrace[]; checks: Checks; usage: Usage; latency_ms: number; model: string; provider?: string }
@@ -86,32 +84,6 @@ interface Checks {
   refs_without_source: number[];
   viz_error: string | null;
   unverified_quotes: number[];
-}
-
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-function period(from?: string, to?: string) {
-  const fmt = (d: string) => `${MONTHS[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}`;
-  if (!from && !to) return null;
-  if (from && to && fmt(from) === fmt(to)) return fmt(from);
-  return [from && fmt(from), to && fmt(to)].filter(Boolean).join(" to ");
-}
-
-export function label(name: string, a: Record<string, any>) {
-  const scope = [a.well_ids?.join(", "), a.field, a.doc_type?.replace("_", " "), period(a.from, a.to)].filter(Boolean).join(", ");
-  const suffix = scope ? ` (${scope})` : "";
-  switch (name) {
-    case "query_production":
-      return `Querying ${a.metric === "water_cut" ? "water cut" : `${a.metric} production`} by ${a.group_by}${suffix}...`;
-    case "list_events":
-      return `Listing ${a.status ? `${a.status} ` : ""}${a.type ?? "events"}${suffix}...`;
-    case "search_documents":
-      return `Searching documents${suffix}...`;
-    case "get_wells":
-      return `Loading wells${a.field ? ` (${a.field})` : ""}...`;
-    default:
-      return `${name}...`;
-  }
 }
 
 function toUsage(model: string, u: LanguageModelUsage, steps: number, reportedCost: number | null): Usage {
@@ -171,7 +143,7 @@ export async function* ask(question: string, signal?: AbortSignal, model = MODEL
   });
   yield { type: "start", question, mode: "live" };
   for await (const part of result.stream) {
-    if (part.type === "tool-call") yield { type: "tool-call", id: part.toolCallId, name: part.toolName, args: part.input, label: label(part.toolName, part.input as Record<string, unknown>) };
+    if (part.type === "tool-call") yield { type: "tool-call", id: part.toolCallId, name: part.toolName, args: part.input };
     else if (part.type === "tool-result") yield { type: "tool-result", id: part.toolCallId, name: part.toolName, output: part.output };
     else if (part.type === "tool-error") yield { type: "tool-error", id: part.toolCallId, name: part.toolName, error: String(part.error) };
     else if (part.type === "error") throw part.error;

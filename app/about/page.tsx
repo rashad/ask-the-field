@@ -11,9 +11,8 @@ import { PRICE_NOTE } from "@/lib/money";
 import { SUGGESTED } from "@/lib/questions";
 
 export const metadata: Metadata = { title: "About", description: "What Ask the Field does, why every answer shows its sources, and how it is built." };
-import { shortDate } from "../fmt";
+import { docTypeLabel, shortDate } from "@/lib/domain";
 
-const TYPE_LABEL: Record<string, string> = { shift_report: "Shift report", incident_note: "Incident note", work_order: "Work order", well_test: "Well test", procedure: "Procedure" };
 const n = (x: number) => x.toLocaleString("en-US");
 
 async function stats() {
@@ -90,7 +89,7 @@ async function Content() {
           {examples.map((e, i) => (
             <article key={e.doc_type} className={`ex${e.doc_type === "incident_note" ? " inc" : ""}`} style={i === examples.length - 1 && examples.length % 2 ? { gridColumn: "1 / -1" } : undefined}>
               <div className="ex-top">
-                <span className={`badge caption-3 ${e.doc_type === "incident_note" ? "badge-bad" : "badge-mute"}`}>{TYPE_LABEL[e.doc_type] ?? e.doc_type}</span>
+                <span className={`badge caption-3 ${e.doc_type === "incident_note" ? "badge-bad" : "badge-mute"}`}>{docTypeLabel(e.doc_type)}</span>
                 <span className="caption-4 mute">{docsOf(e.doc_type)} documents</span>
               </div>
               <span className="mono caption-4 ex-id">{e.doc_id}, {[e.well_id, e.field, shortDate(e.date)].filter(Boolean).join(", ")}</span>

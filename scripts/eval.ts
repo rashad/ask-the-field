@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { ask, MODEL, SUGGESTED, type AskEvent } from "../lib/answer";
+import { ask, MODEL, type AskEvent } from "../lib/answer";
+import { SUGGESTED } from "../lib/questions";
 import { record } from "../lib/cache";
 import { sql } from "../lib/db";
 import { findQuote } from "../lib/quote";
@@ -199,7 +200,7 @@ for (let run = 1; run <= runCount; run++) {
     results.push({ question: i + 1, run, checks, latency_ms: final.latency_ms, tool_calls: calls.length, provider: final.provider, usage: u, cost_usd: cost, cost_source: source, answer: final.answer });
     console.log(`  latency ${(final.latency_ms / 1000).toFixed(1)}s, steps ${u.steps}, tokens in ${u.input_tokens} + cache read ${u.cache_read_tokens} + cache write ${u.cache_write_tokens}, out ${u.output_tokens}, cost ${cost === null ? "unknown" : `$${cost}`}`);
     const repeats = calls.length - new Set(calls.map((c) => c.name + JSON.stringify(c.args))).size;
-    console.log(`  tools (${calls.length}, ${repeats} repeated): ${calls.map((c) => c.label).join(" | ")}`);
+    console.log(`  tools (${calls.length}, ${repeats} repeated): ${calls.map((c) => `${c.name}(${JSON.stringify(c.args)})`).join(" | ")}`);
     console.log(`  sentences: ${sentences(final.answer.answer)}${final.trace.some((t) => t.full_text_only) ? ", search ran full text only" : ""}`);
     console.log(`  viz: ${final.answer.viz.type}, confidence: ${final.answer.confidence}, sources: ${final.answer.sources.map((s) => s.id).join(", ")}`);
     console.log(`  answer: ${final.answer.answer}`);

@@ -1,5 +1,5 @@
 import { sql } from "./db";
-import { TODAY } from "./synth";
+import { TODAY } from "./domain";
 import { lostOil } from "./tools";
 
 export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; open_incident: boolean }

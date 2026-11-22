@@ -1,13 +1,10 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { sql } from "./db";
+import { DOC_TYPES, FIELDS } from "./domain";
 import { PRICE_PER_BBL } from "./money";
 import { hybridSearch } from "./search";
 
-export const FIELDS = ["Dune Field", "Wadi Field", "Salt Flat Field"] as const;
-export const DOC_TYPES = ["shift_report", "incident_note", "work_order", "well_test", "procedure"] as const;
-export const DATA_START = "2025-05-23";
-export const TODAY = "2026-11-22";
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD").refine((d) => !Number.isNaN(Date.parse(d)), "invalid date");
 const wellIds = z.array(z.string().regex(/^W-\d{2}$/, "well ids look like W-17")).min(1).max(41);

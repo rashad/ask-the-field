@@ -1,7 +1,4 @@
-export const START = "2025-05-23";
-export const TODAY = "2026-11-22";
-
-export type Field = "Dune Field" | "Wadi Field" | "Salt Flat Field";
+import { DATA_START as START, TODAY, type Field } from "./domain";
 export type WellStatus = "producing" | "shut_in" | "workover" | "suspended";
 
 export interface Well {

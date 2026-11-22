@@ -1,14 +1,14 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { stringify } from "yaml";
-import { addDays, dayIndex, Event, generate, mulberry32, START, TODAY, Well } from "../lib/synth";
+import { DATA_START as START, TODAY, type DocType } from "../lib/domain";
+import { addDays, dayIndex, Event, generate, mulberry32, Well } from "../lib/synth";
 
 const MODEL = "claude-sonnet-5-5";
 const OUT = "data/docs";
 const CONCURRENCY = 8;
 const BANNED = /\b(Aramco|Exxon|Chevron|Schlumberger|SLB|Halliburton|Baker Hughes)\b/;
 
-type DocType = "shift_report" | "incident_note" | "work_order" | "well_test" | "procedure";
 
 interface Plan {
   doc_id: string;

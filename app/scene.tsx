@@ -1,12 +1,11 @@
 "use client";
 import { ArrowRight, BookOpenText, ChartLine, FileText, MapTrifold, Play, Repeat } from "@phosphor-icons/react/ssr";
 import { about, PRICE_NOTE, usd } from "@/lib/money";
+import { longDate } from "@/lib/domain";
 import { SUGGESTED } from "@/lib/questions";
 import type { MapWell, Morning } from "@/lib/stakes";
 import { Term, GLOSSARY, type TermKey } from "./term";
 
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-export const longDate = (d: string) => `${Number(d.slice(8, 10))} ${MONTHS[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}`;
 const n = (x: number) => x.toLocaleString("en-US");
 
 function FieldMap({ wells }: { wells: MapWell[] }) {

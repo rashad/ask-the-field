@@ -1,4 +1,5 @@
 import { sql } from "./db";
+import { monthYear } from "./domain";
 import type { ToolRun } from "./tools";
 
 export const BAR_METRICS = ["value", "change", "change_pct", "lost_oil_bbl", "lost_revenue_usd", "downtime_hours"] as const;
@@ -24,7 +25,6 @@ interface WellRow { well_id: string; value: number; baseline?: number; change?: 
 interface EventRow { event_id: string; well_id: string; start_date: string; lost_oil_bbl: number | null; lost_revenue_usd: number | null; downtime_hours: number | null }
 
 const MAX_BARS = 10;
-const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const EVENT_UNIT = { lost_oil_bbl: "bbl", lost_revenue_usd: "USD", downtime_hours: "hours" } as const;
 
 class ChartError extends Error {}
@@ -69,8 +69,7 @@ function eventBars(req: Extract<ChartRequest, { type: "bar" }>, out: { events: E
     const values = rows.map((e) => e[metric] ?? fail(`${e.event_id} has no ${metric}`));
     const first = rows.reduce((a, b) => (b.start_date < a.start_date ? b : a));
     const wells = [...new Set(rows.map((e) => e.well_id))].join(" and ");
-    const when = `${MONTH_SHORT[Number(first.start_date.slice(5, 7)) - 1]} ${first.start_date.slice(0, 4)}`;
-    return { label: `${wells}, ${when}`, value: values.reduce((a, b) => a + b, 0), ids: [...ids] };
+    return { label: `${wells}, ${monthYear(first.start_date, true)}`, value: values.reduce((a, b) => a + b, 0), ids: [...ids] };
   });
   bars.sort((a, b) => b.value - a.value);
   for (const b of bars) if (b.ids.length === 1 && bars.filter((x) => x.label === b.label).length > 1) b.label += ` (${b.ids[0]})`;

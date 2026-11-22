@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { MONTH, shortDate } from "./fmt";
+import { monthYear, shortDate } from "@/lib/domain";
 
 export interface MapWell { well_id: string; field: string; lat: number; lon: number; status: string; highlighted: boolean }
 export interface EventRow { event_id: string; well_id: string; field: string; type: string; start_date: string; status: string; severity: string | null; category: string }
@@ -21,7 +21,7 @@ const SERIES = ["#0B1B3A", "#5A8BD0", "#6A7590", "#A9B0C0"];
 const ORANGE = "#F04E0E";
 const fmt = (n: number) => (Math.abs(n) < 1 && n !== 0 ? n.toFixed(3) : Math.round(n).toLocaleString("en-US"));
 const pointLabel = (d: string, monthly: boolean) =>
-  /^\d{4}-\d{2}$/.test(d) || (monthly && /^\d{4}-\d{2}-01$/.test(d)) ? `${MONTH[Number(d.slice(5, 7)) - 1]} ${d.slice(0, 4)}` : /^\d{4}-\d{2}-\d{2}$/.test(d) ? shortDate(d) : d;
+  /^\d{4}-\d{2}$/.test(d) || (monthly && /^\d{4}-\d{2}-01$/.test(d)) ? monthYear(d, true) : /^\d{4}-\d{2}-\d{2}$/.test(d) ? shortDate(d) : d;
 
 function useWidth(fallback: number) {
   const ref = useRef<HTMLDivElement>(null);
