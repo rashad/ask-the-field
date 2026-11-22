@@ -1,11 +1,12 @@
 "use client";
+import { ChatCircleText, Database, Drop, Info } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  ["/", "Ask", "ph-chat-circle-text"],
-  ["/data", "Data", "ph-database"],
-  ["/about", "About", "ph-info"],
+  ["/", "Ask", ChatCircleText],
+  ["/data", "Data", Database],
+  ["/about", "About", Info],
 ] as const;
 
 export function Nav() {
@@ -13,13 +14,13 @@ export function Nav() {
   return (
     <header className="nav-wrap">
       <nav className="nav" aria-label="Main">
-        <Link className="brand" href="/" aria-label="Ask your operations data">
-          <span className="mark"><i className="ph-bold ph-drop" aria-hidden="true" /></span>
-          <span className="title-4">Operations data</span>
+        <Link className="brand" href="/" aria-label="Ask the Field, home">
+          <span className="mark"><Drop weight="bold" aria-hidden /></span>
+          <span className="title-4">Ask the Field</span>
         </Link>
-        {LINKS.map(([href, label, icon]) => (
+        {LINKS.map(([href, label, Icon]) => (
           <Link key={href} className="link button-sm" href={href} aria-current={path === href ? "page" : undefined}>
-            <i className={`ph ${icon}`} aria-hidden="true" />{label}
+            <Icon aria-hidden />{label}
           </Link>
         ))}
         <span className="pill caption-4">Concept prototype, synthetic data</span>

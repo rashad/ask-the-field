@@ -1,23 +1,31 @@
-import type { Metadata } from "next";
+import { Flask } from "@phosphor-icons/react/ssr";
+import type { Metadata, Viewport } from "next";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Credit } from "./credit";
 import { Nav } from "./nav";
 import "./globals.css";
 
+const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono" });
+
+const TITLE = "Ask the Field";
+const DESCRIPTION = "Ask questions about an oil field in plain English. The AI reads 400 field reports and 18 months of production data, and shows where each answer comes from. Concept prototype, synthetic data.";
+const site = process.env.SITE_URL ?? "https://askthefield.darmina.com";
+
 export const metadata: Metadata = {
-  title: "Ask your operations data",
-  description: "Concept prototype, synthetic data",
+  metadataBase: new URL(site),
+  alternates: { canonical: "/" },
+  title: { default: `${TITLE}: answers from field reports, with sources`, template: `%s | ${TITLE}` },
+  description: DESCRIPTION,
+  openGraph: { type: "website", siteName: TITLE, title: `${TITLE}: answers from field reports, with sources`, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: `${TITLE}: answers from field reports, with sources`, description: DESCRIPTION },
 };
 
-const ICONS = ["regular", "bold", "fill"].map((w) => `https://unpkg.com/@phosphor-icons/web@2.1.1/src/${w}/style.css`);
+export const viewport: Viewport = { themeColor: "#FAFAF7" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
-        {ICONS.map((href) => <link key={href} rel="stylesheet" href={href} />)}
-      </head>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <a className="skip button-sm" href="#main">Skip to content</a>
         <Nav />
@@ -25,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="wrap">{children}</div>
         </main>
         <footer className="foot">
-          <div className="wrap caption-4"><i className="ph ph-flask" aria-hidden="true" />Concept prototype, synthetic data</div>
+          <div className="wrap caption-4"><Flask aria-hidden /><span>Concept prototype, synthetic data. No real company, field or well.</span><Credit /></div>
         </footer>
       </body>
     </html>
