@@ -20,7 +20,7 @@ Postgres runs in Docker (OrbStack), compose project `opsrag`, container `opsrag-
 - `pnpm db:seed`: apply the schema and regenerate wells, production and events (deterministic).
 - `sec opsrag pnpm gen:docs`: generate the documents with Claude. Resumable: skips files that exist. `--dry --list` prints the plan, `--ids=A,B` generates selected ids.
 - `sec opsrag pnpm ingest`: chunk, embed (voyage-4, 1024 dims) and upsert. Idempotent: only new or changed documents are embedded.
-- `sec opsrag pnpm search "question"`: hybrid search smoke check.
+- `sec opsrag pnpm smoke ["question" ...]`: hybrid search smoke check (defaults to two sample queries).
 - `pnpm db:dump`: write `data/dump.sql.gz` after an ingest.
 - `pnpm test`: chunker test.
 - `pnpm dev`: Next.js app.

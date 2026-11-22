@@ -21,10 +21,14 @@ export async function vectorSearch(query: string, k = 8): Promise<Hit[]> {
     FROM chunks ORDER BY embedding <=> ${toVector(vec)}::vector LIMIT ${k}`;
 }
 
+// Hyphenated codes like W-17 also index their parts ("w", "17"); drop those so the code itself decides the match.
 export async function fullTextSearch(query: string, k = 8): Promise<Hit[]> {
   return sql<Hit[]>`
     WITH q AS (
-      SELECT to_tsquery('english', string_agg(quote_literal(lex), ' | ')) AS tq
+      SELECT to_tsquery('english', coalesce(
+        string_agg(quote_literal(lex), ' | ') FILTER (WHERE lex !~ '^[0-9]+$' AND length(lex) > 1),
+        string_agg(quote_literal(lex), ' | ')
+      )) AS tq
       FROM unnest(tsvector_to_array(to_tsvector('english', ${query}))) AS lex
     )
     SELECT id, document_id, doc_type, well_id, date::text, section, text, ts_rank_cd(tsv, q.tq) AS score

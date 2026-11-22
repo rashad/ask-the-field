@@ -6,7 +6,7 @@ import { sql } from "../lib/db";
 import { embed, EMBEDDING_MODEL, toVector } from "../lib/voyage";
 
 const DIR = "data/docs";
-const BATCH_TOKENS = 8000;
+const BATCH_TOKENS = 5000;
 
 interface Doc {
   doc_id: string;
@@ -24,7 +24,9 @@ function read(file: string): Doc {
   const m = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error(`${file}: missing front matter`);
   const meta = parse(m[1]);
-  return { ...meta, date: String(meta.date), body: m[2].trim(), sha256: createHash("sha256").update(raw + EMBEDDING_MODEL).digest("hex") };
+  const body = m[2].trim();
+  const fingerprint = raw + EMBEDDING_MODEL + JSON.stringify(chunkDocument(body));
+  return { ...meta, date: String(meta.date), body, sha256: createHash("sha256").update(fingerprint).digest("hex") };
 }
 
 const docs = readdirSync(DIR).filter((f) => f.endsWith(".md")).sort().map(read);

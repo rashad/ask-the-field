@@ -5,6 +5,8 @@ export interface Chunk {
   tokens: number;
 }
 
+export const SHORT_DOC_TOKENS = 600;
+
 export const approxTokens = (s: string) => Math.ceil(s.length / 4);
 
 function sentences(paragraph: string): string[] {
@@ -37,7 +39,7 @@ function splitSection(text: string, max: number): string[] {
 
 export function chunkDocument(body: string, max = 500): Chunk[] {
   const text = body.trim();
-  if (approxTokens(text) <= max) return [{ ordinal: 0, section: null, text, tokens: approxTokens(text) }];
+  if (approxTokens(text) <= Math.max(max, SHORT_DOC_TOKENS)) return [{ ordinal: 0, section: null, text, tokens: approxTokens(text) }];
 
   const title = text.match(/^#\s+(.+)$/m)?.[1].trim() ?? null;
   const parts = text.split(/^(?=## )/m);

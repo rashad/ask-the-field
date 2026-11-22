@@ -10,7 +10,7 @@
     "db:seed": "tsx scripts/seed.ts",
     "gen:docs": "tsx scripts/gen-docs.ts",
     "ingest": "tsx scripts/ingest.ts",
-    "search": "tsx scripts/search.ts",
+    "smoke": "tsx scripts/search.ts",
     "db:dump": "sh scripts/dump.sh",
     "restore": "sh scripts/restore.sh",
     "test": "tsx --test lib/chunker.test.ts"
