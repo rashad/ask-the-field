@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MODEL } from "@/lib/answer";
+import { THEME_BG, THEME_KEY } from "@/lib/domain";
 import { Shell } from "./shell";
 import "./globals.css";
 
@@ -9,7 +10,7 @@ const mono = Geist_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: 
 
 const TITLE = "Ask the Field";
 const DESCRIPTION = "You run a fictional oil field in the desert: 3 fields, 41 wells, 400 field reports. Ask it what went wrong in plain English; the AI answers in seconds and shows where each answer comes from. Concept prototype, synthetic data.";
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_KEY)}),c=${JSON.stringify(THEME_BG)};if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.media=m.content===c[t]?"all":"not all"})}}catch(e){}})()`;
 const site = process.env.SITE_URL ?? "https://askthefield.darmina.com";
 
 export const metadata: Metadata = {
@@ -24,8 +25,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: "dark light",
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#131415" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f5f7" },
+    { media: "(prefers-color-scheme: dark)", color: THEME_BG.dark },
+    { media: "(prefers-color-scheme: light)", color: THEME_BG.light },
   ],
 };
 

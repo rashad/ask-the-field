@@ -1,10 +1,9 @@
 "use client";
 import { useLayoutEffect, useRef, useState } from "react";
+import { THEME_BG as BG, THEME_KEY as KEY } from "@/lib/domain";
 
-const KEY = "theme";
 const CHOICES = [["auto", "Auto"], ["light", "Light"], ["dark", "Dark"]] as const;
 type Choice = (typeof CHOICES)[number][0];
-const BG = { light: "#f4f5f7", dark: "#131415" };
 
 function stored(): Choice {
   try {
@@ -19,7 +18,10 @@ function apply(t: Choice) {
   const root = document.documentElement;
   if (t === "auto") root.removeAttribute("data-theme");
   else root.setAttribute("data-theme", t);
-  for (const m of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) m.content = t === "auto" ? (m.media.includes("dark") ? BG.dark : BG.light) : BG[t];
+  for (const m of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+    const s = m.content === BG.dark ? "dark" : "light";
+    m.media = t === "auto" ? `(prefers-color-scheme: ${s})` : t === s ? "all" : "not all";
+  }
 }
 
 export function ThemeControl() {

@@ -90,7 +90,7 @@ function Narration({ steps, writing }: { steps: Step[]; writing: boolean }) {
   return (
     <section className="narr" aria-label="What the AI is doing now">
       <p className="narr-k">Live, step by step</p>
-      <p className="narr-cap" key={caption} aria-live="polite"><CircleNotch className="spin" aria-hidden />{caption}</p>
+      <div aria-live="polite"><p className="narr-cap" key={caption}><CircleNotch className="spin" aria-hidden />{caption}</p></div>
       {current.length > 1 && <p className="narr-also">At the same time: {current.slice(1).map((s) => say(s.name, s.args).replace(/\.\.\.$/, "").replace(/^./, (c) => c.toLowerCase())).join("; ")}.</p>}
       <ol className="narr-done">
         {steps.filter((s) => s.state !== "running").map((s) => (
@@ -323,6 +323,7 @@ export function Ask({ morning }: { morning: Morning | null }) {
           {recorded !== null && (
             <div className="notice"><Record weight="bold" aria-hidden /><div><b>Recorded answer. </b>{REASON[recorded] ? `${REASON[recorded][0].toUpperCase()}${REASON[recorded].slice(1)}.` : "Replayed from a recording."} You are watching a saved run of the same question, replayed step by step.</div></div>
           )}
+          <p className="sr" aria-live="polite">{status === "done" ? "Answer ready" : ""}</p>
           {status === "running" && <Narration steps={steps} writing={steps.length > 0 && steps.every((s) => s.state !== "running")} />}
           {status === "error" && (
             <div className="notice bad" role="alert">

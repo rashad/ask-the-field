@@ -20,6 +20,7 @@ export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }
   const ref = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
   const [right, setRight] = useState(false);
+  const wasOpen = useRef(false);
   const show = () => {
     const r = ref.current?.getBoundingClientRect();
     if (r) setRight(r.left > window.innerWidth / 2);
@@ -33,7 +34,7 @@ export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }
   }, [open]);
   return (
     <span className="term" ref={ref} onMouseEnter={show} onMouseLeave={() => setOpen(false)}>
-      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onClick={show} onFocus={show} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
+      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onPointerDown={(e) => (wasOpen.current = e.pointerType !== "mouse" && open)} onClick={() => { if (wasOpen.current) setOpen(false); else show(); wasOpen.current = false; }} onFocus={show} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
         {children ?? GLOSSARY[k][0]}
       </button>
       <span role="tooltip" id={id} className="term-tip caption-4" data-open={open || undefined} data-right={right || undefined}>

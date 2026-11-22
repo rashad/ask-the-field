@@ -1,6 +1,9 @@
 export const DATA_START = "2025-05-23";
 export const TODAY = "2026-11-22";
 
+export const THEME_KEY = "theme";
+export const THEME_BG = { light: "#f4f5f7", dark: "#131415" } as const;
+
 export const RRF_K = 60;
 export const MAX_STEPS = 4;
 

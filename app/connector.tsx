@@ -3,7 +3,6 @@ import { useEffect, type RefObject } from "react";
 
 const NS = "http://www.w3.org/2000/svg";
 const LANE = 6;
-const STICK_TOP = 72;
 
 interface State { el: Element; links: HTMLElement[]; sents: HTMLElement[]; refs: string[] }
 
@@ -166,7 +165,8 @@ export function useConnector(stageRef: RefObject<HTMLElement | null>, ready: boo
       if (e.key === "Escape" && (pinned || hover)) { pinned = null; hover = null; settle(true); }
     };
     const onNarrow = () => { fit(); settle(false); };
-    const fit = () => col.toggleAttribute("data-stick", !narrow.matches && col.offsetHeight <= window.innerHeight - STICK_TOP - 16);
+    const stickTop = parseFloat(getComputedStyle(col).getPropertyValue("--stick-top"));
+    const fit = () => col.toggleAttribute("data-stick", !narrow.matches && col.offsetHeight <= window.innerHeight - stickTop - 16);
     const onResize = () => { fit(); schedule(); };
     const onPageScroll = () => { if (col.hasAttribute("data-stick")) schedule(); };
     const passages = stage.querySelectorAll<HTMLElement>(".passage");

@@ -220,9 +220,9 @@ kbd{font:500 11px/16px var(--mono);color:var(--muted);background:var(--s3);borde
 .trio h3 svg{width:16px;height:16px;color:var(--faint)}
 .trio p{color:var(--muted);font-size:13px;line-height:20px;margin-top:4px}
 
-.stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 88px 400px;padding:32px 32px 32px 40px;max-width:1192px}
+.stage{--stick-top:72px;position:relative;display:grid;grid-template-columns:minmax(0,1fr) 88px 400px;padding:32px 32px 32px 40px;max-width:1192px}
 .stage>.col-main{grid-column:1;min-width:0;align-self:start}
-.stage>.col-main[data-stick]{position:sticky;top:72px}
+.stage>.col-main[data-stick]{position:sticky;top:var(--stick-top)}
 .stage>.col-side{grid-column:3;min-width:0;align-self:start}
 svg.links{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:6}
 svg.links path{fill:none;stroke:var(--accent);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}

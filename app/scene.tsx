@@ -74,7 +74,7 @@ export function Snapshot({ m }: { m: Morning }) {
       <div className="sec-h"><h2 id="snap-t">Your field this morning, {longDate(m.today)}</h2><span>{fields.join(", ")}</span></div>
       <div className="snap">
         <dl className="tiles">
-          <div className="tile"><dt>Wells producing</dt><dd>{m.wells_producing}<small>of {m.wells_total}</small></dd><span className="sub">{m.wells_down} down</span></div>
+          <div className="tile"><dt>Wells producing</dt><dd>{m.wells_producing} <small>of {m.wells_total}</small></dd><span className="sub">{m.wells_down} down</span></div>
           <div className="tile"><dt>Open incidents</dt><dd>{m.open_incidents}</dd><span className="sub">{m.shut_in_by_incident} wells <Term k="shutin" /></span></div>
           <div className="tile"><dt>Produced yesterday</dt><dd>{n(m.oil_yesterday)}<small><Term k="bbl">barrels</Term></small></dd></div>
           <div className="tile"><dt>Lost this month to downtime</dt><dd>{round100(m.lost_month_bbl)}<small>barrels</small></dd><span className="sub">About {usd(m.lost_month_bbl)} at an assumed ${PRICE_PER_BBL} a barrel</span></div>
