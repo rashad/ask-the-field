@@ -1,0 +1,2933 @@
+{
+  "date": "2026-11-22",
+  "model": "claude-sonnet-5-5",
+  "providers": [
+    "anthropic"
+  ],
+  "openrouter_pricing": null,
+  "runs": 3,
+  "command": "pnpm eval --model=claude-sonnet-5-5 --runs=3 --save",
+  "summary": {
+    "status": "ok",
+    "checks_passed": 108,
+    "checks_total": 108,
+    "per_question": [
+      {
+        "question": 1,
+        "passed": 21,
+        "total": 21
+      },
+      {
+        "question": 2,
+        "passed": 21,
+        "total": 21
+      },
+      {
+        "question": 3,
+        "passed": 24,
+        "total": 24
+      },
+      {
+        "question": 4,
+        "passed": 21,
+        "total": 21
+      },
+      {
+        "question": 5,
+        "passed": 21,
+        "total": 21
+      }
+    ],
+    "failures": {},
+    "errors": 0,
+    "latency_ms_mean": 9256,
+    "latency_ms_max": 11511,
+    "steps_mean": 2.93,
+    "tool_calls_mean": 2.73,
+    "input_tokens_mean": 8,
+    "cache_read_tokens_mean": 23855,
+    "cache_write_tokens_mean": 5923,
+    "output_tokens_mean": 992,
+    "cost_usd_mean": 0.0271,
+    "cost_usd_total": 0.4068,
+    "prompt_caching": true
+  },
+  "results": [
+    {
+      "question": 1,
+      "run": 1,
+      "checks": [
+        {
+          "name": "viz is a map",
+          "pass": true
+        },
+        {
+          "name": "highlights exactly W-05, W-12, W-25, W-34, W-36",
+          "pass": true
+        },
+        {
+          "name": "cites at least 3 incident notes",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 9099,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 14478,
+        "cache_write_tokens": 12311,
+        "output_tokens": 1026,
+        "steps": 3,
+        "cost_usd": 0.0425
+      },
+      "cost_usd": 0.0425,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "Five incidents are open, two in Dune Field, two in Salt Flat Field and one in Wadi Field, and they have cost about 31,830 barrels, about $2.23 million in lost revenue at an assumed $70 a barrel [1]. The high-severity ones are W-12 (Dune, shut in) [2], W-36 (Salt Flat, shut in) [3], and W-34 (Salt Flat, sand eroding its flowline) [4]. The medium ones are W-05 (Dune, pressure swings) [5] and W-25 (Wadi, pump vibration) [6].",
+        "viz": {
+          "type": "map",
+          "title": "Open incidents",
+          "well_ids": [],
+          "highlighted": [
+            "W-12",
+            "W-36",
+            "W-34",
+            "W-05",
+            "W-25"
+          ],
+          "wells": [
+            {
+              "well_id": "W-01",
+              "field": "Dune Field",
+              "lat": 20.11424,
+              "lon": 48.2418,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-02",
+              "field": "Dune Field",
+              "lat": 20.09753,
+              "lon": 48.36881,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-03",
+              "field": "Dune Field",
+              "lat": 20.14124,
+              "lon": 48.28396,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-04",
+              "field": "Dune Field",
+              "lat": 20.15623,
+              "lon": 48.20315,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-05",
+              "field": "Dune Field",
+              "lat": 20.223,
+              "lon": 48.26931,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-06",
+              "field": "Dune Field",
+              "lat": 20.13831,
+              "lon": 48.3288,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-07",
+              "field": "Dune Field",
+              "lat": 20.13521,
+              "lon": 48.32429,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-08",
+              "field": "Dune Field",
+              "lat": 20.11688,
+              "lon": 48.20457,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-09",
+              "field": "Dune Field",
+              "lat": 20.08745,
+              "lon": 48.34973,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-10",
+              "field": "Dune Field",
+              "lat": 20.06657,
+              "lon": 48.323,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-11",
+              "field": "Dune Field",
+              "lat": 20.20701,
+              "lon": 48.31164,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-12",
+              "field": "Dune Field",
+              "lat": 20.17033,
+              "lon": 48.26938,
+              "status": "shut_in",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-13",
+              "field": "Dune Field",
+              "lat": 20.15261,
+              "lon": 48.25378,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-14",
+              "field": "Dune Field",
+              "lat": 20.14723,
+              "lon": 48.38164,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-15",
+              "field": "Dune Field",
+              "lat": 20.18106,
+              "lon": 48.24969,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-16",
+              "field": "Dune Field",
+              "lat": 20.21651,
+              "lon": 48.2621,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-17",
+              "field": "Wadi Field",
+              "lat": 20.48026,
+              "lon": 48.79969,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-18",
+              "field": "Wadi Field",
+              "lat": 20.34824,
+              "lon": 48.83494,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-19",
+              "field": "Wadi Field",
+              "lat": 20.35615,
+              "lon": 48.84297,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-20",
+              "field": "Wadi Field",
+              "lat": 20.35941,
+              "lon": 48.7131,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-21",
+              "field": "Wadi Field",
+              "lat": 20.49265,
+              "lon": 48.73255,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-22",
+              "field": "Wadi Field",
+              "lat": 20.37778,
+              "lon": 48.83359,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-23",
+              "field": "Wadi Field",
+              "lat": 20.34324,
+              "lon": 48.80587,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-24",
+              "field": "Wadi Field",
+              "lat": 20.45234,
+              "lon": 48.76531,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-25",
+              "field": "Wadi Field",
+              "lat": 20.41173,
+              "lon": 48.80664,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-26",
+              "field": "Wadi Field",
+              "lat": 20.35536,
+              "lon": 48.75628,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-27",
+              "field": "Wadi Field",
+              "lat": 20.44254,
+              "lon": 48.79339,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-28",
+              "field": "Wadi Field",
+              "lat": 20.42786,
+              "lon": 48.84737,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-29",
+              "field": "Wadi Field",
+              "lat": 20.35294,
+              "lon": 48.84659,
+              "status": "workover",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-30",
+              "field": "Wadi Field",
+              "lat": 20.39477,
+              "lon": 48.67821,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-31",
+              "field": "Salt Flat Field",
+              "lat": 19.82036,
+              "lon": 49.02057,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-32",
+              "field": "Salt Flat Field",
+              "lat": 19.86395,
+              "lon": 48.91358,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-33",
+              "field": "Salt Flat Field",
+              "lat": 19.888,
+              "lon": 49.03857,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-34",
+              "field": "Salt Flat Field",
+              "lat": 19.87802,
+              "lon": 49.00075,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-35",
+              "field": "Salt Flat Field",
+              "lat": 19.94264,
+              "lon": 48.95768,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-36",
+              "field": "Salt Flat Field",
+              "lat": 19.93624,
+              "lon": 48.96417,
+              "status": "shut_in",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-37",
+              "field": "Salt Flat Field",
+              "lat": 19.87086,
+              "lon": 49.03166,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-38",
+              "field": "Salt Flat Field",
+              "lat": 19.77994,
+              "lon": 48.96074,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-39",
+              "field": "Salt Flat Field",
+              "lat": 19.80174,
+              "lon": 49.03596,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-40",
+              "field": "Salt Flat Field",
+              "lat": 19.91484,
+              "lon": 49.02802,
+              "status": "suspended",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-41",
+              "field": "Salt Flat Field",
+              "lat": 19.87908,
+              "lon": 48.96504,
+              "status": "producing",
+              "highlighted": false
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0179",
+            "label": "Open incident events",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-066#0",
+            "label": "IN-066 W-12",
+            "quote": "The well was shut in pending integrity diagnostics.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "IN-069#0",
+            "label": "IN-069 W-36",
+            "quote": "W-36 was shut in and the ESP stopped.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "IN-067#0",
+            "label": "IN-067 W-34",
+            "quote": "Probe metal loss confirms that sand is eroding the flowline.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "IN-068#0",
+            "label": "IN-068 W-05",
+            "quote": "The working suspicion is partial choke plugging.",
+            "quote_verified": true
+          },
+          {
+            "n": 6,
+            "kind": "chunk",
+            "id": "IN-070#0",
+            "label": "IN-070 W-25",
+            "quote": "Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "Root causes of the W-12, W-36 and W-34 incidents are still not established in the notes."
+      }
+    },
+    {
+      "question": 2,
+      "run": 1,
+      "checks": [
+        {
+          "name": "cites the W-17 incident note (IN-032)",
+          "pass": true
+        },
+        {
+          "name": "answer dates the outage in March 2026",
+          "pass": true
+        },
+        {
+          "name": "answer gives the lost revenue in dollars",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 8445,
+      "tool_calls": 3,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 33010,
+        "cache_write_tokens": 0,
+        "output_tokens": 989,
+        "steps": 3,
+        "cost_usd": 0.0132
+      },
+      "cost_usd": 0.0132,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "W-17, a Wadi Field well, went down on 4 March 2026 when its electric pump (ESP) tripped on a motor fault, and it restarted on 18 March 2026 [1][2]. The repair found the motor's winding insulation had broken down, with light scale on the pump stages, and replaced the pump and cable [3]. Together the failure and repair lost about 17,940 barrels, about $1,256,000 in lost revenue at an assumed $70 a barrel [4][5].",
+        "viz": {
+          "type": "line",
+          "title": "W-17 daily oil, Feb to Mar 2026",
+          "unit": "bbl/d",
+          "ref": "P1",
+          "series": [
+            {
+              "name": "W-17",
+              "points": [
+                {
+                  "x": "2026-02-20",
+                  "y": 1333
+                },
+                {
+                  "x": "2026-02-21",
+                  "y": 1150
+                },
+                {
+                  "x": "2026-02-22",
+                  "y": 1255
+                },
+                {
+                  "x": "2026-02-23",
+                  "y": 1231
+                },
+                {
+                  "x": "2026-02-24",
+                  "y": 1234
+                },
+                {
+                  "x": "2026-02-25",
+                  "y": 1225
+                },
+                {
+                  "x": "2026-02-26",
+                  "y": 1269
+                },
+                {
+                  "x": "2026-02-27",
+                  "y": 1205
+                },
+                {
+                  "x": "2026-02-28",
+                  "y": 1256
+                },
+                {
+                  "x": "2026-03-01",
+                  "y": 1153
+                },
+                {
+                  "x": "2026-03-02",
+                  "y": 1213
+                },
+                {
+                  "x": "2026-03-03",
+                  "y": 1070
+                },
+                {
+                  "x": "2026-03-04",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-05",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-06",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-07",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-08",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-09",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-10",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-11",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-12",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-13",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-14",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-15",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-16",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-17",
+                  "y": 0
+                },
+                {
+                  "x": "2026-03-18",
+                  "y": 1411
+                },
+                {
+                  "x": "2026-03-19",
+                  "y": 1319
+                },
+                {
+                  "x": "2026-03-20",
+                  "y": 1288
+                },
+                {
+                  "x": "2026-03-21",
+                  "y": 1243
+                },
+                {
+                  "x": "2026-03-22",
+                  "y": 1333
+                },
+                {
+                  "x": "2026-03-23",
+                  "y": 1267
+                },
+                {
+                  "x": "2026-03-24",
+                  "y": 1278
+                },
+                {
+                  "x": "2026-03-25",
+                  "y": 1307
+                },
+                {
+                  "x": "2026-03-26",
+                  "y": 1252
+                },
+                {
+                  "x": "2026-03-27",
+                  "y": 1272
+                },
+                {
+                  "x": "2026-03-28",
+                  "y": 1321
+                },
+                {
+                  "x": "2026-03-29",
+                  "y": 1305
+                },
+                {
+                  "x": "2026-03-30",
+                  "y": 1186
+                },
+                {
+                  "x": "2026-03-31",
+                  "y": 1244
+                }
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "chunk",
+            "id": "IN-032#0",
+            "label": "Incident note IN-032",
+            "quote": "On 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance.",
+            "quote_verified": true
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "Work order WO-048",
+            "quote": "Well returned to production on 2026-03-18.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "Work order WO-048 teardown",
+            "quote": "Teardown found motor winding insulation breakdown and light scale on the pump stages.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "table",
+            "id": "events:EV-0092",
+            "label": "ESP trip event",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 5,
+            "kind": "table",
+            "id": "events:EV-0094",
+            "label": "ESP replacement workover event",
+            "quote": null,
+            "quote_verified": null
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "The incident note says root cause was not confirmed before teardown; the cause of the motor insulation breakdown itself is not documented."
+      }
+    },
+    {
+      "question": 3,
+      "run": 1,
+      "checks": [
+        {
+          "name": "answer names W-09, W-17 and W-27",
+          "pass": true
+        },
+        {
+          "name": "answer names batch 7Q-0419",
+          "pass": true
+        },
+        {
+          "name": "sources cover all 3 batch failures",
+          "pass": true
+        },
+        {
+          "name": "viz is a bar of lost oil per failure for W-09, W-17 and W-27",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 11401,
+      "tool_calls": 3,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 23657,
+        "cache_write_tokens": 23911,
+        "output_tokens": 1327,
+        "steps": 3,
+        "cost_usd": 0.0754
+      },
+      "cost_usd": 0.0754,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "It was not a one-off: the pump that failed in March 2026 on W-17 (Wadi Field) came from batch 7Q-0419, as did pumps that failed on W-09 (Dune Field) in October 2025 [3] and W-27 (Wadi Field) in August 2026 [2]. Each teardown found motor winding insulation breakdown [4][5][6], and the three outages together lost about 43,850 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [1]. Other pumps from batch 7Q-0419 may be at risk.",
+        "viz": {
+          "type": "bar",
+          "title": "Oil lost per batch 7Q-0419 pump failure (failure plus workover)",
+          "unit": "bbl",
+          "ref": "E1",
+          "metric": "lost_oil_bbl",
+          "bars": [
+            {
+              "label": "W-09, Oct 2025",
+              "value": 19257,
+              "ids": [
+                "EV-0042",
+                "EV-0046"
+              ]
+            },
+            {
+              "label": "W-17, Mar 2026",
+              "value": 17942,
+              "ids": [
+                "EV-0092",
+                "EV-0094"
+              ]
+            },
+            {
+              "label": "W-27, Aug 2026",
+              "value": 6654,
+              "ids": [
+                "EV-0150",
+                "EV-0156"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0092",
+            "label": "ESP events W-17, W-09, W-27 (EV-0092, 0094, 0042, 0046, 0150, 0156)",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-057#0",
+            "label": "W-27 incident note",
+            "quote": "The installed pump is a Varenta VL-538, pump serial 7Q-0419-086 (batch 7Q-0419), with a run life of 11 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "IN-010#0",
+            "label": "W-09 incident note",
+            "quote": "Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "W-17 work order",
+            "quote": "Teardown found motor winding insulation breakdown and light scale on the pump stages.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "WO-035#0",
+            "label": "W-09 work order",
+            "quote": "Teardown found motor winding insulation breakdown. No sand, scale or cable damage was seen.",
+            "quote_verified": true
+          },
+          {
+            "n": 6,
+            "kind": "chunk",
+            "id": "WO-054#0",
+            "label": "W-27 work order",
+            "quote": "Teardown found motor winding insulation breakdown. Pump stages and cable were in good condition, so only the pump and motor assembly was replaced.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "The data does not say how many other pumps from batch 7Q-0419 are still installed or whether the vendor has confirmed a batch defect."
+      }
+    },
+    {
+      "question": 4,
+      "run": 1,
+      "checks": [
+        {
+          "name": "viz is a line",
+          "pass": true
+        },
+        {
+          "name": "line is for Wadi Field",
+          "pass": true
+        },
+        {
+          "name": "water cut line rises",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 9750,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 13836,
+        "cache_write_tokens": 9500,
+        "output_tokens": 666,
+        "steps": 3,
+        "cost_usd": 0.0318
+      },
+      "cost_usd": 0.0318,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "Water is rising steadily in Wadi Field, but it hasn't taken over. The field's average water cut (the share of water in what wells bring up) went from about 33% in January 2026 to about 44% in November [1]. Field notes attribute the rise to water flood breakthrough, and oil was still about 9,100 barrels a day in October [2].",
+        "viz": {
+          "type": "line",
+          "title": "Wadi Field average water cut, 2026",
+          "unit": "fraction",
+          "ref": "P1",
+          "series": [
+            {
+              "name": "Wadi Field",
+              "points": [
+                {
+                  "x": "2026-01-01",
+                  "y": 0.325
+                },
+                {
+                  "x": "2026-02-01",
+                  "y": 0.333
+                },
+                {
+                  "x": "2026-03-01",
+                  "y": 0.344
+                },
+                {
+                  "x": "2026-04-01",
+                  "y": 0.355
+                },
+                {
+                  "x": "2026-05-01",
+                  "y": 0.364
+                },
+                {
+                  "x": "2026-06-01",
+                  "y": 0.377
+                },
+                {
+                  "x": "2026-07-01",
+                  "y": 0.396
+                },
+                {
+                  "x": "2026-08-01",
+                  "y": 0.413
+                },
+                {
+                  "x": "2026-09-01",
+                  "y": 0.426
+                },
+                {
+                  "x": "2026-10-01",
+                  "y": 0.435
+                },
+                {
+                  "x": "2026-11-01",
+                  "y": 0.443
+                }
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "production_daily:Wadi Field:2026-01-01..2026-11-22",
+            "label": "Wadi Field monthly water cut",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "SR-205#0",
+            "label": "Shift report 23 Oct 2026",
+            "quote": "Water cut trend: 32.5 % in January 2026, 43.2 % over the last 30 days, 43.7 % today, so the water flood breakthrough is still pushing it up.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "I did not check which individual wells are rising fastest."
+      }
+    },
+    {
+      "question": 5,
+      "run": 1,
+      "checks": [
+        {
+          "name": "finds the open W-34 alarm",
+          "pass": true
+        },
+        {
+          "name": "cites the sand alarm incident note (IN-067)",
+          "pass": true
+        },
+        {
+          "name": "cites the sand procedure (SOP-OPS-002)",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 10568,
+      "tool_calls": 4,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 14320,
+        "cache_write_tokens": 11176,
+        "output_tokens": 1113,
+        "steps": 3,
+        "cost_usd": 0.0405
+      },
+      "cost_usd": 0.0405,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "The sand alarm on W-34, a Salt Flat Field well, is still open: it started on 9 November 2026 and has cost about 1,063 barrels, about $74,410 in lost revenue at an assumed $70 a barrel [1][2]. The procedure requires acknowledging the alarm, checking for noise causes, then cutting the choke (flow valve) by 2/64 in steps of 30 minutes, with sampling within 1 hour [3][4]. After the alarm clears, the choke must stay unchanged for at least 2 hours, and the Production Engineer approves return to normal rate [3][5].",
+        "viz": {
+          "type": "none"
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0180",
+            "label": "Sand alarm event W-34",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-067#0",
+            "label": "Incident note IN-067",
+            "quote": "The well is producing on the 24/64 choke. The incident remains **open**.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#4",
+            "label": "SOP-OPS-002 response steps",
+            "quote": "**Acknowledge** the alarm in the control system and note the time, well and reading. Inform the Production Supervisor.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#5",
+            "label": "SOP-OPS-002 sampling",
+            "quote": "Take a wellhead sample within 1 hour of a High-High alarm, using the dedicated sand sampling point and a fine mesh sand catcher or centrifuge tube.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#1",
+            "label": "SOP-OPS-002 responsibilities",
+            "quote": "**Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": null
+      }
+    },
+    {
+      "question": 1,
+      "run": 2,
+      "checks": [
+        {
+          "name": "viz is a map",
+          "pass": true
+        },
+        {
+          "name": "highlights exactly W-05, W-12, W-25, W-34, W-36",
+          "pass": true
+        },
+        {
+          "name": "cites at least 3 incident notes",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 8313,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 26789,
+        "cache_write_tokens": 0,
+        "output_tokens": 1000,
+        "steps": 3,
+        "cost_usd": 0.0127
+      },
+      "cost_usd": 0.0127,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "Five incidents are open, in Dune Field, Wadi Field and Salt Flat Field, and they have cost about 31,834 barrels, about $2,228,380 in lost revenue at an assumed $70 a barrel [1]. The high-severity ones are W-12 in Dune Field (shut in, annulus pressure) [2], W-36 in Salt Flat Field (shut in, flowline leak) [3], and W-34 in Salt Flat Field (sand alarm, still producing) [4]. The others are medium: W-05 in Dune Field (wellhead pressure swings) [5] and W-25 in Wadi Field (pump vibration) [6].",
+        "viz": {
+          "type": "map",
+          "title": "Open incidents",
+          "well_ids": [
+            "W-12",
+            "W-36",
+            "W-34",
+            "W-05",
+            "W-25"
+          ],
+          "highlighted": [
+            "W-12",
+            "W-36",
+            "W-34",
+            "W-05",
+            "W-25"
+          ],
+          "wells": [
+            {
+              "well_id": "W-01",
+              "field": "Dune Field",
+              "lat": 20.11424,
+              "lon": 48.2418,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-02",
+              "field": "Dune Field",
+              "lat": 20.09753,
+              "lon": 48.36881,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-03",
+              "field": "Dune Field",
+              "lat": 20.14124,
+              "lon": 48.28396,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-04",
+              "field": "Dune Field",
+              "lat": 20.15623,
+              "lon": 48.20315,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-05",
+              "field": "Dune Field",
+              "lat": 20.223,
+              "lon": 48.26931,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-06",
+              "field": "Dune Field",
+              "lat": 20.13831,
+              "lon": 48.3288,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-07",
+              "field": "Dune Field",
+              "lat": 20.13521,
+              "lon": 48.32429,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-08",
+              "field": "Dune Field",
+              "lat": 20.11688,
+              "lon": 48.20457,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-09",
+              "field": "Dune Field",
+              "lat": 20.08745,
+              "lon": 48.34973,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-10",
+              "field": "Dune Field",
+              "lat": 20.06657,
+              "lon": 48.323,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-11",
+              "field": "Dune Field",
+              "lat": 20.20701,
+              "lon": 48.31164,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-12",
+              "field": "Dune Field",
+              "lat": 20.17033,
+              "lon": 48.26938,
+              "status": "shut_in",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-13",
+              "field": "Dune Field",
+              "lat": 20.15261,
+              "lon": 48.25378,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-14",
+              "field": "Dune Field",
+              "lat": 20.14723,
+              "lon": 48.38164,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-15",
+              "field": "Dune Field",
+              "lat": 20.18106,
+              "lon": 48.24969,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-16",
+              "field": "Dune Field",
+              "lat": 20.21651,
+              "lon": 48.2621,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-17",
+              "field": "Wadi Field",
+              "lat": 20.48026,
+              "lon": 48.79969,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-18",
+              "field": "Wadi Field",
+              "lat": 20.34824,
+              "lon": 48.83494,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-19",
+              "field": "Wadi Field",
+              "lat": 20.35615,
+              "lon": 48.84297,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-20",
+              "field": "Wadi Field",
+              "lat": 20.35941,
+              "lon": 48.7131,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-21",
+              "field": "Wadi Field",
+              "lat": 20.49265,
+              "lon": 48.73255,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-22",
+              "field": "Wadi Field",
+              "lat": 20.37778,
+              "lon": 48.83359,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-23",
+              "field": "Wadi Field",
+              "lat": 20.34324,
+              "lon": 48.80587,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-24",
+              "field": "Wadi Field",
+              "lat": 20.45234,
+              "lon": 48.76531,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-25",
+              "field": "Wadi Field",
+              "lat": 20.41173,
+              "lon": 48.80664,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-26",
+              "field": "Wadi Field",
+              "lat": 20.35536,
+              "lon": 48.75628,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-27",
+              "field": "Wadi Field",
+              "lat": 20.44254,
+              "lon": 48.79339,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-28",
+              "field": "Wadi Field",
+              "lat": 20.42786,
+              "lon": 48.84737,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-29",
+              "field": "Wadi Field",
+              "lat": 20.35294,
+              "lon": 48.84659,
+              "status": "workover",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-30",
+              "field": "Wadi Field",
+              "lat": 20.39477,
+              "lon": 48.67821,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-31",
+              "field": "Salt Flat Field",
+              "lat": 19.82036,
+              "lon": 49.02057,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-32",
+              "field": "Salt Flat Field",
+              "lat": 19.86395,
+              "lon": 48.91358,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-33",
+              "field": "Salt Flat Field",
+              "lat": 19.888,
+              "lon": 49.03857,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-34",
+              "field": "Salt Flat Field",
+              "lat": 19.87802,
+              "lon": 49.00075,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-35",
+              "field": "Salt Flat Field",
+              "lat": 19.94264,
+              "lon": 48.95768,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-36",
+              "field": "Salt Flat Field",
+              "lat": 19.93624,
+              "lon": 48.96417,
+              "status": "shut_in",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-37",
+              "field": "Salt Flat Field",
+              "lat": 19.87086,
+              "lon": 49.03166,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-38",
+              "field": "Salt Flat Field",
+              "lat": 19.77994,
+              "lon": 48.96074,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-39",
+              "field": "Salt Flat Field",
+              "lat": 19.80174,
+              "lon": 49.03596,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-40",
+              "field": "Salt Flat Field",
+              "lat": 19.91484,
+              "lon": 49.02802,
+              "status": "suspended",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-41",
+              "field": "Salt Flat Field",
+              "lat": 19.87908,
+              "lon": 48.96504,
+              "status": "producing",
+              "highlighted": false
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0179",
+            "label": "Open incident events",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-066#0",
+            "label": "IN-066 W-12",
+            "quote": "The well was shut in pending integrity diagnostics.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "IN-069#0",
+            "label": "IN-069 W-36",
+            "quote": "W-36 was shut in and the ESP stopped.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "IN-067#0",
+            "label": "IN-067 W-34",
+            "quote": "Probe metal loss confirms that sand is eroding the flowline.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "IN-068#0",
+            "label": "IN-068 W-05",
+            "quote": "The working suspicion is partial choke plugging.",
+            "quote_verified": true
+          },
+          {
+            "n": 6,
+            "kind": "chunk",
+            "id": "IN-070#0",
+            "label": "IN-070 W-25",
+            "quote": "Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "Root causes are not yet established for W-12, W-36 and W-34."
+      }
+    },
+    {
+      "question": 2,
+      "run": 2,
+      "checks": [
+        {
+          "name": "cites the W-17 incident note (IN-032)",
+          "pass": true
+        },
+        {
+          "name": "answer dates the outage in March 2026",
+          "pass": true
+        },
+        {
+          "name": "answer gives the lost revenue in dollars",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 7173,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 6,
+        "cache_read_tokens": 13416,
+        "cache_write_tokens": 6004,
+        "output_tokens": 805,
+        "steps": 2,
+        "cost_usd": 0.0244
+      },
+      "cost_usd": 0.0244,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "W-17, a Wadi Field well, was down from 4 March 2026 until it restarted on 18 March 2026, because its electric pump (ESP) motor failed with an electrical fault and the well was shut in until a rig repair [1]. The repair found the motor winding insulation had broken down, with light scale on the pump stages, and replaced the pump and cable [2]. The failure and repair together lost about 17,940 barrels, about $1.26 million in lost revenue at an assumed $70 a barrel [3][4].",
+        "viz": {
+          "type": "bar",
+          "title": "Lost oil: W-17 ESP trip and workover",
+          "unit": "bbl",
+          "ref": "E1",
+          "metric": "lost_oil_bbl",
+          "bars": [
+            {
+              "label": "W-17, Mar 2026",
+              "value": 17942,
+              "ids": [
+                "EV-0092",
+                "EV-0094"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "chunk",
+            "id": "IN-032#0",
+            "label": "Incident note IN-032, W-17 ESP trip",
+            "quote": "On 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance.",
+            "quote_verified": true
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "Work order WO-048, W-17 ESP replacement",
+            "quote": "Teardown found motor winding insulation breakdown and light scale on the pump stages.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "table",
+            "id": "events:EV-0092",
+            "label": "Event EV-0092 ESP trip",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 4,
+            "kind": "table",
+            "id": "events:EV-0094",
+            "label": "Event EV-0094 workover",
+            "quote": null,
+            "quote_verified": null
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": null
+      }
+    },
+    {
+      "question": 3,
+      "run": 2,
+      "checks": [
+        {
+          "name": "answer names W-09, W-17 and W-27",
+          "pass": true
+        },
+        {
+          "name": "answer names batch 7Q-0419",
+          "pass": true
+        },
+        {
+          "name": "sources cover all 3 batch failures",
+          "pass": true
+        },
+        {
+          "name": "viz is a bar of lost oil per failure for W-09, W-17 and W-27",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 10410,
+      "tool_calls": 3,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 40607,
+        "cache_write_tokens": 6779,
+        "output_tokens": 1300,
+        "steps": 3,
+        "cost_usd": 0.034
+      },
+      "cost_usd": 0.034,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "It was not a one-off: W-17's failed pump (batch 7Q-0419, March 2026) matches W-09, a Dune Field well, in October 2025 [2] and W-27, a Wadi Field well, in August 2026 [3]. The W-17 pump and the W-09 pump both had motor winding insulation breakdown [1][4]. The three failures and their workovers cost about 43,900 barrels, about $3.07 million at an assumed $70 a barrel [5]. Other pumps from batch 7Q-0419 are at risk.",
+        "viz": {
+          "type": "bar",
+          "title": "Lost oil per batch 7Q-0419 pump failure (failure plus workover)",
+          "unit": "bbl",
+          "ref": "E1",
+          "metric": "lost_oil_bbl",
+          "bars": [
+            {
+              "label": "W-09, Oct 2025",
+              "value": 19257,
+              "ids": [
+                "EV-0042",
+                "EV-0046"
+              ]
+            },
+            {
+              "label": "W-17, Mar 2026",
+              "value": 17942,
+              "ids": [
+                "EV-0092",
+                "EV-0094"
+              ]
+            },
+            {
+              "label": "W-27, Aug 2026",
+              "value": 6654,
+              "ids": [
+                "EV-0150",
+                "EV-0156"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "chunk",
+            "id": "IN-032#0",
+            "label": "W-17 incident note",
+            "quote": "The installed pump is a Varenta VL-538, serial 7Q-0419-112 (batch 7Q-0419), with a run life of 13 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-010#0",
+            "label": "W-09 incident note",
+            "quote": "Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "IN-057#0",
+            "label": "W-27 incident note",
+            "quote": "The installed pump is a Varenta VL-538, pump serial 7Q-0419-086 (batch 7Q-0419), with a run life of 11 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "W-17 workover order",
+            "quote": "Teardown found motor winding insulation breakdown and light scale on the pump stages.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "table",
+            "id": "events:EV-0092",
+            "label": "Failure and workover events (EV-0092, EV-0094, EV-0042, EV-0046, EV-0150, EV-0156)",
+            "quote": null,
+            "quote_verified": null
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "The W-27 teardown (the same motor winding breakdown) is only in its work order, and I did not check other batch 7Q-0419 pumps still running."
+      }
+    },
+    {
+      "question": 4,
+      "run": 2,
+      "checks": [
+        {
+          "name": "viz is a line",
+          "pass": true
+        },
+        {
+          "name": "line is for Wadi Field",
+          "pass": true
+        },
+        {
+          "name": "water cut line rises",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 10917,
+      "tool_calls": 3,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 10,
+        "cache_read_tokens": 28511,
+        "cache_write_tokens": 618,
+        "output_tokens": 800,
+        "steps": 4,
+        "cost_usd": 0.0124
+      },
+      "cost_usd": 0.0124,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "Water is steadily rising in Wadi Field, but it hasn't taken over. Average water cut (the share of water in what wells bring up) climbed from about 33% in January 2026 to about 44% in November [1]. Over the same period, field oil output fell from about 12,700 to about 8,600 barrels a day [2].",
+        "viz": {
+          "type": "line",
+          "title": "Wadi Field water cut, 2026",
+          "unit": "fraction",
+          "ref": "P1",
+          "series": [
+            {
+              "name": "Wadi Field",
+              "points": [
+                {
+                  "x": "2026-01-01",
+                  "y": 0.325
+                },
+                {
+                  "x": "2026-02-01",
+                  "y": 0.333
+                },
+                {
+                  "x": "2026-03-01",
+                  "y": 0.344
+                },
+                {
+                  "x": "2026-04-01",
+                  "y": 0.355
+                },
+                {
+                  "x": "2026-05-01",
+                  "y": 0.364
+                },
+                {
+                  "x": "2026-06-01",
+                  "y": 0.377
+                },
+                {
+                  "x": "2026-07-01",
+                  "y": 0.396
+                },
+                {
+                  "x": "2026-08-01",
+                  "y": 0.413
+                },
+                {
+                  "x": "2026-09-01",
+                  "y": 0.426
+                },
+                {
+                  "x": "2026-10-01",
+                  "y": 0.435
+                },
+                {
+                  "x": "2026-11-01",
+                  "y": 0.443
+                }
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "production_daily:Wadi Field:2026-01-01..2026-11-22",
+            "label": "Wadi Field monthly water cut",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "table",
+            "id": "production_daily:Wadi Field oil:2026-01-01..2026-11-22",
+            "label": "Wadi Field monthly oil rate",
+            "quote": null,
+            "quote_verified": null
+          }
+        ],
+        "confidence": "medium",
+        "could_not_verify": "I did not check which wells drive the rise or review documents on the cause, such as waterflood breakthrough."
+      }
+    },
+    {
+      "question": 5,
+      "run": 2,
+      "checks": [
+        {
+          "name": "finds the open W-34 alarm",
+          "pass": true
+        },
+        {
+          "name": "cites the sand alarm incident note (IN-067)",
+          "pass": true
+        },
+        {
+          "name": "cites the sand procedure (SOP-OPS-002)",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 8559,
+      "tool_calls": 4,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 25496,
+        "cache_write_tokens": 0,
+        "output_tokens": 1122,
+        "steps": 3,
+        "cost_usd": 0.0138
+      },
+      "cost_usd": 0.0138,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "The sand alarm on W-34, a Salt Flat Field well, is still open: it began on 9 November 2026 and has cost about 1,063 barrels, about $74,000 in lost revenue at an assumed $70 a barrel [1][2]. The procedure requires acknowledging the alarm, checking for noise causes, then cutting the choke (flow valve) in 2/64 steps and sampling within 1 hour [3][4]. Before normal operation resumes, the choke must be held for at least 2 hours once the signal drops below pre-alarm, and the Production Engineer approves the return to normal rate [3][5].",
+        "viz": {
+          "type": "none"
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0180",
+            "label": "EV-0180 sand alarm W-34",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-067#0",
+            "label": "Incident note IN-067",
+            "quote": "The incident remains **open**.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#4",
+            "label": "SOP-OPS-002 response steps",
+            "quote": "**Acknowledge** the alarm in the control system and note the time, well and reading.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#5",
+            "label": "SOP-OPS-002 sampling",
+            "quote": "Take a wellhead sample within 1 hour of a High-High alarm, using the dedicated sand sampling point and a fine mesh sand catcher or centrifuge tube.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#1",
+            "label": "SOP-OPS-002 scope",
+            "quote": "**Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "The latest sand sample results for W-34 were not available, so the current alarm level is unconfirmed."
+      }
+    },
+    {
+      "question": 1,
+      "run": 3,
+      "checks": [
+        {
+          "name": "viz is a map",
+          "pass": true
+        },
+        {
+          "name": "highlights exactly W-05, W-12, W-25, W-34, W-36",
+          "pass": true
+        },
+        {
+          "name": "cites at least 3 incident notes",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 8849,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 26789,
+        "cache_write_tokens": 0,
+        "output_tokens": 1063,
+        "steps": 3,
+        "cost_usd": 0.0133
+      },
+      "cost_usd": 0.0133,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "Five incidents are open, two in Dune Field, one in Wadi Field and two in Salt Flat Field, and they have cost about 31,834 barrels of oil, about $2,228,000 in lost revenue at an assumed $70 a barrel [1]. The high-severity ones are W-12 in Dune Field (shut in, pressure trapped between casing strings) [2], W-36 in Salt Flat Field (shut in, flowline leak) [3], and W-34 in Salt Flat Field (sand eroding the flowline, choke cut back) [4]. The others are medium: W-05 in Dune Field has wellhead pressure swings [5], and W-25 in Wadi Field has a vibrating electric pump (ESP) running slower [6].",
+        "viz": {
+          "type": "map",
+          "title": "Open incidents",
+          "well_ids": [
+            "W-12",
+            "W-36",
+            "W-34",
+            "W-05",
+            "W-25"
+          ],
+          "highlighted": [
+            "W-12",
+            "W-36",
+            "W-34",
+            "W-05",
+            "W-25"
+          ],
+          "wells": [
+            {
+              "well_id": "W-01",
+              "field": "Dune Field",
+              "lat": 20.11424,
+              "lon": 48.2418,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-02",
+              "field": "Dune Field",
+              "lat": 20.09753,
+              "lon": 48.36881,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-03",
+              "field": "Dune Field",
+              "lat": 20.14124,
+              "lon": 48.28396,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-04",
+              "field": "Dune Field",
+              "lat": 20.15623,
+              "lon": 48.20315,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-05",
+              "field": "Dune Field",
+              "lat": 20.223,
+              "lon": 48.26931,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-06",
+              "field": "Dune Field",
+              "lat": 20.13831,
+              "lon": 48.3288,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-07",
+              "field": "Dune Field",
+              "lat": 20.13521,
+              "lon": 48.32429,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-08",
+              "field": "Dune Field",
+              "lat": 20.11688,
+              "lon": 48.20457,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-09",
+              "field": "Dune Field",
+              "lat": 20.08745,
+              "lon": 48.34973,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-10",
+              "field": "Dune Field",
+              "lat": 20.06657,
+              "lon": 48.323,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-11",
+              "field": "Dune Field",
+              "lat": 20.20701,
+              "lon": 48.31164,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-12",
+              "field": "Dune Field",
+              "lat": 20.17033,
+              "lon": 48.26938,
+              "status": "shut_in",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-13",
+              "field": "Dune Field",
+              "lat": 20.15261,
+              "lon": 48.25378,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-14",
+              "field": "Dune Field",
+              "lat": 20.14723,
+              "lon": 48.38164,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-15",
+              "field": "Dune Field",
+              "lat": 20.18106,
+              "lon": 48.24969,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-16",
+              "field": "Dune Field",
+              "lat": 20.21651,
+              "lon": 48.2621,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-17",
+              "field": "Wadi Field",
+              "lat": 20.48026,
+              "lon": 48.79969,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-18",
+              "field": "Wadi Field",
+              "lat": 20.34824,
+              "lon": 48.83494,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-19",
+              "field": "Wadi Field",
+              "lat": 20.35615,
+              "lon": 48.84297,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-20",
+              "field": "Wadi Field",
+              "lat": 20.35941,
+              "lon": 48.7131,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-21",
+              "field": "Wadi Field",
+              "lat": 20.49265,
+              "lon": 48.73255,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-22",
+              "field": "Wadi Field",
+              "lat": 20.37778,
+              "lon": 48.83359,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-23",
+              "field": "Wadi Field",
+              "lat": 20.34324,
+              "lon": 48.80587,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-24",
+              "field": "Wadi Field",
+              "lat": 20.45234,
+              "lon": 48.76531,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-25",
+              "field": "Wadi Field",
+              "lat": 20.41173,
+              "lon": 48.80664,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-26",
+              "field": "Wadi Field",
+              "lat": 20.35536,
+              "lon": 48.75628,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-27",
+              "field": "Wadi Field",
+              "lat": 20.44254,
+              "lon": 48.79339,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-28",
+              "field": "Wadi Field",
+              "lat": 20.42786,
+              "lon": 48.84737,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-29",
+              "field": "Wadi Field",
+              "lat": 20.35294,
+              "lon": 48.84659,
+              "status": "workover",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-30",
+              "field": "Wadi Field",
+              "lat": 20.39477,
+              "lon": 48.67821,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-31",
+              "field": "Salt Flat Field",
+              "lat": 19.82036,
+              "lon": 49.02057,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-32",
+              "field": "Salt Flat Field",
+              "lat": 19.86395,
+              "lon": 48.91358,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-33",
+              "field": "Salt Flat Field",
+              "lat": 19.888,
+              "lon": 49.03857,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-34",
+              "field": "Salt Flat Field",
+              "lat": 19.87802,
+              "lon": 49.00075,
+              "status": "producing",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-35",
+              "field": "Salt Flat Field",
+              "lat": 19.94264,
+              "lon": 48.95768,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-36",
+              "field": "Salt Flat Field",
+              "lat": 19.93624,
+              "lon": 48.96417,
+              "status": "shut_in",
+              "highlighted": true
+            },
+            {
+              "well_id": "W-37",
+              "field": "Salt Flat Field",
+              "lat": 19.87086,
+              "lon": 49.03166,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-38",
+              "field": "Salt Flat Field",
+              "lat": 19.77994,
+              "lon": 48.96074,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-39",
+              "field": "Salt Flat Field",
+              "lat": 19.80174,
+              "lon": 49.03596,
+              "status": "producing",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-40",
+              "field": "Salt Flat Field",
+              "lat": 19.91484,
+              "lon": 49.02802,
+              "status": "suspended",
+              "highlighted": false
+            },
+            {
+              "well_id": "W-41",
+              "field": "Salt Flat Field",
+              "lat": 19.87908,
+              "lon": 48.96504,
+              "status": "producing",
+              "highlighted": false
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0179",
+            "label": "Open incident events (EV-0179, 0180, 0181, 0183, 0184)",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-066#0",
+            "label": "IN-066 W-12 annulus pressure",
+            "quote": "The well was shut in pending integrity diagnostics.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "IN-069#0",
+            "label": "IN-069 W-36 flowline leak",
+            "quote": "W-36 was shut in and the ESP stopped.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "IN-067#0",
+            "label": "IN-067 W-34 sand alarm",
+            "quote": "Probe metal loss confirms that sand is eroding the flowline.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "IN-068#0",
+            "label": "IN-068 W-05 pressure anomaly",
+            "quote": "The working suspicion is partial choke plugging.",
+            "quote_verified": true
+          },
+          {
+            "n": 6,
+            "kind": "chunk",
+            "id": "IN-070#0",
+            "label": "IN-070 W-25 ESP vibration",
+            "quote": "Drive frequency reduced from 55 to 50 Hz to lower mechanical loading.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": null
+      }
+    },
+    {
+      "question": 2,
+      "run": 3,
+      "checks": [
+        {
+          "name": "cites the W-17 incident note (IN-032)",
+          "pass": true
+        },
+        {
+          "name": "answer dates the outage in March 2026",
+          "pass": true
+        },
+        {
+          "name": "answer gives the lost revenue in dollars",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 5790,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 6,
+        "cache_read_tokens": 13416,
+        "cache_write_tokens": 5997,
+        "output_tokens": 694,
+        "steps": 2,
+        "cost_usd": 0.0233
+      },
+      "cost_usd": 0.0233,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "W-17, a Wadi Field well, was down from 4 to 17 March 2026 and restarted on 18 March. Its electric pump (ESP) tripped on motor overload and the motor would not restart [1]. The repair job (workover) found the motor winding insulation had broken down, and it replaced the pump and cable [2]. Together the two events lost about 17,940 barrels, about $1.26 million in lost revenue at an assumed $70 a barrel [3][4].",
+        "viz": {
+          "type": "none"
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "chunk",
+            "id": "IN-032#0",
+            "label": "Incident note IN-032",
+            "quote": "On 2026-03-04 the ESP on W-17 tripped on motor overload with phase current imbalance.",
+            "quote_verified": true
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "Work order WO-048",
+            "quote": "Teardown found motor winding insulation breakdown and light scale on the pump stages.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "table",
+            "id": "events:EV-0092",
+            "label": "ESP trip event EV-0092",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 4,
+            "kind": "table",
+            "id": "events:EV-0094",
+            "label": "Workover event EV-0094",
+            "quote": null,
+            "quote_verified": null
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": null
+      }
+    },
+    {
+      "question": 3,
+      "run": 3,
+      "checks": [
+        {
+          "name": "answer names W-09, W-17 and W-27",
+          "pass": true
+        },
+        {
+          "name": "answer names batch 7Q-0419",
+          "pass": true
+        },
+        {
+          "name": "sources cover all 3 batch failures",
+          "pass": true
+        },
+        {
+          "name": "viz is a bar of lost oil per failure for W-09, W-17 and W-27",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 11511,
+      "tool_calls": 3,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 40607,
+        "cache_write_tokens": 6771,
+        "output_tokens": 1274,
+        "steps": 3,
+        "cost_usd": 0.0337
+      },
+      "cost_usd": 0.0337,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "It was not a one-off: W-17 (Wadi Field) failed in March 2026 on pump batch 7Q-0419, as did W-09 (Dune Field) in October 2025 [2] and W-27 (Wadi Field) in August 2026 [3]. All three teardowns found motor winding insulation breakdown [4][5][6]. The three outages lost about 43,850 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [1], so other pumps from batch 7Q-0419 are at risk.",
+        "viz": {
+          "type": "bar",
+          "title": "Oil lost per batch 7Q-0419 pump failure (failure plus workover)",
+          "unit": "bbl",
+          "ref": "E1",
+          "metric": "lost_oil_bbl",
+          "bars": [
+            {
+              "label": "W-09, Oct 2025",
+              "value": 19257,
+              "ids": [
+                "EV-0042",
+                "EV-0046"
+              ]
+            },
+            {
+              "label": "W-17, Mar 2026",
+              "value": 17942,
+              "ids": [
+                "EV-0092",
+                "EV-0094"
+              ]
+            },
+            {
+              "label": "W-27, Aug 2026",
+              "value": 6654,
+              "ids": [
+                "EV-0150",
+                "EV-0156"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0092",
+            "label": "W-17, W-09 and W-27 ESP failure and workover events",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-010#0",
+            "label": "W-09 incident note",
+            "quote": "Installed pump: Varenta VL-538, serial 7Q-0419-027 (batch 7Q-0419), run life 8 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "IN-057#0",
+            "label": "W-27 incident note",
+            "quote": "The installed pump is a Varenta VL-538, pump serial 7Q-0419-086 (batch 7Q-0419), with a run life of 11 months.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "WO-048#0",
+            "label": "W-17 workover order",
+            "quote": "Teardown found motor winding insulation breakdown and light scale on the pump stages.",
+            "quote_verified": true
+          },
+          {
+            "n": 5,
+            "kind": "chunk",
+            "id": "WO-035#0",
+            "label": "W-09 workover order",
+            "quote": "Teardown found motor winding insulation breakdown. No sand, scale or cable damage was seen.",
+            "quote_verified": true
+          },
+          {
+            "n": 6,
+            "kind": "chunk",
+            "id": "WO-054#0",
+            "label": "W-27 workover order",
+            "quote": "Teardown found motor winding insulation breakdown.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "The data does not show how many other pumps from batch 7Q-0419 are still running, or whether the vendor has found a manufacturing defect."
+      }
+    },
+    {
+      "question": 4,
+      "run": 3,
+      "checks": [
+        {
+          "name": "viz is a line",
+          "pass": true
+        },
+        {
+          "name": "line is for Wadi Field",
+          "pass": true
+        },
+        {
+          "name": "water cut line rises",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 10182,
+      "tool_calls": 2,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 20967,
+        "cache_write_tokens": 2206,
+        "output_tokens": 689,
+        "steps": 3,
+        "cost_usd": 0.0145
+      },
+      "cost_usd": 0.0145,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "Water cut is rising steadily in Wadi Field but is not taking over: the field average (the share of water in what wells bring up) went from about 33% in January 2026 to about 44% in November [1]. Shift reports attribute the rise to water flood breakthrough, and the field still produces about 9,100 barrels of oil a day with all 14 wells online [2].",
+        "viz": {
+          "type": "line",
+          "title": "Wadi Field average water cut, 2026",
+          "unit": "fraction",
+          "ref": "P1",
+          "series": [
+            {
+              "name": "Wadi Field",
+              "points": [
+                {
+                  "x": "2026-01-01",
+                  "y": 0.325
+                },
+                {
+                  "x": "2026-02-01",
+                  "y": 0.333
+                },
+                {
+                  "x": "2026-03-01",
+                  "y": 0.344
+                },
+                {
+                  "x": "2026-04-01",
+                  "y": 0.355
+                },
+                {
+                  "x": "2026-05-01",
+                  "y": 0.364
+                },
+                {
+                  "x": "2026-06-01",
+                  "y": 0.377
+                },
+                {
+                  "x": "2026-07-01",
+                  "y": 0.396
+                },
+                {
+                  "x": "2026-08-01",
+                  "y": 0.413
+                },
+                {
+                  "x": "2026-09-01",
+                  "y": 0.426
+                },
+                {
+                  "x": "2026-10-01",
+                  "y": 0.435
+                },
+                {
+                  "x": "2026-11-01",
+                  "y": 0.443
+                }
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "production_daily:Wadi Field:2026-01-01..2026-11-22",
+            "label": "Wadi Field monthly water cut",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "SR-205#0",
+            "label": "Wadi shift report 23 Oct 2026",
+            "quote": "Water cut trend: 32.5 % in January 2026, 43.2 % over the last 30 days, 43.7 % today, so the water flood breakthrough is still pushing it up.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": "I did not check which individual wells have the highest water cut, or whether the rise is speeding up."
+      }
+    },
+    {
+      "question": 5,
+      "run": 3,
+      "checks": [
+        {
+          "name": "finds the open W-34 alarm",
+          "pass": true
+        },
+        {
+          "name": "cites the sand alarm incident note (IN-067)",
+          "pass": true
+        },
+        {
+          "name": "cites the sand procedure (SOP-OPS-002)",
+          "pass": true
+        },
+        {
+          "name": "answer has 2 to 4 sentences",
+          "pass": true
+        },
+        {
+          "name": "chart reference is valid",
+          "pass": true
+        },
+        {
+          "name": "every plotted value equals the referenced tool output",
+          "pass": true
+        },
+        {
+          "name": "every chunk source has a verified quote",
+          "pass": true
+        }
+      ],
+      "latency_ms": 7878,
+      "tool_calls": 4,
+      "provider": "anthropic",
+      "usage": {
+        "input_tokens": 8,
+        "cache_read_tokens": 21919,
+        "cache_write_tokens": 3577,
+        "output_tokens": 1015,
+        "steps": 3,
+        "cost_usd": 0.0213
+      },
+      "cost_usd": 0.0213,
+      "cost_source": "claude price table",
+      "answer": {
+        "answer": "The sand alarm on W-34, a Salt Flat Field gas-lift well, is still open: it began on 9 November 2026 and has cost about 1,063 barrels, about $74,000 in lost revenue at an assumed $70 a barrel [1][2]. The procedure first requires acknowledging the alarm, checking for noise causes, then cutting the choke (the flow valve) in 2/64 inch steps with sampling after each step [3]. Afterward the choke must be held for at least 2 hours below the pre-alarm level, and the Production Engineer approves the return to normal rate [3][4].",
+        "viz": {
+          "type": "none"
+        },
+        "sources": [
+          {
+            "n": 1,
+            "kind": "table",
+            "id": "events:EV-0180",
+            "label": "Event EV-0180 sand alarm W-34",
+            "quote": null,
+            "quote_verified": null
+          },
+          {
+            "n": 2,
+            "kind": "chunk",
+            "id": "IN-067#0",
+            "label": "Incident note IN-067",
+            "quote": "The well is producing on the 24/64 choke. The incident remains **open**.",
+            "quote_verified": true
+          },
+          {
+            "n": 3,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#4",
+            "label": "SOP-OPS-002 response steps",
+            "quote": "7. **Stabilise:** once the signal falls below the Pre-alarm threshold, hold the choke for at least 2 hours.",
+            "quote_verified": true
+          },
+          {
+            "n": 4,
+            "kind": "chunk",
+            "id": "SOP-OPS-002#1",
+            "label": "SOP-OPS-002 scope and responsibilities",
+            "quote": "**Production Engineer:** sets and reviews sand-free drawdown limits, approves the return to normal rate.",
+            "quote_verified": true
+          }
+        ],
+        "confidence": "high",
+        "could_not_verify": null
+      }
+    }
+  ]
+}

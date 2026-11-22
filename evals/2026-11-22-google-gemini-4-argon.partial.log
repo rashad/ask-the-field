@@ -1,0 +1,251 @@
+
+> ops-rag-demo@0.1.0 eval /Users/rashadkaranouh/orca/workspaces/ops-rag-demo
+> tsx scripts/eval.ts --model=google/gemini-4-argon --runs=3 --save
+
+
+[1, run 1] Where are this morning's open incidents, and how bad are they?
+  PASS viz is a map
+  PASS highlights exactly W-05, W-12, W-25, W-34, W-36
+  PASS cites at least 3 incident notes
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 31.8s, steps 3, tokens in 10382 + cache read 9162 + cache write 0, out 1256, cost $0.0342
+  tools (2, 0 repeated): Listing open incident... | Searching documents (W-25, W-36, W-05, W-34, W-12, incident note, October 2026)...
+  sentences: 3
+  viz: map, confidence: high, sources: events:EV-0179, events:EV-0183, events:EV-0180, events:EV-0181, events:EV-0184, IN-066#0, IN-069#0, IN-067#0, IN-068#0, IN-070#0
+  answer: Five incidents are open across Dune, Salt Flat, and Wadi Fields, and they have cost about 31,800 barrels of oil and $2.23 million in lost revenue at an assumed $70 a barrel [1,2,3,4,5]. Three are high severity: W-12 (Dune) is shut in with casing pressure [1,6], W-36 (Salt Flat) is shut in with a flowline leak [2,7], and W-34 (Salt Flat) is choked back for sand erosion [3,8]. Medium-severity incidents are W-05 (Dune) pressure swings [4,9] and W-25 (Wadi) electric pump (ESP) vibration [5,10].
+
+[2, run 1] Why was W-17 down for two weeks in March?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS cites the W-17 incident note (IN-032)
+  PASS answer dates the outage in March 2026
+  PASS answer gives the lost revenue in dollars
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 61.6s, steps 3, tokens in 14097 + cache read 15848 + cache write 0, out 2952, cost $0.0593
+  tools (4, 0 repeated): Listing events (W-17, February 2026 to April 2026)... | Searching documents (W-17, February 2026 to April 2026)... | Querying oil production by day (W-17, February 2026 to April 2026)... | Listing events (W-17)...
+  sentences: 3
+  viz: line, confidence: high, sources: IN-032#0, WO-048#0, events:EV-0092, events:EV-0094
+  answer: W-17, a Wadi Field well, was down from 4 March to 17 March 2026 and restarted on 18 March 2026 after its electric pump (ESP) tripped on motor overload [1, 2]. A workover (a repair job with a rig) found motor winding insulation breakdown and light scale, and replaced the unit with a new Varenta VL-538 pump and cable [2]. The failure and repair lost about 17,900 barrels, or about $1.26 million in lost revenue at an assumed $70 a barrel [3, 4].
+
+[3, run 1] Was W-17's pump failure a one-off?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS answer names W-09, W-17 and W-27
+  PASS answer names batch 7Q-0419
+  PASS sources cover all 3 batch failures
+  PASS viz is a bar of lost oil per failure for W-09, W-17 and W-27
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 68.1s, steps 4, tokens in 38199 + cache read 17655 + cache write 0, out 3837, cost $0.1165
+  tools (4, 0 repeated): Listing ESP... | Searching documents (W-17)... | Searching documents... | Loading wells (Wadi Field)...
+  sentences: 3
+  viz: bar, confidence: high, sources: WO-048#0, WO-035#0, WO-054#0, events:EV-0042, events:EV-0046, events:EV-0092, events:EV-0094, events:EV-0150, events:EV-0156
+  answer: It was not a one-off: W-17 in Wadi Field failed in March 2026 [1], alongside electric pumps (ESPs) from batch 7Q-0419 on W-09 in Dune Field in October 2025 [2] and W-27 in Wadi Field in August 2026 [3]. All three had motor winding insulation breakdown [1, 2, 3], losing about 43,900 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [4, 5, 6, 7, 8, 9]. Other pumps from batch 7Q-0419 remain at risk of early motor failure [1, 2, 3].
+  not verified: Which other active wells currently have a batch 7Q-0419 pump installed could not be confirmed without a full equipment inventory.
+
+[4, run 1] Is water taking over Wadi Field?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS viz is a line
+  PASS line is for Wadi Field
+  PASS water cut line rises
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 71.2s, steps 4, tokens in 26189 + cache read 13034 + cache write 0, out 3549, cost $0.0892
+  tools (6, 0 repeated): Querying water cut by month (Wadi Field, January 2026 to November 2026)... | Querying water cut by well (Wadi Field, November 2026)... | Searching documents (Wadi Field)... | Listing water (Wadi Field, January 2026 to November 2026)... | Querying oil production by month (Wadi Field, January 2026 to November 2026)... | Loading wells (Wadi Field)...
+  sentences: 3
+  viz: line, confidence: high, sources: production_daily:Wadi Field:2026-01-01..2026-11-22, production_daily:Wadi Field:2026-01-01..2026-11-22, production_daily:Wadi Field:2026-11-01..2026-11-22, IN-050#0
+  answer: Water is steadily rising across Wadi Field, where water cut (the share of water in what the well brings up) climbed from 32.5% in January 2026 to 44.3% in November 2026 [1]. Meanwhile, field oil output fell from about 12,700 to about 8,630 barrels a day [2]. Water rose on all 14 wells, led by W-23, a Wadi Field well reaching 69.1% after north flank injection water broke through in June 2026 [3, 4].
+
+[5, run 1] Is the sand alarm at Salt Flat Field still open, and what does the procedure say?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS finds the open W-34 alarm
+  PASS cites the sand alarm incident note (IN-067)
+  PASS cites the sand procedure (SOP-OPS-002)
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 74.4s, steps 4, tokens in 22122 + cache read 12368 + cache write 0, out 3488, cost $0.0804
+  tools (5, 0 repeated): Listing sand (Salt Flat Field)... | Searching documents (procedure)... | Searching documents (W-34, incident note, November 2026)... | Searching documents (procedure)... | Loading wells (Salt Flat Field)...
+  sentences: 3
+  viz: none, confidence: high, sources: events:EV-0180, IN-067#0, SOP-OPS-002#4, SOP-OPS-002#5, SOP-OPS-002#7
+  answer: The sand alarm on W-34, a Salt Flat Field well, is still open since 9 November 2026, losing about 1,060 barrels, about $74,400 in lost revenue at an assumed $70 a barrel [1, 2]. First, the procedure requires acknowledging the alarm, checking for noise, reducing the choke in steps, and sampling within an hour [3, 4]. Resuming normal operation requires engineer approval, a sample under 5 ppm, and two hours below pre-alarm [5].
+
+[1, run 2] Where are this morning's open incidents, and how bad are they?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS viz is a map
+  PASS highlights exactly W-05, W-12, W-25, W-34, W-36
+  PASS cites at least 3 incident notes
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 108.0s, steps 4, tokens in 29791 + cache read 13661 + cache write 0, out 6416, cost $0.1251
+  tools (4, 0 repeated): Listing open incident... | Loading wells... | Searching documents (W-25, W-36, W-05, W-34, W-12, incident note, October 2026)... | Listing events (W-12, W-36, W-34, W-05, W-25)...
+  sentences: 3
+  viz: map, confidence: high, sources: events:EV-0179, IN-066#0, events:EV-0183, IN-069#0, events:EV-0180, IN-067#0, events:EV-0181, IN-068#0, events:EV-0184, IN-070#0
+  answer: Five incidents are open in Dune, Wadi and Salt Flat fields, and they have cost about 31,800 barrels, or about $2.23 million in lost revenue at an assumed $70 a barrel [1, 3, 5, 7, 9]. Three are high severity: W-12 (Dune Field) is shut in for casing pressure [1, 2], W-36 (Salt Flat Field) is shut in for a flowline leak [3, 4], and W-34 (Salt Flat Field) has a sand alarm [5, 6]. Two medium cases remain online: pressure swings on W-05 (Dune Field) [7, 8] and electric pump (ESP) vibration on W-25 (Wadi Field) [9, 10].
+
+[2, run 2] Why was W-17 down for two weeks in March?
+  PASS cites the W-17 incident note (IN-032)
+  PASS answer dates the outage in March 2026
+  PASS answer gives the lost revenue in dollars
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 39.2s, steps 3, tokens in 11494 + cache read 11590 + cache write 0, out 762, cost $0.0318
+  tools (3, 0 repeated): Listing events (W-17, March 2026)... | Searching documents (W-17, March 2026)... | Querying oil production by day (W-17, March 2026)...
+  sentences: 3
+  viz: line, confidence: high, sources: IN-032#0, WO-048#0, events:EV-0092, events:EV-0094
+  answer: W-17, a Wadi Field well, was down from 4 March 2026 to 17 March 2026 before restarting on 18 March 2026 because its electric pump (ESP) tripped on a motor overload with low insulation resistance [1, 2]. A workover (a repair job with a rig) found motor winding insulation breakdown and light pump scale, and replaced the pump and power cable [2]. Together, the failure and repair cost 17,942 barrels of oil, about $1.26 million in lost revenue at an assumed $70 a barrel [3, 4].
+
+[3, run 2] Was W-17's pump failure a one-off?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS answer names W-09, W-17 and W-27
+  PASS answer names batch 7Q-0419
+  PASS sources cover all 3 batch failures
+  PASS viz is a bar of lost oil per failure for W-09, W-17 and W-27
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 63.9s, steps 4, tokens in 36997 + cache read 18372 + cache write 0, out 3508, cost $0.1109
+  tools (4, 0 repeated): Listing ESP... | Searching documents (W-17)... | Searching documents... | Loading wells (Wadi Field)...
+  sentences: 3
+  viz: bar, confidence: high, sources: WO-035#0, WO-048#0, WO-054#0, events:EV-0042, events:EV-0046, events:EV-0092, events:EV-0094, events:EV-0150, events:EV-0156
+  answer: It was not a one-off: electric pumps (ESPs) from batch 7Q-0419 failed on Dune Field well W-09 in October 2025 [1] and Wadi Field wells W-17 in March 2026 [2] and W-27 in August 2026 [3]. Every teardown found motor winding insulation breakdown [1, 2, 3], costing about 43,900 barrels and $3.07 million in lost revenue at an assumed $70 a barrel [4, 5, 6, 7, 8, 9]. Other batch 7Q-0419 pumps are at risk [1, 2, 3].
+  not verified: The dataset does not list which other active wells currently have a batch 7Q-0419 pump installed.
+
+[4, run 2] Is water taking over Wadi Field?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS viz is a line
+  PASS line is for Wadi Field
+  PASS water cut line rises
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 50.6s, steps 2, tokens in 10125 + cache read 4832 + cache write 0, out 3040, cost $0.0511
+  tools (3, 0 repeated): Querying water cut by month (Wadi Field, January 2026 to November 2026)... | Querying water cut by well (Wadi Field, November 2026)... | Searching documents (Wadi Field)...
+  sentences: 3
+  viz: line, confidence: high, sources: production_daily:Wadi Field:2026-01-01..2026-11-22, production_daily:Wadi Field:2026-11-01..2026-11-22, SR-205#0, WT-023#0
+  answer: Water is steadily rising across Wadi Field, with average water cut (the share of water in what the well brings up) climbing from 32.5% in January 2026 to 44.3% in November 2026 [1]. Every well in the field saw higher water cut over this period as injected water from the water flood pushed through [2, 3]. W-23, a Wadi Field well, rose the most, jumping from 30.6% to 69.1% after injector water breakthrough on 14 June 2026 [2, 4].
+
+[5, run 2] Is the sand alarm at Salt Flat Field still open, and what does the procedure say?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS finds the open W-34 alarm
+  PASS cites the sand alarm incident note (IN-067)
+  PASS cites the sand procedure (SOP-OPS-002)
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 68.1s, steps 4, tokens in 20472 + cache read 12228 + cache write 0, out 2748, cost $0.0696
+  tools (5, 0 repeated): Listing sand (Salt Flat Field)... | Searching documents (procedure)... | Searching documents (W-34, incident note, November 2026)... | Searching documents (procedure)... | Loading wells (Salt Flat Field)...
+  sentences: 3
+  viz: none, confidence: high, sources: events:EV-0180, IN-067#0, SOP-OPS-002#4, SOP-OPS-002#5, SOP-OPS-002#7
+  answer: The sand alarm on W-34, a Salt Flat Field well, is still open since 9 November 2026, costing 1,063 barrels ($74,410 at an assumed $70 a barrel) [1, 2]. First, operators must acknowledge the alarm, check for noise, step the choke down by 2/64 inch, and sample within one hour [3, 4]. Before normal operation resumes, sand must stay low for two hours with samples below 5 ppm and engineer approval [5].
+
+[1, run 3] Where are this morning's open incidents, and how bad are they?
+  PASS viz is a map
+  PASS highlights exactly W-05, W-12, W-25, W-34, W-36
+  PASS cites at least 3 incident notes
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 37.9s, steps 3, tokens in 10338 + cache read 9162 + cache write 0, out 1180, cost $0.0334
+  tools (2, 0 repeated): Listing open incident... | Searching documents (W-25, W-36, W-05, W-34, W-12, incident note, October 2026)...
+  sentences: 3
+  viz: map, confidence: high, sources: events:EV-0179, events:EV-0183, events:EV-0180, events:EV-0181, events:EV-0184, IN-066#0, IN-069#0, IN-067#0, IN-068#0, IN-070#0
+  answer: Five incidents are open across Dune Field, Wadi Field and Salt Flat Field, and they have cost about 31,800 barrels of oil and about $2.23 million in lost revenue at an assumed $70 a barrel [1,2,3,4,5]. Three are high severity: W-12 in Dune Field is shut in with casing pressure [1,6], W-36 in Salt Flat Field is shut in for a flowline leak [2,7], and W-34 in Salt Flat Field has sand erosion [3,8]. The two medium-severity incidents are wellhead pressure swings on W-05 in Dune Field [4,9] and electric pump (ESP) vibration on W-25 in Wadi Field [5,10].
+
+[2, run 3] Why was W-17 down for two weeks in March?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS cites the W-17 incident note (IN-032)
+  PASS answer dates the outage in March 2026
+  PASS answer gives the lost revenue in dollars
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 46.7s, steps 2, tokens in 8232 + cache read 7621 + cache write 0, out 3069, cost $0.0479
+  tools (3, 0 repeated): Listing events (W-17, February 2026 to April 2026)... | Searching documents (W-17, February 2026 to April 2026)... | Querying oil production by day (W-17, February 2026 to April 2026)...
+  sentences: 3
+  viz: line, confidence: high, sources: IN-032#0, WO-048#0, events:EV-0092, events:EV-0094
+  answer: W-17, a Wadi Field well, was down from 4 to 17 March 2026 (restarting 18 March) because its electric pump (ESP) tripped on motor overload [1][2]. A workover (a repair job with a rig) found motor insulation breakdown and light scale, and installed a new pump and cable [2]. The failure and repair cost about 17,900 barrels, or about $1.26 million in lost revenue at an assumed $70 a barrel [3][4].
+
+[3, run 3] Was W-17's pump failure a one-off?
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+[openrouter] Some reasoning_details entries were removed because they were missing signatures. See https://github.com/OpenRouterTeam/ai-sdk-provider/issues/423 and https://github.com/OpenRouterTeam/ai-sdk-provider/issues/418 for more details.
+  PASS answer names W-09, W-17 and W-27
+  PASS answer names batch 7Q-0419
+  PASS sources cover all 3 batch failures
+  PASS viz is a bar of lost oil per failure for W-09, W-17 and W-27
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 61.9s, steps 4, tokens in 33463 + cache read 21261 + cache write 0, out 3296, cost $0.102
+  tools (5, 2 repeated): Listing ESP... | Searching documents (W-17)... | Searching documents... | Listing ESP... | Searching documents (W-17)...
+  sentences: 3
+  viz: bar, confidence: high, sources: WO-035#0, WO-048#0, WO-054#0, events:EV-0042, events:EV-0046, events:EV-0092, events:EV-0094, events:EV-0150, events:EV-0156
+  answer: It was not a one-off: batch 7Q-0419 electric pumps (ESPs) failed on W-09 in Dune Field (October 2025) [1], W-17 in Wadi Field (March 2026) [2], and W-27 in Wadi Field (August 2026) [3]. All three had motor winding insulation breakdown [1, 2, 3] and cost about 43,900 barrels, about $3.07 million in lost revenue at an assumed $70 a barrel [4, 5, 6, 7, 8, 9]. Any other pumps from batch 7Q-0419 are at risk [1, 2, 3].
+
+[4, run 3] Is water taking over Wadi Field?
+  PASS viz is a line
+  PASS line is for Wadi Field
+  PASS water cut line rises
+  PASS answer has 2 to 4 sentences
+  PASS chart reference is valid
+  PASS every plotted value equals the referenced tool output
+  PASS every chunk source has a verified quote
+  latency 27.0s, steps 3, tokens in 9852 + cache read 16819 + cache write 0, out 1053, cost $0.0319
+  tools (5, 0 repeated): Querying water cut by month (Wadi Field, January 2026 to November 2026)... | Querying water cut by well (Wadi Field, November 2026)... | Searching documents (Wadi Field)... | Querying oil production by month (Wadi Field, January 2026 to November 2026)... | Searching documents (Wadi Field, July 2026)...
+  sentences: 3
+  viz: line, confidence: high, sources: production_daily:Wadi Field:2026-01-01..2026-11-22, production_daily:Wadi Field:2026-11-01..2026-11-22, production_daily:Wadi Field:2026-01-01..2026-11-22, SR-205#0, SR-151#0
+  answer: Water is steadily rising across Wadi Field under its water flood, pushing average water cut (the share of water in what the well brings up) from 32.5% in January 2026 to 44.3% in November 2026 [1, 4]. Over the same period, field oil output fell from about 12,710 to 8,630 barrels a day [3]. Every well is affected, led by W-23, a Wadi Field well where north-flank injector breakthrough drove water cut from 30.6% to 69.1% [2, 5].
+
+[5, run 3] Is the sand alarm at Salt Flat Field still open, and what does the procedure say?

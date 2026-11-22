@@ -87,10 +87,22 @@ pnpm db:dump       # rewrite data/dump.sql.gz
 ```bash
 pnpm eval                # needs both keys and a loaded database
 pnpm eval --only=1,3  # subset
-pnpm eval --record    # rewrite data/cache for the suggested questions that pass
+pnpm eval --record    # rewrite data/cache for the suggested questions that pass (default model only)
+pnpm eval --model=openai/gpt-6.2-astra --runs=3 --save   # another model, 3 runs, raw results to evals/
 ```
 
-The script asks the four suggested questions plus one extra check, runs assertions on the answer (chart type, wells found, cited sources, answer length), and prints pass or fail, latency, tool calls and tokens. `pnpm test` runs the chunker unit tests and needs no key.
+The script asks the five briefing questions, runs assertions on the answer (chart type, wells found, cited sources, answer length), and prints pass or fail, latency, tool calls and tokens. `pnpm test` runs the unit tests and needs no key.
+
+Multi-model run on 2026-11-22, 5 questions, 3 runs each, 108 checks per model. Claude models go direct to Anthropic; the others go through OpenRouter. Details, prices and caching notes: [evals/README.md](evals/README.md).
+
+| Model | Checks passed | Mean latency | Mean cost per question |
+| --- | --- | --- | --- |
+| `claude-sonnet-5-5` | 108/108 (100%) | 9.3 s | $0.0271 |
+| `claude-haiku-5-5` | 106/108 (98.1%) | 13.6 s | $0.0026 |
+| `openai/gpt-6.2-astra` | 108/108 (100%) | 11.3 s | $0.0765 |
+| `google/gemini-4-argon` | 101/101 in 14 of 15 runs (stopped: over 11 min for 15 questions) | 57.9 s | $0.0702 |
+| `deepseek/deepseek-v4-pro-0813` | 49/108 (45.4%), no tool call in any run | 4.9 s | $0.0032 |
+| `moonshotai/kimi-k3.1-pro` | 44/108 (40.7%), no tool call in any run | 7.5 s | $0.0035 |
 
 ## Deploy notes
 
