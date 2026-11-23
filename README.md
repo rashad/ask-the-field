@@ -70,6 +70,7 @@ Copy the names from `.env.example` into a `.env.local` file and set your values.
 | `RATE_LIMIT_PER_MINUTE` | Questions per IP per minute. Default 6 |
 | `LLM_DAILY_CAP` | Live questions per day. Default 300; 0 turns live answers off |
 | `LLM_DAILY_PER_IP` | Live questions per client IP per day. Default 20 |
+| `CF_BEACON_TOKEN` | Cloudflare Web Analytics site token. Set at build time. Unset, no beacon and no CSP change |
 | `TRUST_PROXY` | `1` behind Railway: key the limits on `X-Real-IP`, which Railway's edge sets. Unset, every caller shares one key |
 | `SITE_URL` | Base URL for link previews |
 

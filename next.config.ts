@@ -2,13 +2,15 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
 
+const beacon = process.env.CF_BEACON_TOKEN?.trim();
+
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${beacon ? " https://static.cloudflareinsights.com" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  `connect-src 'self'${beacon ? " https://cloudflareinsights.com" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
