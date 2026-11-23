@@ -1,4 +1,5 @@
 "use client";
+import { Info } from "@phosphor-icons/react/ssr";
 import { useEffect, useId, useRef, useState } from "react";
 
 export const GLOSSARY = {
@@ -15,15 +16,15 @@ export const GLOSSARY = {
 
 export type TermKey = keyof typeof GLOSSARY;
 
-export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }) {
+function Pop({ className, label, tip, children }: { className: string; label?: string; tip: React.ReactNode; children: React.ReactNode }) {
   const id = useId();
   const ref = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
-  const [right, setRight] = useState(false);
+  const [dx, setDx] = useState(0);
   const wasOpen = useRef(false);
   const show = () => {
     const r = ref.current?.getBoundingClientRect();
-    if (r) setRight(r.left > window.innerWidth / 2);
+    if (r) setDx(Math.min(0, window.innerWidth - 16 - Math.min(260, window.innerWidth - 32) - r.left));
     setOpen(true);
   };
   useEffect(() => {
@@ -34,12 +35,18 @@ export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }
   }, [open]);
   return (
     <span className="term" ref={ref} onMouseEnter={show} onMouseLeave={() => setOpen(false)}>
-      <button type="button" className="term-b" aria-describedby={id} aria-expanded={open} onPointerDown={(e) => (wasOpen.current = e.pointerType !== "mouse" && open)} onPointerCancel={() => (wasOpen.current = false)} onClick={() => { if (wasOpen.current) setOpen(false); else show(); wasOpen.current = false; }} onFocus={show} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
-        {children ?? GLOSSARY[k][0]}
+      <button type="button" className={className} aria-label={label} aria-describedby={id} aria-expanded={open} onPointerDown={(e) => (wasOpen.current = e.pointerType !== "mouse" && open)} onPointerCancel={() => (wasOpen.current = false)} onClick={() => { if (wasOpen.current) setOpen(false); else show(); wasOpen.current = false; }} onFocus={show} onBlur={() => setOpen(false)} onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
+        {children}
       </button>
-      <span role="tooltip" id={id} className="term-tip caption-4" data-open={open || undefined} data-right={right || undefined}>
-        <b>{GLOSSARY[k][0]}</b> {GLOSSARY[k][1]}
-      </span>
+      <span role="tooltip" id={id} className="term-tip caption-4" data-open={open || undefined} style={{ left: dx }}>{tip}</span>
     </span>
   );
+}
+
+export function Term({ k, children }: { k: TermKey; children?: React.ReactNode }) {
+  return <Pop className="term-b" tip={<><b>{GLOSSARY[k][0]}</b> {GLOSSARY[k][1]}</>}>{children ?? GLOSSARY[k][0]}</Pop>;
+}
+
+export function InfoTip({ label, children }: { label: string; children: React.ReactNode }) {
+  return <Pop className="info-b" label={label} tip={children}><Info aria-hidden /></Pop>;
 }
