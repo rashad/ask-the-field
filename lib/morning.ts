@@ -2,8 +2,6 @@ import { sql } from "./db";
 import { TODAY } from "./domain";
 import { lostOil } from "./tools";
 
-export interface SnapshotWell { well_id: string; field: string; lat: number; lon: number; status: string; open_incident: boolean }
-
 export interface Morning {
   today: string;
   yesterday: string;
@@ -13,8 +11,6 @@ export interface Morning {
   wells_down: number;
   open_incidents: number;
   shut_in_by_incident: number;
-  lost_month_bbl: number;
-  wells: SnapshotWell[];
   stakes: {
     w17_lost_bbl: number;
     w17_days: number;
@@ -31,18 +27,13 @@ export interface Morning {
 export async function morning(): Promise<Morning> {
   const yesterday = new Date(Date.parse(TODAY) - 864e5).toISOString().slice(0, 10);
   const month = TODAY.slice(0, 8) + "01";
-  const [[k], wells, [w17], [esp], [wc], [sand]] = await Promise.all([
+  const [[k], [w17], [esp], [wc], [sand]] = await Promise.all([
     sql`SELECT
       (SELECT sum(oil_bbl) FROM production_daily WHERE date = ${yesterday}) AS oil_yesterday,
       (SELECT count(*)::int FROM wells) AS wells_total,
       (SELECT count(*)::int FROM wells WHERE status = 'producing') AS wells_producing,
       (SELECT count(*)::int FROM events WHERE category = 'incident' AND status = 'open') AS open_incidents,
-      (SELECT count(*)::int FROM events e JOIN wells w USING (well_id) WHERE e.category = 'incident' AND e.status = 'open' AND w.status = 'shut_in') AS shut_in_by_incident,
-      (WITH base AS (SELECT well_id, avg(oil_bbl) AS b FROM production_daily WHERE uptime_hours = 24 AND date BETWEEN ${month}::date - 30 AND ${month}::date - 1 GROUP BY 1)
-       SELECT sum(b * (24 - uptime_hours) / 24) FROM production_daily JOIN base USING (well_id) WHERE date BETWEEN ${month} AND ${yesterday}) AS lost_month`,
-    sql<SnapshotWell[]>`SELECT w.well_id, w.field, w.lat, w.lon, w.status,
-      EXISTS (SELECT 1 FROM events e WHERE e.well_id = w.well_id AND e.category = 'incident' AND e.status = 'open') AS open_incident
-      FROM wells w ORDER BY w.well_id`,
+      (SELECT count(*)::int FROM events e JOIN wells w USING (well_id) WHERE e.category = 'incident' AND e.status = 'open' AND w.status = 'shut_in') AS shut_in_by_incident`,
     sql`SELECT sum(${lostOil()})::int AS lost, (max(e.end_date) - min(e.start_date) + 1)::int AS days FROM events e
       WHERE e.well_id = 'W-17' AND e.start_date BETWEEN '2026-03-01' AND '2026-03-31' AND e.type ILIKE '%ESP%'`,
     sql`SELECT sum(lost)::int AS lost, (SELECT count(*)::int FROM events WHERE type ILIKE '%ESP replacement%') AS workovers FROM (
@@ -66,8 +57,6 @@ export async function morning(): Promise<Morning> {
     wells_down: k.wells_total - k.wells_producing,
     open_incidents: k.open_incidents,
     shut_in_by_incident: k.shut_in_by_incident,
-    lost_month_bbl: Math.round(k.lost_month),
-    wells,
     stakes: {
       w17_lost_bbl: w17.lost,
       w17_days: w17.days,

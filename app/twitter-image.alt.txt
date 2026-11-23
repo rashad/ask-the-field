@@ -1,1 +1,1 @@
-Ask the Field: you run a fictional oil field and ask it what went wrong. An answer card shows that W-17's pump failure was not a one-off, with numbered sources.
+Ask the Field, a RAG demo on synthetic oil field data: 3 fields, 41 wells, 400 field reports. An answer card shows that W-17's pump failure was not a one-off, with numbered sources.

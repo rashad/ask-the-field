@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MODEL } from "@/lib/answer";
-import { THEME_BG, THEME_KEY } from "@/lib/domain";
+import { FIELDS, THEME_BG, THEME_KEY } from "@/lib/domain";
+import { DOC_COUNT } from "./human";
 import { Shell } from "./shell";
 import "./globals.css";
 
@@ -9,7 +10,7 @@ const sans = Geist({ subsets: ["latin"], weight: ["400", "500", "600"], variable
 const mono = Geist_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 const TITLE = "Ask the Field";
-const DESCRIPTION = "You run a fictional oil field in the desert: 3 fields, 41 wells, 400 field reports. Ask it what went wrong in plain English; the AI answers in seconds and shows where each answer comes from. Concept prototype, synthetic data.";
+const DESCRIPTION = `A RAG demo: an AI that answers questions from a company's own documents and data, and shows its sources. The company is fictional: ${FIELDS.length} oil fields, 41 wells and ${DOC_COUNT} synthetic field documents. Concept prototype, nothing is real.`;
 const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_KEY)}),c=${JSON.stringify(THEME_BG)};if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.media=m.content===c[t]?"all":"not all"})}}catch(e){}})()`;
 const site = process.env.SITE_URL ?? "https://askthefield.darmina.com";
 
